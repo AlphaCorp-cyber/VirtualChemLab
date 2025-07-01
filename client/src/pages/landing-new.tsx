@@ -425,14 +425,14 @@ export default function Landing() {
 
             {/* Scrollable experiment cards container */}
             <div className="relative">
-              <div className="flex overflow-x-auto gap-6 pb-4 px-4 -mx-4 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 scroll-smooth snap-x snap-mandatory">
+              <div className="flex overflow-x-auto gap-4 pb-4 px-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 scroll-smooth">
                 {experiments.map((experiment, index) => (
                   <motion.div
                     key={experiment.id}
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 1.9 + index * 0.1 }}
-                    className="flex-shrink-0 w-80 snap-center"
+                    className="flex-shrink-0 w-64 snap-center"
                   >
                   <Card 
                     className={`h-full transition-all duration-300 cursor-pointer ${
@@ -485,7 +485,7 @@ export default function Landing() {
               {/* Scroll indicators */}
               <div className="flex justify-center mt-6 space-x-2">
                 <div className="text-sm text-gray-400 flex items-center">
-                  <span className="mr-2">Scroll →</span>
+                  <span className="mr-2">Scroll to see all {experiments.length} experiments →</span>
                   <div className="flex space-x-1">
                     {experiments.map((_, index) => (
                       <div key={index} className="w-2 h-2 bg-gray-600 rounded-full"></div>
