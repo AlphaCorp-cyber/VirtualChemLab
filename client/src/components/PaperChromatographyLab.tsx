@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Text } from '@react-three/drei';
@@ -14,7 +13,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
   const [pigmentSeparation, setPigmentSeparation] = useState(0);
   const [inkApplied, setInkApplied] = useState(false);
   const [selectedInk, setSelectedInk] = useState<'black' | 'blue' | 'red'>('black');
-  
+
   const paperRef = useRef<THREE.Mesh>(null);
   const solventRef = useRef<THREE.Mesh>(null);
   const beakerRef = useRef<THREE.Mesh>(null);
@@ -42,16 +41,16 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
     if (experimentStarted && solventHeight < 1.5) {
       // Animate solvent rising
       setSolventHeight(prev => Math.min(prev + delta * 0.2, 1.5));
-      
+
       // Animate pigment separation
       setPigmentSeparation(prev => Math.min(prev + delta * 0.15, 1));
-      
+
       // Update solvent visual
       if (solventRef.current) {
         solventRef.current.scale.y = solventHeight;
         solventRef.current.position.y = 1.0 + (solventHeight * 0.5);
       }
-      
+
       // Update pigment positions
       if (pigmentGroupRef.current && pigmentSeparation > 0) {
         pigmentGroupRef.current.children.forEach((child, index) => {
@@ -63,7 +62,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           }
         });
       }
-      
+
       if (solventHeight >= 1.4 && pigmentSeparation >= 0.9) {
         onExperimentComplete?.(`Chromatography complete! ${selectedInk} ink separated into ${pigmentData[selectedInk].length} pigments.`);
       }
@@ -86,12 +85,12 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
     setSolventHeight(0);
     setPigmentSeparation(0);
     setInkApplied(false);
-    
+
     if (solventRef.current) {
       solventRef.current.scale.y = 0.1;
       solventRef.current.position.y = 1.05;
     }
-    
+
     if (pigmentGroupRef.current) {
       pigmentGroupRef.current.children.forEach((child) => {
         child.position.y = 1.0;
@@ -116,13 +115,13 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           <cylinderGeometry args={[0.4, 0.35, 1.5, 16]} />
           <meshStandardMaterial color="#e8f4f8" transparent opacity={0.3} />
         </mesh>
-        
+
         {/* Beaker rim */}
         <mesh position={[0, 0.75, 0]}>
           <torusGeometry args={[0.4, 0.02, 8, 16]} />
           <meshStandardMaterial color="#ffffff" />
         </mesh>
-        
+
         {/* Solvent (water/ethanol) */}
         <mesh ref={solventRef} position={[0, -0.4, 0]}>
           <cylinderGeometry args={[0.35, 0.32, 0.2, 16]} />
@@ -177,7 +176,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         >
           Select Ink Type
         </Text>
-        
+
         {/* Black Ink */}
         <mesh 
           position={[-0.3, 0, 0]} 
@@ -190,7 +189,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
             emissive={selectedInk === 'black' ? '#333333' : '#000000'}
           />
         </mesh>
-        
+
         {/* Blue Ink */}
         <mesh 
           position={[0, 0, 0]} 
@@ -203,7 +202,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
             emissive={selectedInk === 'blue' ? '#0000AA' : '#000000'}
           />
         </mesh>
-        
+
         {/* Red Ink */}
         <mesh 
           position={[0.3, 0, 0]} 
@@ -229,7 +228,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         >
           Chromatography Controls
         </Text>
-        
+
         {/* Apply Ink Button */}
         <mesh 
           position={[0, 0.1, 0]} 
@@ -250,7 +249,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         >
           {inkApplied ? "Ink Applied" : "Apply Ink"}
         </Text>
-        
+
         {/* Start Button */}
         <mesh 
           position={[0, -0.1, 0]} 
@@ -271,7 +270,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         >
           {experimentStarted ? "Running..." : "Start"}
         </Text>
-        
+
         {/* Reset Button */}
         <mesh 
           position={[0, -0.3, 0]} 
@@ -298,7 +297,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           <planeGeometry args={[3, 1.5]} />
           <meshStandardMaterial color="#ffffff" />
         </mesh>
-        
+
         <Text
           position={[0, 0.5, 0.01]}
           fontSize={0.1}
@@ -308,7 +307,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         >
           Paper Chromatography
         </Text>
-        
+
         <Text
           position={[0, 0.2, 0.01]}
           fontSize={0.06}
@@ -318,7 +317,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         >
           1. Select ink type
         </Text>
-        
+
         <Text
           position={[0, 0.0, 0.01]}
           fontSize={0.06}
@@ -328,7 +327,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         >
           2. Apply ink to baseline
         </Text>
-        
+
         <Text
           position={[0, -0.2, 0.01]}
           fontSize={0.06}
@@ -338,7 +337,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         >
           3. Start chromatography
         </Text>
-        
+
         <Text
           position={[0, -0.4, 0.01]}
           fontSize={0.06}
@@ -357,7 +356,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
             <planeGeometry args={[1.5, 1]} />
             <meshStandardMaterial color="#ecf0f1" />
           </mesh>
-          
+
           <Text
             position={[0, 0.3, 0.01]}
             fontSize={0.08}
@@ -367,7 +366,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           >
             Separated Pigments
           </Text>
-          
+
           {pigmentData[selectedInk].map((pigment, index) => (
             <Text
               key={index}
@@ -387,185 +386,3 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
 };
 
 export default PaperChromatographyLab;
-  const [experimentStarted, setExperimentStarted] = useState(false);
-  const [solventHeight, setSolventHeight] = useState(0.1);
-  const [pigmentSeparation, setPigmentSeparation] = useState(0);
-  const [inkApplied, setInkApplied] = useState(false);
-  const [paperInSolvent, setPaperInSolvent] = useState(false);
-  
-  const paperRef = useRef<THREE.Mesh>(null);
-  const solventRef = useRef<THREE.Mesh>(null);
-  
-  useFrame((state, delta) => {
-    if (experimentStarted && paperInSolvent) {
-      // Animate solvent rising
-      setSolventHeight(prev => Math.min(prev + delta * 0.5, 2.5));
-      
-      // Animate pigment separation
-      setPigmentSeparation(prev => Math.min(prev + delta * 0.3, 1));
-      
-      // Complete experiment when separation is done
-      if (pigmentSeparation > 0.9 && onExperimentComplete) {
-        onExperimentComplete("Chromatography separation complete!");
-      }
-    }
-  });
-
-  const handleInkApplication = () => {
-    setInkApplied(true);
-  };
-
-  const handlePaperPlacement = () => {
-    if (inkApplied) {
-      setPaperInSolvent(true);
-      setExperimentStarted(true);
-    }
-  };
-
-  return (
-    <>
-      {/* Lab bench */}
-      <Box position={[0, 0.5, 0]} args={[6, 0.1, 4]} receiveShadow>
-        <meshStandardMaterial color="#8B4513" />
-      </Box>
-
-      {/* Beaker with solvent */}
-      <group position={[-1, 1, 0]}>
-        {/* Beaker walls */}
-        <Cylinder
-          position={[0, 0.5, 0]}
-          args={[1, 1, 2, 32, 1, true]}
-          castShadow
-        >
-          <meshStandardMaterial 
-            color="#ffffff" 
-            transparent 
-            opacity={0.3}
-            side={THREE.DoubleSide}
-          />
-        </Cylinder>
-        
-        {/* Solvent */}
-        <Cylinder
-          ref={solventRef}
-          position={[0, -0.5 + solventHeight/2, 0]}
-          args={[0.9, 0.9, solventHeight, 32]}
-          castShadow
-        >
-          <meshStandardMaterial 
-            color="#87CEEB" 
-            transparent 
-            opacity={0.7}
-          />
-        </Cylinder>
-      </group>
-
-      {/* Filter paper */}
-      <group position={[-1, 1.5, 0]}>
-        <Plane
-          ref={paperRef}
-          args={[0.3, 3]}
-          rotation={[0, 0, 0]}
-          castShadow
-        >
-          <meshStandardMaterial color="#f5f5f5" />
-        </Plane>
-        
-        {/* Pencil baseline */}
-        <Plane
-          position={[0, -1.2, 0.01]}
-          args={[0.25, 0.02]}
-        >
-          <meshStandardMaterial color="#333333" />
-        </Plane>
-        
-        {/* Ink spot */}
-        {inkApplied && (
-          <Cylinder
-            position={[0, -1.2, 0.02]}
-            args={[0.03, 0.03, 0.01, 16]}
-          >
-            <meshStandardMaterial color="#000000" />
-          </Cylinder>
-        )}
-        
-        {/* Separated pigments */}
-        {pigmentSeparation > 0 && (
-          <>
-            {/* Blue pigment */}
-            <Cylinder
-              position={[0, -1.2 + (pigmentSeparation * 0.8), 0.02]}
-              args={[0.02, 0.02, 0.01, 16]}
-            >
-              <meshStandardMaterial color="#0000ff" />
-            </Cylinder>
-            
-            {/* Red pigment */}
-            <Cylinder
-              position={[0, -1.2 + (pigmentSeparation * 0.5), 0.02]}
-              args={[0.02, 0.02, 0.01, 16]}
-            >
-              <meshStandardMaterial color="#ff0000" />
-            </Cylinder>
-            
-            {/* Yellow pigment */}
-            <Cylinder
-              position={[0, -1.2 + (pigmentSeparation * 1.2), 0.02]}
-              args={[0.02, 0.02, 0.01, 16]}
-            >
-              <meshStandardMaterial color="#ffff00" />
-            </Cylinder>
-          </>
-        )}
-      </group>
-
-      {/* Ink dropper */}
-      <group position={[1, 1.2, 0]}>
-        <Cylinder
-          args={[0.05, 0.05, 0.8, 16]}
-          castShadow
-        >
-          <meshStandardMaterial color="#333333" />
-        </Cylinder>
-        <Cylinder
-          position={[0, -0.5, 0]}
-          args={[0.02, 0.02, 0.3, 16]}
-          castShadow
-        >
-          <meshStandardMaterial color="#333333" />
-        </Cylinder>
-      </group>
-
-      {/* Interactive areas */}
-      {!inkApplied && (
-        <Box
-          position={[1, 1.2, 0]}
-          args={[0.2, 0.2, 0.2]}
-          onClick={handleInkApplication}
-          transparent
-          opacity={0}
-        />
-      )}
-      
-      {inkApplied && !paperInSolvent && (
-        <Box
-          position={[-1, 1.5, 0]}
-          args={[0.5, 3.2, 0.2]}
-          onClick={handlePaperPlacement}
-          transparent
-          opacity={0}
-        />
-      )}
-
-      {/* Lighting */}
-      <pointLight
-        position={[0, 3, 2]}
-        intensity={0.8}
-        color="#ffffff"
-        castShadow
-      />
-      
-      <ambientLight intensity={0.4} />
-    </>
-  );
-}
