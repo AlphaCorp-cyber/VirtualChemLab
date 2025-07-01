@@ -86,6 +86,16 @@ const experiments: Experiment[] = [
     category: "Separation Techniques",
     features: ["Filter paper", "Pencil for baseline", "Ink sample", "Beaker with solvent"],
     available: true
+  },
+  {
+    id: "gas-tests",
+    title: "Gas Tests Laboratory",
+    description: "Identify different gases using classic chemical tests with lit splints, glowing splints, and litmus paper.",
+    duration: "10-15 minutes",
+    difficulty: "Beginner",
+    category: "Gas Identification",
+    features: ["Lit Splint Test", "Glowing Splint Test", "Litmus Paper", "Gas Sample Tubes"],
+    available: true
   }
 ];
 
@@ -405,7 +415,7 @@ export default function Landing() {
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
               {experiments.map((experiment, index) => (
                 <motion.div
                   key={experiment.id}
@@ -431,7 +441,8 @@ export default function Landing() {
                              experiment.id === 'titration' ? '⚗️' :
                              experiment.id === 'crystallization' ? '💎' :
                              experiment.id === 'synthesis' ? '🧬' : 
-                             experiment.id === 'paper-chromatography' ? '🧫' : '📊'}
+                             experiment.id === 'paper-chromatography' ? '🧫' :
+                             experiment.id === 'gas-tests' ? '💨' : '📊'}
                           </span>
                         </div>
                       </div>
