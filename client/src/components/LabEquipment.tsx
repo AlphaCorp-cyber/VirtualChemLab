@@ -61,13 +61,14 @@ function Beaker({ position, liquidColor, phValue, id }: {
         <meshPhysicalMaterial
           color="#ffffff"
           transparent
-          opacity={0.08}
+          opacity={0.15}
           roughness={0.02}
-          transmission={0.98}
+          transmission={0.92}
           thickness={0.5}
           ior={1.52}
           clearcoat={1.0}
           clearcoatRoughness={0.05}
+          reflectivity={0.9}
         />
       </mesh>
       
@@ -171,13 +172,14 @@ function TestTube({ position, isEmpty = false }: {
         <meshPhysicalMaterial
           color="#ffffff"
           transparent
-          opacity={0.05}
+          opacity={0.12}
           roughness={0.02}
-          transmission={0.98}
+          transmission={0.92}
           thickness={0.5}
           ior={1.52}
           clearcoat={1.0}
           clearcoatRoughness={0.05}
+          reflectivity={0.9}
         />
       </mesh>
       
@@ -187,13 +189,14 @@ function TestTube({ position, isEmpty = false }: {
         <meshPhysicalMaterial
           color="#ffffff"
           transparent
-          opacity={0.05}
+          opacity={0.12}
           roughness={0.02}
-          transmission={0.98}
+          transmission={0.92}
           thickness={0.5}
           ior={1.52}
           clearcoat={1.0}
           clearcoatRoughness={0.05}
+          reflectivity={0.9}
         />
       </mesh>
       
@@ -319,13 +322,14 @@ export function LabEquipment() {
             <meshPhysicalMaterial
               color="#ffffff"
               transparent
-              opacity={0.05}
+              opacity={0.12}
               roughness={0.02}
-              transmission={0.98}
+              transmission={0.92}
               thickness={0.5}
               ior={1.52}
               clearcoat={1.0}
               clearcoatRoughness={0.05}
+              reflectivity={0.9}
             />
           </mesh>
           {/* Flask neck */}
@@ -418,13 +422,14 @@ export function LabEquipment() {
           <meshPhysicalMaterial
             color="#ffffff"
             transparent
-            opacity={0.05}
+            opacity={0.12}
             roughness={0.02}
-            transmission={0.98}
+            transmission={0.92}
             thickness={0.5}
             ior={1.52}
             clearcoat={1.0}
             clearcoatRoughness={0.05}
+            reflectivity={0.9}
           />
         </mesh>
         {/* Graduated cylinder base */}

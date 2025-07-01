@@ -41,11 +41,11 @@ export function ChemistryLab() {
 
   return (
     <>
-      {/* Lighting setup */}
-      <ambientLight intensity={0.4} />
+      {/* Enhanced lighting setup for better glass visibility */}
+      <ambientLight intensity={0.6} />
       <directionalLight
         position={[10, 10, 5]}
-        intensity={1}
+        intensity={1.2}
         castShadow
         shadow-mapSize={[2048, 2048]}
         shadow-camera-far={50}
@@ -55,6 +55,11 @@ export function ChemistryLab() {
         shadow-camera-bottom={-10}
       />
       <pointLight position={[0, 3, 0]} intensity={0.5} />
+      
+      {/* Additional lighting for better glass visibility */}
+      <pointLight position={[-2, 2, -1]} intensity={0.3} color="#ffffff" />
+      <pointLight position={[2, 2, -1]} intensity={0.3} color="#ffffff" />
+      <pointLight position={[0, 2, 1]} intensity={0.2} color="#ffffff" />
       
       {/* Lab environment and equipment */}
       <LabEnvironment />
