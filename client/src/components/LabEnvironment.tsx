@@ -43,10 +43,59 @@ export function LabEnvironment() {
 
   return (
     <>
-      {/* Tiled lab floor */}
+      {/* Professional lab lighting */}
+      <ambientLight intensity={0.4} color="#f8f9fa" />
+      <directionalLight 
+        position={[10, 10, 5]} 
+        intensity={0.8} 
+        color="#ffffff"
+        castShadow
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+        shadow-camera-far={50}
+        shadow-camera-left={-10}
+        shadow-camera-right={10}
+        shadow-camera-top={10}
+        shadow-camera-bottom={-10}
+      />
+      <directionalLight 
+        position={[-5, 8, 3]} 
+        intensity={0.4} 
+        color="#e3f2fd"
+        castShadow
+      />
+      
+      {/* Lab overhead fluorescent lighting */}
+      <group position={[0, 3.8, 0]}>
+        {[-2, 0, 2].map((x, i) => (
+          <group key={i} position={[x, 0, 0]}>
+            <mesh>
+              <boxGeometry args={[1.5, 0.1, 0.3]} />
+              <meshStandardMaterial 
+                color="#ffffff" 
+                emissive="#ffffff" 
+                emissiveIntensity={0.2}
+              />
+            </mesh>
+            <pointLight 
+              position={[0, -0.1, 0]} 
+              intensity={0.5} 
+              color="#f5f5f5"
+              distance={6}
+              decay={2}
+            />
+          </group>
+        ))}
+      </group>
+
+      {/* Professional tiled lab floor with better materials */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
         <planeGeometry args={[20, 20]} />
-        <meshStandardMaterial map={new THREE.CanvasTexture(createTileTexture())} />
+        <meshStandardMaterial 
+          map={new THREE.CanvasTexture(createTileTexture())} 
+          roughness={0.2}
+          metalness={0.05}
+        />
       </mesh>
       
       {/* L-shaped lab bench - main horizontal section */}

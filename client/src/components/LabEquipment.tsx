@@ -25,12 +25,25 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
     if (selectedStripId && selectedStripId.includes('indicator')) {
       // Pour pH indicator into the beaker with animation
       setIsPouring(true);
+      console.log(`Pouring pH indicator into ${solutionName} (${id})`);
       setTimeout(() => {
         setHasIndicator(true);
         setIsPouring(false);
         testStripInLiquid(selectedStripId, id);
-        console.log(`pH indicator poured into ${id}`);
-      }, 1000);
+        console.log(`✓ pH Test Complete: ${solutionName} = pH ${phValue.toFixed(1)} (${getPHColor(phValue)})`);
+      }, 1500);
+    }
+  };
+
+  const handleHover = (e: any, isEntering: boolean) => {
+    if (selectedStripId && selectedStripId.includes('indicator')) {
+      if (isEntering) {
+        e.object.scale.setScalar(1.05);
+        document.body.style.cursor = 'pointer';
+      } else {
+        e.object.scale.setScalar(1.0);
+        document.body.style.cursor = 'default';
+      }
     }
   };
   
@@ -53,8 +66,14 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       {/* Beaker walls - crystal clear with proper glass material */}
       <mesh
         ref={meshRef}
-        onPointerEnter={() => setIsHovered(true)}
-        onPointerLeave={() => setIsHovered(false)}
+        onPointerEnter={(e) => {
+          setIsHovered(true);
+          handleHover(e, true);
+        }}
+        onPointerLeave={(e) => {
+          setIsHovered(false);
+          handleHover(e, false);
+        }}
         onClick={handleClick}
         castShadow
         receiveShadow
@@ -453,14 +472,23 @@ export function LabEquipment() {
         </mesh>
       </group>
 
-      {/* pH indicator bottles - transparent with green solution */}
+      {/* pH indicator bottles - professional lab bottle */}
       <group position={[-1.5, 1.505, 0.8]}>
-        {/* pH indicator bottle - completely filled with lime green solution */}
+        {/* Professional indicator bottle with better interaction */}
         <mesh 
           castShadow
-          onClick={() => grabTestStrip('indicator-1')}
-          onPointerEnter={() => {}}
-          onPointerLeave={() => {}}
+          onClick={() => {
+            grabTestStrip('indicator-1');
+            console.log('Picked up pH indicator solution - ready to pour into beakers');
+          }}
+          onPointerEnter={(e) => {
+            e.object.scale.setScalar(1.1);
+            document.body.style.cursor = 'pointer';
+          }}
+          onPointerLeave={(e) => {
+            e.object.scale.setScalar(1.0);
+            document.body.style.cursor = 'default';
+          }}
         >
           <cylinderGeometry args={[0.08, 0.06, 0.25, 8]} />
           <meshStandardMaterial 
@@ -468,8 +496,16 @@ export function LabEquipment() {
             transparent 
             opacity={0.9}
             emissive="#32FF32"
-            emissiveIntensity={0.2}
+            emissiveIntensity={0.3}
+            roughness={0.2}
+            metalness={0.1}
           />
+        </mesh>
+        
+        {/* Professional label */}
+        <mesh position={[0, 0, 0.09]}>
+          <planeGeometry args={[0.12, 0.15]} />
+          <meshStandardMaterial color="#ffffff" />
         </mesh>
         
         {/* Cork stopper */}
@@ -936,6 +972,144 @@ export function LabEquipment() {
         </Text>
       </group>
 
+      {/* Professional Lab Safety Equipment */}
+      <group position={[-3.5, 1.46, 0]}>
+        {/* Safety shower */}
+        <mesh position={[0, 1, 0]} castShadow>
+          <cylinderGeometry args={[0.05, 0.05, 2, 8]} />
+          <meshStandardMaterial color="#c0c0c0" metalness={0.8} roughness={0.2} />
+        </mesh>
+        {/* Shower head */}
+        <mesh position={[0, 2, 0]} castShadow>
+          <cylinderGeometry args={[0.1, 0.1, 0.05, 8]} />
+          <meshStandardMaterial color="#c0c0c0" metalness={0.8} roughness={0.2} />
+        </mesh>
+        {/* Pull handle */}
+        <mesh position={[0.2, 1.8, 0]} castShadow>
+          <boxGeometry args={[0.15, 0.05, 0.03]} />
+          <meshStandardMaterial color="#ff6b6b" />
+        </mesh>
+      </group>
+
+      {/* Eye wash station */}
+      <group position={[-3.2, 1.46, 1]}>
+        <mesh position={[0, 0.4, 0]} castShadow>
+          <boxGeometry args={[0.3, 0.6, 0.2]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+        {/* Eye wash nozzles */}
+        <mesh position={[0, 0.5, 0.1]} castShadow>
+          <cylinderGeometry args={[0.02, 0.02, 0.08, 8]} />
+          <meshStandardMaterial color="#c0c0c0" metalness={0.8} roughness={0.2} />
+        </mesh>
+        <mesh position={[0.08, 0.5, 0.1]} castShadow>
+          <cylinderGeometry args={[0.02, 0.02, 0.08, 8]} />
+          <meshStandardMaterial color="#c0c0c0" metalness={0.8} roughness={0.2} />
+        </mesh>
+      </group>
+
+      {/* Fire extinguisher */}
+      <group position={[4, 1.55, -1.8]}>
+        <mesh castShadow>
+          <cylinderGeometry args={[0.08, 0.08, 0.4, 8]} />
+          <meshStandardMaterial color="#ff0000" />
+        </mesh>
+        <mesh position={[0, 0.25, 0]} castShadow>
+          <cylinderGeometry args={[0.03, 0.03, 0.1, 8]} />
+          <meshStandardMaterial color="#000000" />
+        </mesh>
+      </group>
+
+      {/* First aid kit */}
+      <group position={[3.8, 1.7, -1.8]}>
+        <mesh castShadow>
+          <boxGeometry args={[0.25, 0.15, 0.08]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+        <mesh position={[0, 0, 0.04]} castShadow>
+          <boxGeometry args={[0.08, 0.08, 0.01]} />
+          <meshStandardMaterial color="#ff0000" />
+        </mesh>
+      </group>
+
+      {/* Waste disposal containers */}
+      <group position={[3.5, 1.46, 2.5]}>
+        {/* Chemical waste */}
+        <mesh position={[-0.2, 0.15, 0]} castShadow>
+          <cylinderGeometry args={[0.1, 0.1, 0.3, 8]} />
+          <meshStandardMaterial color="#ffff00" />
+        </mesh>
+        {/* Glass waste */}
+        <mesh position={[0.2, 0.15, 0]} castShadow>
+          <cylinderGeometry args={[0.1, 0.1, 0.3, 8]} />
+          <meshStandardMaterial color="#0066cc" />
+        </mesh>
+      </group>
+
+      {/* Laboratory notebook stand */}
+      <group position={[1.5, 1.48, -1.5]}>
+        <mesh castShadow>
+          <boxGeometry args={[0.3, 0.02, 0.2]} />
+          <meshStandardMaterial color="#8B4513" roughness={0.8} />
+        </mesh>
+        <mesh position={[0, 0.01, 0]} castShadow>
+          <boxGeometry args={[0.25, 0.002, 0.15]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+      </group>
+
+      {/* pH Testing Instructions Sign */}
+      <group position={[0, 2.5, -2.8]}>
+        <mesh>
+          <planeGeometry args={[1.5, 0.8]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+        <Text
+          position={[0, 0.2, 0.01]}
+          fontSize={0.08}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          pH Testing Instructions
+        </Text>
+        <Text
+          position={[0, 0, 0.01]}
+          fontSize={0.04}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          1. Click pH indicator bottle
+        </Text>
+        <Text
+          position={[0, -0.1, 0.01]}
+          fontSize={0.04}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          2. Click beaker to pour
+        </Text>
+        <Text
+          position={[0, -0.2, 0.01]}
+          fontSize={0.04}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          3. Observe color change
+        </Text>
+        <Text
+          position={[0, -0.3, 0.01]}
+          fontSize={0.04}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          4. Compare with pH scale
+        </Text>
+      </group>
 
     </>
   );
