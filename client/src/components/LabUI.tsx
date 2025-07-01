@@ -97,7 +97,7 @@ export function LabUI() {
             </div>
 
             <div className="text-xs text-gray-500">
-              08:19 AM - pH Testing Experiment
+              08:19 AM - {currentExperiment} Experiment
             </div>
           </CardContent>
         </Card>
@@ -171,26 +171,49 @@ export function LabUI() {
           <CardContent className="pt-4">
             <h3 className="font-semibold mb-2">Instructions</h3>
             <div className="text-sm space-y-1">
-              {selectedStripId ? (
-                selectedStripId.includes('indicator') ? (
-                  <>
-                    <p>✓ pH Indicator bottle selected</p>
-                    <p>→ Click on a beaker to pour indicator</p>
-                    <p>Press R to release the bottle</p>
-                  </>
+              {currentExperiment === "pH Testing" && (
+                selectedStripId ? (
+                  selectedStripId.includes('indicator') ? (
+                    <>
+                      <p>✓ pH Indicator bottle selected</p>
+                      <p>→ Click on a beaker to pour indicator</p>
+                      <p>Press R to release the bottle</p>
+                    </>
+                  ) : (
+                    <>
+                      <p>✓ Test strip selected</p>
+                      <p>→ Dip the strip into a beaker to test pH</p>
+                      <p>Press R to release the strip</p>
+                    </>
+                  )
                 ) : (
                   <>
-                    <p>✓ Test strip selected</p>
-                    <p>→ Dip the strip into a beaker to test pH</p>
-                    <p>Press R to release the strip</p>
+                    <p>Click on pH indicator bottle to grab it</p>
+                    <p>Pour indicator into beakers to reveal pH</p>
+                    <p>Press G to grab a pH test strip</p>
+                    <p>Use WASD keys to move around the lab</p>
                   </>
                 )
-              ) : (
+              )}
+              {currentExperiment === "Flame Tests" && (
                 <>
-                  <p>Click on pH indicator bottle to grab it</p>
-                  <p>Pour indicator into beakers to reveal pH</p>
-                  <p>Press G to grab a pH test strip</p>
-                  <p>Use WASD keys to move around the lab</p>
+                  <p>Select a metal salt sample</p>
+                  <p>Use the wire loop to perform flame test</p>
+                  <p>Observe the flame color to identify the metal ion</p>
+                </>
+              )}
+              {currentExperiment === "Displacement Reactions" && (
+                <>
+                  <p>Select a metal to test</p>
+                  <p>Place metal in solution</p>
+                  <p>Observe color changes and deposits</p>
+                </>
+              )}
+              {currentExperiment === "Paper Chromatography" && (
+                <>
+                  <p>Apply ink sample to paper</p>
+                  <p>Place paper in solvent</p>
+                  <p>Watch pigments separate</p>
                 </>
               )}
             </div>
@@ -234,7 +257,7 @@ export function LabUI() {
             <CardContent className="pt-6 text-center">
               <h2 className="text-2xl font-bold mb-4">Experiment Complete!</h2>
               <p className="text-gray-600 mb-4">
-                You've successfully completed all pH tests.
+                You've successfully completed all tests.
               </p>
               <Button onClick={resetLab}>
                 Start New Experiment
@@ -244,321 +267,26 @@ export function LabUI() {
         </div>
       )}
 
-           {/* Audio control and Reset button */}
-           <div className="absolute top-4 right-4 flex gap-2 pointer-events-auto">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={toggleMute}
-            className="bg-white/90 backdrop-blur-sm"
-          >
-            {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-          </Button>
+      {/* Audio control and Reset button */}
+      <div className="absolute top-4 right-4 flex gap-2 pointer-events-auto">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={toggleMute}
+          className="bg-white/90 backdrop-blur-sm"
+        >
+          {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+        </Button>
 
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={resetLab}
-            className="bg-white/90 backdrop-blur-sm"
-          >
-            <RotateCcw size={20} />
-          </Button>
-        </div>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={resetLab}
+          className="bg-white/90 backdrop-blur-sm"
+        >
+          <RotateCcw size={20} />
+        </Button>
+      </div>
     </div>
   );
 }
-```
-
-```typescript
-import {
-  FlaskConical,
-  Flame,
-  RotateCcw,
-  Volume2,
-  VolumeX,
-} from "lucide-react";
-
-export const getExperimentIcon = (experiment: string) => {
-  switch (experiment) {
-    case "pH Testing":
-      return "🧪💧";
-    case "Flame Tests":
-      return "🔥🧪";
-    case "Displacement Reactions":
-      return "🧪⚡";
-    case "Paper Chromatography":
-      return "📄🎨";
-    default:
-      return "🔬";
-  }
-};
-```
-
-```typescript
-// useChemistryLab.ts
-import { create } from "zustand";
-import { getExperimentIcon } from "../components/LabUI"; // Import the function
-interface ChemistryLabState {
-    currentExperiment: string;
-    progress: number;
-    completedTests: number;
-    totalTests: number;
-    lastTestResult: any;
-    lastFlameTestResult: any;
-    selectedStripId: string | null;
-    resetLab: () => void;
-    switchExperiment: (experiment: string) => void;
-    // Add other state properties and methods as needed
-  }
-  
-  export const useChemistryLab = create<ChemistryLabState>((set) => ({
-    currentExperiment: "pH Testing",
-    progress: 0,
-    completedTests: 0,
-    totalTests: 5,
-    lastTestResult: null,
-    lastFlameTestResult: null,
-    selectedStripId: null,
-    resetLab: () => set({ progress: 0, completedTests: 0 }),
-    switchExperiment: (experiment: string) => set({ currentExperiment: experiment, progress: 0, completedTests: 0 }),
-    // Add other state properties and methods as needed
-  }));
-```
-
-```typescript
-// app/page.tsx
-import { LabUI } from "../components/LabUI";
-
-export default function Page() {
-  return (
-    <div>
-      <LabUI />
-    </div>
-  );
-}
-```
-
-```typescript
-// components/ui/badge.tsx
-import * as React from "react"
-import { cn } from "@/lib/utils"
-
-const Badge = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
-  return (
-    <div
-      className={cn(
-        "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-        className
-      )}
-      ref={ref}
-      {...props}
-    />
-  )
-})
-Badge.displayName = "Badge"
-
-export { Badge }
-```
-
-```typescript
-// lib/utils.ts
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
-```
-
-```typescript
-// components/ui/button.tsx
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
-
-import { cn } from "@/lib/utils"
-
-const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-accent-foreground",
-  {
-    variants: {
-      variant: {
-        default:
-          "bg-primary text-primary-foreground hover:bg-primary/90",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline:
-          "bg-transparent border border-input hover:bg-accent hover:text-accent-foreground",
-        ghost: "bg-transparent hover:bg-accent hover:text-accent-foreground",
-        link: "bg-transparent underline-offset-4 hover:underline text-primary",
-      },
-      size: {
-        default: "h-10 py-2 px-4",
-        sm: "h-9 px-3 rounded-md",
-        lg: "h-11 px-8 rounded-md",
-        icon: "h-10 w-10",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
-    },
-  }
-)
-
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  asChild?: boolean
-}
-
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button"
-    return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      />
-    )
-  }
-)
-Button.displayName = "Button"
-
-export { Button, buttonVariants }
-```
-
-```typescript
-// components/ui/card.tsx
-import * as React from "react"
-
-import { cn } from "@/lib/utils"
-
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    className={cn("rounded-lg border bg-card text-card-foreground shadow-sm", className)}
-    {...props}
-    ref={ref}
-  />
-))
-Card.displayName = "Card"
-
-const CardHeader = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    className={cn("flex flex-col space-y-1.5 p-6", className)}
-    {...props}
-    ref={ref}
-  />
-))
-CardHeader.displayName = "CardHeader"
-
-const CardTitle = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
-  <h3
-    className={cn(
-      "text-lg font-semibold leading-none tracking-tight",
-      className
-    )}
-    {...props}
-    ref={ref}
-  />
-))
-CardTitle.displayName = "CardTitle"
-
-const CardDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
-  <p
-    className={cn("text-sm text-muted-foreground", className)}
-    {...props}
-    ref={ref}
-  />
-))
-CardDescription.displayName = "CardDescription"
-
-const CardContent = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div className={cn("p-6 pt-0", className)} {...props} ref={ref} />
-))
-CardContent.displayName = "CardContent"
-
-const CardFooter = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    className={cn("flex items-center p-6 pt-0", className)}
-    {...props}
-    ref={ref}
-  />
-))
-CardFooter.displayName = "CardFooter"
-
-export {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardDescription,
-  CardContent,
-}
-```
-
-```typescript
-// components/ui/progress.tsx
-import * as React from "react"
-
-import { cn } from "@/lib/utils"
-
-const Progress = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, value, max, ...props }, ref) => {
-  return (
-    <progress
-      ref={ref}
-      className={cn(
-        "h-2 w-full appearance-none overflow-hidden rounded-full bg-secondary",
-        className
-      )}
-      value={value}
-      max={max}
-      {...props}
-    />
-  )
-})
-Progress.displayName = "Progress"
-
-export { Progress }
-```
-
-```typescript
-// lib/stores/useAudio.ts
-import { create } from 'zustand';
-
-interface AudioState {
-  isMuted: boolean;
-  toggleMute: () => void;
-}
-
-export const useAudio = create<AudioState>((set) => ({
-  isMuted: false,
-  toggleMute: () => set((state) => ({ isMuted: !state.isMuted })),
-}));
