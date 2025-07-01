@@ -103,7 +103,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
   return (
     <group>
       {/* Beaker with solvent */}
-      <group position={[0, 1.54, 0]}>
+      <group position={[0, 1.54, 0.5]}>
         {/* Beaker */}
         <mesh ref={beakerRef} castShadow>
           <cylinderGeometry args={[0.4, 0.35, 1.5, 16]} />
@@ -124,20 +124,20 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
       </group>
 
       {/* Filter Paper */}
-      <mesh ref={paperRef} position={[0, 1.54, 0]} castShadow>
+      <mesh ref={paperRef} position={[0, 1.54, 0.5]} castShadow>
         <planeGeometry args={[0.3, 2]} />
         <meshStandardMaterial color="#f5f5f5" side={THREE.DoubleSide} />
       </mesh>
 
       {/* Pencil baseline */}
-      <mesh position={[0, 0.74, 0.01]}>
+      <mesh position={[0, 0.74, 0.51]}>
         <planeGeometry args={[0.25, 0.02]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
 
       {/* Ink spot */}
       {inkApplied && (
-        <mesh position={[0, 0.74, 0.02]}>
+        <mesh position={[0, 0.74, 0.52]}>
           <circleGeometry args={[0.03, 8]} />
           <meshStandardMaterial 
             color={selectedInk === 'black' ? '#000000' : selectedInk === 'blue' ? '#0000FF' : '#FF0000'} 
@@ -148,7 +148,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
       {/* Separated Pigments */}
       <group ref={pigmentGroupRef}>
         {pigmentData[selectedInk].map((pigment, index) => (
-          <mesh key={index} position={[0, 1.0, 0.02]}>
+          <mesh key={index} position={[0, 1.0, 0.52]}>
             <circleGeometry args={[0.025, 8]} />
             <meshStandardMaterial 
               color={pigment.color} 
@@ -463,7 +463,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
 
       {/* Solvent Front Label */}
       {experimentStarted && solventHeight > 0.5 && (
-        <group position={[0.7, 1.54 + (solventHeight * 0.8), 0]}>
+        <group position={[0.7, 1.54 + (solventHeight * 0.8), 0.5]}>
           <Text
             position={[0, 0, 0]}
             fontSize={0.05}
