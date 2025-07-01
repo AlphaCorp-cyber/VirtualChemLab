@@ -267,37 +267,64 @@ export function LabEquipment() {
         />
       ))}
       
-      {/* Test tubes rack */}
-      <group position={[2, 1.47, -0.5]}>
+      {/* Wooden test tubes rack - properly positioned on table */}
+      <group position={[2, 1.46, -0.5]}>
         {Array.from({ length: 5 }, (_, i) => (
           <TestTube
             key={i}
-            position={[i * 0.15 - 0.3, 0.05, 0]}
+            position={[i * 0.15 - 0.3, 0.22, 0]}
             isEmpty={i > 2}
           />
         ))}
         
-        {/* Rack base - professional lab style */}
-        <mesh position={[0, -0.025, 0]}>
-          <boxGeometry args={[0.8, 0.05, 0.2]} />
-          <meshPhysicalMaterial 
-            color="#2c3e50" 
-            metalness={0.7} 
-            roughness={0.2}
+        {/* Wooden rack base */}
+        <mesh position={[0, 0.02, 0]} castShadow receiveShadow>
+          <boxGeometry args={[0.8, 0.04, 0.25]} />
+          <meshStandardMaterial 
+            color="#8B4513" 
+            roughness={0.8}
           />
         </mesh>
         
-        {/* Test tube holders */}
+        {/* Wooden rack front panel */}
+        <mesh position={[0, 0.08, 0.1]} castShadow>
+          <boxGeometry args={[0.8, 0.12, 0.02]} />
+          <meshStandardMaterial 
+            color="#A0522D" 
+            roughness={0.8}
+          />
+        </mesh>
+        
+        {/* Wooden rack back panel */}
+        <mesh position={[0, 0.08, -0.1]} castShadow>
+          <boxGeometry args={[0.8, 0.12, 0.02]} />
+          <meshStandardMaterial 
+            color="#A0522D" 
+            roughness={0.8}
+          />
+        </mesh>
+        
+        {/* Test tube holes in wood */}
         {Array.from({ length: 5 }, (_, i) => (
-          <mesh key={`holder-${i}`} position={[i * 0.15 - 0.3, -0.15, 0]}>
-            <cylinderGeometry args={[0.045, 0.045, 0.1, 16]} />
-            <meshPhysicalMaterial 
-              color="#34495e" 
-              metalness={0.6} 
-              roughness={0.3}
+          <mesh key={`hole-${i}`} position={[i * 0.15 - 0.3, 0.04, 0]}>
+            <cylinderGeometry args={[0.05, 0.05, 0.05, 16]} />
+            <meshStandardMaterial 
+              color="#654321" 
+              roughness={0.9}
             />
           </mesh>
         ))}
+        
+        {/* Wood grain details */}
+        <mesh position={[0, 0.02, 0]} rotation={[Math.PI/2, 0, 0]}>
+          <planeGeometry args={[0.75, 0.2]} />
+          <meshStandardMaterial 
+            color="#6B3410" 
+            transparent 
+            opacity={0.3}
+            roughness={0.9}
+          />
+        </mesh>
       </group>
       
       {/* Bottle holder stand */}
@@ -336,15 +363,15 @@ export function LabEquipment() {
           />
         </mesh>
         
-        {/* Green pH indicator liquid inside */}
-        <mesh position={[0, -0.05, 0]}>
-          <cylinderGeometry args={[0.07, 0.055, 0.15, 8]} />
+        {/* Bright green pH indicator liquid - full container */}
+        <mesh position={[0, -0.02, 0]}>
+          <cylinderGeometry args={[0.075, 0.055, 0.22, 8]} />
           <meshStandardMaterial 
-            color="#00FF00" 
+            color="#32CD32" 
             transparent 
-            opacity={0.8}
-            emissive="#00FF00"
-            emissiveIntensity={0.1}
+            opacity={0.95}
+            emissive="#32CD32"
+            emissiveIntensity={0.3}
           />
         </mesh>
         
@@ -774,22 +801,7 @@ export function LabEquipment() {
         </Text>
       </group>
 
-      {/* Fix floating equipment - lower test tube rack to table surface */}
-      <group position={[2, 1.44, -0.5]}>
-        {/* Rack support legs */}
-        <mesh position={[0, -0.1, 0]}>
-          <boxGeometry args={[0.05, 0.15, 0.05]} />
-          <meshPhysicalMaterial color="#34495e" metalness={0.6} roughness={0.3} />
-        </mesh>
-        <mesh position={[-0.3, -0.1, 0]}>
-          <boxGeometry args={[0.05, 0.15, 0.05]} />
-          <meshPhysicalMaterial color="#34495e" metalness={0.6} roughness={0.3} />
-        </mesh>
-        <mesh position={[0.3, -0.1, 0]}>
-          <boxGeometry args={[0.05, 0.15, 0.05]} />
-          <meshPhysicalMaterial color="#34495e" metalness={0.6} roughness={0.3} />
-        </mesh>
-      </group>
+
     </>
   );
 }
