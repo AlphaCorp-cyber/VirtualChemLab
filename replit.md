@@ -112,6 +112,7 @@ Changelog:
 - July 01, 2025. Initial setup
 - July 01, 2025. Successfully migrated from Replit Agent to Replit environment 
 - July 01, 2025. Added Gas Tests experiment with 5 common gas identification tests (H₂, O₂, CO₂, NH₃, Cl₂)
+- July 01, 2025. Completed migration to Replit environment - fixed landing page scrolling issue by removing overflow-hidden classes
 ```
 
 ## User Preferences

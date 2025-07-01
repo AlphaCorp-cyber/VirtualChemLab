@@ -130,7 +130,7 @@ export default function Landing() {
   console.log("Landing page rendering...");
   
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+    <div className="min-h-screen bg-black text-white relative">
       {/* Simple test content */}
       <div className="p-8">
         <h1 className="text-4xl text-white mb-4">ChemiQ - Test</h1>
@@ -260,7 +260,7 @@ export default function Landing() {
         transition={{ duration: 1, delay: 0.5 }}
       >
         {/* Animated Background */}
-        <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0">
           {/* Floating Lab Equipment */}
           {[...Array(20)].map((_, i) => (
             <motion.div
