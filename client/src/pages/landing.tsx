@@ -128,7 +128,7 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+    <div className="min-h-screen bg-black text-white relative overflow-auto">
       <AnimatePresence>
         {showIntro && (
           <motion.div
@@ -396,7 +396,7 @@ export default function Landing() {
         {/* Experiments Selection */}
         <motion.section
           id="experiments"
-          className="relative z-10 py-20 bg-gradient-to-b from-transparent to-gray-900/50"
+          className="relative z-10 py-20 bg-gradient-to-b from-transparent to-gray-900/50 min-h-screen"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
@@ -415,7 +415,7 @@ export default function Landing() {
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 max-w-7xl mx-auto">
               {experiments.map((experiment, index) => (
                 <motion.div
                   key={experiment.id}
