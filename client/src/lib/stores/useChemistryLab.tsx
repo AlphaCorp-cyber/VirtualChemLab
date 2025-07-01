@@ -43,7 +43,25 @@ interface FlameTestResult {
   timestamp: number;
 }
 
-type ExperimentType = "pH Testing" | "Flame Tests" | "Displacement Reactions" | "Paper Chromatography";
+interface GasTest {
+  id: string;
+  gasName: string;
+  formula: string;
+  position: [number, number, number];
+  testMethod: string;
+  expectedResult: string;
+  color: string;
+}
+
+interface GasTestResult {
+  gasName: string;
+  testMethod: string;
+  result: string;
+  correct: boolean;
+  timestamp: number;
+}
+
+type ExperimentType = "pH Testing" | "Flame Tests" | "Displacement Reactions" | "Paper Chromatography" | "Gas Tests";
 
 interface ChemistryLabState {
   // Lab state
@@ -58,6 +76,12 @@ interface ChemistryLabState {
   wireLoopSelected: boolean;
   selectedSaltId: string | null;
   lastFlameTestResult: FlameTestResult | null;
+
+  // Gas test state
+  gasTests: GasTest[];
+  selectedGasId: string | null;
+  selectedTestTool: string | null; // "lit-splint", "glowing-splint", "red-litmus", "blue-litmus", "limewater"
+  lastGasTestResult: GasTestResult | null;
 
   // Progress tracking
   completedTests: number;
@@ -79,6 +103,12 @@ interface ChemistryLabState {
   toggleBunsenBurner: () => void;
   selectWireLoop: () => void;
   releaseWireLoop: () => void;
+
+  // Gas test actions
+  selectGas: (gasId: string) => void;
+  selectTestTool: (tool: string) => void;
+  performGasTest: (gasId: string, tool: string) => void;
+  releaseTestTool: () => void;
 
   // Experiment switching
   switchExperiment: (experiment: ExperimentType) => void;
@@ -232,6 +262,55 @@ const initialMetalSalts: MetalSalt[] = [
   }
 ];
 
+// Initial gas tests setup
+const initialGasTests: GasTest[] = [
+  {
+    id: "gas-1",
+    gasName: "Hydrogen",
+    formula: "H₂",
+    position: [-2, 1.52, 0.5],
+    testMethod: "lit-splint",
+    expectedResult: "Pop sound",
+    color: "#e0e0e0"
+  },
+  {
+    id: "gas-2", 
+    gasName: "Oxygen",
+    formula: "O₂",
+    position: [-1, 1.52, 0.5],
+    testMethod: "glowing-splint",
+    expectedResult: "Relights splint",
+    color: "#87CEEB"
+  },
+  {
+    id: "gas-3",
+    gasName: "Carbon Dioxide", 
+    formula: "CO₂",
+    position: [0, 1.52, 0.5],
+    testMethod: "limewater",
+    expectedResult: "Turns milky",
+    color: "#D3D3D3"
+  },
+  {
+    id: "gas-4",
+    gasName: "Ammonia",
+    formula: "NH₃", 
+    position: [1, 1.52, 0.5],
+    testMethod: "red-litmus",
+    expectedResult: "Turns blue",
+    color: "#F0E68C"
+  },
+  {
+    id: "gas-5",
+    gasName: "Chlorine",
+    formula: "Cl₂",
+    position: [2, 1.52, 0.5],
+    testMethod: "blue-litmus",
+    expectedResult: "Turns red then bleaches",
+    color: "#90EE90"
+  }
+];
+
 export const useChemistryLab = create<ChemistryLabState>()(
   subscribeWithSelector((set, get) => ({
     beakers: [],
@@ -243,6 +322,10 @@ export const useChemistryLab = create<ChemistryLabState>()(
     wireLoopSelected: false,
     selectedSaltId: null,
     lastFlameTestResult: null,
+    gasTests: [],
+    selectedGasId: null,
+    selectedTestTool: null,
+    lastGasTestResult: null,
     completedTests: 0,
     totalTests: 10,
     progress: 0,
@@ -253,11 +336,15 @@ export const useChemistryLab = create<ChemistryLabState>()(
         beakers: initialBeakers,
         testStrips: initialTestStrips,
         metalSalts: initialMetalSalts,
+        gasTests: initialGasTests,
         selectedStripId: null,
         bunsenBurnerOn: false,
         wireLoopSelected: false,
         selectedSaltId: null,
+        selectedGasId: null,
+        selectedTestTool: null,
         lastFlameTestResult: null,
+        lastGasTestResult: null,
         completedTests: 0,
         progress: 0,
         lastTestResult: null
@@ -390,6 +477,53 @@ export const useChemistryLab = create<ChemistryLabState>()(
       console.log("Wire loop released");
     },
 
+    // Gas test actions
+    selectGas: (gasId: string) => {
+      set({ selectedGasId: gasId });
+      console.log(`Selected gas: ${gasId}`);
+    },
+
+    selectTestTool: (tool: string) => {
+      set({ selectedTestTool: tool });
+      console.log(`Selected test tool: ${tool}`);
+    },
+
+    performGasTest: (gasId: string, tool: string) => {
+      const { gasTests } = get();
+      const gas = gasTests.find(g => g.id === gasId);
+      if (!gas) return;
+
+      const isCorrect = gas.testMethod === tool;
+      const result = isCorrect ? gas.expectedResult : "No reaction";
+
+      const gasTestResult: GasTestResult = {
+        gasName: gas.gasName,
+        testMethod: tool,
+        result: result,
+        correct: isCorrect,
+        timestamp: Date.now()
+      };
+
+      const { completedTests, totalTests } = get();
+      const newCompletedTests = completedTests + 1;
+      const newProgress = (newCompletedTests / totalTests) * 100;
+
+      set({
+        lastGasTestResult: gasTestResult,
+        completedTests: newCompletedTests,
+        progress: newProgress,
+        selectedGasId: null,
+        selectedTestTool: null
+      });
+
+      console.log(`Gas test completed: ${gas.gasName} with ${tool} - ${result}`);
+    },
+
+    releaseTestTool: () => {
+      set({ selectedTestTool: null });
+      console.log("Test tool released");
+    },
+
     switchExperiment: (experiment: ExperimentType) => {
       set({ 
         currentExperiment: experiment,
@@ -397,8 +531,11 @@ export const useChemistryLab = create<ChemistryLabState>()(
         progress: 0,
         lastTestResult: null,
         lastFlameTestResult: null,
+        lastGasTestResult: null,
         selectedStripId: null,
         selectedSaltId: null,
+        selectedGasId: null,
+        selectedTestTool: null,
         bunsenBurnerOn: false,
         wireLoopSelected: false
       });

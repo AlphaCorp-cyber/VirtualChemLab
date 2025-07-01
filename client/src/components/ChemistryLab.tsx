@@ -2,9 +2,10 @@ import { useFrame } from "@react-three/fiber";
 import { LabEnvironment } from "./LabEnvironment";
 import { LabEquipment } from "./LabEquipment";
 import { FlameTestLab } from "./FlameTestLab";
+import { GasTestLab } from "./GasTestLab";
 import DisplacementLab from './DisplacementLab';
 import PaperChromatographyLab from './PaperChromatographyLab';
-import PHTestStrip from './PHTestStrip';
+import { PHTestStrip } from './PHTestStrip';
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
 import { useKeyboardControls } from "@react-three/drei";
 import { useRef } from "react";
@@ -127,6 +128,9 @@ export function ChemistryLab() {
       <LabEnvironment />
       {currentExperiment === "pH Testing" && <LabEquipment />}
       {currentExperiment === "Flame Tests" && <FlameTestLab />}
+      {currentExperiment === "Gas Tests" && (
+        <GasTestLab onExperimentComplete={handleExperimentComplete} />
+      )}
       {currentExperiment === "Displacement Reactions" && (
         <DisplacementLab onExperimentComplete={handleExperimentComplete} />
       )}

@@ -16,6 +16,7 @@ export function LabUI() {
     selectedStripId,
     lastTestResult,
     lastFlameTestResult,
+    lastGasTestResult,
     switchExperiment
   } = useChemistryLab();
 
@@ -54,6 +55,15 @@ export function LabUI() {
               >
                 <Flame className="w-4 h-4" />
                 Flame Tests
+              </Button>
+              <Button
+                variant={currentExperiment === "Gas Tests" ? "default" : "outline"}
+                size="sm"
+                onClick={() => switchExperiment("Gas Tests")}
+                className="flex items-center gap-2"
+              >
+                <FlaskConical className="w-4 h-4" />
+                Gas Tests
               </Button>
               <Button
                 variant={currentExperiment === "Displacement Reactions" ? "default" : "outline"}
@@ -157,6 +167,38 @@ export function LabUI() {
                   />
                   <span className="text-xs text-gray-600">
                     {lastFlameTestResult.flameColorName}
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Last Gas Test Result */}
+        {lastGasTestResult && currentExperiment === "Gas Tests" && (
+          <Card className="bg-white/90 backdrop-blur-sm">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">Last Gas Test Result</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <p className="text-sm font-medium">{lastGasTestResult.gasName}</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">Test Method:</span>
+                  <Badge variant="default" className="text-xs">
+                    {lastGasTestResult.testMethod.replace('-', ' ')}
+                  </Badge>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">Result:</span>
+                  <Badge 
+                    variant={lastGasTestResult.correct ? "default" : "destructive"} 
+                    className="text-xs"
+                  >
+                    {lastGasTestResult.result}
+                  </Badge>
+                  <span className="text-xs text-gray-600">
+                    {lastGasTestResult.correct ? "✓ Correct" : "✗ Incorrect"}
                   </span>
                 </div>
               </div>
