@@ -4,6 +4,7 @@ import { useGLTF, Text } from "@react-three/drei";
 import { PHTestStrip } from "./PHTestStrip";
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
 import { useKeyboardControls } from "@react-three/drei";
+import { getPHColor } from "../lib/phChemistry";
 import * as THREE from "three";
 
 // Enhanced beaker with better visibility and pH indicator support
@@ -107,15 +108,15 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         />
       </mesh>
       
-      {/* Liquid inside - larger and more visible */}
+      {/* Liquid inside - dramatic color change with indicator */}
       <mesh position={[0, -0.08, 0]}>
         <cylinderGeometry args={[0.26, 0.22, 0.22, 16]} />
         <meshStandardMaterial 
-          color={hasIndicator ? liquidColor : "#B0E0E6"} 
+          color={hasIndicator ? getPHColor(phValue) : "#B0E0E6"} 
           transparent 
-          opacity={0.85}
-          emissive={hasIndicator ? new THREE.Color(liquidColor).multiplyScalar(0.15) : "#B0E0E6"}
-          emissiveIntensity={hasIndicator ? 0.2 : 0.1}
+          opacity={hasIndicator ? 0.95 : 0.7}
+          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.3) : "#B0E0E6"}
+          emissiveIntensity={hasIndicator ? 0.4 : 0.1}
         />
       </mesh>
       
@@ -176,17 +177,31 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         <group position={[0, 0.5, 0]}>
           <mesh>
             <cylinderGeometry args={[0.02, 0.01, 0.3, 8]} />
-            <meshStandardMaterial color="#ff6b6b" transparent opacity={0.8} />
+            <meshStandardMaterial color="#32FF32" transparent opacity={0.8} emissive="#32FF32" emissiveIntensity={0.2} />
           </mesh>
           <Text
             position={[0.3, 0, 0]}
             fontSize={0.06}
-            color="red"
+            color="#32FF32"
             anchorX="center"
           >
-            Pouring...
+            Adding Indicator...
           </Text>
         </group>
+      )}
+
+      {/* Glowing effect when indicator is active */}
+      {hasIndicator && (
+        <mesh position={[0, -0.08, 0]}>
+          <cylinderGeometry args={[0.28, 0.24, 0.24, 16]} />
+          <meshStandardMaterial 
+            color={getPHColor(phValue)} 
+            transparent 
+            opacity={0.3}
+            emissive={getPHColor(phValue)}
+            emissiveIntensity={0.6}
+          />
+        </mesh>
       )}
     </group>
   );

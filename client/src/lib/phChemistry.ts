@@ -6,21 +6,37 @@ export function getPHColor(phValue: number): string {
   // Clamp pH value between 0 and 14
   const ph = Math.max(0, Math.min(14, phValue));
   
-  if (ph < 7) {
-    // Acidic - Red spectrum
-    const intensity = (7 - ph) / 7;
-    const red = Math.floor(255 * intensity);
-    const green = Math.floor(100 * (1 - intensity));
-    return `rgb(${red}, ${green}, 0)`;
-  } else if (ph === 7) {
-    // Neutral - Green
-    return "#00ff00";
+  // Universal indicator colors (much more dramatic and realistic)
+  if (ph <= 1) {
+    return "#FF0000"; // Bright red - very acidic
+  } else if (ph <= 2) {
+    return "#FF3300"; // Red-orange
+  } else if (ph <= 3) {
+    return "#FF6600"; // Orange
+  } else if (ph <= 4) {
+    return "#FF9900"; // Orange-yellow
+  } else if (ph <= 5) {
+    return "#FFCC00"; // Yellow-orange
+  } else if (ph <= 6) {
+    return "#FFFF00"; // Bright yellow
+  } else if (ph <= 6.5) {
+    return "#CCFF00"; // Yellow-green
+  } else if (ph >= 6.5 && ph <= 7.5) {
+    return "#00FF00"; // Bright green - neutral
+  } else if (ph <= 8) {
+    return "#00CCFF"; // Light blue
+  } else if (ph <= 9) {
+    return "#0099FF"; // Blue
+  } else if (ph <= 10) {
+    return "#0066FF"; // Darker blue
+  } else if (ph <= 11) {
+    return "#0033FF"; // Deep blue
+  } else if (ph <= 12) {
+    return "#3300FF"; // Blue-purple
+  } else if (ph <= 13) {
+    return "#6600FF"; // Purple
   } else {
-    // Basic - Blue spectrum
-    const intensity = (ph - 7) / 7;
-    const blue = Math.floor(255 * intensity);
-    const green = Math.floor(100 * (1 - intensity));
-    return `rgb(0, ${green}, ${blue})`;
+    return "#9900FF"; // Deep purple - very basic
   }
 }
 
