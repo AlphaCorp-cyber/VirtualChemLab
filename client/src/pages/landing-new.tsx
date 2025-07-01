@@ -28,11 +28,51 @@ const experiments: Experiment[] = [
     available: true
   },
   {
+    id: "flame-tests",
+    title: "Flame Test Laboratory",
+    description: "Identify metal ions by observing characteristic flame colors in this classic analytical chemistry experiment.",
+    duration: "10-15 minutes",
+    difficulty: "Beginner",
+    category: "Analytical Chemistry",
+    features: ["Bunsen Burner", "Metal Salts", "Wire Loop", "Color Recognition"],
+    available: true
+  },
+  {
+    id: "gas-tests",
+    title: "Gas Identification Tests",
+    description: "Learn to identify common gases (H₂, O₂, CO₂, NH₃, Cl₂) using traditional laboratory test methods.",
+    duration: "20-25 minutes",
+    difficulty: "Intermediate",
+    category: "Analytical Chemistry",
+    features: ["Gas Tubes", "Test Tools", "Safety Equipment", "Chemical Reactions"],
+    available: true
+  },
+  {
+    id: "displacement-reactions",
+    title: "Displacement Reactions",
+    description: "Observe metal displacement reactions and understand reactivity series through hands-on experiments.",
+    duration: "15-20 minutes",
+    difficulty: "Intermediate",
+    category: "Inorganic Chemistry",
+    features: ["Metal Samples", "Salt Solutions", "Test Tubes", "Color Changes"],
+    available: true
+  },
+  {
+    id: "paper-chromatography",
+    title: "Paper Chromatography",
+    description: "Separate ink pigments using paper chromatography to understand molecular separation techniques.",
+    duration: "25-30 minutes",
+    difficulty: "Beginner",
+    category: "Analytical Chemistry",
+    features: ["Filter Paper", "Solvent System", "Ink Samples", "Separation Analysis"],
+    available: true
+  },
+  {
     id: "titration",
     title: "Acid-Base Titration",
     description: "Perform precise titrations using virtual burettes and indicators to determine unknown concentrations.",
     duration: "25-30 minutes", 
-    difficulty: "Intermediate",
+    difficulty: "Advanced",
     category: "Quantitative Analysis",
     features: ["Burette Control", "Endpoint Detection", "Calculations", "Graph Analysis"],
     available: false
@@ -383,14 +423,17 @@ export default function Landing() {
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {experiments.map((experiment, index) => (
-                <motion.div
-                  key={experiment.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.9 + index * 0.1 }}
-                >
+            {/* Scrollable experiment cards container */}
+            <div className="relative">
+              <div className="flex overflow-x-auto gap-6 pb-4 px-4 -mx-4 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 scroll-smooth snap-x snap-mandatory">
+                {experiments.map((experiment, index) => (
+                  <motion.div
+                    key={experiment.id}
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 1.9 + index * 0.1 }}
+                    className="flex-shrink-0 w-80 snap-center"
+                  >
                   <Card 
                     className={`h-full transition-all duration-300 cursor-pointer ${
                       experiment.available 
@@ -435,8 +478,21 @@ export default function Landing() {
                       </div>
                     </CardContent>
                   </Card>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
+              </div>
+              
+              {/* Scroll indicators */}
+              <div className="flex justify-center mt-6 space-x-2">
+                <div className="text-sm text-gray-400 flex items-center">
+                  <span className="mr-2">Scroll →</span>
+                  <div className="flex space-x-1">
+                    {experiments.map((_, index) => (
+                      <div key={index} className="w-2 h-2 bg-gray-600 rounded-full"></div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </motion.section>
