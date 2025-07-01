@@ -71,10 +71,26 @@ export function ChemistryLab() {
       />
       <pointLight position={[0, 3, 0]} intensity={0.5} />
       
-      {/* Additional lighting for better glass visibility */}
-      <pointLight position={[-2, 2, -1]} intensity={0.3} color="#ffffff" />
-      <pointLight position={[2, 2, -1]} intensity={0.3} color="#ffffff" />
-      <pointLight position={[0, 2, 1]} intensity={0.2} color="#ffffff" />
+      {/* Enhanced lighting for VR glass visibility */}
+      <pointLight position={[-2, 2, -1]} intensity={0.5} color="#ffffff" />
+      <pointLight position={[2, 2, -1]} intensity={0.5} color="#ffffff" />
+      <pointLight position={[0, 2, 1]} intensity={0.4} color="#ffffff" />
+      
+      {/* VR-specific rim lighting for glass objects */}
+      <pointLight position={[-1, 1.8, 0]} intensity={0.3} color="#e3f2fd" />
+      <pointLight position={[1, 1.8, 0]} intensity={0.3} color="#e3f2fd" />
+      <pointLight position={[0, 1.8, 1]} intensity={0.3} color="#e3f2fd" />
+      
+      {/* Overhead spotlights for glass highlighting */}
+      <spotLight
+        position={[0, 3, 0]}
+        target-position={[0, 1.5, 0]}
+        angle={Math.PI / 3}
+        penumbra={0.3}
+        intensity={0.4}
+        color="#ffffff"
+        castShadow
+      />
       
       {/* Lab environment and equipment */}
       <LabEnvironment />

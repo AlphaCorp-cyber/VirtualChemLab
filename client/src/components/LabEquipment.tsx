@@ -63,7 +63,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         />
       </mesh>
       
-      {/* Beaker walls - crystal clear with proper glass material */}
+      {/* Beaker walls - enhanced for VR visibility */}
       <mesh
         ref={meshRef}
         onPointerEnter={(e) => {
@@ -82,21 +82,29 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         <meshPhysicalMaterial
           color="#e8f4f8"
           transparent
-          opacity={0.25}
+          opacity={0.4}
           roughness={0.1}
-          transmission={0.85}
-          thickness={0.3}
+          transmission={0.7}
+          thickness={0.5}
           ior={1.52}
           clearcoat={1.0}
           clearcoatRoughness={0.05}
           reflectivity={0.95}
+          emissive="#ffffff"
+          emissiveIntensity={0.05}
         />
       </mesh>
       
-      {/* Beaker edge wireframe for visibility */}
+      {/* Enhanced beaker edge wireframe for VR visibility */}
       <mesh>
         <cylinderGeometry args={[0.28, 0.28, 0.36, 32]} />
-        <meshBasicMaterial color="#4a90e2" wireframe opacity={0.15} transparent />
+        <meshBasicMaterial color="#4a90e2" wireframe opacity={0.4} transparent />
+      </mesh>
+      
+      {/* Additional rim highlight for VR */}
+      <mesh position={[0, 0.18, 0]}>
+        <cylinderGeometry args={[0.29, 0.29, 0.01, 32]} />
+        <meshBasicMaterial color="#ffffff" opacity={0.6} transparent />
       </mesh>
       
       {/* Beaker spout - characteristic beaker feature */}
@@ -304,44 +312,54 @@ function TestTube({ position, isEmpty = false }: {
 }) {
   return (
     <group position={position}>
-      {/* Test tube main body - proper cylindrical shape */}
+      {/* Test tube main body - enhanced for VR visibility */}
       <mesh castShadow receiveShadow>
         <cylinderGeometry args={[0.04, 0.04, 0.32, 16]} />
         <meshPhysicalMaterial
           color="#e8f4f8"
           transparent
-          opacity={0.22}
+          opacity={0.35}
           roughness={0.1}
-          transmission={0.85}
-          thickness={0.3}
+          transmission={0.75}
+          thickness={0.4}
           ior={1.52}
           clearcoat={1.0}
           clearcoatRoughness={0.05}
           reflectivity={0.95}
+          emissive="#ffffff"
+          emissiveIntensity={0.03}
         />
       </mesh>
       
-      {/* Test tube rounded bottom */}
+      {/* Test tube rounded bottom - enhanced visibility */}
       <mesh position={[0, -0.16, 0]} castShadow>
         <sphereGeometry args={[0.04, 16, 8]} />
         <meshPhysicalMaterial
           color="#e8f4f8"
           transparent
-          opacity={0.22}
+          opacity={0.35}
           roughness={0.1}
-          transmission={0.85}
-          thickness={0.3}
+          transmission={0.75}
+          thickness={0.4}
           ior={1.52}
           clearcoat={1.0}
           clearcoatRoughness={0.05}
           reflectivity={0.95}
+          emissive="#ffffff"
+          emissiveIntensity={0.03}
         />
       </mesh>
       
-      {/* Test tube wireframe for visibility */}
+      {/* Enhanced test tube wireframe for VR visibility */}
       <mesh>
         <cylinderGeometry args={[0.04, 0.04, 0.32, 16]} />
-        <meshBasicMaterial color="#4a90e2" wireframe opacity={0.12} transparent />
+        <meshBasicMaterial color="#4a90e2" wireframe opacity={0.3} transparent />
+      </mesh>
+      
+      {/* Test tube rim highlight for VR */}
+      <mesh position={[0, 0.16, 0]}>
+        <cylinderGeometry args={[0.045, 0.045, 0.005, 16]} />
+        <meshBasicMaterial color="#ffffff" opacity={0.5} transparent />
       </mesh>
       
       {/* Test tube rim */}
@@ -551,26 +569,28 @@ export function LabEquipment() {
       <group position={[0.8, 1.48, 0.5]}>
         {/* Flask 1 */}
         <group position={[-0.2, 0, 0]}>
-          {/* Flask body - conical shape */}
+          {/* Flask body - enhanced for VR visibility */}
           <mesh castShadow receiveShadow>
             <coneGeometry args={[0.15, 0.25, 16]} />
             <meshPhysicalMaterial
               color="#e8f4f8"
               transparent
-              opacity={0.22}
+              opacity={0.4}
               roughness={0.1}
-              transmission={0.85}
-              thickness={0.3}
+              transmission={0.7}
+              thickness={0.4}
               ior={1.52}
               clearcoat={1.0}
               clearcoatRoughness={0.05}
               reflectivity={0.95}
+              emissive="#ffffff"
+              emissiveIntensity={0.04}
             />
           </mesh>
-          {/* Flask wireframe for visibility */}
+          {/* Enhanced flask wireframe for VR visibility */}
           <mesh>
             <coneGeometry args={[0.15, 0.25, 16]} />
-            <meshBasicMaterial color="#4a90e2" wireframe opacity={0.12} transparent />
+            <meshBasicMaterial color="#4a90e2" wireframe opacity={0.35} transparent />
           </mesh>
           {/* Flask neck */}
           <mesh position={[0, 0.2, 0]} castShadow>
@@ -675,21 +695,31 @@ export function LabEquipment() {
           <meshPhysicalMaterial
             color="#e8f4f8"
             transparent
-            opacity={0.22}
+            opacity={0.4}
             roughness={0.1}
-            transmission={0.85}
-            thickness={0.3}
+            transmission={0.7}
+            thickness={0.4}
             ior={1.52}
             clearcoat={1.0}
             clearcoatRoughness={0.05}
             reflectivity={0.95}
+            emissive="#ffffff"
+            emissiveIntensity={0.04}
           />
         </mesh>
-        {/* Graduated cylinder wireframe for visibility */}
+        {/* Enhanced graduated cylinder wireframe for VR visibility */}
         <mesh>
           <cylinderGeometry args={[0.06, 0.06, 0.4, 16]} />
-          <meshBasicMaterial color="#4a90e2" wireframe opacity={0.12} transparent />
+          <meshBasicMaterial color="#4a90e2" wireframe opacity={0.4} transparent />
         </mesh>
+        
+        {/* Graduation marks for VR visibility */}
+        {Array.from({ length: 8 }, (_, i) => (
+          <mesh key={i} position={[0.065, 0.15 - i * 0.04, 0]}>
+            <boxGeometry args={[0.01, 0.002, 0.02]} />
+            <meshStandardMaterial color="#666666" />
+          </mesh>
+        ))}
         {/* Graduated cylinder base */}
         <mesh position={[0, -0.2, 0]}>
           <cylinderGeometry args={[0.08, 0.06, 0.02, 16]} />
