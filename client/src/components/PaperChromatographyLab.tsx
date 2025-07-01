@@ -102,12 +102,6 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
 
   return (
     <group>
-      {/* Lab Bench */}
-      <mesh position={[0, 1.46, 0]} receiveShadow>
-        <boxGeometry args={[6, 0.1, 3]} />
-        <meshStandardMaterial color="#8B4513" />
-      </mesh>
-
       {/* Beaker with solvent */}
       <group position={[0, 1.54, 0]}>
         {/* Beaker */}
@@ -166,7 +160,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
       </group>
 
       {/* Ink Selection Area */}
-      <group position={[-2, 1.7, 0]}>
+      <group position={[-2, 1.59, 0]}>
         <Text
           position={[0, 0.3, 0]}
           fontSize={0.1}
@@ -218,7 +212,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
       </group>
 
       {/* Controls */}
-      <group position={[2, 1.7, 0]}>
+      <group position={[2, 1.59, 0]}>
         <Text
           position={[0, 0.3, 0]}
           fontSize={0.08}
