@@ -108,12 +108,13 @@ function Beaker({ position, liquidColor, phValue, id }: {
       
       {/* Liquid inside - larger and more visible */}
       <mesh position={[0, -0.08, 0]}>
-        <cylinderGeometry args={[0.28, 0.23, 0.24, 16]} />
+        <cylinderGeometry args={[0.26, 0.22, 0.22, 16]} />
         <meshStandardMaterial 
-          color={hasIndicator ? liquidColor : "#87CEEB"} 
+          color={hasIndicator ? liquidColor : "#B0E0E6"} 
           transparent 
-          opacity={hasIndicator ? 0.9 : 0.7}
-          emissive={hasIndicator ? new THREE.Color(liquidColor).multiplyScalar(0.1) : "#000000"}
+          opacity={0.85}
+          emissive={hasIndicator ? new THREE.Color(liquidColor).multiplyScalar(0.15) : "#B0E0E6"}
+          emissiveIntensity={hasIndicator ? 0.2 : 0.1}
         />
       </mesh>
       
@@ -312,8 +313,9 @@ export function LabEquipment() {
         </mesh>
       </group>
 
-      {/* pH indicator bottles */}
+      {/* pH indicator bottles - transparent with green solution */}
       <group position={[-1.5, 1.505, 0.8]}>
+        {/* Main bottle - transparent glass */}
         <mesh 
           castShadow
           onClick={() => grabTestStrip('indicator-1')}
@@ -321,12 +323,38 @@ export function LabEquipment() {
           onPointerLeave={() => {}}
         >
           <cylinderGeometry args={[0.08, 0.06, 0.25, 8]} />
-          <meshStandardMaterial color="#8B4513" />
+          <meshPhysicalMaterial
+            color="#ffffff"
+            transparent
+            opacity={0.15}
+            roughness={0.1}
+            transmission={0.9}
+            thickness={0.5}
+            ior={1.52}
+            clearcoat={1.0}
+            clearcoatRoughness={0.05}
+          />
         </mesh>
+        
+        {/* Green pH indicator liquid inside */}
+        <mesh position={[0, -0.05, 0]}>
+          <cylinderGeometry args={[0.07, 0.055, 0.15, 8]} />
+          <meshStandardMaterial 
+            color="#00FF00" 
+            transparent 
+            opacity={0.8}
+            emissive="#00FF00"
+            emissiveIntensity={0.1}
+          />
+        </mesh>
+        
+        {/* Cork stopper */}
         <mesh position={[0, 0.15, 0]}>
           <cylinderGeometry args={[0.04, 0.04, 0.08, 8]} />
-          <meshStandardMaterial color="#654321" />
+          <meshStandardMaterial color="#8B4513" />
         </mesh>
+        
+        {/* Label */}
         <Text
           position={[0, -0.2, 0]}
           fontSize={0.05}
@@ -671,6 +699,96 @@ export function LabEquipment() {
         >
           ⚠
         </Text>
+      </group>
+
+      {/* pH Color Scale Chart on table */}
+      <group position={[0, 1.48, -1.2]}>
+        {/* Chart background */}
+        <mesh position={[0, 0, 0]} receiveShadow>
+          <planeGeometry args={[1.4, 0.3]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+        
+        {/* pH scale colors from 0-14 */}
+        {Array.from({ length: 15 }, (_, i) => {
+          const phColors = [
+            "#FF0000", "#FF3300", "#FF6600", "#FF9900", "#FFCC00", "#FFFF00", "#CCFF00", // 0-6 (acidic)
+            "#00FF00", // 7 (neutral) 
+            "#00CCFF", "#0099FF", "#0066FF", "#0033FF", "#0000FF", "#3300FF", "#6600FF" // 8-14 (basic)
+          ];
+          return (
+            <group key={i} position={[i * 0.09 - 0.63, 0, 0.01]}>
+              {/* Color square */}
+              <mesh>
+                <planeGeometry args={[0.08, 0.1]} />
+                <meshStandardMaterial color={phColors[i]} />
+              </mesh>
+              {/* pH number */}
+              <Text
+                position={[0, -0.08, 0.01]}
+                fontSize={0.025}
+                color="black"
+                anchorX="center"
+              >
+                {i}
+              </Text>
+            </group>
+          );
+        })}
+        
+        {/* Chart title */}
+        <Text
+          position={[0, 0.18, 0.01]}
+          fontSize={0.04}
+          color="black"
+          anchorX="center"
+          anchorY="middle"
+        >
+          pH Color Scale Reference
+        </Text>
+        
+        {/* Labels */}
+        <Text
+          position={[-0.5, -0.12, 0.01]}
+          fontSize={0.025}
+          color="red"
+          anchorX="center"
+        >
+          ACIDIC
+        </Text>
+        <Text
+          position={[0, -0.12, 0.01]}
+          fontSize={0.025}
+          color="green"
+          anchorX="center"
+        >
+          NEUTRAL
+        </Text>
+        <Text
+          position={[0.5, -0.12, 0.01]}
+          fontSize={0.025}
+          color="blue"
+          anchorX="center"
+        >
+          BASIC
+        </Text>
+      </group>
+
+      {/* Fix floating equipment - lower test tube rack to table surface */}
+      <group position={[2, 1.44, -0.5]}>
+        {/* Rack support legs */}
+        <mesh position={[0, -0.1, 0]}>
+          <boxGeometry args={[0.05, 0.15, 0.05]} />
+          <meshPhysicalMaterial color="#34495e" metalness={0.6} roughness={0.3} />
+        </mesh>
+        <mesh position={[-0.3, -0.1, 0]}>
+          <boxGeometry args={[0.05, 0.15, 0.05]} />
+          <meshPhysicalMaterial color="#34495e" metalness={0.6} roughness={0.3} />
+        </mesh>
+        <mesh position={[0.3, -0.1, 0]}>
+          <boxGeometry args={[0.05, 0.15, 0.05]} />
+          <meshPhysicalMaterial color="#34495e" metalness={0.6} roughness={0.3} />
+        </mesh>
       </group>
     </>
   );
