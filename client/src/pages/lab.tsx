@@ -26,8 +26,16 @@ export default function Lab() {
   const { initializeLab } = useChemistryLab();
 
   useEffect(() => {
+    // Add lab-specific CSS class to body for fixed layout
+    document.body.classList.add('lab-page');
+    
     initializeAudio();
     initializeLab();
+    
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove('lab-page');
+    };
   }, [initializeAudio, initializeLab]);
 
   return (

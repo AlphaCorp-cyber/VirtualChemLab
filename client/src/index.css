@@ -24,3 +24,14 @@ canvas {
   height: 100% !important;
   touch-action: none;
 }
+
+/* Route-specific styles */
+.lab-page {
+  overflow: hidden;
+  height: 100vh;
+}
+
+.lab-page #root {
+  position: fixed;
+  height: 100vh;
+}

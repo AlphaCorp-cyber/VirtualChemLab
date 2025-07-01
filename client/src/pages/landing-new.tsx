@@ -250,9 +250,9 @@ export default function Landing() {
       {/* Main Landing Page */}
       <motion.div
         className="relative min-h-screen"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: showIntro ? 0 : 1 }}
-        transition={{ duration: 1, delay: 0.5 }}
+        initial={{ opacity: 1 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
       >
         {/* Animated Background */}
         <div className="fixed inset-0 pointer-events-none z-0">
