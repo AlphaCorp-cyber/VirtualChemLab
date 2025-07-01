@@ -34,35 +34,69 @@ function Beaker({ position, liquidColor, phValue, id }: {
   
   return (
     <group position={position}>
-      {/* Beaker base - more opaque */}
+      {/* Beaker base - flat bottom like real beakers */}
       <mesh position={[0, -0.15, 0]}>
-        <cylinderGeometry args={[0.3, 0.25, 0.1, 16]} />
-        <meshStandardMaterial color="#ffffff" transparent opacity={0.9} />
+        <cylinderGeometry args={[0.28, 0.28, 0.02, 32]} />
+        <meshPhysicalMaterial 
+          color="#ffffff" 
+          transparent 
+          opacity={0.15}
+          roughness={0.05}
+          transmission={0.95}
+          thickness={0.5}
+          ior={1.5}
+        />
       </mesh>
       
-      {/* Beaker walls - more visible */}
+      {/* Beaker walls - crystal clear with proper glass material */}
       <mesh
         ref={meshRef}
         onPointerEnter={() => setIsHovered(true)}
         onPointerLeave={() => setIsHovered(false)}
         onClick={handleClick}
         castShadow
+        receiveShadow
       >
-        <cylinderGeometry args={[0.3, 0.25, 0.4, 16]} />
+        <cylinderGeometry args={[0.28, 0.28, 0.36, 32]} />
         <meshPhysicalMaterial
-          color={isHovered ? "#ffffff" : "#f8f8f8"}
+          color="#ffffff"
           transparent
-          opacity={0.6}
-          roughness={0.1}
-          transmission={0.7}
-          thickness={0.02}
+          opacity={0.08}
+          roughness={0.02}
+          transmission={0.98}
+          thickness={0.5}
+          ior={1.52}
+          clearcoat={1.0}
+          clearcoatRoughness={0.05}
         />
       </mesh>
       
-      {/* Beaker rim */}
-      <mesh position={[0, 0.2, 0]}>
-        <cylinderGeometry args={[0.32, 0.3, 0.02, 16]} />
-        <meshStandardMaterial color="#e0e0e0" />
+      {/* Beaker spout - characteristic beaker feature */}
+      <mesh position={[0.32, 0.15, 0]} rotation={[0, 0, -Math.PI / 6]}>
+        <cylinderGeometry args={[0.02, 0.04, 0.08, 8]} />
+        <meshPhysicalMaterial
+          color="#ffffff"
+          transparent
+          opacity={0.1}
+          roughness={0.02}
+          transmission={0.95}
+          thickness={0.5}
+          ior={1.52}
+        />
+      </mesh>
+      
+      {/* Beaker rim - thicker like real beakers */}
+      <mesh position={[0, 0.18, 0]}>
+        <cylinderGeometry args={[0.3, 0.28, 0.02, 32]} />
+        <meshPhysicalMaterial 
+          color="#ffffff" 
+          transparent 
+          opacity={0.2}
+          roughness={0.05}
+          transmission={0.9}
+          thickness={0.5}
+          ior={1.52}
+        />
       </mesh>
       
       {/* Liquid inside - larger and more visible */}
@@ -131,21 +165,56 @@ function TestTube({ position, isEmpty = false }: {
 }) {
   return (
     <group position={position}>
-      <mesh castShadow>
-        <cylinderGeometry args={[0.05, 0.04, 0.3, 8]} />
+      {/* Test tube main body - proper cylindrical shape */}
+      <mesh castShadow receiveShadow>
+        <cylinderGeometry args={[0.04, 0.04, 0.32, 16]} />
         <meshPhysicalMaterial
-          color="#f0f0f0"
+          color="#ffffff"
           transparent
-          opacity={0.3}
-          roughness={0.1}
-          transmission={0.9}
+          opacity={0.05}
+          roughness={0.02}
+          transmission={0.98}
+          thickness={0.5}
+          ior={1.52}
+          clearcoat={1.0}
+          clearcoatRoughness={0.05}
+        />
+      </mesh>
+      
+      {/* Test tube rounded bottom */}
+      <mesh position={[0, -0.16, 0]} castShadow>
+        <sphereGeometry args={[0.04, 16, 8]} />
+        <meshPhysicalMaterial
+          color="#ffffff"
+          transparent
+          opacity={0.05}
+          roughness={0.02}
+          transmission={0.98}
+          thickness={0.5}
+          ior={1.52}
+          clearcoat={1.0}
+          clearcoatRoughness={0.05}
+        />
+      </mesh>
+      
+      {/* Test tube rim */}
+      <mesh position={[0, 0.16, 0]}>
+        <cylinderGeometry args={[0.045, 0.04, 0.01, 16]} />
+        <meshPhysicalMaterial
+          color="#ffffff"
+          transparent
+          opacity={0.1}
+          roughness={0.05}
+          transmission={0.95}
+          thickness={0.5}
+          ior={1.52}
         />
       </mesh>
       
       {!isEmpty && (
-        <mesh position={[0, -0.1, 0]}>
-          <cylinderGeometry args={[0.045, 0.035, 0.1, 8]} />
-          <meshStandardMaterial color="#87CEEB" transparent opacity={0.7} />
+        <mesh position={[0, -0.08, 0]}>
+          <cylinderGeometry args={[0.035, 0.035, 0.12, 16]} />
+          <meshStandardMaterial color="#87CEEB" transparent opacity={0.8} />
         </mesh>
       )}
     </group>
@@ -192,11 +261,27 @@ export function LabEquipment() {
           />
         ))}
         
-        {/* Rack base */}
+        {/* Rack base - professional lab style */}
         <mesh position={[0, -0.2, 0]}>
           <boxGeometry args={[0.8, 0.05, 0.2]} />
-          <meshStandardMaterial color="#2c3e50" />
+          <meshPhysicalMaterial 
+            color="#2c3e50" 
+            metalness={0.7} 
+            roughness={0.2}
+          />
         </mesh>
+        
+        {/* Test tube holders */}
+        {Array.from({ length: 5 }, (_, i) => (
+          <mesh key={`holder-${i}`} position={[i * 0.15 - 0.3, -0.15, 0]}>
+            <cylinderGeometry args={[0.045, 0.045, 0.1, 16]} />
+            <meshPhysicalMaterial 
+              color="#34495e" 
+              metalness={0.6} 
+              roughness={0.3}
+            />
+          </mesh>
+        ))}
       </group>
       
       {/* pH indicator bottles */}
@@ -222,6 +307,157 @@ export function LabEquipment() {
         >
           pH Indicator
         </Text>
+      </group>
+
+      {/* Erlenmeyer flasks - authentic lab equipment */}
+      <group position={[0.8, 1.3, 0.5]}>
+        {/* Flask 1 */}
+        <group position={[-0.2, 0, 0]}>
+          {/* Flask body - conical shape */}
+          <mesh castShadow receiveShadow>
+            <coneGeometry args={[0.15, 0.25, 16]} />
+            <meshPhysicalMaterial
+              color="#ffffff"
+              transparent
+              opacity={0.05}
+              roughness={0.02}
+              transmission={0.98}
+              thickness={0.5}
+              ior={1.52}
+              clearcoat={1.0}
+              clearcoatRoughness={0.05}
+            />
+          </mesh>
+          {/* Flask neck */}
+          <mesh position={[0, 0.2, 0]} castShadow>
+            <cylinderGeometry args={[0.03, 0.03, 0.15, 16]} />
+            <meshPhysicalMaterial
+              color="#ffffff"
+              transparent
+              opacity={0.05}
+              roughness={0.02}
+              transmission={0.98}
+              thickness={0.5}
+              ior={1.52}
+              clearcoat={1.0}
+              clearcoatRoughness={0.05}
+            />
+          </mesh>
+          {/* Flask rim */}
+          <mesh position={[0, 0.28, 0]}>
+            <cylinderGeometry args={[0.035, 0.03, 0.01, 16]} />
+            <meshPhysicalMaterial
+              color="#ffffff"
+              transparent
+              opacity={0.1}
+              roughness={0.05}
+              transmission={0.95}
+              thickness={0.5}
+              ior={1.52}
+            />
+          </mesh>
+          {/* Liquid inside */}
+          <mesh position={[0, -0.08, 0]}>
+            <coneGeometry args={[0.12, 0.15, 16]} />
+            <meshStandardMaterial color="#90EE90" transparent opacity={0.7} />
+          </mesh>
+        </group>
+        
+        {/* Flask 2 */}
+        <group position={[0.2, 0, 0]}>
+          {/* Flask body */}
+          <mesh castShadow receiveShadow>
+            <coneGeometry args={[0.15, 0.25, 16]} />
+            <meshPhysicalMaterial
+              color="#ffffff"
+              transparent
+              opacity={0.05}
+              roughness={0.02}
+              transmission={0.98}
+              thickness={0.5}
+              ior={1.52}
+              clearcoat={1.0}
+              clearcoatRoughness={0.05}
+            />
+          </mesh>
+          {/* Flask neck */}
+          <mesh position={[0, 0.2, 0]} castShadow>
+            <cylinderGeometry args={[0.03, 0.03, 0.15, 16]} />
+            <meshPhysicalMaterial
+              color="#ffffff"
+              transparent
+              opacity={0.05}
+              roughness={0.02}
+              transmission={0.98}
+              thickness={0.5}
+              ior={1.52}
+              clearcoat={1.0}
+              clearcoatRoughness={0.05}
+            />
+          </mesh>
+          {/* Flask rim */}
+          <mesh position={[0, 0.28, 0]}>
+            <cylinderGeometry args={[0.035, 0.03, 0.01, 16]} />
+            <meshPhysicalMaterial
+              color="#ffffff"
+              transparent
+              opacity={0.1}
+              roughness={0.05}
+              transmission={0.95}
+              thickness={0.5}
+              ior={1.52}
+            />
+          </mesh>
+        </group>
+      </group>
+      
+      {/* Graduated cylinder - like in reference image */}
+      <group position={[2.5, 1.35, 0.2]}>
+        <mesh castShadow receiveShadow>
+          <cylinderGeometry args={[0.06, 0.06, 0.4, 16]} />
+          <meshPhysicalMaterial
+            color="#ffffff"
+            transparent
+            opacity={0.05}
+            roughness={0.02}
+            transmission={0.98}
+            thickness={0.5}
+            ior={1.52}
+            clearcoat={1.0}
+            clearcoatRoughness={0.05}
+          />
+        </mesh>
+        {/* Graduated cylinder base */}
+        <mesh position={[0, -0.2, 0]}>
+          <cylinderGeometry args={[0.08, 0.06, 0.02, 16]} />
+          <meshPhysicalMaterial
+            color="#ffffff"
+            transparent
+            opacity={0.1}
+            roughness={0.05}
+            transmission={0.95}
+            thickness={0.5}
+            ior={1.52}
+          />
+        </mesh>
+        {/* Spout */}
+        <mesh position={[0.08, 0.18, 0]} rotation={[0, 0, -Math.PI / 4]}>
+          <cylinderGeometry args={[0.015, 0.02, 0.06, 8]} />
+          <meshPhysicalMaterial
+            color="#ffffff"
+            transparent
+            opacity={0.1}
+            roughness={0.02}
+            transmission={0.95}
+            thickness={0.5}
+            ior={1.52}
+          />
+        </mesh>
+        {/* Liquid inside */}
+        <mesh position={[0, -0.05, 0]}>
+          <cylinderGeometry args={[0.055, 0.055, 0.3, 16]} />
+          <meshStandardMaterial color="#FFB6C1" transparent opacity={0.7} />
+        </mesh>
       </group>
 
       {/* pH Test strips */}
