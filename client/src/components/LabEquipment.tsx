@@ -59,11 +59,11 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       <mesh position={[0, -beakerHeight/2, 0]}>
         <cylinderGeometry args={[beakerRadius, beakerRadius, wallThickness * 3, 32]} />
         <meshPhysicalMaterial 
-          color="#87CEEB" 
+          color="#4682B4" 
           transparent 
-          opacity={0.25}
+          opacity={0.4}
           roughness={0.02}
-          transmission={0.85}
+          transmission={0.7}
           thickness={wallThickness * 2}
           ior={1.52}
           clearcoat={1.0}
@@ -89,18 +89,18 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       >
         <cylinderGeometry args={[beakerRadius, beakerRadius - wallThickness, beakerHeight, 64]} />
         <meshPhysicalMaterial
-          color="#87CEEB"
+          color="#4682B4"
           transparent
-          opacity={0.25}
+          opacity={0.4}
           roughness={0.02}
-          transmission={0.85}
+          transmission={0.7}
           thickness={wallThickness}
           ior={1.52}
           clearcoat={1.0}
           clearcoatRoughness={0.01}
           reflectivity={0.98}
-          emissive="#87CEEB"
-          emissiveIntensity={0.05}
+          emissive="#4682B4"
+          emissiveIntensity={0.1}
         />
       </mesh>
       
@@ -114,11 +114,11 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       <mesh position={[0, beakerHeight/2, 0]}>
         <cylinderGeometry args={[beakerRadius + rimThickness, beakerRadius, rimThickness * 2, 32]} />
         <meshPhysicalMaterial 
-          color="#87CEEB" 
+          color="#4682B4" 
           transparent 
-          opacity={0.3}
+          opacity={0.45}
           roughness={0.05}
-          transmission={0.8}
+          transmission={0.65}
           thickness={rimThickness}
           ior={1.52}
           clearcoat={1.0}
@@ -130,11 +130,11 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       <mesh position={[beakerRadius + 0.01, beakerHeight/2 - 0.01, 0]} rotation={[0, 0, -Math.PI / 6]}>
         <cylinderGeometry args={[0.008, 0.012, 0.025, 16]} />
         <meshPhysicalMaterial
-          color="#87CEEB"
+          color="#4682B4"
           transparent
-          opacity={0.25}
+          opacity={0.4}
           roughness={0.02}
-          transmission={0.85}
+          transmission={0.7}
           thickness={wallThickness}
           ior={1.52}
           clearcoat={1.0}
@@ -146,11 +146,11 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       <mesh position={[beakerRadius + 0.018, beakerHeight/2 + 0.005, 0]} rotation={[0, 0, -Math.PI / 6]}>
         <cylinderGeometry args={[0.013, 0.008, 0.003, 16]} />
         <meshPhysicalMaterial
-          color="#87CEEB"
+          color="#4682B4"
           transparent
-          opacity={0.25}
+          opacity={0.4}
           roughness={0.02}
-          transmission={0.85}
+          transmission={0.7}
           thickness={wallThickness/2}
           ior={1.52}
         />
@@ -208,17 +208,17 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         ≈150ml
       </Text>
       
-      {/* Realistic liquid - approximately 60% filled */}
+      {/* Realistic liquid - approximately 60% filled with better blueish colors */}
       <mesh position={[0, -beakerHeight/2 + 0.035, 0]}>
         <cylinderGeometry args={[beakerRadius - wallThickness - 0.002, beakerRadius - wallThickness - 0.004, 0.07, 32]} />
         <meshStandardMaterial 
-          color={hasIndicator ? getPHColor(phValue) : "#f0f8ff"} 
+          color={hasIndicator ? getPHColor(phValue) : "#1E90FF"} 
           transparent 
-          opacity={hasIndicator ? 0.85 : 0.7}
-          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.2) : "#f0f8ff"}
-          emissiveIntensity={hasIndicator ? 0.3 : 0.05}
+          opacity={hasIndicator ? 0.9 : 0.85}
+          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.3) : "#1E90FF"}
+          emissiveIntensity={hasIndicator ? 0.4 : 0.15}
           roughness={0.1}
-          metalness={0.05}
+          metalness={0.1}
         />
       </mesh>
       
@@ -226,63 +226,63 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       <mesh position={[0, -beakerHeight/2 + 0.07, 0]}>
         <cylinderGeometry args={[beakerRadius - wallThickness - 0.002, beakerRadius - wallThickness - 0.002, 0.002, 32]} />
         <meshStandardMaterial 
-          color={hasIndicator ? getPHColor(phValue) : "#f8f9fa"} 
+          color={hasIndicator ? getPHColor(phValue) : "#4169E1"} 
           transparent 
-          opacity={hasIndicator ? 0.9 : 0.8}
-          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.15) : "#f8f9fa"}
-          emissiveIntensity={hasIndicator ? 0.2 : 0.03}
+          opacity={hasIndicator ? 0.95 : 0.9}
+          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.2) : "#4169E1"}
+          emissiveIntensity={hasIndicator ? 0.3 : 0.1}
           roughness={0.02}
-          metalness={0.1}
+          metalness={0.15}
         />
       </mesh>
 
-      {/* Subtle light reflection on liquid surface */}
+      {/* Subtle light reflection on liquid surface with blue tint */}
       {!hasIndicator && (
         <>
           <mesh position={[0, -beakerHeight/2 + 0.04, 0]}>
             <cylinderGeometry args={[beakerRadius - wallThickness - 0.01, beakerRadius - wallThickness - 0.01, 0.001, 16]} />
             <meshStandardMaterial 
-              color="#ffffff" 
+              color="#87CEFA" 
               transparent 
-              opacity={0.4}
-              emissive="#ffffff"
-              emissiveIntensity={0.1}
+              opacity={0.5}
+              emissive="#87CEFA"
+              emissiveIntensity={0.15}
             />
           </mesh>
           <mesh position={[0, -beakerHeight/2 + 0.05, 0]}>
             <cylinderGeometry args={[beakerRadius - wallThickness - 0.015, beakerRadius - wallThickness - 0.015, 0.001, 16]} />
             <meshStandardMaterial 
-              color="#ffffff" 
+              color="#B0E0E6" 
               transparent 
-              opacity={0.25}
-              emissive="#ffffff"
-              emissiveIntensity={0.05}
+              opacity={0.35}
+              emissive="#B0E0E6"
+              emissiveIntensity={0.1}
             />
           </mesh>
         </>
       )}
 
-      {/* Subtle reflection rings to show liquid presence */}
+      {/* Blue liquid depth layers for better visibility from bottom */}
       {!hasIndicator && (
         <>
-          <mesh position={[0, -0.05, 0]}>
-            <cylinderGeometry args={[0.24, 0.24, 0.005, 16]} />
+          <mesh position={[0, -beakerHeight/2 + 0.01, 0]}>
+            <cylinderGeometry args={[beakerRadius - wallThickness - 0.003, beakerRadius - wallThickness - 0.003, 0.02, 16]} />
             <meshStandardMaterial 
-              color="#FFFFFF" 
+              color="#0047AB" 
               transparent 
-              opacity={0.3}
-              emissive="#FFFFFF"
-              emissiveIntensity={0.1}
+              opacity={0.6}
+              emissive="#0047AB"
+              emissiveIntensity={0.2}
             />
           </mesh>
-          <mesh position={[0, -0.1, 0]}>
-            <cylinderGeometry args={[0.22, 0.22, 0.005, 16]} />
+          <mesh position={[0, -beakerHeight/2 + 0.025, 0]}>
+            <cylinderGeometry args={[beakerRadius - wallThickness - 0.003, beakerRadius - wallThickness - 0.003, 0.03, 16]} />
             <meshStandardMaterial 
-              color="#FFFFFF" 
+              color="#1E90FF" 
               transparent 
-              opacity={0.2}
-              emissive="#FFFFFF"
-              emissiveIntensity={0.05}
+              opacity={0.5}
+              emissive="#1E90FF"
+              emissiveIntensity={0.15}
             />
           </mesh>
         </>
