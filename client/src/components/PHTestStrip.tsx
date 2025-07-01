@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
+import { useXR } from "@react-three/xr";
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
 import { getPHColor } from "../lib/phChemistry";
 import * as THREE from "three";
@@ -21,17 +22,25 @@ export function PHTestStrip({
 }: PHTestStripProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [handNearby, setHandNearby] = useState(false);
+  const { session } = useXR();
   const { testStripInLiquid, grabTestStrip } = useChemistryLab();
   
   const stripColor = phValue >= 0 ? getPHColor(phValue) : "#ffffff";
   
   useFrame((state) => {
     if (isSelected && meshRef.current) {
-      // Follow cursor/controller when selected
+      // Enhanced VR hand following - smoother movement
       const mouse = state.mouse;
-      meshRef.current.position.x = position[0] + mouse.x * 2;
-      meshRef.current.position.y = position[1] + mouse.y * 2;
-      meshRef.current.position.z = position[2] + 0.5;
+      const targetX = position[0] + mouse.x * 1.5;
+      const targetY = position[1] + mouse.y * 1.5 + 0.2; // Slightly elevated when held
+      const targetZ = position[2] + 0.3;
+      
+      // Smooth interpolation for natural hand movement
+      meshRef.current.position.lerp(new THREE.Vector3(targetX, targetY, targetZ), 0.1);
+      
+      // Add gentle floating animation
+      meshRef.current.position.y += Math.sin(state.clock.elapsedTime * 2) * 0.01;
     }
   });
 
@@ -67,6 +76,20 @@ export function PHTestStrip({
           emissive={phValue >= 0 ? new THREE.Color(stripColor).multiplyScalar(0.1) : "#000000"}
         />
       </mesh>
+      
+      {/* VR Hand Proximity Indicator */}
+      {session && handNearby && !isSelected && (
+        <mesh position={[0, 0, 0.02]}>
+          <sphereGeometry args={[0.08]} />
+          <meshStandardMaterial 
+            color="#00FFFF" 
+            transparent 
+            opacity={0.3}
+            emissive="#00FFFF"
+            emissiveIntensity={0.2}
+          />
+        </mesh>
+      )}
       
       {/* Highlight when selected */}
       {isSelected && (
