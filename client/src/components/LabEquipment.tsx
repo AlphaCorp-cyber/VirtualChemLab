@@ -206,6 +206,12 @@ function TestTube({ position, isEmpty = false }: {
         />
       </mesh>
       
+      {/* Test tube wireframe for visibility */}
+      <mesh>
+        <cylinderGeometry args={[0.04, 0.04, 0.32, 16]} />
+        <meshBasicMaterial color="#4a90e2" wireframe opacity={0.12} transparent />
+      </mesh>
+      
       {/* Test tube rim */}
       <mesh position={[0, 0.16, 0]}>
         <cylinderGeometry args={[0.045, 0.04, 0.01, 16]} />
@@ -293,8 +299,21 @@ export function LabEquipment() {
         ))}
       </group>
       
+      {/* Bottle holder stand */}
+      <group position={[-1.5, 1.25, 0.8]}>
+        {/* Stand platform */}
+        <mesh position={[0, -0.02, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[0.12, 0.12, 0.04, 16]} />
+          <meshPhysicalMaterial 
+            color="#2c3e50" 
+            metalness={0.7} 
+            roughness={0.2}
+          />
+        </mesh>
+      </group>
+
       {/* pH indicator bottles */}
-      <group position={[-1.5, 1.6, 0.8]}>
+      <group position={[-1.5, 1.32, 0.8]}>
         <mesh 
           castShadow
           onClick={() => grabTestStrip('indicator-1')}
@@ -318,6 +337,28 @@ export function LabEquipment() {
         </Text>
       </group>
 
+      {/* Lab shelf for glassware */}
+      <group position={[0.8, 1.25, 0.5]}>
+        {/* Shelf base */}
+        <mesh position={[0, -0.02, 0]} castShadow receiveShadow>
+          <boxGeometry args={[0.8, 0.04, 0.3]} />
+          <meshPhysicalMaterial 
+            color="#2c3e50" 
+            metalness={0.7} 
+            roughness={0.2}
+          />
+        </mesh>
+        {/* Shelf support brackets */}
+        <mesh position={[-0.35, -0.1, 0]} castShadow>
+          <boxGeometry args={[0.05, 0.2, 0.15]} />
+          <meshPhysicalMaterial color="#34495e" metalness={0.6} roughness={0.3} />
+        </mesh>
+        <mesh position={[0.35, -0.1, 0]} castShadow>
+          <boxGeometry args={[0.05, 0.2, 0.15]} />
+          <meshPhysicalMaterial color="#34495e" metalness={0.6} roughness={0.3} />
+        </mesh>
+      </group>
+
       {/* Erlenmeyer flasks - authentic lab equipment */}
       <group position={[0.8, 1.3, 0.5]}>
         {/* Flask 1 */}
@@ -337,6 +378,11 @@ export function LabEquipment() {
               clearcoatRoughness={0.05}
               reflectivity={0.95}
             />
+          </mesh>
+          {/* Flask wireframe for visibility */}
+          <mesh>
+            <coneGeometry args={[0.15, 0.25, 16]} />
+            <meshBasicMaterial color="#4a90e2" wireframe opacity={0.12} transparent />
           </mesh>
           {/* Flask neck */}
           <mesh position={[0, 0.2, 0]} castShadow>
@@ -421,6 +467,19 @@ export function LabEquipment() {
         </group>
       </group>
       
+      {/* Lab stand for graduated cylinder */}
+      <group position={[2.5, 1.25, 0.2]}>
+        {/* Stand base */}
+        <mesh position={[0, -0.02, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[0.15, 0.15, 0.04, 16]} />
+          <meshPhysicalMaterial 
+            color="#2c3e50" 
+            metalness={0.7} 
+            roughness={0.2}
+          />
+        </mesh>
+      </group>
+
       {/* Graduated cylinder - like in reference image */}
       <group position={[2.5, 1.35, 0.2]}>
         <mesh castShadow receiveShadow>
@@ -437,6 +496,11 @@ export function LabEquipment() {
             clearcoatRoughness={0.05}
             reflectivity={0.95}
           />
+        </mesh>
+        {/* Graduated cylinder wireframe for visibility */}
+        <mesh>
+          <cylinderGeometry args={[0.06, 0.06, 0.4, 16]} />
+          <meshBasicMaterial color="#4a90e2" wireframe opacity={0.12} transparent />
         </mesh>
         {/* Graduated cylinder base */}
         <mesh position={[0, -0.2, 0]}>
@@ -469,6 +533,48 @@ export function LabEquipment() {
           <cylinderGeometry args={[0.055, 0.055, 0.3, 16]} />
           <meshStandardMaterial color="#FFB6C1" transparent opacity={0.7} />
         </mesh>
+      </group>
+
+      {/* Test strip holder */}
+      <group position={[-1.9, 1.25, 0.5]}>
+        {/* Holder base */}
+        <mesh position={[0, -0.02, 0]} castShadow receiveShadow>
+          <boxGeometry args={[0.3, 0.04, 0.2]} />
+          <meshPhysicalMaterial 
+            color="#2c3e50" 
+            metalness={0.7} 
+            roughness={0.2}
+          />
+        </mesh>
+        {/* Holder slots */}
+        {Array.from({ length: 3 }, (_, i) => (
+          <mesh key={i} position={[i * 0.08 - 0.08, 0.03, 0]} castShadow>
+            <boxGeometry args={[0.02, 0.06, 0.15]} />
+            <meshPhysicalMaterial color="#34495e" metalness={0.6} roughness={0.3} />
+          </mesh>
+        ))}
+      </group>
+
+      {/* Laboratory safety equipment */}
+      <group position={[-2.8, 1.3, 0.3]}>
+        {/* Safety goggle holder */}
+        <mesh position={[0, 0, 0]} castShadow>
+          <cylinderGeometry args={[0.05, 0.05, 0.08, 8]} />
+          <meshPhysicalMaterial color="#34495e" metalness={0.6} roughness={0.3} />
+        </mesh>
+        {/* Glove box */}
+        <mesh position={[0.15, -0.05, 0]} castShadow>
+          <boxGeometry args={[0.1, 0.08, 0.08]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+        <Text
+          position={[0.15, -0.05, 0.05]}
+          fontSize={0.02}
+          color="blue"
+          anchorX="center"
+        >
+          Gloves
+        </Text>
       </group>
 
       {/* pH Test strips */}
@@ -520,20 +626,50 @@ export function LabEquipment() {
         ))}
       </group>
       
-      {/* Laboratory equipment box */}
-      <group position={[-2.5, 1.4, -0.5]}>
-        <mesh castShadow>
-          <boxGeometry args={[0.5, 0.3, 0.3]} />
+      {/* Chemical storage cabinet */}
+      <group position={[-2.5, 1.25, -0.5]}>
+        {/* Cabinet base */}
+        <mesh position={[0, -0.05, 0]} castShadow receiveShadow>
+          <boxGeometry args={[0.6, 0.1, 0.4]} />
+          <meshPhysicalMaterial 
+            color="#2c3e50" 
+            metalness={0.6} 
+            roughness={0.3}
+          />
+        </mesh>
+        {/* Cabinet back panel */}
+        <mesh position={[0, 0.1, -0.15]} castShadow>
+          <boxGeometry args={[0.55, 0.3, 0.05]} />
+          <meshPhysicalMaterial color="#34495e" metalness={0.5} roughness={0.4} />
+        </mesh>
+        
+        {/* Chemical bottle on shelf */}
+        <mesh position={[0, 0.1, 0]} castShadow>
+          <boxGeometry args={[0.3, 0.2, 0.2]} />
           <meshStandardMaterial color="#ff4500" />
         </mesh>
         
         <Text
-          position={[0, 0, 0.16]}
-          fontSize={0.06}
+          position={[0, 0.1, 0.11]}
+          fontSize={0.04}
           color="white"
           anchorX="center"
         >
           CaCO₃
+        </Text>
+        
+        {/* Safety label */}
+        <mesh position={[0.2, 0.05, 0.11]}>
+          <planeGeometry args={[0.08, 0.08]} />
+          <meshStandardMaterial color="#ffff00" />
+        </mesh>
+        <Text
+          position={[0.2, 0.05, 0.12]}
+          fontSize={0.02}
+          color="black"
+          anchorX="center"
+        >
+          ⚠
         </Text>
       </group>
     </>
