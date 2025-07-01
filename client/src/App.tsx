@@ -13,9 +13,9 @@ const controls = [
   { name: "backward", keys: ["KeyS", "ArrowDown"] },
   { name: "leftward", keys: ["KeyA", "ArrowLeft"] },
   { name: "rightward", keys: ["KeyD", "ArrowRight"] },
-  { name: "interact", keys: ["KeyE", "Space"] },
-  { name: "grab", keys: ["KeyG"] },
-  { name: "release", keys: ["KeyR"] },
+  { name: "interact", keys: ["KeyE", "Space"] }, // Move up
+  { name: "grab", keys: ["KeyG"] }, // Move down
+  { name: "release", keys: ["KeyR"] }, // Top-down view
 ];
 
 function App() {

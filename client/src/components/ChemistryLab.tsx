@@ -33,10 +33,25 @@ export function ChemistryLab() {
       camera.position.x += speed * delta;
     }
     
+    // Add up/down movement for top-down view
+    if (controls.interact) {
+      camera.position.y += speed * delta;
+    }
+    if (controls.grab) {
+      camera.position.y -= speed * delta;
+    }
+    
+    // Top-down view toggle with release key
+    if (controls.release) {
+      // Set camera to top-down position and look down
+      camera.position.set(0, 8, 0);
+      camera.lookAt(0, 0, 0);
+    }
+    
     // Constrain camera movement to lab area
-    camera.position.x = THREE.MathUtils.clamp(camera.position.x, -5, 5);
-    camera.position.z = THREE.MathUtils.clamp(camera.position.z, -2, 5);
-    camera.position.y = THREE.MathUtils.clamp(camera.position.y, 0.5, 3);
+    camera.position.x = THREE.MathUtils.clamp(camera.position.x, -8, 8);
+    camera.position.z = THREE.MathUtils.clamp(camera.position.z, -5, 8);
+    camera.position.y = THREE.MathUtils.clamp(camera.position.y, 0.5, 12);
   });
 
   return (
