@@ -1,0 +1,90 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "Khronos glTF Blender I/O v1.6.16"
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Scene",
+      "nodes": [0]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "TestTube",
+      "mesh": 0
+    }
+  ],
+  "meshes": [
+    {
+      "name": "TestTube",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3
+        }
+      ]
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 16,
+      "type": "VEC3",
+      "max": [0.05, 0.3, 0.05],
+      "min": [-0.05, 0.0, -0.05]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 16,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 16,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5123,
+      "count": 72,
+      "type": "SCALAR"
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 192
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 192,
+      "byteLength": 192
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 384,
+      "byteLength": 128
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 512,
+      "byteLength": 144
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 656,
+      "uri": "data:application/octet-stream;base64,AAAgvQAAAACamZk9AAAgvQAAAACamZk9AAAgPQAAAACamZk9AAAgPQAAAACamZk9AAAgvQAAAz8amZk9AAAgvQAAAz8amZk9AAAgPQAAAz8amZk9AAAgPQAAAz8amZk9AAAAvr6amZk9AAAAvr6amZk9AAAAvr6amZk9AAAAvr6amZk9AAAAvr6amZk9AAAAvr6amZk9AAAAvr6amZk9AAAAvr6amZk9AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+    }
+  ]
+}

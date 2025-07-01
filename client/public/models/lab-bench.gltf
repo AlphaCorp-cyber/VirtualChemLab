@@ -1,0 +1,91 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "Khronos glTF Blender I/O v1.6.16"
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Scene",
+      "nodes": [0]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "LabBench",
+      "mesh": 0
+    }
+  ],
+  "meshes": [
+    {
+      "name": "LabBench",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3
+        }
+      ]
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 8,
+      "type": "VEC3",
+      "max": [3.0, 0.9, 1.0],
+      "min": [-3.0, 0.0, -1.0]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 8,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 8,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 3,
+      "bufferView": 3,
+      "componentType": 5123,
+      "count": 36,
+      "type": "SCALAR"
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 96
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 96,
+      "byteLength": 96
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 192,
+      "byteLength": 64
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 256,
+      "byteLength": 72
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 328,
+      "uri": "data:application/octet-stream;base64,AABAQAAAAADNzMw+AABAQAAAAADNzMw+AABAQAAAQD/NzMw+AABAQAAAQD/NzMw+AABAQAAAAADNZM0+AABAQAAAAADNZM0+AABAQAAAQD/NZM0+AABAQAAAQD/NZM0+AAAAAL7NzMw+AAAAvr7NzMw+AAAAAL7NzMw+AAAAvr7NzMw+AAAAAL7NzMw+AAAAvr7NzMw+AAAAAL7NzMw+AAAAvr7NzMw+AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+    }
+  ]
+}
