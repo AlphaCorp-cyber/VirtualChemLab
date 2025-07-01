@@ -129,6 +129,49 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         <meshStandardMaterial color="#f5f5f5" side={THREE.DoubleSide} />
       </mesh>
 
+      {/* Paper Graduations/Markings */}
+      <group position={[0, 1.54, 0.51]}>
+        {/* Major graduation lines (every cm) */}
+        {Array.from({ length: 11 }, (_, i) => (
+          <group key={`major-${i}`} position={[0, 0.9 - (i * 0.18), 0]}>
+            {/* Major line */}
+            <mesh position={[0.12, 0, 0]}>
+              <planeGeometry args={[0.05, 0.005]} />
+              <meshStandardMaterial color="#2c3e50" />
+            </mesh>
+            {/* Measurement number */}
+            <Text
+              position={[0.18, 0, 0]}
+              fontSize={0.025}
+              color="#2c3e50"
+              anchorX="left"
+              anchorY="middle"
+            >
+              {i}
+            </Text>
+          </group>
+        ))}
+        
+        {/* Minor graduation lines (every 0.5 cm) */}
+        {Array.from({ length: 21 }, (_, i) => (
+          <mesh key={`minor-${i}`} position={[0.135, 0.9 - (i * 0.09), 0]}>
+            <planeGeometry args={[0.025, 0.003]} />
+            <meshStandardMaterial color="#7f8c8d" />
+          </mesh>
+        ))}
+        
+        {/* Unit label */}
+        <Text
+          position={[0.18, -1.05, 0]}
+          fontSize={0.02}
+          color="#2c3e50"
+          anchorX="left"
+          anchorY="middle"
+        >
+          cm
+        </Text>
+      </group>
+
       {/* Pencil baseline */}
       <mesh position={[0, 0.74, 0.51]}>
         <planeGeometry args={[0.25, 0.02]} />
@@ -396,6 +439,16 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         >
           4. Observe pigment separation
         </Text>
+
+        <Text
+          position={[0, -0.6, 0.01]}
+          fontSize={0.06}
+          color="#7f8c8d"
+          anchorX="center"
+          anchorY="middle"
+        >
+          5. Measure distances using markings
+        </Text>
       </group>
 
       {/* Results Display */}
@@ -444,7 +497,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
                 anchorX="left"
                 anchorY="middle"
               >
-                Rf: {pigment.height.toFixed(2)}
+                Rf: {(pigment.height * pigmentSeparation).toFixed(2)}
               </Text>
             </group>
           ))}
