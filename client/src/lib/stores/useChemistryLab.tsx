@@ -50,28 +50,28 @@ interface ChemistryLabState {
 const initialBeakers: Beaker[] = [
   {
     id: "beaker-1",
-    position: [-1.5, 1.45, -0.5],
+    position: [-1.5, 1.65, -0.5],
     phValue: 2.1,
     liquidColor: "#ff6b6b",
     solutionName: "Hydrochloric Acid"
   },
   {
     id: "beaker-2",
-    position: [-0.5, 1.45, -0.5],
+    position: [-0.5, 1.65, -0.5],
     phValue: 7.0,
     liquidColor: "#4ecdc4",
     solutionName: "Pure Water"
   },
   {
     id: "beaker-3",
-    position: [0.5, 1.45, -0.5],
+    position: [0.5, 1.65, -0.5],
     phValue: 10.3,
     liquidColor: "#45b7d1",
     solutionName: "Sodium Hydroxide"
   },
   {
     id: "beaker-4",
-    position: [1.5, 1.45, -0.5],
+    position: [1.5, 1.65, -0.5],
     phValue: 4.5,
     liquidColor: "#f9ca24",
     solutionName: "Acetic Acid"

@@ -50,26 +50,26 @@ export function LabEnvironment() {
       </mesh>
       
       {/* Lab bench - taller and professional lab material */}
-      <group position={[0, 1.2, -1]}>
+      <group position={[0, 1.4, -1]}>
         <mesh castShadow receiveShadow>
-          <boxGeometry args={[6, 0.1, 2]} />
-          <meshStandardMaterial color="#2c3e50" roughness={0.3} metalness={0.1} />
+          <boxGeometry args={[6, 0.12, 2]} />
+          <meshStandardMaterial color="#d3d3d3" roughness={0.2} metalness={0.05} />
         </mesh>
         
         {/* Bench legs - metal */}
         {[-2.8, 2.8].map((x, i) => 
           [-0.8, 0.8].map((z, j) => (
-            <mesh key={`${i}-${j}`} position={[x, -0.6, z]} castShadow>
-              <boxGeometry args={[0.08, 1.2, 0.08]} />
-              <meshStandardMaterial color="#34495e" metalness={0.7} roughness={0.2} />
+            <mesh key={`${i}-${j}`} position={[x, -0.7, z]} castShadow>
+              <boxGeometry args={[0.08, 1.4, 0.08]} />
+              <meshStandardMaterial color="#7f8c8d" metalness={0.6} roughness={0.3} />
             </mesh>
           ))
         )}
         
         {/* Lab bench edge trim */}
-        <mesh position={[0, 0.06, 0]}>
-          <boxGeometry args={[6.1, 0.02, 2.1]} />
-          <meshStandardMaterial color="#1a252f" />
+        <mesh position={[0, 0.07, 0]}>
+          <boxGeometry args={[6.1, 0.025, 2.1]} />
+          <meshStandardMaterial color="#bdc3c7" />
         </mesh>
       </group>
       

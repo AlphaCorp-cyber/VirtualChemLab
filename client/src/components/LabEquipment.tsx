@@ -267,7 +267,7 @@ export function LabEquipment() {
       ))}
       
       {/* Test tubes rack */}
-      <group position={[2, 1.3, -0.5]}>
+      <group position={[2, 1.5, -0.5]}>
         {Array.from({ length: 5 }, (_, i) => (
           <TestTube
             key={i}
@@ -300,7 +300,7 @@ export function LabEquipment() {
       </group>
       
       {/* Bottle holder stand */}
-      <group position={[-1.5, 1.25, 0.8]}>
+      <group position={[-1.5, 1.45, 0.8]}>
         {/* Stand platform */}
         <mesh position={[0, -0.02, 0]} castShadow receiveShadow>
           <cylinderGeometry args={[0.12, 0.12, 0.04, 16]} />
@@ -313,7 +313,7 @@ export function LabEquipment() {
       </group>
 
       {/* pH indicator bottles */}
-      <group position={[-1.5, 1.32, 0.8]}>
+      <group position={[-1.5, 1.52, 0.8]}>
         <mesh 
           castShadow
           onClick={() => grabTestStrip('indicator-1')}
@@ -338,7 +338,7 @@ export function LabEquipment() {
       </group>
 
       {/* Lab shelf for glassware */}
-      <group position={[0.8, 1.25, 0.5]}>
+      <group position={[0.8, 1.45, 0.5]}>
         {/* Shelf base */}
         <mesh position={[0, -0.02, 0]} castShadow receiveShadow>
           <boxGeometry args={[0.8, 0.04, 0.3]} />
@@ -360,7 +360,7 @@ export function LabEquipment() {
       </group>
 
       {/* Erlenmeyer flasks - authentic lab equipment */}
-      <group position={[0.8, 1.3, 0.5]}>
+      <group position={[0.8, 1.5, 0.5]}>
         {/* Flask 1 */}
         <group position={[-0.2, 0, 0]}>
           {/* Flask body - conical shape */}
@@ -468,7 +468,7 @@ export function LabEquipment() {
       </group>
       
       {/* Lab stand for graduated cylinder */}
-      <group position={[2.5, 1.25, 0.2]}>
+      <group position={[2.5, 1.45, 0.2]}>
         {/* Stand base */}
         <mesh position={[0, -0.02, 0]} castShadow receiveShadow>
           <cylinderGeometry args={[0.15, 0.15, 0.04, 16]} />
@@ -481,7 +481,7 @@ export function LabEquipment() {
       </group>
 
       {/* Graduated cylinder - like in reference image */}
-      <group position={[2.5, 1.35, 0.2]}>
+      <group position={[2.5, 1.55, 0.2]}>
         <mesh castShadow receiveShadow>
           <cylinderGeometry args={[0.06, 0.06, 0.4, 16]} />
           <meshPhysicalMaterial
@@ -536,7 +536,7 @@ export function LabEquipment() {
       </group>
 
       {/* Test strip holder */}
-      <group position={[-1.9, 1.25, 0.5]}>
+      <group position={[-1.9, 1.45, 0.5]}>
         {/* Holder base */}
         <mesh position={[0, -0.02, 0]} castShadow receiveShadow>
           <boxGeometry args={[0.3, 0.04, 0.2]} />
@@ -556,7 +556,7 @@ export function LabEquipment() {
       </group>
 
       {/* Laboratory safety equipment */}
-      <group position={[-2.8, 1.3, 0.3]}>
+      <group position={[-2.8, 1.5, 0.3]}>
         {/* Safety goggle holder */}
         <mesh position={[0, 0, 0]} castShadow>
           <cylinderGeometry args={[0.05, 0.05, 0.08, 8]} />
@@ -627,7 +627,7 @@ export function LabEquipment() {
       </group>
       
       {/* Chemical storage cabinet */}
-      <group position={[-2.5, 1.25, -0.5]}>
+      <group position={[-2.5, 1.45, -0.5]}>
         {/* Cabinet base */}
         <mesh position={[0, -0.05, 0]} castShadow receiveShadow>
           <boxGeometry args={[0.6, 0.1, 0.4]} />
