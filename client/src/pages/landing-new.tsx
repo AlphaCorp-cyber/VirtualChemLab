@@ -260,7 +260,7 @@ export default function Landing() {
           {[...Array(20)].map((_, i) => (
             <motion.div
               key={`equipment-${i}`}
-              className="absolute opacity-10"
+              className="absolute opacity-30"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -278,25 +278,25 @@ export default function Landing() {
               }}
             >
               {i % 4 === 0 && (
-                <svg width="24" height="40" viewBox="0 0 24 40" className="text-white">
-                  <rect x="9" y="6" width="6" height="28" fill="currentColor" opacity="0.4" rx="3"/>
-                  <rect x="9" y="20" width="6" height="14" fill="currentColor" opacity="0.6" rx="3"/>
+                <svg width="24" height="40" viewBox="0 0 24 40" className="text-blue-400">
+                  <rect x="9" y="6" width="6" height="28" fill="#60a5fa" opacity="0.7" rx="3"/>
+                  <rect x="9" y="20" width="6" height="14" fill="#3b82f6" opacity="0.8" rx="3"/>
                 </svg>
               )}
               {i % 4 === 1 && (
-                <svg width="32" height="36" viewBox="0 0 32 36" className="text-white">
-                  <path d="M6 8 L26 8 L24 32 L8 32 Z" fill="currentColor" opacity="0.3"/>
-                  <rect x="8" y="20" width="16" height="12" fill="currentColor" opacity="0.5"/>
+                <svg width="32" height="36" viewBox="0 0 32 36" className="text-green-400">
+                  <path d="M6 8 L26 8 L24 32 L8 32 Z" fill="#4ade80" opacity="0.6" stroke="#22c55e"/>
+                  <rect x="8" y="20" width="16" height="12" fill="#10b981" opacity="0.7"/>
                 </svg>
               )}
               {i % 4 === 2 && (
-                <svg width="28" height="42" viewBox="0 0 28 42" className="text-white">
-                  <rect x="12" y="0" width="4" height="18" fill="currentColor" opacity="0.4"/>
-                  <path d="M12 18 L4 38 L24 38 Z" fill="currentColor" opacity="0.3"/>
+                <svg width="28" height="42" viewBox="0 0 28 42" className="text-purple-400">
+                  <rect x="12" y="0" width="4" height="18" fill="#a78bfa" opacity="0.6"/>
+                  <path d="M12 18 L4 38 L24 38 Z" fill="#8b5cf6" opacity="0.7"/>
                 </svg>
               )}
               {i % 4 === 3 && (
-                <div className="w-8 h-8 border border-white opacity-30 rounded flex items-center justify-center text-xs">
+                <div className="w-8 h-8 border-2 border-yellow-400 bg-yellow-500 opacity-60 rounded flex items-center justify-center text-xs font-bold text-black">
                   {['H', 'O', 'C', 'N'][Math.floor(Math.random() * 4)]}
                 </div>
               )}
