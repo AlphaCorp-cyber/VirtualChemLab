@@ -31,6 +31,9 @@ export function VRControls() {
   const [touchStartTime, setTouchStartTime] = useState(0);
   const [lastTouchPosition, setLastTouchPosition] = useState<THREE.Vector2 | null>(null);
   const [isTouching, setIsTouching] = useState(false);
+  const [touchStartPosition, setTouchStartPosition] = useState<THREE.Vector2 | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [multiTouch, setMultiTouch] = useState(false);
   
   const isMobileDevice = isMobile();
   
@@ -54,8 +57,10 @@ export function VRControls() {
       );
       setTouchPosition(touchPos);
       setLastTouchPosition(touchPos);
+      setTouchStartPosition(touchPos);
       setTouchStartTime(Date.now());
       setIsTouching(true);
+      setMultiTouch(event.touches.length > 1);
     };
     
     const handleTouchMove = (event: TouchEvent) => {
@@ -65,22 +70,34 @@ export function VRControls() {
         (touch.clientX / window.innerWidth) * 2 - 1,
         -(touch.clientY / window.innerHeight) * 2 + 1
       );
+      
+      // Check if this is a drag gesture
+      if (touchStartPosition && !multiTouch) {
+        const dragDistance = touchPos.distanceTo(touchStartPosition);
+        if (dragDistance > 0.1) { // Threshold for drag detection
+          setIsDragging(true);
+        }
+      }
+      
       setTouchPosition(touchPos);
     };
     
     const handleTouchEnd = (event: TouchEvent) => {
       event.preventDefault();
-      setIsTouching(false);
       
-      // Check for tap (quick touch)
+      // Check for tap (quick touch without drag)
       const touchDuration = Date.now() - touchStartTime;
-      if (touchDuration < 200 && lastTouchPosition) {
+      if (touchDuration < 200 && !isDragging && lastTouchPosition) {
         // Handle tap interaction for mobile
         handleMobileTap(lastTouchPosition);
       }
       
+      setIsTouching(false);
+      setIsDragging(false);
       setTouchPosition(null);
       setLastTouchPosition(null);
+      setTouchStartPosition(null);
+      setMultiTouch(false);
     };
     
     const canvas = document.querySelector('canvas');
@@ -208,27 +225,59 @@ export function VRControls() {
       }
     }
 
-    // Mobile touch interactions
-    if (isMobileDevice && isTouching && touchPosition) {
-      // Convert touch position to world coordinates for interactions
-      const raycaster = new THREE.Raycaster();
-      raycaster.setFromCamera(touchPosition, camera);
-      
-      // Simple mobile interaction logic
-      if (grippedObject) {
-        // Check if touching over a beaker for mobile pouring
-        beakers.forEach(beaker => {
-          const beakerPos = new THREE.Vector3(...beaker.position);
-          const intersects = raycaster.intersectObjects(scene.children, true);
-          
-          if (intersects.length > 0) {
-            const distance = intersects[0].distance;
-            if (distance < 5) { // Within mobile interaction range
-              console.log(`Mobile pour: ${grippedObject} into ${beaker.solutionName}`);
-              testStripInLiquid(grippedObject, beaker.id);
+    // Mobile touch interactions and movement
+    if (isMobileDevice && isTouching && touchPosition && lastTouchPosition) {
+      if (isDragging && !grippedObject && !multiTouch) {
+        // Touch-drag movement for mobile
+        const deltaX = (touchPosition.x - lastTouchPosition.x) * 3;
+        const deltaY = (touchPosition.y - lastTouchPosition.y) * 3;
+        
+        // Forward/backward movement based on vertical drag
+        if (Math.abs(deltaY) > 0.01) {
+          const forward = new THREE.Vector3(0, 0, -deltaY * speed * 2);
+          forward.applyQuaternion(camera.quaternion);
+          forward.y = 0; // Keep movement horizontal
+          forward.normalize();
+          camera.position.addScaledVector(forward, Math.abs(deltaY) * speed * 2);
+        }
+        
+        // Left/right movement based on horizontal drag
+        if (Math.abs(deltaX) > 0.01) {
+          const right = new THREE.Vector3(deltaX * speed * 2, 0, 0);
+          right.applyQuaternion(camera.quaternion);
+          right.y = 0; // Keep movement horizontal
+          right.normalize();
+          camera.position.addScaledVector(right, Math.abs(deltaX) * speed * 2);
+        }
+        
+        // Camera rotation for look around
+        if (Math.abs(deltaX) > 0.02) {
+          camera.rotation.y -= deltaX * 0.5;
+        }
+        
+        // Update last position for continuous movement
+        setLastTouchPosition(touchPosition.clone());
+      } else if (!isDragging) {
+        // Convert touch position to world coordinates for interactions
+        const raycaster = new THREE.Raycaster();
+        raycaster.setFromCamera(touchPosition, camera);
+        
+        // Simple mobile interaction logic
+        if (grippedObject) {
+          // Check if touching over a beaker for mobile pouring
+          beakers.forEach(beaker => {
+            const beakerPos = new THREE.Vector3(...beaker.position);
+            const intersects = raycaster.intersectObjects(scene.children, true);
+            
+            if (intersects.length > 0) {
+              const distance = intersects[0].distance;
+              if (distance < 5) { // Within mobile interaction range
+                console.log(`Mobile pour: ${grippedObject} into ${beaker.solutionName}`);
+                testStripInLiquid(grippedObject, beaker.id);
+              }
             }
-          }
-        });
+          });
+        }
       }
     }
     

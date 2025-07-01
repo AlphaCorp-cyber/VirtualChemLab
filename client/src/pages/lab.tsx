@@ -141,8 +141,9 @@ export default function Lab() {
             fontSize: '12px',
             textAlign: 'center'
           }}>
-            Tap objects to grab/release<br/>
-            Pinch to zoom, drag to rotate
+            🚶 Drag to walk around<br/>
+            👆 Tap objects to grab/release<br/>
+            🔄 Drag left/right to look around
           </div>
         </div>
       )}
