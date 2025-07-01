@@ -107,16 +107,57 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
           ior={1.52}
         />
       </mesh>
+
+      {/* Volume markings on beaker - like real lab equipment */}
+      {[50, 100, 150].map((volume, i) => (
+        <group key={volume} position={[0.29, 0.05 - i * 0.08, 0]}>
+          <mesh>
+            <boxGeometry args={[0.02, 0.002, 0.08]} />
+            <meshStandardMaterial color="#666666" />
+          </mesh>
+          <Text
+            position={[0.05, 0, 0]}
+            fontSize={0.02}
+            color="#666666"
+            anchorX="left"
+            anchorY="middle"
+          >
+            {volume}ml
+          </Text>
+        </group>
+      ))}
       
-      {/* Liquid inside - dramatic color change with indicator */}
-      <mesh position={[0, -0.08, 0]}>
-        <cylinderGeometry args={[0.26, 0.22, 0.22, 16]} />
+      {/* Current volume indicator */}
+      <Text
+        position={[0.35, 0.14, 0]}
+        fontSize={0.025}
+        color="#2c3e50"
+        anchorX="left"
+        anchorY="middle"
+      >
+        ~120ml
+      </Text>
+      
+      {/* Liquid inside - clearly visible level filling 2/3 of beaker */}
+      <mesh position={[0, -0.02, 0]}>
+        <cylinderGeometry args={[0.26, 0.22, 0.32, 16]} />
         <meshStandardMaterial 
-          color={hasIndicator ? getPHColor(phValue) : "#B0E0E6"} 
+          color={hasIndicator ? getPHColor(phValue) : "#87CEEB"} 
           transparent 
-          opacity={hasIndicator ? 0.95 : 0.7}
-          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.3) : "#B0E0E6"}
-          emissiveIntensity={hasIndicator ? 0.4 : 0.1}
+          opacity={hasIndicator ? 0.9 : 0.8}
+          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.2) : new THREE.Color("#87CEEB").multiplyScalar(0.1)}
+          emissiveIntensity={hasIndicator ? 0.3 : 0.05}
+        />
+      </mesh>
+      
+      {/* Liquid surface - meniscus effect */}
+      <mesh position={[0, 0.14, 0]}>
+        <cylinderGeometry args={[0.26, 0.26, 0.01, 16]} />
+        <meshStandardMaterial 
+          color={hasIndicator ? getPHColor(phValue) : "#87CEEB"} 
+          transparent 
+          opacity={hasIndicator ? 0.7 : 0.6}
+          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.1) : new THREE.Color("#87CEEB").multiplyScalar(0.05)}
         />
       </mesh>
       
