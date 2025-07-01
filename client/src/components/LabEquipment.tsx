@@ -20,13 +20,13 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
   const [hasIndicator, setHasIndicator] = useState(false);
   const [isPouring, setIsPouring] = useState(false);
   const { testStripInLiquid, selectedStripId } = useChemistryLab();
-  
+
   // Real laboratory beaker dimensions (250ml standard)
   const beakerRadius = 0.075;  // 7.5cm diameter (realistic lab beaker)
   const beakerHeight = 0.12;   // 12cm height
   const wallThickness = 0.003;  // 3mm glass thickness
   const rimThickness = 0.005;   // 5mm rim thickness
-  
+
   const handleClick = () => {
     if (selectedStripId && selectedStripId.includes('indicator')) {
       // Pour pH indicator into the beaker with animation
@@ -52,7 +52,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       }
     }
   };
-  
+
   return (
     <group position={position}>
       {/* Beaker base - thick flat bottom like real laboratory beakers */}
@@ -71,7 +71,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
           reflectivity={0.95}
         />
       </mesh>
-      
+
       {/* Main beaker walls - realistic proportions */}
       <mesh
         ref={meshRef}
@@ -89,21 +89,21 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       >
         <cylinderGeometry args={[beakerRadius, beakerRadius - wallThickness, beakerHeight, 64]} />
         <meshPhysicalMaterial
-          color="#4682B4"
+          color={hasIndicator ? getPHColor(phValue) : "#4682B4"}
           transparent
-          opacity={0.4}
+          opacity={hasIndicator ? 0.6 : 0.3}
           roughness={0.02}
-          transmission={0.7}
+          transmission={hasIndicator ? 0.4 : 0.8}
           thickness={wallThickness}
           ior={1.52}
           clearcoat={1.0}
           clearcoatRoughness={0.01}
-          reflectivity={0.98}
-          emissive="#4682B4"
-          emissiveIntensity={0.1}
+          reflectivity={0.95}
+          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.2) : "#000000"}
+          emissiveIntensity={hasIndicator ? 0.3 : 0}
         />
       </mesh>
-      
+
       {/* Enhanced edge highlight for better glass visibility */}
       <mesh>
         <cylinderGeometry args={[beakerRadius + 0.002, beakerRadius + 0.002, beakerHeight, 64]} />
@@ -115,7 +115,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
           emissiveIntensity={0.2}
         />
       </mesh>
-      
+
       {/* Top rim glow for enhanced visibility */}
       <mesh position={[0, beakerHeight/2, 0]}>
         <cylinderGeometry args={[beakerRadius + 0.005, beakerRadius + 0.005, 0.008, 32]} />
@@ -127,7 +127,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
           emissiveIntensity={0.4}
         />
       </mesh>
-      
+
       {/* Professional beaker rim - thick and sturdy with enhanced visibility */}
       <mesh position={[0, beakerHeight/2, 0]}>
         <cylinderGeometry args={[beakerRadius + rimThickness, beakerRadius, rimThickness * 2, 32]} />
@@ -146,7 +146,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
           reflectivity={0.9}
         />
       </mesh>
-      
+
       {/* Additional rim highlight for better visibility */}
       <mesh position={[0, beakerHeight/2 + rimThickness, 0]}>
         <cylinderGeometry args={[beakerRadius + rimThickness + 0.002, beakerRadius + rimThickness + 0.002, 0.003, 32]} />
@@ -158,7 +158,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
           emissiveIntensity={0.3}
         />
       </mesh>
-      
+
       {/* Realistic laboratory spout */}
       <mesh position={[beakerRadius + 0.01, beakerHeight/2 - 0.01, 0]} rotation={[0, 0, -Math.PI / 6]}>
         <cylinderGeometry args={[0.008, 0.012, 0.025, 16]} />
@@ -174,7 +174,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
           clearcoatRoughness={0.01}
         />
       </mesh>
-      
+
       {/* Spout lip */}
       <mesh position={[beakerRadius + 0.018, beakerHeight/2 + 0.005, 0]} rotation={[0, 0, -Math.PI / 6]}>
         <cylinderGeometry args={[0.013, 0.008, 0.003, 16]} />
@@ -210,7 +210,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
           </Text>
         </group>
       ))}
-      
+
       {/* Minor graduation marks */}
       {Array.from({ length: 20 }, (_, i) => (
         <mesh key={`minor-${i}`} position={[beakerRadius + 0.002, (beakerHeight/2) - 0.01 - i * 0.0125, 0]}>
@@ -218,7 +218,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
           <meshStandardMaterial color="#555555" />
         </mesh>
       ))}
-      
+
       {/* ml unit label */}
       <Text
         position={[beakerRadius + 0.02, -beakerHeight/2 + 0.02, 0]}
@@ -229,7 +229,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       >
         ml
       </Text>
-      
+
       {/* Current volume indicator */}
       <Text
         position={[beakerRadius + 0.025, 0.01, 0]}
@@ -240,7 +240,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       >
         ≈50ml
       </Text>
-      
+
       {/* Blue liquid from 50ml to 100ml mark (50ml = halfway up beaker) */}
       <mesh position={[0, -beakerHeight/2 + 0.0375, 0]}>
         <cylinderGeometry args={[beakerRadius - wallThickness - 0.002, beakerRadius - wallThickness - 0.002, 0.025, 32]} />
@@ -254,7 +254,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
           metalness={0.1}
         />
       </mesh>
-      
+
       {/* Liquid surface with realistic meniscus at 100ml mark */}
       <mesh position={[0, -beakerHeight/2 + 0.05, 0]}>
         <cylinderGeometry args={[beakerRadius - wallThickness - 0.002, beakerRadius - wallThickness - 0.002, 0.002, 32]} />
@@ -282,13 +282,13 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
           />
         </mesh>
       )}
-      
+
       {/* pH label background - positioned above realistic beaker */}
       <mesh position={[0, beakerHeight + 0.08, 0]}>
         <planeGeometry args={[0.15, 0.04]} />
         <meshStandardMaterial color="#ffffff" transparent opacity={0.9} />
       </mesh>
-      
+
       {/* pH label */}
       <Text
         position={[0, beakerHeight + 0.08, 0.001]}
@@ -299,7 +299,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       >
         pH: {hasIndicator ? phValue.toFixed(1) : '?'}
       </Text>
-      
+
       {/* Solution name */}
       <Text
         position={[0, beakerHeight + 0.05, 0.001]}
@@ -321,7 +321,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       >
         {phValue < 7 ? "ACIDIC" : phValue > 7 ? "BASIC" : "NEUTRAL"}
       </Text>
-      
+
       {/* Indicator status */}
       {hasIndicator && (
         <Text
@@ -334,7 +334,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
           + pH Indicator
         </Text>
       )}
-      
+
       {/* Pouring effect - realistic scale */}
       {isPouring && (
         <group position={[0, beakerHeight + 0.15, 0]}>
@@ -394,7 +394,7 @@ function TestTube({ position, isEmpty = false }: {
           emissiveIntensity={0.03}
         />
       </mesh>
-      
+
       {/* Test tube rounded bottom - enhanced visibility */}
       <mesh position={[0, -0.16, 0]} castShadow>
         <sphereGeometry args={[0.04, 16, 8]} />
@@ -413,19 +413,19 @@ function TestTube({ position, isEmpty = false }: {
           emissiveIntensity={0.03}
         />
       </mesh>
-      
+
       {/* Enhanced test tube wireframe for VR visibility */}
       <mesh>
         <cylinderGeometry args={[0.04, 0.04, 0.32, 16]} />
         <meshBasicMaterial color="#4a90e2" wireframe opacity={0.3} transparent />
       </mesh>
-      
+
       {/* Test tube rim highlight for VR */}
       <mesh position={[0, 0.16, 0]}>
         <cylinderGeometry args={[0.045, 0.045, 0.005, 16]} />
         <meshBasicMaterial color="#ffffff" opacity={0.5} transparent />
       </mesh>
-      
+
       {/* Test tube rim */}
       <mesh position={[0, 0.16, 0]}>
         <cylinderGeometry args={[0.045, 0.04, 0.01, 16]} />
@@ -439,7 +439,7 @@ function TestTube({ position, isEmpty = false }: {
           ior={1.52}
         />
       </mesh>
-      
+
       {!isEmpty && (
         <mesh position={[0, -0.08, 0]}>
           <cylinderGeometry args={[0.035, 0.035, 0.12, 16]} />
@@ -453,15 +453,15 @@ function TestTube({ position, isEmpty = false }: {
 export function LabEquipment() {
   const { beakers, testStrips, grabTestStrip, releaseTestStrip, selectedStripId } = useChemistryLab();
   const [subscribe, getState] = useKeyboardControls();
-  
+
   useFrame(() => {
     const controls = getState();
-    
+
     if (controls.grab && !selectedStripId) {
       // Find nearest test strip and grab it
       grabTestStrip("strip-1");
     }
-    
+
     if (controls.release && selectedStripId) {
       releaseTestStrip();
     }
@@ -480,7 +480,7 @@ export function LabEquipment() {
           solutionName={beaker.solutionName}
         />
       ))}
-      
+
       {/* Wooden test tubes rack - properly positioned on table */}
       <group position={[2, 1.46, -0.5]}>
         {Array.from({ length: 5 }, (_, i) => (
@@ -490,7 +490,7 @@ export function LabEquipment() {
             isEmpty={i > 2}
           />
         ))}
-        
+
         {/* Wooden rack base */}
         <mesh position={[0, 0.02, 0]} castShadow receiveShadow>
           <boxGeometry args={[0.8, 0.04, 0.25]} />
@@ -499,7 +499,7 @@ export function LabEquipment() {
             roughness={0.8}
           />
         </mesh>
-        
+
         {/* Wooden rack front panel */}
         <mesh position={[0, 0.08, 0.1]} castShadow>
           <boxGeometry args={[0.8, 0.12, 0.02]} />
@@ -508,7 +508,7 @@ export function LabEquipment() {
             roughness={0.8}
           />
         </mesh>
-        
+
         {/* Wooden rack back panel */}
         <mesh position={[0, 0.08, -0.1]} castShadow>
           <boxGeometry args={[0.8, 0.12, 0.02]} />
@@ -517,7 +517,7 @@ export function LabEquipment() {
             roughness={0.8}
           />
         </mesh>
-        
+
         {/* Test tube holes in wood */}
         {Array.from({ length: 5 }, (_, i) => (
           <mesh key={`hole-${i}`} position={[i * 0.15 - 0.3, 0.04, 0]}>
@@ -528,7 +528,7 @@ export function LabEquipment() {
             />
           </mesh>
         ))}
-        
+
         {/* Wood grain details */}
         <mesh position={[0, 0.02, 0]} rotation={[Math.PI/2, 0, 0]}>
           <planeGeometry args={[0.75, 0.2]} />
@@ -540,7 +540,7 @@ export function LabEquipment() {
           />
         </mesh>
       </group>
-      
+
       {/* Bottle holder stand */}
       <group position={[-1.5, 1.46, 0.8]}>
         {/* Stand platform */}
@@ -583,19 +583,19 @@ export function LabEquipment() {
             metalness={0.1}
           />
         </mesh>
-        
+
         {/* Professional label */}
         <mesh position={[0, 0, 0.09]}>
           <planeGeometry args={[0.12, 0.15]} />
           <meshStandardMaterial color="#ffffff" />
         </mesh>
-        
+
         {/* Cork stopper */}
         <mesh position={[0, 0.15, 0]}>
           <cylinderGeometry args={[0.04, 0.04, 0.08, 8]} />
           <meshStandardMaterial color="#8B4513" />
         </mesh>
-        
+
         {/* Label */}
         <Text
           position={[0, -0.2, 0]}
@@ -690,7 +690,7 @@ export function LabEquipment() {
             <meshStandardMaterial color="#90EE90" transparent opacity={0.7} />
           </mesh>
         </group>
-        
+
         {/* Flask 2 */}
         <group position={[0.2, 0, 0]}>
           {/* Flask body */}
@@ -738,7 +738,7 @@ export function LabEquipment() {
           </mesh>
         </group>
       </group>
-      
+
       {/* Lab stand for graduated cylinder */}
       <group position={[2.5, 1.46, 0.2]}>
         {/* Stand base */}
@@ -776,7 +776,7 @@ export function LabEquipment() {
           <cylinderGeometry args={[0.06, 0.06, 0.4, 16]} />
           <meshBasicMaterial color="#4a90e2" wireframe opacity={0.4} transparent />
         </mesh>
-        
+
         {/* Graduation marks for VR visibility */}
         {Array.from({ length: 8 }, (_, i) => (
           <mesh key={i} position={[0.065, 0.15 - i * 0.04, 0]}>
@@ -870,14 +870,14 @@ export function LabEquipment() {
           stripId={strip.id}
         />
       ))}
-      
+
       {/* pH color chart on wall */}
       <group position={[0, 2, -2.9]}>
         <mesh>
           <planeGeometry args={[2, 0.5]} />
           <meshStandardMaterial color="#ffffff" />
         </mesh>
-        
+
         <Text
           position={[0, 0.15, 0.01]}
           fontSize={0.08}
@@ -886,7 +886,7 @@ export function LabEquipment() {
         >
           pH Scale
         </Text>
-        
+
         {/* pH color scale */}
         {Array.from({ length: 14 }, (_, i) => (
           <group key={i} position={[-0.9 + i * 0.13, -0.1, 0.01]}>
@@ -907,7 +907,7 @@ export function LabEquipment() {
           </group>
         ))}
       </group>
-      
+
       {/* Chemical storage cabinet */}
       <group position={[-2.5, 1.46, -0.5]}>
         {/* Cabinet base */}
@@ -924,13 +924,13 @@ export function LabEquipment() {
           <boxGeometry args={[0.55, 0.3, 0.05]} />
           <meshPhysicalMaterial color="#34495e" metalness={0.5} roughness={0.4} />
         </mesh>
-        
+
         {/* Chemical bottle on shelf */}
         <mesh position={[0, 0.15, 0]} castShadow>
           <boxGeometry args={[0.3, 0.2, 0.2]} />
           <meshStandardMaterial color="#ff4500" />
         </mesh>
-        
+
         <Text
           position={[0, 0.1, 0.11]}
           fontSize={0.04}
@@ -939,7 +939,7 @@ export function LabEquipment() {
         >
           CaCO₃
         </Text>
-        
+
         {/* Safety label */}
         <mesh position={[0.2, 0.05, 0.11]}>
           <planeGeometry args={[0.08, 0.08]} />
@@ -1000,7 +1000,7 @@ export function LabEquipment() {
           <planeGeometry args={[1.4, 0.3]} />
           <meshStandardMaterial color="#ffffff" />
         </mesh>
-        
+
         {/* pH scale colors from 0-14 */}
         {Array.from({ length: 15 }, (_, i) => {
           const phColors = [
@@ -1027,7 +1027,7 @@ export function LabEquipment() {
             </group>
           );
         })}
-        
+
         {/* Chart title */}
         <Text
           position={[0, 0.18, 0.01]}
@@ -1038,7 +1038,7 @@ export function LabEquipment() {
         >
           pH Color Scale Reference
         </Text>
-        
+
         {/* Labels */}
         <Text
           position={[-0.5, -0.12, 0.01]}
