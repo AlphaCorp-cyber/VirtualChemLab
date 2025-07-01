@@ -138,29 +138,59 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         ~120ml
       </Text>
       
-      {/* Liquid inside - half-filled beaker with visible colors */}
+      {/* Liquid inside - half-filled with colorless solution */}
       <mesh position={[0, -0.08, 0]}>
         <cylinderGeometry args={[0.26, 0.22, 0.18, 16]} />
         <meshStandardMaterial 
-          color={hasIndicator ? getPHColor(phValue) : liquidColor} 
+          color={hasIndicator ? getPHColor(phValue) : "#E6F3FF"} 
           transparent 
-          opacity={0.85}
-          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.3) : new THREE.Color(liquidColor).multiplyScalar(0.2)}
-          emissiveIntensity={hasIndicator ? 0.4 : 0.2}
+          opacity={hasIndicator ? 0.9 : 0.6}
+          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.3) : "#E6F3FF"}
+          emissiveIntensity={hasIndicator ? 0.4 : 0.1}
+          roughness={0.1}
+          metalness={0.05}
         />
       </mesh>
       
-      {/* Liquid surface - clear meniscus */}
+      {/* Liquid surface with realistic water properties */}
       <mesh position={[0, 0.01, 0]}>
         <cylinderGeometry args={[0.26, 0.26, 0.01, 16]} />
         <meshStandardMaterial 
-          color={hasIndicator ? getPHColor(phValue) : liquidColor} 
+          color={hasIndicator ? getPHColor(phValue) : "#F0F8FF"} 
           transparent 
-          opacity={0.8}
-          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.2) : new THREE.Color(liquidColor).multiplyScalar(0.15)}
-          emissiveIntensity={0.3}
+          opacity={hasIndicator ? 0.8 : 0.7}
+          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.2) : "#F0F8FF"}
+          emissiveIntensity={hasIndicator ? 0.3 : 0.05}
+          roughness={0.05}
+          metalness={0.1}
         />
       </mesh>
+
+      {/* Subtle reflection rings to show liquid presence */}
+      {!hasIndicator && (
+        <>
+          <mesh position={[0, -0.05, 0]}>
+            <cylinderGeometry args={[0.24, 0.24, 0.005, 16]} />
+            <meshStandardMaterial 
+              color="#FFFFFF" 
+              transparent 
+              opacity={0.3}
+              emissive="#FFFFFF"
+              emissiveIntensity={0.1}
+            />
+          </mesh>
+          <mesh position={[0, -0.1, 0]}>
+            <cylinderGeometry args={[0.22, 0.22, 0.005, 16]} />
+            <meshStandardMaterial 
+              color="#FFFFFF" 
+              transparent 
+              opacity={0.2}
+              emissive="#FFFFFF"
+              emissiveIntensity={0.05}
+            />
+          </mesh>
+        </>
+      )}
       
       {/* pH label background */}
       <mesh position={[0, 0.35, 0]}>
