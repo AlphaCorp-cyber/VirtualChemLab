@@ -342,7 +342,7 @@ export function LabEquipment() {
 
       {/* pH indicator bottles - transparent with green solution */}
       <group position={[-1.5, 1.505, 0.8]}>
-        {/* Main bottle - transparent glass */}
+        {/* pH indicator bottle - completely filled with lime green solution */}
         <mesh 
           castShadow
           onClick={() => grabTestStrip('indicator-1')}
@@ -350,28 +350,12 @@ export function LabEquipment() {
           onPointerLeave={() => {}}
         >
           <cylinderGeometry args={[0.08, 0.06, 0.25, 8]} />
-          <meshPhysicalMaterial
-            color="#ffffff"
-            transparent
-            opacity={0.15}
-            roughness={0.1}
-            transmission={0.9}
-            thickness={0.5}
-            ior={1.52}
-            clearcoat={1.0}
-            clearcoatRoughness={0.05}
-          />
-        </mesh>
-        
-        {/* Bright green pH indicator liquid - full container */}
-        <mesh position={[0, -0.02, 0]}>
-          <cylinderGeometry args={[0.075, 0.055, 0.22, 8]} />
           <meshStandardMaterial 
-            color="#32CD32" 
+            color="#32FF32" 
             transparent 
-            opacity={0.95}
-            emissive="#32CD32"
-            emissiveIntensity={0.3}
+            opacity={0.9}
+            emissive="#32FF32"
+            emissiveIntensity={0.2}
           />
         </mesh>
         
