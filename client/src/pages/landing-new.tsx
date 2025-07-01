@@ -64,12 +64,11 @@ const experiments: Experiment[] = [
 ];
 
 const difficultyColors = {
-  "Beginner": "bg-green-100 text-green-800",
-  "Intermediate": "bg-yellow-100 text-yellow-800",
-  "Advanced": "bg-red-100 text-red-800"
+  "Beginner": "bg-green-500/20 text-green-300 border-green-400",
+  "Intermediate": "bg-yellow-500/20 text-yellow-300 border-yellow-400",
+  "Advanced": "bg-red-500/20 text-red-300 border-red-400"
 };
 
-// Animation variants
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
   animate: { opacity: 1, y: 0 },
@@ -88,12 +87,10 @@ const floatingAnimation = {
 export default function Landing() {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll();
   const heroInView = useInView(heroRef, { once: true });
   
-  // Parallax effects
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
 
@@ -110,24 +107,11 @@ export default function Landing() {
     }
   };
 
-  // Mouse tracking for interactive elements
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
-      {/* Animated Background Elements */}
+      {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
-        <motion.div 
-          style={{ y: backgroundY }}
-          className="absolute inset-0 opacity-20"
-        >
-          {/* Floating Molecules */}
+        <motion.div style={{ y: backgroundY }} className="absolute inset-0 opacity-20">
           {[...Array(20)].map((_, i) => (
             <motion.div
               key={i}
@@ -149,25 +133,6 @@ export default function Landing() {
               }}
             />
           ))}
-          
-          {/* DNA Helix Pattern */}
-          <svg className="absolute top-1/4 right-1/4 w-64 h-64 opacity-10" viewBox="0 0 200 200">
-            <motion.path
-              d="M50,10 Q100,50 150,10 T250,10 M50,190 Q100,150 150,190 T250,190"
-              stroke="url(#gradient)"
-              strokeWidth="3"
-              fill="none"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 3, repeat: Infinity }}
-            />
-            <defs>
-              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#60A5FA" />
-                <stop offset="100%" stopColor="#A78BFA" />
-              </linearGradient>
-            </defs>
-          </svg>
         </motion.div>
       </div>
 
@@ -242,7 +207,7 @@ export default function Landing() {
           </motion.div>
         </div>
 
-        {/* Floating 3D Chemistry Elements */}
+        {/* Floating Elements */}
         <motion.div 
           className="absolute top-20 left-20 w-16 h-16 opacity-60"
           animate={floatingAnimation}
@@ -257,14 +222,6 @@ export default function Landing() {
           transition={{ delay: 1 }}
         >
           <div className="w-full h-full bg-gradient-to-br from-green-400 to-green-600 rounded-full shadow-lg"></div>
-        </motion.div>
-        
-        <motion.div 
-          className="absolute bottom-32 left-1/4 w-20 h-20 opacity-60"
-          animate={floatingAnimation}
-          transition={{ delay: 2 }}
-        >
-          <div className="w-full h-full bg-gradient-to-br from-purple-400 to-purple-600 rounded-full shadow-lg"></div>
         </motion.div>
       </motion.section>
 
@@ -315,75 +272,10 @@ export default function Landing() {
         </div>
       </motion.section>
 
-      {/* Features Section */}
-      <motion.section 
-        className="relative py-24"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center mb-20"
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-5xl font-bold text-white mb-6">
-              Why Headmasters Choose <span className="text-purple-400">Our VR Lab</span>
-            </h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {[
-              {
-                icon: "🥽",
-                title: "Immersive VR Experience",
-                description: "Students use their hands naturally in VR to handle equipment, conduct experiments, and manipulate molecules in 3D space.",
-                features: ["Hand tracking technology", "Realistic physics", "Haptic feedback", "Multi-user collaboration"]
-              },
-              {
-                icon: "📊",
-                title: "Advanced Analytics",
-                description: "Real-time dashboards for educators to track student progress, identify learning gaps, and optimize curricula.",
-                features: ["Individual progress tracking", "Skill assessment", "Learning analytics", "Performance reports"]
-              },
-              {
-                icon: "🛡️",
-                title: "Complete Safety",
-                description: "Zero risk of chemical burns, explosions, or toxic exposure while maintaining full experimental authenticity.",
-                features: ["No dangerous chemicals", "Unlimited experiments", "Cost-effective", "Insurance friendly"]
-              }
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/20"
-                initial={{ y: 50, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                whileHover={{ scale: 1.02, y: -10 }}
-              >
-                <div className="text-6xl mb-6">{feature.icon}</div>
-                <h3 className="text-2xl font-bold text-white mb-4">{feature.title}</h3>
-                <p className="text-gray-300 mb-6 leading-relaxed">{feature.description}</p>
-                <ul className="space-y-2">
-                  {feature.features.map((item, i) => (
-                    <li key={i} className="flex items-center text-blue-300">
-                      <span className="w-2 h-2 bg-blue-400 rounded-full mr-3"></span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
-
       {/* Experiments Section */}
       <motion.section 
         id="experiments"
-        className="relative py-24 bg-black/20 backdrop-blur-sm"
+        className="relative py-24"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1 }}
@@ -437,100 +329,98 @@ export default function Landing() {
                 <Card className={`relative h-full bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/20 rounded-3xl overflow-hidden ${
                   !experiment.available ? 'opacity-60' : ''
                 }`}>
-              {!experiment.available && (
-                <div className="absolute top-4 right-4 z-10">
-                  <Badge variant="secondary">Coming Soon</Badge>
-                </div>
-              )}
-              
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <CardTitle className="text-lg">{experiment.title}</CardTitle>
-                    <CardDescription className="mt-2">
+                  {!experiment.available && (
+                    <div className="absolute top-4 right-4 z-10">
+                      <Badge variant="secondary" className="bg-gray-500/20 text-gray-300">
+                        Coming Soon
+                      </Badge>
+                    </div>
+                  )}
+                  
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-xl text-white font-bold">
+                      {experiment.title}
+                    </CardTitle>
+                    <CardDescription className="text-gray-300 mt-2">
                       {experiment.description}
                     </CardDescription>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-2 mt-4">
-                  <Badge 
-                    className={difficultyColors[experiment.difficulty]}
-                    variant="secondary"
-                  >
-                    {experiment.difficulty}
-                  </Badge>
-                  <Badge variant="outline">
-                    {experiment.duration}
-                  </Badge>
-                </div>
-              </CardHeader>
+                    
+                    <div className="flex items-center gap-2 mt-4">
+                      <Badge className={difficultyColors[experiment.difficulty]} variant="outline">
+                        {experiment.difficulty}
+                      </Badge>
+                      <Badge variant="outline" className="border-purple-400 text-purple-300">
+                        {experiment.duration}
+                      </Badge>
+                    </div>
+                  </CardHeader>
 
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-medium text-sm text-gray-700 mb-2">
-                      Key Features:
-                    </h4>
-                    <ul className="text-sm text-gray-600 space-y-1">
-                      {experiment.features.map((feature, index) => (
-                        <li key={index} className="flex items-center">
-                          <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <CardContent className="pt-0">
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="font-medium text-sm text-gray-300 mb-2">
+                          Key Features:
+                        </h4>
+                        <ul className="text-sm text-gray-400 space-y-1">
+                          {experiment.features.map((feature, i) => (
+                            <li key={i} className="flex items-center">
+                              <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mr-2"></span>
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
 
-                  <Button
-                    onClick={() => handleStartExperiment(experiment.id)}
-                    disabled={!experiment.available}
-                    className="w-full mt-4"
-                    size="lg"
-                  >
-                    {experiment.available ? "Start Experiment" : "Coming Soon"}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Info Section */}
-        <div className="mt-12 bg-white rounded-lg shadow-sm border p-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                <span className="text-2xl">🥽</span>
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">VR Compatible</h3>
-              <p className="text-sm text-gray-600">
-                Use your hands naturally in VR to interact with lab equipment
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                <span className="text-2xl">🛡️</span>
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Safe Learning</h3>
-              <p className="text-sm text-gray-600">
-                Practice dangerous experiments safely in a virtual environment
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                <span className="text-2xl">📊</span>
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Progress Tracking</h3>
-              <p className="text-sm text-gray-600">
-                Monitor your learning progress and experiment results
-              </p>
-            </div>
+                      <Button
+                        onClick={() => handleStartExperiment(experiment.id)}
+                        disabled={!experiment.available}
+                        className={`w-full mt-4 rounded-full font-semibold transition-all duration-300 ${
+                          experiment.available 
+                            ? "bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white shadow-lg hover:shadow-green-500/25 transform hover:scale-105" 
+                            : "bg-gray-600 text-gray-400 cursor-not-allowed"
+                        }`}
+                        size="lg"
+                      >
+                        {experiment.available ? "🚀 Start Experiment" : "Coming Soon"}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
           </div>
         </div>
-      </main>
+      </motion.section>
+
+      {/* Footer CTA */}
+      <motion.section 
+        className="relative py-24 bg-gradient-to-r from-blue-900/50 to-purple-900/50 backdrop-blur-sm"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-4xl font-bold text-white mb-6">
+              Ready to Transform Chemistry Education?
+            </h2>
+            <p className="text-xl text-gray-300 mb-8">
+              Join thousands of educators worldwide who are revolutionizing science learning with VR technology.
+            </p>
+            <Button
+              onClick={() => navigate("/lab")}
+              size="lg"
+              className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-12 py-4 text-xl font-bold rounded-full shadow-2xl hover:shadow-green-500/25 transform hover:scale-105 transition-all duration-300"
+            >
+              ⚡ Experience the Future Now
+            </Button>
+          </motion.div>
+        </div>
+      </motion.section>
     </div>
   );
 }
