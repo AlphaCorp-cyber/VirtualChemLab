@@ -346,42 +346,92 @@ export function VRControls() {
       setLeftHandPosition(leftPos);
       setRightHandPosition(rightPos);
       
-      // Auto-grab test strips when hands are close
+      // Realistic VR grip detection - check for hand proximity AND grip gesture
       const stripPositions = [
         { id: 'indicator-1', pos: new THREE.Vector3(1.2, 1.0, -0.5) },
         { id: 'indicator-2', pos: new THREE.Vector3(1.3, 1.0, -0.5) },
         { id: 'indicator-3', pos: new THREE.Vector3(1.4, 1.0, -0.5) }
       ];
       
+      // Get VR controller input states
+      const leftController = session?.inputSources?.[0];
+      const rightController = session?.inputSources?.[1];
+      
+      // Check for grip/squeeze gestures
+      const leftGripPressed = leftController?.gamepad?.buttons?.[1]?.pressed || false; // Grip button
+      const rightGripPressed = rightController?.gamepad?.buttons?.[1]?.pressed || false; // Grip button
+      const leftTriggerPressed = leftController?.gamepad?.buttons?.[0]?.pressed || false; // Trigger
+      const rightTriggerPressed = rightController?.gamepad?.buttons?.[0]?.pressed || false; // Trigger
+      
+      // Consider gripping if either grip button or trigger is pressed
+      const leftIsGripping = leftGripPressed || leftTriggerPressed;
+      const rightIsGripping = rightGripPressed || rightTriggerPressed;
+      
       stripPositions.forEach(strip => {
         const leftDistance = leftPos.distanceTo(strip.pos);
         const rightDistance = rightPos.distanceTo(strip.pos);
         
-        if ((leftDistance < handRadius || rightDistance < handRadius) && !selectedStripId) {
+        // Only grab if hand is close AND user is making grip gesture AND not already holding something
+        const leftCanGrab = leftDistance < handRadius && leftIsGripping && !selectedStripId;
+        const rightCanGrab = rightDistance < handRadius && rightIsGripping && !selectedStripId;
+        
+        if (leftCanGrab || rightCanGrab) {
           grabTestStrip(strip.id);
           setGrippedObject(strip.id);
-          setLeftHandGripping(leftDistance < rightDistance);
-          setRightHandGripping(rightDistance < leftDistance);
+          setLeftHandGripping(leftCanGrab);
+          setRightHandGripping(rightCanGrab);
         }
       });
       
-      // Auto-pour when holding strip over beaker
+      // Release object when grip is released
+      if (grippedObject && !leftIsGripping && !rightIsGripping) {
+        releaseTestStrip();
+        setGrippedObject(null);
+        setLeftHandGripping(false);
+        setRightHandGripping(false);
+      }
+      
+      // Realistic pouring - require hand positioning and deliberate dipping motion
       if (grippedObject && (leftHandGripping || rightHandGripping)) {
         const handPos = leftHandGripping ? leftPos : rightPos;
+        const handController = leftHandGripping ? leftController : rightController;
+        
+        // Get hand rotation to detect tilting/dipping gesture
+        const handRotation = new THREE.Quaternion();
+        if (handController?.gripSpace) {
+          // This is a simplified rotation check - in real VR this would use actual hand tracking
+          const handMatrix = new THREE.Matrix4();
+          handMatrix.fromArray(handController.gripSpace.transform?.matrix || [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
+          handMatrix.decompose(new THREE.Vector3(), handRotation, new THREE.Vector3());
+        }
         
         beakers.forEach(beaker => {
           const beakerPos = new THREE.Vector3(...beaker.position);
           const distance = handPos.distanceTo(beakerPos);
           
-          if (distance < 0.25) {
-            testStripInLiquid(grippedObject, beaker.id);
+          // Check if hand is close to beaker AND positioned above it
+          const isAboveBeaker = handPos.y > beakerPos.y + 0.1;
+          const isCloseEnough = distance < 0.3;
+          
+          // Detect downward dipping motion (simplified - checking Y velocity)
+          const previousHandPos = leftHandGripping ? 
+            new THREE.Vector3().copy(leftHandPosition) : 
+            new THREE.Vector3().copy(rightHandPosition);
+          const isMovingDown = handPos.y < previousHandPos.y - 0.01;
+          
+          if (isCloseEnough && isAboveBeaker && isMovingDown) {
+            setPourGesture(true);
             
-            setTimeout(() => {
-              releaseTestStrip();
-              setGrippedObject(null);
-              setLeftHandGripping(false);
-              setRightHandGripping(false);
-            }, 1000);
+            // Only test if hand moves into the beaker liquid level
+            if (handPos.y <= beakerPos.y + 0.15) {
+              testStripInLiquid(grippedObject, beaker.id);
+              
+              setTimeout(() => {
+                setPourGesture(false);
+              }, 1500);
+            }
+          } else if (!isCloseEnough) {
+            setPourGesture(false);
           }
         });
       }
@@ -632,74 +682,148 @@ export function VRControls() {
       {/* VR Hand Controllers */}
       {isPresenting && session && (
         <group>
-          {/* Enhanced left hand */}
+          {/* Enhanced left hand with realistic grip animation */}
           <group ref={leftControllerRef} position={[-0.3, 1.2, -0.5]}>
+            {/* Palm */}
             <mesh position={[0, 0, 0]}>
               <boxGeometry args={[0.08, 0.12, 0.04]} />
               <meshStandardMaterial 
-                color={leftHandGripping ? "#FF6B6B" : "#FFE5CC"} 
+                color={leftHandGripping ? "#FFB3B3" : "#FFE5CC"} 
                 roughness={0.6}
               />
             </mesh>
             
+            {/* Fingers - curl when gripping */}
             {[0, 1, 2, 3].map(i => (
-              <mesh key={i} position={[(-1.5 + i) * 0.02, 0.08, 0]}>
-                <boxGeometry args={[0.015, 0.06, 0.02]} />
-                <meshStandardMaterial 
-                  color={leftHandGripping ? "#FF6B6B" : "#FFE5CC"} 
-                  roughness={0.6}
-                />
-              </mesh>
+              <group key={i} position={[(-1.5 + i) * 0.02, 0.08, 0]}>
+                <mesh 
+                  rotation={leftHandGripping ? [Math.PI/3, 0, 0] : [0, 0, 0]}
+                  position={[0, leftHandGripping ? -0.02 : 0, leftHandGripping ? 0.02 : 0]}
+                >
+                  <boxGeometry args={[0.015, 0.06, 0.02]} />
+                  <meshStandardMaterial 
+                    color={leftHandGripping ? "#FFB3B3" : "#FFE5CC"} 
+                    roughness={0.6}
+                  />
+                </mesh>
+                
+                {/* Finger tip */}
+                <mesh 
+                  position={[0, leftHandGripping ? 0.02 : 0.04, leftHandGripping ? 0.03 : 0]}
+                  rotation={leftHandGripping ? [Math.PI/2, 0, 0] : [0, 0, 0]}
+                >
+                  <boxGeometry args={[0.012, 0.03, 0.015]} />
+                  <meshStandardMaterial 
+                    color={leftHandGripping ? "#FFB3B3" : "#FFE5CC"} 
+                    roughness={0.6}
+                  />
+                </mesh>
+              </group>
             ))}
             
-            <mesh position={[-0.04, 0.02, 0.02]} rotation={[0, 0, Math.PI/4]}>
+            {/* Thumb */}
+            <mesh 
+              position={[-0.04, 0.02, 0.02]} 
+              rotation={leftHandGripping ? [0, 0, Math.PI/2] : [0, 0, Math.PI/4]}
+            >
               <boxGeometry args={[0.015, 0.05, 0.015]} />
               <meshStandardMaterial 
-                color={leftHandGripping ? "#FF6B6B" : "#FFE5CC"} 
+                color={leftHandGripping ? "#FFB3B3" : "#FFE5CC"} 
                 roughness={0.6}
               />
             </mesh>
             
+            {/* Grip indicator */}
             {leftHandGripping && (
               <mesh position={[0, 0.15, 0]}>
-                <sphereGeometry args={[0.02]} />
-                <meshStandardMaterial color="#00FF00" emissive="#00FF00" emissiveIntensity={0.3} />
+                <sphereGeometry args={[0.015]} />
+                <meshStandardMaterial color="#00FF00" emissive="#00FF00" emissiveIntensity={0.5} />
+              </mesh>
+            )}
+            
+            {/* Proximity indicator when near grabbable objects */}
+            {!leftHandGripping && (
+              <mesh position={[0, -0.05, 0]} scale={[1, 0.1, 1]}>
+                <sphereGeometry args={[handRadius]} />
+                <meshStandardMaterial 
+                  color="#4FC3F7" 
+                  transparent 
+                  opacity={0.2}
+                  wireframe
+                />
               </mesh>
             )}
           </group>
           
-          {/* Enhanced right hand */}
+          {/* Enhanced right hand with realistic grip animation */}
           <group ref={rightControllerRef} position={[0.3, 1.2, -0.5]}>
+            {/* Palm */}
             <mesh position={[0, 0, 0]}>
               <boxGeometry args={[0.08, 0.12, 0.04]} />
               <meshStandardMaterial 
-                color={rightHandGripping ? "#FF6B6B" : "#FFE5CC"} 
+                color={rightHandGripping ? "#FFB3B3" : "#FFE5CC"} 
                 roughness={0.6}
               />
             </mesh>
             
+            {/* Fingers - curl when gripping */}
             {[0, 1, 2, 3].map(i => (
-              <mesh key={i} position={[(-1.5 + i) * 0.02, 0.08, 0]}>
-                <boxGeometry args={[0.015, 0.06, 0.02]} />
-                <meshStandardMaterial 
-                  color={rightHandGripping ? "#FF6B6B" : "#FFE5CC"} 
-                  roughness={0.6}
-                />
-              </mesh>
+              <group key={i} position={[(-1.5 + i) * 0.02, 0.08, 0]}>
+                <mesh 
+                  rotation={rightHandGripping ? [Math.PI/3, 0, 0] : [0, 0, 0]}
+                  position={[0, rightHandGripping ? -0.02 : 0, rightHandGripping ? 0.02 : 0]}
+                >
+                  <boxGeometry args={[0.015, 0.06, 0.02]} />
+                  <meshStandardMaterial 
+                    color={rightHandGripping ? "#FFB3B3" : "#FFE5CC"} 
+                    roughness={0.6}
+                  />
+                </mesh>
+                
+                {/* Finger tip */}
+                <mesh 
+                  position={[0, rightHandGripping ? 0.02 : 0.04, rightHandGripping ? 0.03 : 0]}
+                  rotation={rightHandGripping ? [Math.PI/2, 0, 0] : [0, 0, 0]}
+                >
+                  <boxGeometry args={[0.012, 0.03, 0.015]} />
+                  <meshStandardMaterial 
+                    color={rightHandGripping ? "#FFB3B3" : "#FFE5CC"} 
+                    roughness={0.6}
+                  />
+                </mesh>
+              </group>
             ))}
             
-            <mesh position={[0.04, 0.02, 0.02]} rotation={[0, 0, -Math.PI/4]}>
+            {/* Thumb */}
+            <mesh 
+              position={[0.04, 0.02, 0.02]} 
+              rotation={rightHandGripping ? [0, 0, -Math.PI/2] : [0, 0, -Math.PI/4]}
+            >
               <boxGeometry args={[0.015, 0.05, 0.015]} />
               <meshStandardMaterial 
-                color={rightHandGripping ? "#FF6B6B" : "#FFE5CC"} 
+                color={rightHandGripping ? "#FFB3B3" : "#FFE5CC"} 
                 roughness={0.6}
               />
             </mesh>
             
+            {/* Grip indicator */}
             {rightHandGripping && (
               <mesh position={[0, 0.15, 0]}>
-                <sphereGeometry args={[0.02]} />
-                <meshStandardMaterial color="#00FF00" emissive="#00FF00" emissiveIntensity={0.3} />
+                <sphereGeometry args={[0.015]} />
+                <meshStandardMaterial color="#00FF00" emissive="#00FF00" emissiveIntensity={0.5} />
+              </mesh>
+            )}
+            
+            {/* Proximity indicator when near grabbable objects */}
+            {!rightHandGripping && (
+              <mesh position={[0, -0.05, 0]} scale={[1, 0.1, 1]}>
+                <sphereGeometry args={[handRadius]} />
+                <meshStandardMaterial 
+                  color="#4FC3F7" 
+                  transparent 
+                  opacity={0.2}
+                  wireframe
+                />
               </mesh>
             )}
           </group>
