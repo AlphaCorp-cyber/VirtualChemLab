@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
-import { Volume2, VolumeX, RotateCcw } from "lucide-react";
+import { Volume2, VolumeX, RotateCcw, FlaskConical, Flame } from "lucide-react";
 
 export function LabUI() {
   const { 
@@ -14,9 +14,11 @@ export function LabUI() {
     totalTests, 
     resetLab,
     selectedStripId,
-    lastTestResult 
+    lastTestResult,
+    lastFlameTestResult,
+    switchExperiment
   } = useChemistryLab();
-  
+
   const { isMuted, toggleMute } = useAudio();
 
   const getPhClassification = (ph: number) => {
@@ -27,12 +29,42 @@ export function LabUI() {
 
   return (
     <div className="fixed inset-0 pointer-events-none">
-      {/* Top bar with progress and controls */}
-      <div className="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-auto">
+      <div className="absolute top-4 left-4 space-y-4 pointer-events-auto">
+        {/* Experiment Selector */}
         <Card className="bg-white/90 backdrop-blur-sm">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg">VR Chemistry Lab</CardTitle>
+            <CardTitle className="text-lg">Select Experiment</CardTitle>
           </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="flex gap-2">
+              <Button
+                variant={currentExperiment === "pH Testing" ? "default" : "outline"}
+                size="sm"
+                onClick={() => switchExperiment("pH Testing")}
+                className="flex items-center gap-2"
+              >
+                <FlaskConical className="w-4 h-4" />
+                pH Testing
+              </Button>
+              <Button
+                variant={currentExperiment === "Flame Tests" ? "default" : "outline"}
+                size="sm"
+                onClick={() => switchExperiment("Flame Tests")}
+                className="flex items-center gap-2"
+              >
+                <Flame className="w-4 h-4" />
+                Flame Tests
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Experiment Info */}
+        <Card className="bg-white/90 backdrop-blur-sm">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg">{currentExperiment}</CardTitle>
+          </CardHeader>
+
           <CardContent className="space-y-3">
             <div>
               <div className="flex justify-between items-center mb-1">
@@ -41,36 +73,78 @@ export function LabUI() {
               </div>
               <Progress value={progress} className="h-2" />
             </div>
-            
+
             <div className="flex gap-2 text-sm">
               <span>Tests completed: {completedTests}/{totalTests}</span>
             </div>
-            
+
             <div className="text-xs text-gray-500">
               08:19 AM - pH Testing Experiment
             </div>
           </CardContent>
         </Card>
 
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={toggleMute}
-            className="bg-white/90 backdrop-blur-sm"
-          >
-            {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-          </Button>
-          
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={resetLab}
-            className="bg-white/90 backdrop-blur-sm"
-          >
-            <RotateCcw size={20} />
-          </Button>
-        </div>
+        {/* Last Test Result */}
+        {lastTestResult && currentExperiment === "pH Testing" && (
+          <Card className="bg-white/90 backdrop-blur-sm">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">Last pH Test Result</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <p className="text-sm font-medium">{lastTestResult.solutionName}</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">pH:</span>
+                  <Badge 
+                    variant={getPhClassification(lastTestResult.phValue).color as any}
+                    className="text-xs"
+                  >
+                    {lastTestResult.phValue.toFixed(1)}
+                  </Badge>
+                  <span className="text-xs text-gray-600">
+                    ({getPhClassification(lastTestResult.phValue).label})
+                  </span>
+                </div>
+                <div 
+                  className="w-4 h-4 rounded border border-gray-300"
+                  style={{ backgroundColor: lastTestResult.color }}
+                  title={`Color: ${lastTestResult.color}`}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Last Flame Test Result */}
+        {lastFlameTestResult && currentExperiment === "Flame Tests" && (
+          <Card className="bg-white/90 backdrop-blur-sm">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">Last Flame Test Result</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <p className="text-sm font-medium">{lastFlameTestResult.saltName}</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">Ion:</span>
+                  <Badge variant="default" className="text-xs">
+                    {lastFlameTestResult.ion}
+                  </Badge>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">Flame Color:</span>
+                  <div 
+                    className="w-4 h-4 rounded border border-gray-300"
+                    style={{ backgroundColor: lastFlameTestResult.flameColor }}
+                    title={`Color: ${lastFlameTestResult.flameColorName}`}
+                  />
+                  <span className="text-xs text-gray-600">
+                    {lastFlameTestResult.flameColorName}
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       {/* Instructions panel */}
@@ -151,6 +225,27 @@ export function LabUI() {
           </Card>
         </div>
       )}
+
+           {/* Audio control and Reset button */}
+           <div className="absolute top-4 right-4 flex gap-2 pointer-events-auto">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={toggleMute}
+            className="bg-white/90 backdrop-blur-sm"
+          >
+            {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+          </Button>
+
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={resetLab}
+            className="bg-white/90 backdrop-blur-sm"
+          >
+            <RotateCcw size={20} />
+          </Button>
+        </div>
     </div>
   );
 }

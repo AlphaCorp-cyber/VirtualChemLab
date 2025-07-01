@@ -1,6 +1,7 @@
 import { useFrame } from "@react-three/fiber";
 import { LabEnvironment } from "./LabEnvironment";
 import { LabEquipment } from "./LabEquipment";
+import { FlameTestLab } from "./FlameTestLab";
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
 import { useKeyboardControls } from "@react-three/drei";
 import { useRef } from "react";
@@ -8,7 +9,7 @@ import * as THREE from "three";
 
 export function ChemistryLab() {
   const cameraRef = useRef<THREE.Camera>();
-  const { updatePhysics } = useChemistryLab();
+  const { updatePhysics, currentExperiment } = useChemistryLab();
   const [subscribe, getState] = useKeyboardControls();
 
   useFrame((state, delta) => {
@@ -117,7 +118,8 @@ export function ChemistryLab() {
       
       {/* Lab environment and equipment */}
       <LabEnvironment />
-      <LabEquipment />
+      {currentExperiment === "pH Testing" && <LabEquipment />}
+      {currentExperiment === "Flame Tests" && <FlameTestLab />}
     </>
   );
 }

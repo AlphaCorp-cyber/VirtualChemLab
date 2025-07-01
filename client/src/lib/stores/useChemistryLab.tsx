@@ -25,12 +25,37 @@ interface TestResult {
   timestamp: number;
 }
 
+interface MetalSalt {
+  id: string;
+  position: [number, number, number];
+  name: string;
+  formula: string;
+  ion: string;
+  flameColor: string;
+  flameColorName: string;
+}
+
+interface FlameTestResult {
+  saltName: string;
+  ion: string;
+  flameColor: string;
+  flameColorName: string;
+  timestamp: number;
+}
+
 interface ChemistryLabState {
   // Lab state
   beakers: Beaker[];
   testStrips: TestStrip[];
   selectedStripId: string | null;
   currentExperiment: string;
+  
+  // Flame test state
+  metalSalts: MetalSalt[];
+  bunsenBurnerOn: boolean;
+  wireLoopSelected: boolean;
+  selectedSaltId: string | null;
+  lastFlameTestResult: FlameTestResult | null;
   
   // Progress tracking
   completedTests: number;
@@ -45,6 +70,16 @@ interface ChemistryLabState {
   testStripInLiquid: (stripId: string, beakerId: string) => void;
   updatePhysics: (delta: number) => void;
   resetLab: () => void;
+  
+  // Flame test actions
+  selectSalt: (saltId: string) => void;
+  performFlameTest: (saltId: string) => void;
+  toggleBunsenBurner: () => void;
+  selectWireLoop: () => void;
+  releaseWireLoop: () => void;
+  
+  // Experiment switching
+  switchExperiment: (experiment: string) => void;
 }
 
 const initialBeakers: Beaker[] = [
@@ -156,12 +191,56 @@ const initialTestStrips: TestStrip[] = [
   }
 ];
 
+const initialMetalSalts: MetalSalt[] = [
+  {
+    id: "salt-1",
+    position: [-3, 1.52, -0.8],
+    name: "Sodium Chloride",
+    formula: "NaCl",
+    ion: "Na⁺",
+    flameColor: "#FFD700",
+    flameColorName: "Yellow"
+  },
+  {
+    id: "salt-2",
+    position: [-2, 1.52, -0.8],
+    name: "Potassium Nitrate",
+    formula: "KNO₃",
+    ion: "K⁺",
+    flameColor: "#8A2BE2",
+    flameColorName: "Lilac/Purple"
+  },
+  {
+    id: "salt-3",
+    position: [-1, 1.52, -0.8],
+    name: "Calcium Chloride",
+    formula: "CaCl₂",
+    ion: "Ca²⁺",
+    flameColor: "#B22222",
+    flameColorName: "Brick Red"
+  },
+  {
+    id: "salt-4",
+    position: [0, 1.52, -0.8],
+    name: "Copper(II) Sulfate",
+    formula: "CuSO₄",
+    ion: "Cu²⁺",
+    flameColor: "#00CED1",
+    flameColorName: "Blue-Green"
+  }
+];
+
 export const useChemistryLab = create<ChemistryLabState>()(
   subscribeWithSelector((set, get) => ({
     beakers: [],
     testStrips: [],
     selectedStripId: null,
     currentExperiment: "pH Testing",
+    metalSalts: [],
+    bunsenBurnerOn: false,
+    wireLoopSelected: false,
+    selectedSaltId: null,
+    lastFlameTestResult: null,
     completedTests: 0,
     totalTests: 10,
     progress: 0,
@@ -171,7 +250,12 @@ export const useChemistryLab = create<ChemistryLabState>()(
       set({
         beakers: initialBeakers,
         testStrips: initialTestStrips,
+        metalSalts: initialMetalSalts,
         selectedStripId: null,
+        bunsenBurnerOn: false,
+        wireLoopSelected: false,
+        selectedSaltId: null,
+        lastFlameTestResult: null,
         completedTests: 0,
         progress: 0,
         lastTestResult: null
@@ -250,6 +334,73 @@ export const useChemistryLab = create<ChemistryLabState>()(
     resetLab: () => {
       get().initializeLab();
       console.log("Lab reset");
+    },
+
+    selectSalt: (saltId: string) => {
+      set({ selectedSaltId: saltId });
+      console.log(`Selected salt: ${saltId}`);
+    },
+
+    performFlameTest: (saltId: string) => {
+      const { metalSalts, wireLoopSelected, bunsenBurnerOn, completedTests, totalTests } = get();
+      
+      if (!wireLoopSelected || !bunsenBurnerOn) {
+        console.log("Need wire loop and lit bunsen burner to perform flame test");
+        return;
+      }
+      
+      const salt = metalSalts.find(s => s.id === saltId);
+      if (!salt) return;
+      
+      const flameTestResult: FlameTestResult = {
+        saltName: salt.name,
+        ion: salt.ion,
+        flameColor: salt.flameColor,
+        flameColorName: salt.flameColorName,
+        timestamp: Date.now()
+      };
+      
+      const newCompletedTests = completedTests + 1;
+      const newProgress = (newCompletedTests / totalTests) * 100;
+      
+      set({
+        lastFlameTestResult: flameTestResult,
+        completedTests: newCompletedTests,
+        progress: newProgress
+      });
+      
+      console.log(`Flame test completed: ${salt.ion} produces ${salt.flameColorName} flame`);
+    },
+
+    toggleBunsenBurner: () => {
+      const { bunsenBurnerOn } = get();
+      set({ bunsenBurnerOn: !bunsenBurnerOn });
+      console.log(`Bunsen burner ${!bunsenBurnerOn ? 'lit' : 'extinguished'}`);
+    },
+
+    selectWireLoop: () => {
+      set({ wireLoopSelected: true });
+      console.log("Wire loop selected");
+    },
+
+    releaseWireLoop: () => {
+      set({ wireLoopSelected: false, selectedSaltId: null });
+      console.log("Wire loop released");
+    },
+
+    switchExperiment: (experiment: string) => {
+      set({ 
+        currentExperiment: experiment,
+        completedTests: 0,
+        progress: 0,
+        lastTestResult: null,
+        lastFlameTestResult: null,
+        selectedStripId: null,
+        selectedSaltId: null,
+        bunsenBurnerOn: false,
+        wireLoopSelected: false
+      });
+      console.log(`Switched to experiment: ${experiment}`);
     }
   }))
 );
