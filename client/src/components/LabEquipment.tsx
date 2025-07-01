@@ -183,7 +183,7 @@ export function LabEquipment() {
       ))}
       
       {/* Test tubes rack */}
-      <group position={[2, 1, -0.5]}>
+      <group position={[2, 1.3, -0.5]}>
         {Array.from({ length: 5 }, (_, i) => (
           <TestTube
             key={i}
@@ -195,12 +195,12 @@ export function LabEquipment() {
         {/* Rack base */}
         <mesh position={[0, -0.2, 0]}>
           <boxGeometry args={[0.8, 0.05, 0.2]} />
-          <meshStandardMaterial color="#654321" />
+          <meshStandardMaterial color="#2c3e50" />
         </mesh>
       </group>
       
       {/* pH indicator bottles */}
-      <group position={[-1.5, 1.3, 0.8]}>
+      <group position={[-1.5, 1.6, 0.8]}>
         <mesh 
           castShadow
           onClick={() => grabTestStrip('indicator-1')}
@@ -274,7 +274,7 @@ export function LabEquipment() {
       </group>
       
       {/* Laboratory equipment box */}
-      <group position={[-2.5, 1.1, -0.5]}>
+      <group position={[-2.5, 1.4, -0.5]}>
         <mesh castShadow>
           <boxGeometry args={[0.5, 0.3, 0.3]} />
           <meshStandardMaterial color="#ff4500" />

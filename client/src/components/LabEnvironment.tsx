@@ -49,22 +49,28 @@ export function LabEnvironment() {
         <meshStandardMaterial map={new THREE.CanvasTexture(createTileTexture())} />
       </mesh>
       
-      {/* Lab bench */}
-      <group position={[0, 0.9, -1]}>
+      {/* Lab bench - taller and professional lab material */}
+      <group position={[0, 1.2, -1]}>
         <mesh castShadow receiveShadow>
           <boxGeometry args={[6, 0.1, 2]} />
-          <meshStandardMaterial map={woodTexture} color="#8B4513" />
+          <meshStandardMaterial color="#2c3e50" roughness={0.3} metalness={0.1} />
         </mesh>
         
-        {/* Bench legs */}
+        {/* Bench legs - metal */}
         {[-2.8, 2.8].map((x, i) => 
           [-0.8, 0.8].map((z, j) => (
-            <mesh key={`${i}-${j}`} position={[x, -0.45, z]} castShadow>
-              <boxGeometry args={[0.1, 0.8, 0.1]} />
-              <meshStandardMaterial color="#654321" />
+            <mesh key={`${i}-${j}`} position={[x, -0.6, z]} castShadow>
+              <boxGeometry args={[0.08, 1.2, 0.08]} />
+              <meshStandardMaterial color="#34495e" metalness={0.7} roughness={0.2} />
             </mesh>
           ))
         )}
+        
+        {/* Lab bench edge trim */}
+        <mesh position={[0, 0.06, 0]}>
+          <boxGeometry args={[6.1, 0.02, 2.1]} />
+          <meshStandardMaterial color="#1a252f" />
+        </mesh>
       </group>
       
       {/* Back wall */}
