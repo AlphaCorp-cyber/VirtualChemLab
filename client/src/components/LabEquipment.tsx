@@ -59,11 +59,11 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       <mesh position={[0, -beakerHeight/2, 0]}>
         <cylinderGeometry args={[beakerRadius, beakerRadius, wallThickness * 3, 32]} />
         <meshPhysicalMaterial 
-          color="#ffffff" 
+          color="#87CEEB" 
           transparent 
-          opacity={0.08}
+          opacity={0.25}
           roughness={0.02}
-          transmission={0.98}
+          transmission={0.85}
           thickness={wallThickness * 2}
           ior={1.52}
           clearcoat={1.0}
@@ -89,18 +89,18 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       >
         <cylinderGeometry args={[beakerRadius, beakerRadius - wallThickness, beakerHeight, 64]} />
         <meshPhysicalMaterial
-          color="#ffffff"
+          color="#87CEEB"
           transparent
-          opacity={0.08}
+          opacity={0.25}
           roughness={0.02}
-          transmission={0.98}
+          transmission={0.85}
           thickness={wallThickness}
           ior={1.52}
           clearcoat={1.0}
           clearcoatRoughness={0.01}
           reflectivity={0.98}
-          emissive="#ffffff"
-          emissiveIntensity={0.01}
+          emissive="#87CEEB"
+          emissiveIntensity={0.05}
         />
       </mesh>
       
@@ -114,11 +114,11 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       <mesh position={[0, beakerHeight/2, 0]}>
         <cylinderGeometry args={[beakerRadius + rimThickness, beakerRadius, rimThickness * 2, 32]} />
         <meshPhysicalMaterial 
-          color="#ffffff" 
+          color="#87CEEB" 
           transparent 
-          opacity={0.12}
+          opacity={0.3}
           roughness={0.05}
-          transmission={0.95}
+          transmission={0.8}
           thickness={rimThickness}
           ior={1.52}
           clearcoat={1.0}
@@ -130,11 +130,11 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       <mesh position={[beakerRadius + 0.01, beakerHeight/2 - 0.01, 0]} rotation={[0, 0, -Math.PI / 6]}>
         <cylinderGeometry args={[0.008, 0.012, 0.025, 16]} />
         <meshPhysicalMaterial
-          color="#ffffff"
+          color="#87CEEB"
           transparent
-          opacity={0.08}
+          opacity={0.25}
           roughness={0.02}
-          transmission={0.98}
+          transmission={0.85}
           thickness={wallThickness}
           ior={1.52}
           clearcoat={1.0}
@@ -146,11 +146,11 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       <mesh position={[beakerRadius + 0.018, beakerHeight/2 + 0.005, 0]} rotation={[0, 0, -Math.PI / 6]}>
         <cylinderGeometry args={[0.013, 0.008, 0.003, 16]} />
         <meshPhysicalMaterial
-          color="#ffffff"
+          color="#87CEEB"
           transparent
-          opacity={0.1}
+          opacity={0.25}
           roughness={0.02}
-          transmission={0.98}
+          transmission={0.85}
           thickness={wallThickness/2}
           ior={1.52}
         />
