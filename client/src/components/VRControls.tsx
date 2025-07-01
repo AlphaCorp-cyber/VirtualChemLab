@@ -1,4 +1,4 @@
-import { useXR, useXREvent } from "@react-three/xr";
+import { useXR } from "@react-three/xr";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
 import { useKeyboardControls } from "@react-three/drei";

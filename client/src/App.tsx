@@ -1,11 +1,15 @@
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useEffect } from "react";
 import { KeyboardControls } from "@react-three/drei";
+import { XR, createXRStore } from "@react-three/xr";
 import { ChemistryLab } from "./components/ChemistryLab";
 import { LabUI } from "./components/LabUI";
 import { useAudio } from "./lib/stores/useAudio";
 import { useChemistryLab } from "./lib/stores/useChemistryLab";
 import "@fontsource/inter";
+
+// Create XR store for VR support
+const xrStore = createXRStore();
 
 // Define control keys for the lab
 const controls = [
@@ -43,15 +47,41 @@ function App() {
               powerPreference: "high-performance"
             }}
           >
-            <color attach="background" args={["#f0f8ff"]} />
-            
-            <Suspense fallback={null}>
-              <ChemistryLab />
-            </Suspense>
+            <XR store={xrStore}>
+              <color attach="background" args={["#f0f8ff"]} />
+              
+              <Suspense fallback={null}>
+                <ChemistryLab />
+              </Suspense>
+            </XR>
           </Canvas>
       </KeyboardControls>
       
       <LabUI />
+      
+      {/* VR Entry Button */}
+      <div style={{ 
+        position: 'absolute', 
+        bottom: '20px', 
+        right: '20px', 
+        zIndex: 1000 
+      }}>
+        <button
+          onClick={() => xrStore.enterVR()}
+          style={{
+            background: '#4CAF50',
+            color: 'white',
+            border: 'none',
+            padding: '12px 24px',
+            borderRadius: '8px',
+            fontSize: '16px',
+            cursor: 'pointer',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+          }}
+        >
+          🥽 Enter VR
+        </button>
+      </div>
     </div>
   );
 }

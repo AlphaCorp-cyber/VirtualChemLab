@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { useXR } from "@react-three/xr";
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
 import { getPHColor } from "../lib/phChemistry";
 import * as THREE from "three";
@@ -23,7 +22,6 @@ export function PHTestStrip({
   const meshRef = useRef<THREE.Mesh>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [handNearby, setHandNearby] = useState(false);
-  const { session } = useXR();
   const { testStripInLiquid, grabTestStrip } = useChemistryLab();
   
   const stripColor = phValue >= 0 ? getPHColor(phValue) : "#ffffff";
@@ -78,7 +76,7 @@ export function PHTestStrip({
       </mesh>
       
       {/* VR Hand Proximity Indicator */}
-      {session && handNearby && !isSelected && (
+      {false && handNearby && !isSelected && (
         <mesh position={[0, 0, 0.02]}>
           <sphereGeometry args={[0.08]} />
           <meshStandardMaterial 
