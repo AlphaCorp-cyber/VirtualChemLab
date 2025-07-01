@@ -387,16 +387,6 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
 };
 
 export default PaperChromatographyLab;
-import React, { useState, useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { Box, Cylinder, Plane } from '@react-three/drei';
-import * as THREE from 'three';
-
-interface PaperChromatographyLabProps {
-  onExperimentComplete?: (result: string) => void;
-}
-
-export default function PaperChromatographyLab({ onExperimentComplete }: PaperChromatographyLabProps) {
   const [experimentStarted, setExperimentStarted] = useState(false);
   const [solventHeight, setSolventHeight] = useState(0.1);
   const [pigmentSeparation, setPigmentSeparation] = useState(0);
