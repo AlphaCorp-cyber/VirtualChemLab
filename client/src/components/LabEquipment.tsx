@@ -59,17 +59,23 @@ function Beaker({ position, liquidColor, phValue, id }: {
       >
         <cylinderGeometry args={[0.28, 0.28, 0.36, 32]} />
         <meshPhysicalMaterial
-          color="#ffffff"
+          color="#e8f4f8"
           transparent
-          opacity={0.15}
-          roughness={0.02}
-          transmission={0.92}
-          thickness={0.5}
+          opacity={0.25}
+          roughness={0.1}
+          transmission={0.85}
+          thickness={0.3}
           ior={1.52}
           clearcoat={1.0}
           clearcoatRoughness={0.05}
-          reflectivity={0.9}
+          reflectivity={0.95}
         />
+      </mesh>
+      
+      {/* Beaker edge wireframe for visibility */}
+      <mesh>
+        <cylinderGeometry args={[0.28, 0.28, 0.36, 32]} />
+        <meshBasicMaterial color="#4a90e2" wireframe opacity={0.15} transparent />
       </mesh>
       
       {/* Beaker spout - characteristic beaker feature */}
@@ -170,16 +176,16 @@ function TestTube({ position, isEmpty = false }: {
       <mesh castShadow receiveShadow>
         <cylinderGeometry args={[0.04, 0.04, 0.32, 16]} />
         <meshPhysicalMaterial
-          color="#ffffff"
+          color="#e8f4f8"
           transparent
-          opacity={0.12}
-          roughness={0.02}
-          transmission={0.92}
-          thickness={0.5}
+          opacity={0.22}
+          roughness={0.1}
+          transmission={0.85}
+          thickness={0.3}
           ior={1.52}
           clearcoat={1.0}
           clearcoatRoughness={0.05}
-          reflectivity={0.9}
+          reflectivity={0.95}
         />
       </mesh>
       
@@ -187,16 +193,16 @@ function TestTube({ position, isEmpty = false }: {
       <mesh position={[0, -0.16, 0]} castShadow>
         <sphereGeometry args={[0.04, 16, 8]} />
         <meshPhysicalMaterial
-          color="#ffffff"
+          color="#e8f4f8"
           transparent
-          opacity={0.12}
-          roughness={0.02}
-          transmission={0.92}
-          thickness={0.5}
+          opacity={0.22}
+          roughness={0.1}
+          transmission={0.85}
+          thickness={0.3}
           ior={1.52}
           clearcoat={1.0}
           clearcoatRoughness={0.05}
-          reflectivity={0.9}
+          reflectivity={0.95}
         />
       </mesh>
       
@@ -320,16 +326,16 @@ export function LabEquipment() {
           <mesh castShadow receiveShadow>
             <coneGeometry args={[0.15, 0.25, 16]} />
             <meshPhysicalMaterial
-              color="#ffffff"
+              color="#e8f4f8"
               transparent
-              opacity={0.12}
-              roughness={0.02}
-              transmission={0.92}
-              thickness={0.5}
+              opacity={0.22}
+              roughness={0.1}
+              transmission={0.85}
+              thickness={0.3}
               ior={1.52}
               clearcoat={1.0}
               clearcoatRoughness={0.05}
-              reflectivity={0.9}
+              reflectivity={0.95}
             />
           </mesh>
           {/* Flask neck */}
@@ -420,16 +426,16 @@ export function LabEquipment() {
         <mesh castShadow receiveShadow>
           <cylinderGeometry args={[0.06, 0.06, 0.4, 16]} />
           <meshPhysicalMaterial
-            color="#ffffff"
+            color="#e8f4f8"
             transparent
-            opacity={0.12}
-            roughness={0.02}
-            transmission={0.92}
-            thickness={0.5}
+            opacity={0.22}
+            roughness={0.1}
+            transmission={0.85}
+            thickness={0.3}
             ior={1.52}
             clearcoat={1.0}
             clearcoatRoughness={0.05}
-            reflectivity={0.9}
+            reflectivity={0.95}
           />
         </mesh>
         {/* Graduated cylinder base */}

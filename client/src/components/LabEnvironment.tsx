@@ -73,21 +73,21 @@ export function LabEnvironment() {
         </mesh>
       </group>
       
-      {/* Back wall - darker for better glass visibility */}
+      {/* Back wall */}
       <mesh position={[0, 2, -3]} receiveShadow>
         <planeGeometry args={[12, 4]} />
-        <meshStandardMaterial color="#2c3e50" />
+        <meshStandardMaterial color="#f8f8f8" />
       </mesh>
       
-      {/* Side walls - darker for better glass visibility */}
+      {/* Side walls */}
       <mesh position={[-6, 2, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow>
         <planeGeometry args={[6, 4]} />
-        <meshStandardMaterial color="#34495e" />
+        <meshStandardMaterial color="#f0f0f0" />
       </mesh>
       
       <mesh position={[6, 2, 0]} rotation={[0, -Math.PI / 2, 0]} receiveShadow>
         <planeGeometry args={[6, 4]} />
-        <meshStandardMaterial color="#34495e" />
+        <meshStandardMaterial color="#f0f0f0" />
       </mesh>
     </>
   );
