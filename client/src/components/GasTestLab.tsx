@@ -321,33 +321,33 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
       
       {/* Test tools */}
       <LitSplint
-        position={[-3, 1.8, 1]}
+        position={[-3, 1.62, 1]}
         isSelected={selectedTestTool === "lit-splint"}
         onSelect={() => handleToolSelect("lit-splint")}
       />
       
       <GlowingSplint
-        position={[-2, 1.8, 1]}
+        position={[-2, 1.62, 1]}
         isSelected={selectedTestTool === "glowing-splint"}
         onSelect={() => handleToolSelect("glowing-splint")}
       />
       
       <LitmusPaper
-        position={[-1, 1.8, 1]}
+        position={[-1, 1.62, 1]}
         isSelected={selectedTestTool === "red-litmus"}
         onSelect={() => handleToolSelect("red-litmus")}
         color="red"
       />
       
       <LitmusPaper
-        position={[0, 1.8, 1]}
+        position={[0, 1.62, 1]}
         isSelected={selectedTestTool === "blue-litmus"}
         onSelect={() => handleToolSelect("blue-litmus")}
         color="blue"
       />
       
       <Limewater
-        position={[1, 1.8, 1]}
+        position={[1, 1.62, 1]}
         isSelected={selectedTestTool === "limewater"}
         onSelect={() => handleToolSelect("limewater")}
       />

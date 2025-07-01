@@ -365,7 +365,7 @@ export function FlameTestLab() {
       
       {/* Wire Loop */}
       <WireLoop 
-        position={[0.5, 1.58, -0.5]}
+        position={[0.5, 1.54, -0.5]}
         isSelected={wireLoopSelected}
         onSelect={selectWireLoop}
         onRelease={releaseWireLoop}
