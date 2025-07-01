@@ -84,12 +84,13 @@ export default function Lab() {
       
       <LabUI experimentId={experimentId} />
       
-      {/* VR Entry Button */}
+      {/* VR Entry Button - Hidden on Mobile */}
       <div style={{ 
         position: 'absolute', 
         bottom: '20px', 
         right: '20px', 
-        zIndex: 1000 
+        zIndex: 1000,
+        display: window.innerWidth < 768 ? 'none' : 'block'
       }}>
         <button
           onClick={() => xrStore.enterVR()}
@@ -107,6 +108,44 @@ export default function Lab() {
           🥽 Enter VR
         </button>
       </div>
+      
+      {/* Mobile Controls */}
+      {window.innerWidth < 768 && (
+        <div style={{
+          position: 'absolute',
+          bottom: '20px',
+          right: '20px',
+          zIndex: 1000,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px'
+        }}>
+          <button
+            style={{
+              background: '#2196F3',
+              color: 'white',
+              border: 'none',
+              padding: '12px 16px',
+              borderRadius: '8px',
+              fontSize: '14px',
+              boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+            }}
+          >
+            📱 Tap to Interact
+          </button>
+          <div style={{
+            background: 'rgba(0,0,0,0.7)',
+            color: 'white',
+            padding: '8px 12px',
+            borderRadius: '6px',
+            fontSize: '12px',
+            textAlign: 'center'
+          }}>
+            Tap objects to grab/release<br/>
+            Pinch to zoom, drag to rotate
+          </div>
+        </div>
+      )}
       
       {/* Back to Landing Button */}
       <div style={{ 

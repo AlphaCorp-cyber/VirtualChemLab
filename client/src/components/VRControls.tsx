@@ -6,6 +6,11 @@ import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 import { checkCollision, getDistance } from "../lib/labPhysics";
 
+// Mobile detection utility
+const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
+
 export function VRControls() {
   const { session } = useXR();
   const { camera, scene } = useThree();
@@ -21,12 +26,91 @@ export function VRControls() {
   const [grippedObject, setGrippedObject] = useState<string | null>(null);
   const [pourGesture, setPourGesture] = useState(false);
   
+  // Mobile touch states
+  const [touchPosition, setTouchPosition] = useState<THREE.Vector2 | null>(null);
+  const [touchStartTime, setTouchStartTime] = useState(0);
+  const [lastTouchPosition, setLastTouchPosition] = useState<THREE.Vector2 | null>(null);
+  const [isTouching, setIsTouching] = useState(false);
+  
+  const isMobileDevice = isMobile();
+  
   // Hand collision detection
   const handRadius = 0.1; // 10cm interaction radius for natural hand picking
   
   // Controller references
   const leftControllerRef = useRef<THREE.Group>(null);
   const rightControllerRef = useRef<THREE.Group>(null);
+  
+  // Mobile touch handlers
+  useEffect(() => {
+    if (!isMobileDevice) return;
+    
+    const handleTouchStart = (event: TouchEvent) => {
+      event.preventDefault();
+      const touch = event.touches[0];
+      const touchPos = new THREE.Vector2(
+        (touch.clientX / window.innerWidth) * 2 - 1,
+        -(touch.clientY / window.innerHeight) * 2 + 1
+      );
+      setTouchPosition(touchPos);
+      setLastTouchPosition(touchPos);
+      setTouchStartTime(Date.now());
+      setIsTouching(true);
+    };
+    
+    const handleTouchMove = (event: TouchEvent) => {
+      event.preventDefault();
+      const touch = event.touches[0];
+      const touchPos = new THREE.Vector2(
+        (touch.clientX / window.innerWidth) * 2 - 1,
+        -(touch.clientY / window.innerHeight) * 2 + 1
+      );
+      setTouchPosition(touchPos);
+    };
+    
+    const handleTouchEnd = (event: TouchEvent) => {
+      event.preventDefault();
+      setIsTouching(false);
+      
+      // Check for tap (quick touch)
+      const touchDuration = Date.now() - touchStartTime;
+      if (touchDuration < 200 && lastTouchPosition) {
+        // Handle tap interaction for mobile
+        handleMobileTap(lastTouchPosition);
+      }
+      
+      setTouchPosition(null);
+      setLastTouchPosition(null);
+    };
+    
+    const canvas = document.querySelector('canvas');
+    if (canvas) {
+      canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+      canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+      canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
+    }
+    
+    return () => {
+      if (canvas) {
+        canvas.removeEventListener('touchstart', handleTouchStart);
+        canvas.removeEventListener('touchmove', handleTouchMove);
+        canvas.removeEventListener('touchend', handleTouchEnd);
+      }
+    };
+  }, [isMobileDevice, touchStartTime, lastTouchPosition]);
+  
+  const handleMobileTap = (touchPos: THREE.Vector2) => {
+    // Simple mobile interaction: tap to grab/release test strips
+    if (!selectedStripId) {
+      console.log('Mobile tap: Grabbing test strip');
+      grabTestStrip('indicator-1');
+      setGrippedObject('indicator-1');
+    } else {
+      console.log('Mobile tap: Releasing test strip');
+      releaseTestStrip();
+      setGrippedObject(null);
+    }
+  };
 
   useFrame((state, delta) => {
     // VR and keyboard movement system
@@ -124,8 +208,32 @@ export function VRControls() {
       }
     }
 
+    // Mobile touch interactions
+    if (isMobileDevice && isTouching && touchPosition) {
+      // Convert touch position to world coordinates for interactions
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(touchPosition, camera);
+      
+      // Simple mobile interaction logic
+      if (grippedObject) {
+        // Check if touching over a beaker for mobile pouring
+        beakers.forEach(beaker => {
+          const beakerPos = new THREE.Vector3(...beaker.position);
+          const intersects = raycaster.intersectObjects(scene.children, true);
+          
+          if (intersects.length > 0) {
+            const distance = intersects[0].distance;
+            if (distance < 5) { // Within mobile interaction range
+              console.log(`Mobile pour: ${grippedObject} into ${beaker.solutionName}`);
+              testStripInLiquid(grippedObject, beaker.id);
+            }
+          }
+        });
+      }
+    }
+    
     // Fallback keyboard controls for desktop mode
-    if (!session) {
+    if (!session && !isMobileDevice) {
       if (controls.grab && !selectedStripId) {
         grabTestStrip('indicator-1');
       }
