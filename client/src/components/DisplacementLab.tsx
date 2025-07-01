@@ -150,12 +150,105 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
         )}
       </group>
 
-      {/* Labels */}
-      <group position={[-1.5, 1.8, 0]}>
-        <mesh>
-          <planeGeometry args={[0.8, 0.3]} />
-          <meshStandardMaterial color="#ffffff" />
-        </mesh>
+      {/* Equipment Labels */}
+      <group position={[0, 2.4, 0]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.08}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Test Tube
+        </Text>
+        <Text
+          position={[0, -0.15, 0]}
+          fontSize={0.05}
+          color="#7f8c8d"
+          anchorX="center"
+          anchorY="middle"
+        >
+          (Reaction Vessel)
+        </Text>
+      </group>
+
+      <group position={[0, 1.2, 0]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.06}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Iron Nail
+        </Text>
+        <Text
+          position={[0, -0.12, 0]}
+          fontSize={0.04}
+          color="#7f8c8d"
+          anchorX="center"
+          anchorY="middle"
+        >
+          (More Reactive Metal)
+        </Text>
+      </group>
+
+      {/* Metal Selection Labels */}
+      <group position={[-2, 2.1, 0]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.08}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Metal Samples
+        </Text>
+        <Text
+          position={[0, -0.15, 0]}
+          fontSize={0.05}
+          color="#7f8c8d"
+          anchorX="center"
+          anchorY="middle"
+        >
+          (Select reactive metal)
+        </Text>
+      </group>
+
+      <group position={[-2.3, 1.3, 0]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.04}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Iron
+        </Text>
+      </group>
+
+      <group position={[-2, 1.3, 0]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.04}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Zinc
+        </Text>
+      </group>
+
+      <group position={[-1.7, 1.3, 0]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.04}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Magnesium
+        </Text>
       </group>
 
       {/* Metal Selection Area */}
@@ -219,6 +312,70 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
             roughness={0.2}
           />
         </mesh>
+      </group>
+
+      {/* Solution Labels */}
+      <group position={[2, 2.2, 0]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.08}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Salt Solutions
+        </Text>
+        <Text
+          position={[0, -0.15, 0]}
+          fontSize={0.05}
+          color="#7f8c8d"
+          anchorX="center"
+          anchorY="middle"
+        >
+          (Metal ion sources)
+        </Text>
+      </group>
+
+      <group position={[1.7, 1.3, 0]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.04}
+          color="#0066cc"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Copper Sulfate
+        </Text>
+        <Text
+          position={[0, -0.1, 0]}
+          fontSize={0.035}
+          color="#7f8c8d"
+          anchorX="center"
+          anchorY="middle"
+        >
+          CuSO₄
+        </Text>
+      </group>
+
+      <group position={[2.3, 1.3, 0]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.04}
+          color="#228b22"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Iron Sulfate
+        </Text>
+        <Text
+          position={[0, -0.1, 0]}
+          fontSize={0.035}
+          color="#7f8c8d"
+          anchorX="center"
+          anchorY="middle"
+        >
+          FeSO₄
+        </Text>
       </group>
 
       {/* Solution Bottles */}
@@ -295,6 +452,91 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
         <boxGeometry args={[0.3, 0.1, 0.1]} />
         <meshStandardMaterial color="#ff6666" />
       </mesh>
+      <Text
+        position={[1.5, 1.8, 0.06]}
+        fontSize={0.04}
+        color="#ffffff"
+        anchorX="center"
+        anchorY="middle"
+      >
+        Reset
+      </Text>
+
+      {/* Reaction Progress Display */}
+      {reactionStarted && (
+        <group position={[-2.5, 2.5, 0]}>
+          <mesh>
+            <planeGeometry args={[2, 1.5]} />
+            <meshStandardMaterial color="#ecf0f1" />
+          </mesh>
+
+          <Text
+            position={[0, 0.6, 0.01]}
+            fontSize={0.08}
+            color="#2c3e50"
+            anchorX="center"
+            anchorY="middle"
+          >
+            Displacement Reaction
+          </Text>
+
+          <Text
+            position={[0, 0.4, 0.01]}
+            fontSize={0.05}
+            color="#7f8c8d"
+            anchorX="center"
+            anchorY="middle"
+          >
+            Fe + CuSO₄ → FeSO₄ + Cu
+          </Text>
+
+          <Text
+            position={[0, 0.2, 0.01]}
+            fontSize={0.045}
+            color="#2c3e50"
+            anchorX="center"
+            anchorY="middle"
+          >
+            Progress: {Math.round(reactionProgress * 100)}%
+          </Text>
+
+          {reactionProgress > 0.3 && (
+            <Text
+              position={[0, 0, 0.01]}
+              fontSize={0.04}
+              color="#b87333"
+              anchorX="center"
+              anchorY="middle"
+            >
+              Copper depositing on iron
+            </Text>
+          )}
+
+          {reactionProgress > 0.7 && (
+            <Text
+              position={[0, -0.2, 0.01]}
+              fontSize={0.04}
+              color="#0066cc"
+              anchorX="center"
+              anchorY="middle"
+            >
+              Solution becoming colorless
+            </Text>
+          )}
+
+          {reactionProgress >= 1 && (
+            <Text
+              position={[0, -0.4, 0.01]}
+              fontSize={0.045}
+              color="#27ae60"
+              anchorX="center"
+              anchorY="middle"
+            >
+              Reaction Complete!
+            </Text>
+          )}
+        </group>
+      )}
 
       {/* Lighting */}
       <ambientLight intensity={0.6} />
