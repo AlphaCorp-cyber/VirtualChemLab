@@ -80,16 +80,25 @@ export function LabUI() {
             <h3 className="font-semibold mb-2">Instructions</h3>
             <div className="text-sm space-y-1">
               {selectedStripId ? (
-                <>
-                  <p>✓ Test strip selected</p>
-                  <p>→ Dip the strip into a beaker to test pH</p>
-                  <p>Press R to release the strip</p>
-                </>
+                selectedStripId.includes('indicator') ? (
+                  <>
+                    <p>✓ pH Indicator bottle selected</p>
+                    <p>→ Click on a beaker to pour indicator</p>
+                    <p>Press R to release the bottle</p>
+                  </>
+                ) : (
+                  <>
+                    <p>✓ Test strip selected</p>
+                    <p>→ Dip the strip into a beaker to test pH</p>
+                    <p>Press R to release the strip</p>
+                  </>
+                )
               ) : (
                 <>
+                  <p>Click on pH indicator bottle to grab it</p>
+                  <p>Pour indicator into beakers to reveal pH</p>
                   <p>Press G to grab a pH test strip</p>
                   <p>Use WASD keys to move around the lab</p>
-                  <p>Click on objects to interact</p>
                 </>
               )}
             </div>

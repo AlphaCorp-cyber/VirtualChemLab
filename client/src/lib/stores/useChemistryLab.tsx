@@ -96,6 +96,12 @@ const initialTestStrips: TestStrip[] = [
     position: [-1.6, 1.2, 0.5],
     rotation: [0, 0, 0],
     phValue: -1
+  },
+  {
+    id: "indicator-1",
+    position: [-1.5, 1.3, 0.8],
+    rotation: [0, 0, 0],
+    phValue: -1
   }
 ];
 

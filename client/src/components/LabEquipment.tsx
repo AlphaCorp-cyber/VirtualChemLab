@@ -6,7 +6,7 @@ import { useChemistryLab } from "../lib/stores/useChemistryLab";
 import { useKeyboardControls } from "@react-three/drei";
 import * as THREE from "three";
 
-// Simple beaker component since GLTF models are placeholders
+// Enhanced beaker with better visibility and pH indicator support
 function Beaker({ position, liquidColor, phValue, id }: {
   position: [number, number, number];
   liquidColor: string;
@@ -15,42 +15,112 @@ function Beaker({ position, liquidColor, phValue, id }: {
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [hasIndicator, setHasIndicator] = useState(false);
+  const [isPouring, setIsPouring] = useState(false);
+  const { testStripInLiquid, selectedStripId } = useChemistryLab();
+  
+  const handleClick = () => {
+    if (selectedStripId && selectedStripId.includes('indicator')) {
+      // Pour pH indicator into the beaker with animation
+      setIsPouring(true);
+      setTimeout(() => {
+        setHasIndicator(true);
+        setIsPouring(false);
+        testStripInLiquid(selectedStripId, id);
+        console.log(`pH indicator poured into ${id}`);
+      }, 1000);
+    }
+  };
   
   return (
     <group position={position}>
-      {/* Beaker glass */}
+      {/* Beaker base - more opaque */}
+      <mesh position={[0, -0.15, 0]}>
+        <cylinderGeometry args={[0.3, 0.25, 0.1, 16]} />
+        <meshStandardMaterial color="#ffffff" transparent opacity={0.9} />
+      </mesh>
+      
+      {/* Beaker walls - more visible */}
       <mesh
         ref={meshRef}
         onPointerEnter={() => setIsHovered(true)}
         onPointerLeave={() => setIsHovered(false)}
+        onClick={handleClick}
         castShadow
       >
-        <cylinderGeometry args={[0.3, 0.25, 0.4, 8]} />
+        <cylinderGeometry args={[0.3, 0.25, 0.4, 16]} />
         <meshPhysicalMaterial
-          color={isHovered ? "#ffffff" : "#f0f0f0"}
+          color={isHovered ? "#ffffff" : "#f8f8f8"}
           transparent
-          opacity={0.3}
+          opacity={0.6}
           roughness={0.1}
-          transmission={0.9}
+          transmission={0.7}
+          thickness={0.02}
         />
       </mesh>
       
-      {/* Liquid inside */}
-      <mesh position={[0, -0.1, 0]}>
-        <cylinderGeometry args={[0.28, 0.23, 0.2, 8]} />
-        <meshStandardMaterial color={liquidColor} transparent opacity={0.8} />
+      {/* Beaker rim */}
+      <mesh position={[0, 0.2, 0]}>
+        <cylinderGeometry args={[0.32, 0.3, 0.02, 16]} />
+        <meshStandardMaterial color="#e0e0e0" />
+      </mesh>
+      
+      {/* Liquid inside - larger and more visible */}
+      <mesh position={[0, -0.08, 0]}>
+        <cylinderGeometry args={[0.28, 0.23, 0.24, 16]} />
+        <meshStandardMaterial 
+          color={hasIndicator ? liquidColor : "#87CEEB"} 
+          transparent 
+          opacity={hasIndicator ? 0.9 : 0.7}
+          emissive={hasIndicator ? new THREE.Color(liquidColor).multiplyScalar(0.1) : "#000000"}
+        />
+      </mesh>
+      
+      {/* pH label background */}
+      <mesh position={[0, 0.35, 0]}>
+        <planeGeometry args={[0.4, 0.1]} />
+        <meshStandardMaterial color="#ffffff" transparent opacity={0.8} />
       </mesh>
       
       {/* pH label */}
       <Text
-        position={[0, 0.3, 0]}
-        fontSize={0.1}
+        position={[0, 0.35, 0.01]}
+        fontSize={0.08}
         color="black"
         anchorX="center"
         anchorY="middle"
       >
-        pH: {phValue.toFixed(1)}
+        pH: {hasIndicator ? phValue.toFixed(1) : '?'}
       </Text>
+      
+      {/* Solution name */}
+      <Text
+        position={[0, 0.25, 0.01]}
+        fontSize={0.05}
+        color="#666666"
+        anchorX="center"
+        anchorY="middle"
+      >
+        {hasIndicator ? 'With Indicator' : 'Unknown Solution'}
+      </Text>
+      
+      {/* Pouring effect */}
+      {isPouring && (
+        <group position={[0, 0.5, 0]}>
+          <mesh>
+            <cylinderGeometry args={[0.02, 0.01, 0.3, 8]} />
+            <meshStandardMaterial color="#ff6b6b" transparent opacity={0.8} />
+          </mesh>
+          <Text
+            position={[0.3, 0, 0]}
+            fontSize={0.06}
+            color="red"
+            anchorX="center"
+          >
+            Pouring...
+          </Text>
+        </group>
+      )}
     </group>
   );
 }
@@ -129,6 +199,31 @@ export function LabEquipment() {
         </mesh>
       </group>
       
+      {/* pH indicator bottles */}
+      <group position={[-1.5, 1.3, 0.8]}>
+        <mesh 
+          castShadow
+          onClick={() => grabTestStrip('indicator-1')}
+          onPointerEnter={() => {}}
+          onPointerLeave={() => {}}
+        >
+          <cylinderGeometry args={[0.08, 0.06, 0.25, 8]} />
+          <meshStandardMaterial color="#8B4513" />
+        </mesh>
+        <mesh position={[0, 0.15, 0]}>
+          <cylinderGeometry args={[0.04, 0.04, 0.08, 8]} />
+          <meshStandardMaterial color="#654321" />
+        </mesh>
+        <Text
+          position={[0, -0.2, 0]}
+          fontSize={0.05}
+          color="black"
+          anchorX="center"
+        >
+          pH Indicator
+        </Text>
+      </group>
+
       {/* pH Test strips */}
       {testStrips.map((strip) => (
         <PHTestStrip
