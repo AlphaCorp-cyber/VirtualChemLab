@@ -212,7 +212,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
       </group>
 
       {/* Controls */}
-      <group position={[2, 1.59, 0]}>
+      <group position={[0.8, 1.59, 0]}>
         <Text
           position={[0, 0.3, 0]}
           fontSize={0.08}
@@ -285,6 +285,61 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         </Text>
       </group>
 
+      {/* Equipment Labels */}
+      <group position={[0, 2.8, 0]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.08}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Filter Paper
+        </Text>
+        <Text
+          position={[0, -0.15, 0]}
+          fontSize={0.05}
+          color="#7f8c8d"
+          anchorX="center"
+          anchorY="middle"
+        >
+          (Stationary Phase)
+        </Text>
+      </group>
+
+      <group position={[0, 0.9, 0]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.08}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Solvent
+        </Text>
+        <Text
+          position={[0, -0.15, 0]}
+          fontSize={0.05}
+          color="#7f8c8d"
+          anchorX="center"
+          anchorY="middle"
+        >
+          (Mobile Phase)
+        </Text>
+      </group>
+
+      <group position={[0.5, 0.74, 0]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.06}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Baseline
+        </Text>
+      </group>
+
       {/* Experiment Instructions */}
       <group position={[0, 2.5, -2.5]}>
         <mesh>
@@ -345,34 +400,79 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
 
       {/* Results Display */}
       {pigmentSeparation > 0.5 && (
-        <group position={[-3, 2, 0]}>
+        <group position={[-2.5, 2, 0]}>
           <mesh>
-            <planeGeometry args={[1.5, 1]} />
+            <planeGeometry args={[2, 1.5]} />
             <meshStandardMaterial color="#ecf0f1" />
           </mesh>
 
           <Text
-            position={[0, 0.3, 0.01]}
+            position={[0, 0.6, 0.01]}
             fontSize={0.08}
             color="#2c3e50"
             anchorX="center"
             anchorY="middle"
           >
-            Separated Pigments
+            Chromatogram Results
+          </Text>
+
+          <Text
+            position={[0, 0.4, 0.01]}
+            fontSize={0.05}
+            color="#7f8c8d"
+            anchorX="center"
+            anchorY="middle"
+          >
+            Separated Pigments in {selectedInk} ink:
           </Text>
 
           {pigmentData[selectedInk].map((pigment, index) => (
-            <Text
-              key={index}
-              position={[0, 0.1 - (index * 0.1), 0.01]}
-              fontSize={0.05}
-              color={pigment.color}
-              anchorX="center"
-              anchorY="middle"
-            >
-              {pigment.name}
-            </Text>
+            <group key={index}>
+              <Text
+                position={[-0.3, 0.2 - (index * 0.12), 0.01]}
+                fontSize={0.045}
+                color={pigment.color}
+                anchorX="left"
+                anchorY="middle"
+              >
+                • {pigment.name}
+              </Text>
+              <Text
+                position={[0.3, 0.2 - (index * 0.12), 0.01]}
+                fontSize={0.035}
+                color="#7f8c8d"
+                anchorX="left"
+                anchorY="middle"
+              >
+                Rf: {pigment.height.toFixed(2)}
+              </Text>
+            </group>
           ))}
+
+          <Text
+            position={[0, -0.5, 0.01]}
+            fontSize={0.04}
+            color="#7f8c8d"
+            anchorX="center"
+            anchorY="middle"
+          >
+            Different pigments travel at different rates
+          </Text>
+        </group>
+      )}
+
+      {/* Solvent Front Label */}
+      {experimentStarted && solventHeight > 0.5 && (
+        <group position={[0.7, 1.54 + (solventHeight * 0.8), 0]}>
+          <Text
+            position={[0, 0, 0]}
+            fontSize={0.05}
+            color="#2c3e50"
+            anchorX="center"
+            anchorY="middle"
+          >
+            Solvent Front
+          </Text>
         </group>
       )}
     </group>
