@@ -353,10 +353,10 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
       />
       
       {/* Equipment Labels */}
-      <group position={[0, 2.3, -1]}>
+      <group position={[0, 3.2, -1]}>
         <Text
           position={[0, 0, 0]}
-          fontSize={0.08}
+          fontSize={0.1}
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
@@ -364,8 +364,8 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
           Gas Sample Tubes
         </Text>
         <Text
-          position={[0, -0.15, 0]}
-          fontSize={0.05}
+          position={[0, -0.2, 0]}
+          fontSize={0.06}
           color="#7f8c8d"
           anchorX="center"
           anchorY="middle"
@@ -374,10 +374,10 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
         </Text>
       </group>
 
-      <group position={[-1, 2.3, -0.5]}>
+      <group position={[-1, 3.2, -0.5]}>
         <Text
           position={[0, 0, 0]}
-          fontSize={0.08}
+          fontSize={0.1}
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
@@ -385,8 +385,8 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
           Test Tools
         </Text>
         <Text
-          position={[0, -0.15, 0]}
-          fontSize={0.05}
+          position={[0, -0.2, 0]}
+          fontSize={0.06}
           color="#7f8c8d"
           anchorX="center"
           anchorY="middle"
