@@ -712,6 +712,44 @@ export function LabEquipment() {
         </Text>
       </group>
 
+      {/* Experiment labels on the lab table */}
+      <group position={[-2.5, 1.49, -1.5]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.08}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Experiment 1: Common Lab Substances
+        </Text>
+      </group>
+
+      <group position={[0.5, 1.49, -1.5]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.08}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Experiment 2: Acid/Base Strength
+        </Text>
+      </group>
+
+      <group position={[3, 1.49, -0.5]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.08}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+          rotation={[0, Math.PI/2, 0]}
+        >
+          Experiment 4: Salt Solutions
+        </Text>
+      </group>
+
       {/* pH Color Scale Chart on table */}
       <group position={[0, 1.48, -1.2]}>
         {/* Chart background */}

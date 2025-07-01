@@ -48,33 +48,84 @@ interface ChemistryLabState {
 }
 
 const initialBeakers: Beaker[] = [
+  // Experiment 1: Common laboratory substances
   {
     id: "beaker-1",
-    position: [-1.5, 1.65, -0.5],
-    phValue: 2.1,
-    liquidColor: "#ff6b6b",
-    solutionName: "Hydrochloric Acid"
+    position: [-3, 1.65, -0.8],
+    phValue: 1.2,
+    liquidColor: "#ff4757",
+    solutionName: "HCl (Strong Acid)"
   },
   {
     id: "beaker-2",
-    position: [-0.5, 1.65, -0.5],
+    position: [-2, 1.65, -0.8],
     phValue: 7.0,
-    liquidColor: "#4ecdc4",
-    solutionName: "Pure Water"
+    liquidColor: "#74b9ff",
+    solutionName: "Distilled Water"
   },
   {
     id: "beaker-3",
-    position: [0.5, 1.65, -0.5],
-    phValue: 10.3,
-    liquidColor: "#45b7d1",
-    solutionName: "Sodium Hydroxide"
+    position: [-1, 1.65, -0.8],
+    phValue: 13.2,
+    liquidColor: "#00b894",
+    solutionName: "NaOH (Strong Base)"
   },
+  
+  // Experiment 2: Comparing acid/base strength
   {
     id: "beaker-4",
-    position: [1.5, 1.65, -0.5],
-    phValue: 4.5,
-    liquidColor: "#f9ca24",
-    solutionName: "Acetic Acid"
+    position: [0, 1.65, -0.8],
+    phValue: 4.8,
+    liquidColor: "#fdcb6e",
+    solutionName: "Acetic Acid (Weak)"
+  },
+  {
+    id: "beaker-5",
+    position: [1, 1.65, -0.8],
+    phValue: 10.5,
+    liquidColor: "#a29bfe",
+    solutionName: "Ammonia (Weak Base)"
+  },
+  
+  // Experiment 3: Dilution effects
+  {
+    id: "beaker-6",
+    position: [2, 1.65, -0.8],
+    phValue: 2.8,
+    liquidColor: "#ff7675",
+    solutionName: "Diluted HCl"
+  },
+  
+  // Experiment 4: Salt solutions (perpendicular table section)
+  {
+    id: "beaker-7",
+    position: [2.5, 1.65, 0.5],
+    phValue: 7.0,
+    liquidColor: "#81ecec",
+    solutionName: "NaCl (Neutral Salt)"
+  },
+  {
+    id: "beaker-8",
+    position: [2.5, 1.65, 1.5],
+    phValue: 5.6,
+    liquidColor: "#fab1a0",
+    solutionName: "NH₄Cl (Acidic Salt)"
+  },
+  {
+    id: "beaker-9",
+    position: [2.5, 1.65, 2.5],
+    phValue: 8.4,
+    liquidColor: "#55a3ff",
+    solutionName: "Na₂CO₃ (Basic Salt)"
+  },
+  
+  // Experiment 5: Neutralization reaction sample
+  {
+    id: "beaker-10",
+    position: [3.5, 1.65, 1],
+    phValue: 6.8,
+    liquidColor: "#6c5ce7",
+    solutionName: "Near Neutralization"
   }
 ];
 
@@ -112,7 +163,7 @@ export const useChemistryLab = create<ChemistryLabState>()(
     selectedStripId: null,
     currentExperiment: "pH Testing",
     completedTests: 0,
-    totalTests: 4,
+    totalTests: 10,
     progress: 0,
     lastTestResult: null,
 

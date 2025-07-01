@@ -49,26 +49,50 @@ export function LabEnvironment() {
         <meshStandardMaterial map={new THREE.CanvasTexture(createTileTexture())} />
       </mesh>
       
-      {/* Lab bench - taller and professional lab material */}
+      {/* L-shaped lab bench - main horizontal section */}
       <group position={[0, 1.4, -1]}>
         <mesh castShadow receiveShadow>
-          <boxGeometry args={[6, 0.12, 2]} />
+          <boxGeometry args={[8, 0.12, 2]} />
           <meshStandardMaterial color="#d3d3d3" roughness={0.2} metalness={0.05} />
         </mesh>
         
-        {/* Bench legs - metal */}
-        {[-2.8, 2.8].map((x, i) => 
+        {/* Main bench legs */}
+        {[-3.8, 3.8].map((x, i) => 
           [-0.8, 0.8].map((z, j) => (
-            <mesh key={`${i}-${j}`} position={[x, -0.7, z]} castShadow>
+            <mesh key={`main-${i}-${j}`} position={[x, -0.7, z]} castShadow>
               <boxGeometry args={[0.08, 1.4, 0.08]} />
               <meshStandardMaterial color="#7f8c8d" metalness={0.6} roughness={0.3} />
             </mesh>
           ))
         )}
         
-        {/* Lab bench edge trim */}
+        {/* Main bench edge trim */}
         <mesh position={[0, 0.07, 0]}>
-          <boxGeometry args={[6.1, 0.025, 2.1]} />
+          <boxGeometry args={[8.1, 0.025, 2.1]} />
+          <meshStandardMaterial color="#bdc3c7" />
+        </mesh>
+      </group>
+
+      {/* L-shaped lab bench - perpendicular section */}
+      <group position={[3, 1.4, 1]}>
+        <mesh castShadow receiveShadow>
+          <boxGeometry args={[2, 0.12, 4]} />
+          <meshStandardMaterial color="#d3d3d3" roughness={0.2} metalness={0.05} />
+        </mesh>
+        
+        {/* Perpendicular section legs */}
+        {[-0.8, 0.8].map((x, i) => 
+          [-1.8, 1.8].map((z, j) => (
+            <mesh key={`perp-${i}-${j}`} position={[x, -0.7, z]} castShadow>
+              <boxGeometry args={[0.08, 1.4, 0.08]} />
+              <meshStandardMaterial color="#7f8c8d" metalness={0.6} roughness={0.3} />
+            </mesh>
+          ))
+        )}
+        
+        {/* Perpendicular section edge trim */}
+        <mesh position={[0, 0.07, 0]}>
+          <boxGeometry args={[2.1, 0.025, 4.1]} />
           <meshStandardMaterial color="#bdc3c7" />
         </mesh>
       </group>
