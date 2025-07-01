@@ -321,37 +321,80 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
       
       {/* Test tools */}
       <LitSplint
-        position={[-3, 1.62, 1]}
+        position={[-3, 1.62, -0.5]}
         isSelected={selectedTestTool === "lit-splint"}
         onSelect={() => handleToolSelect("lit-splint")}
       />
       
       <GlowingSplint
-        position={[-2, 1.62, 1]}
+        position={[-2, 1.62, -0.5]}
         isSelected={selectedTestTool === "glowing-splint"}
         onSelect={() => handleToolSelect("glowing-splint")}
       />
       
       <LitmusPaper
-        position={[-1, 1.62, 1]}
+        position={[-1, 1.62, -0.5]}
         isSelected={selectedTestTool === "red-litmus"}
         onSelect={() => handleToolSelect("red-litmus")}
         color="red"
       />
       
       <LitmusPaper
-        position={[0, 1.62, 1]}
+        position={[0, 1.62, -0.5]}
         isSelected={selectedTestTool === "blue-litmus"}
         onSelect={() => handleToolSelect("blue-litmus")}
         color="blue"
       />
       
       <Limewater
-        position={[1, 1.62, 1]}
+        position={[1, 1.62, -0.5]}
         isSelected={selectedTestTool === "limewater"}
         onSelect={() => handleToolSelect("limewater")}
       />
       
+      {/* Equipment Labels */}
+      <group position={[0, 2.3, -1]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.08}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Gas Sample Tubes
+        </Text>
+        <Text
+          position={[0, -0.15, 0]}
+          fontSize={0.05}
+          color="#7f8c8d"
+          anchorX="center"
+          anchorY="middle"
+        >
+          (Unknown gases to identify)
+        </Text>
+      </group>
+
+      <group position={[-1, 2.3, -0.5]}>
+        <Text
+          position={[0, 0, 0]}
+          fontSize={0.08}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Test Tools
+        </Text>
+        <Text
+          position={[0, -0.15, 0]}
+          fontSize={0.05}
+          color="#7f8c8d"
+          anchorX="center"
+          anchorY="middle"
+        >
+          (Select tool then test gas)
+        </Text>
+      </group>
+
       {/* Instructions */}
       <Text
         position={[0, 2.5, 0]}

@@ -268,7 +268,7 @@ const initialGasTests: GasTest[] = [
     id: "gas-1",
     gasName: "Hydrogen",
     formula: "H₂",
-    position: [-2, 1.54, 0.5],
+    position: [-2, 1.64, -1],
     testMethod: "lit-splint",
     expectedResult: "Pop sound",
     color: "#e0e0e0"
@@ -277,7 +277,7 @@ const initialGasTests: GasTest[] = [
     id: "gas-2", 
     gasName: "Oxygen",
     formula: "O₂",
-    position: [-1, 1.54, 0.5],
+    position: [-1, 1.64, -1],
     testMethod: "glowing-splint",
     expectedResult: "Relights splint",
     color: "#87CEEB"
@@ -286,7 +286,7 @@ const initialGasTests: GasTest[] = [
     id: "gas-3",
     gasName: "Carbon Dioxide", 
     formula: "CO₂",
-    position: [0, 1.54, 0.5],
+    position: [0, 1.64, -1],
     testMethod: "limewater",
     expectedResult: "Turns milky",
     color: "#D3D3D3"
@@ -295,7 +295,7 @@ const initialGasTests: GasTest[] = [
     id: "gas-4",
     gasName: "Ammonia",
     formula: "NH₃", 
-    position: [1, 1.54, 0.5],
+    position: [1, 1.64, -1],
     testMethod: "red-litmus",
     expectedResult: "Turns blue",
     color: "#F0E68C"
@@ -304,7 +304,7 @@ const initialGasTests: GasTest[] = [
     id: "gas-5",
     gasName: "Chlorine",
     formula: "Cl₂",
-    position: [2, 1.54, 0.5],
+    position: [2, 1.64, -1],
     testMethod: "blue-litmus",
     expectedResult: "Turns red then bleaches",
     color: "#90EE90"
