@@ -26,7 +26,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
       <mesh position={[0, 0.15, 0]} castShadow>
         <cylinderGeometry args={[0.02, 0.02, 0.1, 8]} />
         <meshStandardMaterial color="#34495e" metalness={0.6} roughness={0.4} />
-      </state>
+      </mesh>
       
       {/* Gas control valve */}
       <mesh position={[0.06, 0.1, 0]} castShadow>
