@@ -138,26 +138,27 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         ~120ml
       </Text>
       
-      {/* Liquid inside - clearly visible level filling 2/3 of beaker */}
-      <mesh position={[0, -0.02, 0]}>
-        <cylinderGeometry args={[0.26, 0.22, 0.32, 16]} />
+      {/* Liquid inside - half-filled beaker with visible colors */}
+      <mesh position={[0, -0.08, 0]}>
+        <cylinderGeometry args={[0.26, 0.22, 0.18, 16]} />
         <meshStandardMaterial 
-          color={hasIndicator ? getPHColor(phValue) : "#87CEEB"} 
+          color={hasIndicator ? getPHColor(phValue) : liquidColor} 
           transparent 
-          opacity={hasIndicator ? 0.9 : 0.8}
-          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.2) : new THREE.Color("#87CEEB").multiplyScalar(0.1)}
-          emissiveIntensity={hasIndicator ? 0.3 : 0.05}
+          opacity={0.85}
+          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.3) : new THREE.Color(liquidColor).multiplyScalar(0.2)}
+          emissiveIntensity={hasIndicator ? 0.4 : 0.2}
         />
       </mesh>
       
-      {/* Liquid surface - meniscus effect */}
-      <mesh position={[0, 0.14, 0]}>
+      {/* Liquid surface - clear meniscus */}
+      <mesh position={[0, 0.01, 0]}>
         <cylinderGeometry args={[0.26, 0.26, 0.01, 16]} />
         <meshStandardMaterial 
-          color={hasIndicator ? getPHColor(phValue) : "#87CEEB"} 
+          color={hasIndicator ? getPHColor(phValue) : liquidColor} 
           transparent 
-          opacity={hasIndicator ? 0.7 : 0.6}
-          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.1) : new THREE.Color("#87CEEB").multiplyScalar(0.05)}
+          opacity={0.8}
+          emissive={hasIndicator ? new THREE.Color(getPHColor(phValue)).multiplyScalar(0.2) : new THREE.Color(liquidColor).multiplyScalar(0.15)}
+          emissiveIntensity={0.3}
         />
       </mesh>
       
