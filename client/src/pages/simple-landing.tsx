@@ -200,6 +200,7 @@ export default function SimpleLanding() {
                     <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6">
                       <span className="text-black text-3xl">
                         {experiment.id === 'ph-testing' ? '🧪' : 
+                         experiment.id === 'flame-tests' ? '🔥' :
                          experiment.id === 'titration' ? '⚗️' :
                          experiment.id === 'molecular-modeling' ? '🔬' : '📊'}
                       </span>

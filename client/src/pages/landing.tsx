@@ -402,7 +402,18 @@ export default function Landing() {
                     onClick={() => experiment.available && handleExperimentSelect(experiment.id)}
                   >
                     <CardHeader>
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-center mb-4">
+                        <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+                          <span className="text-black text-2xl">
+                            {experiment.id === 'ph-testing' ? '🧪' : 
+                             experiment.id === 'flame-tests' ? '🔥' :
+                             experiment.id === 'titration' ? '⚗️' :
+                             experiment.id === 'crystallization' ? '💎' :
+                             experiment.id === 'synthesis' ? '🧬' : '📊'}
+                          </span>
+                        </div>
+                      </div>
+                    <div className="flex items-center justify-between mb-2">
                         <Badge variant={experiment.available ? "default" : "secondary"}>
                           {experiment.available ? "Available" : "Coming Soon"}
                         </Badge>
