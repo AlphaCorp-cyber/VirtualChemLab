@@ -15,42 +15,52 @@ interface Experiment {
 const experiments: Experiment[] = [
   {
     id: "ph-testing",
-    title: "pH Testing Lab",
-    description: "Learn about acids and bases using virtual pH test strips and indicator solutions.",
+    title: "pH Testing Laboratory",
+    description: "Master acid-base chemistry through immersive pH testing with color-changing indicators and real-time molecular visualization.",
     duration: "15-20 minutes",
     difficulty: "Beginner",
     category: "Acid-Base Chemistry",
-    features: ["Hand Tracking", "Color-Changing Chemistry", "Real pH Values"],
+    features: ["pH Test Strips", "Color Recognition", "Safety Protocols", "Data Recording"],
+    available: true
+  },
+  {
+    id: "flame-tests",
+    title: "Flame Tests Laboratory",
+    description: "Identify metal ions through characteristic flame colors in this qualitative analysis experiment.",
+    duration: "10-15 minutes",
+    difficulty: "Beginner",
+    category: "Qualitative Analysis",
+    features: ["Metal Ion Identification", "Flame Color Analysis", "Bunsen Burner Operation", "Wire Loop Technique"],
     available: true
   },
   {
     id: "titration",
     title: "Acid-Base Titration",
-    description: "Master titration techniques with virtual burettes and pH indicators.",
+    description: "Perform precise titrations using virtual burettes and indicators to determine unknown concentrations.",
     duration: "25-30 minutes", 
     difficulty: "Intermediate",
     category: "Quantitative Analysis",
-    features: ["Precision Instruments", "Real-time Calculations", "Safety Protocols"],
+    features: ["Burette Control", "Endpoint Detection", "Calculations", "Graph Analysis"],
     available: false
   },
   {
     id: "molecular-modeling",
-    title: "3D Molecular Modeling",
-    description: "Build and visualize molecular structures in virtual reality space.",
+    title: "Molecular Modeling",
+    description: "Build and visualize 3D molecular structures to understand chemical bonding and geometry.",
     duration: "20-25 minutes",
-    difficulty: "Intermediate", 
-    category: "Molecular Chemistry",
-    features: ["3D Manipulation", "Bond Visualization", "Molecular Properties"],
+    difficulty: "Advanced", 
+    category: "Physical Chemistry",
+    features: ["3D Molecular Building", "Bond Analysis", "Geometry Optimization", "Molecular Dynamics"],
     available: false
   },
   {
-    id: "spectroscopy",
-    title: "Virtual Spectroscopy",
-    description: "Analyze chemical compounds using virtual spectroscopy instruments.",
-    duration: "30-35 minutes",
+    id: "synthesis",
+    title: "Chemical Synthesis",
+    description: "Perform step-by-step organic synthesis reactions with real-time feedback and safety protocols.",
+    duration: "30-40 minutes",
     difficulty: "Advanced",
-    category: "Analytical Chemistry", 
-    features: ["Multiple Techniques", "Data Analysis", "Sample Identification"],
+    category: "Organic Chemistry", 
+    features: ["Reaction Pathways", "Product Analysis", "Safety Equipment", "Yield Calculations"],
     available: false
   }
 ];
@@ -125,7 +135,7 @@ export default function SimpleLanding() {
                     Conduct dangerous experiments safely in virtual reality without risk of injury or chemical exposure.
                   </p>
                 </div>
-                
+
                 <div className="p-6">
                   <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
                     <span className="text-black text-2xl">👋</span>
@@ -135,7 +145,7 @@ export default function SimpleLanding() {
                     Use your hands naturally to pick up equipment, mix solutions, and conduct experiments just like in a real lab.
                   </p>
                 </div>
-                
+
                 <div className="p-6">
                   <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
                     <span className="text-black text-2xl">⚗️</span>
@@ -174,7 +184,7 @@ export default function SimpleLanding() {
                 <h2 className="text-5xl font-bold text-white mb-4">Choose Your Experiment</h2>
                 <p className="text-xl text-gray-400">Select from our collection of virtual chemistry experiments</p>
               </div>
-              
+
               <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 {experiments.map((experiment) => (
                   <div
@@ -215,12 +225,12 @@ export default function SimpleLanding() {
                         </span>
                       )}
                     </div>
-                    
+
                     <h3 className="text-2xl font-bold text-white text-center mb-4">{experiment.title}</h3>
                     <p className="text-gray-400 text-center mb-6 leading-relaxed">
                       {experiment.description}
                     </p>
-                    
+
                     <div className="space-y-3 mb-6">
                       <div className="flex justify-between items-center py-2 border-b border-gray-800">
                         <span className="text-gray-400">Duration:</span>

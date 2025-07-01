@@ -28,6 +28,16 @@ const experiments: Experiment[] = [
     available: true
   },
   {
+    id: "flame-tests",
+    title: "Flame Tests Laboratory",
+    description: "Identify metal ions through characteristic flame colors in this qualitative analysis experiment.",
+    duration: "10-15 minutes",
+    difficulty: "Beginner",
+    category: "Qualitative Analysis",
+    features: ["Metal Ion Identification", "Flame Color Analysis", "Bunsen Burner Operation", "Wire Loop Technique"],
+    available: true
+  },
+  {
     id: "titration",
     title: "Acid-Base Titration",
     description: "Perform precise titrations using virtual burettes and indicators to determine unknown concentrations.",
