@@ -212,7 +212,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
       </group>
 
       {/* Controls */}
-      <group position={[0.8, 1.59, 0]}>
+      <group position={[1.3, 1.59, 0.8]}>
         <Text
           position={[0, 0.3, 0]}
           fontSize={0.08}
