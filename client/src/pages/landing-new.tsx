@@ -130,13 +130,7 @@ export default function Landing() {
   console.log("Landing page rendering...");
   
   return (
-    <div className="min-h-screen bg-black text-white relative">
-      {/* Simple test content */}
-      <div className="p-8">
-        <h1 className="text-4xl text-white mb-4">ChemiQ - Test</h1>
-        <p className="text-white">If you can see this, the page is loading properly.</p>
-      </div>
-      
+    <div className="bg-black text-white">
       <AnimatePresence>
         {showIntro && (
           <motion.div
@@ -255,12 +249,13 @@ export default function Landing() {
 
       {/* Main Landing Page */}
       <motion.div
+        className="relative min-h-screen"
         initial={{ opacity: 0 }}
         animate={{ opacity: showIntro ? 0 : 1 }}
         transition={{ duration: 1, delay: 0.5 }}
       >
         {/* Animated Background */}
-        <div className="absolute inset-0">
+        <div className="fixed inset-0 pointer-events-none z-0">
           {/* Floating Lab Equipment */}
           {[...Array(20)].map((_, i) => (
             <motion.div
