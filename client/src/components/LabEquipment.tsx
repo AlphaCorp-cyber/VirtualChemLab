@@ -63,7 +63,7 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         />
       </mesh>
       
-      {/* Beaker walls - enhanced for VR visibility */}
+      {/* Beaker walls - more realistic cylindrical shape */}
       <mesh
         ref={meshRef}
         onPointerEnter={(e) => {
@@ -78,20 +78,20 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         castShadow
         receiveShadow
       >
-        <cylinderGeometry args={[0.28, 0.28, 0.36, 32]} />
+        <cylinderGeometry args={[0.28, 0.26, 0.36, 32]} />
         <meshPhysicalMaterial
-          color="#e8f4f8"
+          color="#f8f9fa"
           transparent
-          opacity={0.4}
-          roughness={0.1}
-          transmission={0.7}
-          thickness={0.5}
+          opacity={0.35}
+          roughness={0.08}
+          transmission={0.8}
+          thickness={0.4}
           ior={1.52}
           clearcoat={1.0}
-          clearcoatRoughness={0.05}
+          clearcoatRoughness={0.03}
           reflectivity={0.95}
           emissive="#ffffff"
-          emissiveIntensity={0.05}
+          emissiveIntensity={0.03}
         />
       </mesh>
       
@@ -107,16 +107,32 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         <meshBasicMaterial color="#ffffff" opacity={0.6} transparent />
       </mesh>
       
-      {/* Beaker spout - characteristic beaker feature */}
-      <mesh position={[0.32, 0.15, 0]} rotation={[0, 0, -Math.PI / 6]}>
-        <cylinderGeometry args={[0.02, 0.04, 0.08, 8]} />
+      {/* Realistic beaker spout - proper laboratory style */}
+      <mesh position={[0.3, 0.16, 0]} rotation={[0, 0, -Math.PI / 8]}>
+        <cylinderGeometry args={[0.015, 0.025, 0.06, 8]} />
         <meshPhysicalMaterial
-          color="#ffffff"
+          color="#f8f9fa"
           transparent
-          opacity={0.1}
-          roughness={0.02}
-          transmission={0.95}
-          thickness={0.5}
+          opacity={0.35}
+          roughness={0.08}
+          transmission={0.8}
+          thickness={0.4}
+          ior={1.52}
+          clearcoat={1.0}
+          clearcoatRoughness={0.03}
+        />
+      </mesh>
+      
+      {/* Spout rim */}
+      <mesh position={[0.31, 0.19, 0]} rotation={[0, 0, -Math.PI / 8]}>
+        <cylinderGeometry args={[0.026, 0.015, 0.01, 8]} />
+        <meshPhysicalMaterial
+          color="#f8f9fa"
+          transparent
+          opacity={0.4}
+          roughness={0.05}
+          transmission={0.85}
+          thickness={0.3}
           ior={1.52}
         />
       </mesh>
@@ -135,34 +151,56 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         />
       </mesh>
 
-      {/* Volume markings on beaker - like real lab equipment */}
-      {[50, 100, 150].map((volume, i) => (
-        <group key={volume} position={[0.29, 0.05 - i * 0.08, 0]}>
+      {/* Realistic volume markings - major graduations */}
+      {[200, 150, 100, 50, 0].map((volume, i) => (
+        <group key={volume} position={[0.29, 0.12 - i * 0.06, 0]}>
+          {/* Major graduation line */}
           <mesh>
-            <boxGeometry args={[0.02, 0.002, 0.08]} />
-            <meshStandardMaterial color="#666666" />
+            <boxGeometry args={[0.025, 0.002, 0.01]} />
+            <meshStandardMaterial color="#333333" />
           </mesh>
+          {/* Volume number */}
           <Text
-            position={[0.05, 0, 0]}
-            fontSize={0.02}
-            color="#666666"
+            position={[0.04, 0, 0]}
+            fontSize={0.018}
+            color="#333333"
             anchorX="left"
             anchorY="middle"
+            rotation={[0, 0, 0]}
           >
-            {volume}ml
+            {volume}
           </Text>
         </group>
       ))}
       
-      {/* Current volume indicator */}
+      {/* Minor graduation marks between major ones */}
+      {Array.from({ length: 16 }, (_, i) => (
+        <mesh key={`minor-${i}`} position={[0.29, 0.12 - i * 0.015, 0]}>
+          <boxGeometry args={[0.015, 0.001, 0.008]} />
+          <meshStandardMaterial color="#666666" />
+        </mesh>
+      ))}
+      
+      {/* ml unit label */}
       <Text
-        position={[0.35, 0.14, 0]}
-        fontSize={0.025}
+        position={[0.32, -0.12, 0]}
+        fontSize={0.015}
+        color="#333333"
+        anchorX="left"
+        anchorY="middle"
+      >
+        ml
+      </Text>
+      
+      {/* Current volume indicator - more realistic */}
+      <Text
+        position={[0.35, 0.02, 0]}
+        fontSize={0.02}
         color="#2c3e50"
         anchorX="left"
         anchorY="middle"
       >
-        ~120ml
+        ≈120ml
       </Text>
       
       {/* Liquid inside - half-filled with colorless solution */}
