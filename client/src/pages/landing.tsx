@@ -61,7 +61,7 @@ const experiments: Experiment[] = [
 
 export default function Landing() {
   const navigate = useNavigate();
-  const [showIntro, setShowIntro] = useState(false); // Skip intro temporarily
+  const [showIntro, setShowIntro] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
@@ -87,14 +87,8 @@ export default function Landing() {
     navigate(`/lab/${experimentId}`);
   };
 
-  console.log("Landing component rendering");
-  
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Debug text to verify rendering */}
-      <div className="absolute top-4 left-4 z-50 text-white text-lg">
-        ChemiQ Debug - Page Loading...
-      </div>
       <AnimatePresence>
         {showIntro && (
           <motion.div
