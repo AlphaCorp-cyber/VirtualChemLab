@@ -109,30 +109,286 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
-      {/* Animated Background */}
+      {/* Animated Background with Lab Equipment */}
       <div className="absolute inset-0 overflow-hidden">
-        <motion.div style={{ y: backgroundY }} className="absolute inset-0 opacity-20">
-          {[...Array(20)].map((_, i) => (
+        <motion.div style={{ y: backgroundY }} className="absolute inset-0 opacity-30">
+          {/* Floating Test Tubes */}
+          {[...Array(8)].map((_, i) => (
             <motion.div
-              key={i}
-              className="absolute w-4 h-4 bg-blue-400 rounded-full"
+              key={`test-tube-${i}`}
+              className="absolute"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
               }}
               animate={{
-                y: [0, -30, 0],
-                x: [0, 15, 0],
-                scale: [1, 1.2, 1],
-                opacity: [0.3, 0.7, 0.3]
+                y: [0, -40, 0],
+                x: [0, 20, 0],
+                rotate: [0, 10, -10, 0],
+                scale: [0.8, 1.2, 0.8]
               }}
               transition={{
-                duration: 4 + Math.random() * 4,
+                duration: 6 + Math.random() * 4,
+                repeat: Infinity,
+                delay: Math.random() * 3
+              }}
+            >
+              {/* Test Tube SVG */}
+              <svg width="24" height="40" viewBox="0 0 24 40" className="text-blue-400">
+                <rect x="8" y="0" width="8" height="6" fill="currentColor" opacity="0.6" rx="1"/>
+                <rect x="9" y="6" width="6" height="28" fill="currentColor" opacity="0.4" rx="3"/>
+                <rect x="9" y="20" width="6" height="14" fill="#4FC3F7" opacity="0.8" rx="3"/>
+                <circle cx="12" cy="27" r="1" fill="#81C784" opacity="0.9"/>
+              </svg>
+            </motion.div>
+          ))}
+
+          {/* Floating Beakers */}
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={`beaker-${i}`}
+              className="absolute"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -50, 0],
+                x: [0, -15, 0],
+                rotate: [-5, 5, -5],
+                scale: [0.9, 1.3, 0.9]
+              }}
+              transition={{
+                duration: 8 + Math.random() * 3,
+                repeat: Infinity,
+                delay: Math.random() * 4
+              }}
+            >
+              {/* Beaker SVG */}
+              <svg width="32" height="36" viewBox="0 0 32 36" className="text-purple-400">
+                <path d="M6 8 L26 8 L24 32 L8 32 Z" fill="currentColor" opacity="0.3" stroke="currentColor" strokeWidth="1"/>
+                <rect x="4" y="6" width="24" height="3" fill="currentColor" opacity="0.6" rx="1"/>
+                <rect x="8" y="20" width="16" height="12" fill="#9C27B0" opacity="0.7" rx="2"/>
+                <circle cx="12" cy="26" r="1.5" fill="#E1BEE7" opacity="0.9"/>
+                <circle cx="20" cy="24" r="1" fill="#E1BEE7" opacity="0.8"/>
+              </svg>
+            </motion.div>
+          ))}
+
+          {/* Floating Erlenmeyer Flasks */}
+          {[...Array(5)].map((_, i) => (
+            <motion.div
+              key={`flask-${i}`}
+              className="absolute"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -35, 0],
+                x: [0, 25, 0],
+                rotate: [0, -8, 8, 0],
+                scale: [0.7, 1.1, 0.7]
+              }}
+              transition={{
+                duration: 7 + Math.random() * 5,
                 repeat: Infinity,
                 delay: Math.random() * 2
               }}
+            >
+              {/* Erlenmeyer Flask SVG */}
+              <svg width="28" height="42" viewBox="0 0 28 42" className="text-green-400">
+                <rect x="12" y="0" width="4" height="18" fill="currentColor" opacity="0.6"/>
+                <path d="M12 18 L4 38 L24 38 Z" fill="currentColor" opacity="0.4" stroke="currentColor" strokeWidth="1"/>
+                <path d="M6 32 L22 32 L20 38 L8 38 Z" fill="#4CAF50" opacity="0.8"/>
+                <circle cx="10" cy="35" r="1" fill="#81C784" opacity="0.9"/>
+                <circle cx="18" cy="34" r="0.8" fill="#81C784" opacity="0.7"/>
+              </svg>
+            </motion.div>
+          ))}
+
+          {/* Floating Pipettes */}
+          {[...Array(4)].map((_, i) => (
+            <motion.div
+              key={`pipette-${i}`}
+              className="absolute"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -60, 0],
+                x: [0, 10, 0],
+                rotate: [0, 15, -15, 0],
+                scale: [0.8, 1.0, 0.8]
+              }}
+              transition={{
+                duration: 10 + Math.random() * 3,
+                repeat: Infinity,
+                delay: Math.random() * 5
+              }}
+            >
+              {/* Pipette SVG */}
+              <svg width="16" height="60" viewBox="0 0 16 60" className="text-yellow-400">
+                <rect x="6" y="0" width="4" height="8" fill="currentColor" opacity="0.7" rx="2"/>
+                <rect x="7" y="8" width="2" height="45" fill="currentColor" opacity="0.5"/>
+                <circle cx="8" y="53" r="3" fill="currentColor" opacity="0.6"/>
+                <rect x="7" y="40" width="2" height="8" fill="#FFC107" opacity="0.9"/>
+              </svg>
+            </motion.div>
+          ))}
+
+          {/* Floating Molecules */}
+          {[...Array(12)].map((_, i) => (
+            <motion.div
+              key={`molecule-${i}`}
+              className="absolute"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -25, 0],
+                x: [0, 15, 0],
+                rotate: [0, 360],
+                scale: [0.8, 1.2, 0.8]
+              }}
+              transition={{
+                duration: 5 + Math.random() * 4,
+                repeat: Infinity,
+                delay: Math.random() * 3
+              }}
+            >
+              {/* Molecule Structure SVG */}
+              <svg width="32" height="32" viewBox="0 0 32 32" className="text-cyan-400">
+                <circle cx="8" cy="8" r="3" fill="currentColor" opacity="0.8"/>
+                <circle cx="24" cy="8" r="3" fill="currentColor" opacity="0.8"/>
+                <circle cx="16" cy="24" r="3" fill="currentColor" opacity="0.8"/>
+                <circle cx="16" cy="16" r="2" fill="#FF5722" opacity="0.9"/>
+                <line x1="8" y1="8" x2="16" y2="16" stroke="currentColor" strokeWidth="1" opacity="0.6"/>
+                <line x1="24" y1="8" x2="16" y2="16" stroke="currentColor" strokeWidth="1" opacity="0.6"/>
+                <line x1="16" y1="16" x2="16" y2="24" stroke="currentColor" strokeWidth="1" opacity="0.6"/>
+              </svg>
+            </motion.div>
+          ))}
+
+          {/* Floating Chemical Symbols */}
+          {[
+            { symbol: "H₂O", color: "text-blue-300", size: "text-2xl" },
+            { symbol: "NaCl", color: "text-green-300", size: "text-xl" },
+            { symbol: "CO₂", color: "text-gray-300", size: "text-lg" },
+            { symbol: "HCl", color: "text-red-300", size: "text-xl" },
+            { symbol: "NH₃", color: "text-yellow-300", size: "text-lg" },
+            { symbol: "C₆H₁₂O₆", color: "text-purple-300", size: "text-sm" },
+            { symbol: "CaCO₃", color: "text-orange-300", size: "text-lg" },
+            { symbol: "H₂SO₄", color: "text-red-400", size: "text-xl" }
+          ].map((chem, i) => (
+            <motion.div
+              key={`chemical-${i}`}
+              className={`absolute ${chem.color} ${chem.size} font-bold opacity-60`}
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -50, 0],
+                x: [0, 30, 0],
+                rotate: [0, 10, -10, 0],
+                opacity: [0.3, 0.8, 0.3]
+              }}
+              transition={{
+                duration: 8 + Math.random() * 4,
+                repeat: Infinity,
+                delay: Math.random() * 6
+              }}
+            >
+              {chem.symbol}
+            </motion.div>
+          ))}
+
+          {/* Bubbling Particle Effects */}
+          {[...Array(15)].map((_, i) => (
+            <motion.div
+              key={`bubble-${i}`}
+              className="absolute w-3 h-3 bg-white rounded-full opacity-20"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -100, -200],
+                scale: [0.5, 1, 0],
+                opacity: [0.2, 0.6, 0]
+              }}
+              transition={{
+                duration: 4 + Math.random() * 3,
+                repeat: Infinity,
+                delay: Math.random() * 4
+              }}
             />
           ))}
+
+          {/* DNA Helix Pattern */}
+          <svg className="absolute top-1/4 right-1/4 w-64 h-64 opacity-10" viewBox="0 0 200 200">
+            <motion.path
+              d="M50,10 Q100,50 150,10 T250,10 M50,190 Q100,150 150,190 T250,190"
+              stroke="url(#gradient)"
+              strokeWidth="3"
+              fill="none"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 3, repeat: Infinity }}
+            />
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#60A5FA" />
+                <stop offset="100%" stopColor="#A78BFA" />
+              </linearGradient>
+            </defs>
+          </svg>
+
+          {/* Periodic Table Elements */}
+          <motion.div 
+            className="absolute top-16 left-1/3 opacity-30"
+            animate={{
+              y: [-10, 10, -10],
+              rotate: [0, 360],
+              scale: [0.8, 1.2, 0.8]
+            }}
+            transition={{ duration: 15, repeat: Infinity, delay: 1 }}
+          >
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded border-2 border-white/30 flex items-center justify-center">
+              <span className="text-white font-bold text-sm">H</span>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            className="absolute bottom-16 right-1/4 opacity-30"
+            animate={{
+              y: [-15, 15, -15],
+              rotate: [0, -360],
+              scale: [0.9, 1.1, 0.9]
+            }}
+            transition={{ duration: 12, repeat: Infinity, delay: 3 }}
+          >
+            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-cyan-500 rounded border-2 border-white/30 flex items-center justify-center">
+              <span className="text-white font-bold text-sm">O</span>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            className="absolute top-1/3 left-1/2 opacity-30"
+            animate={{
+              y: [-20, 20, -20],
+              rotate: [0, 180, 360],
+              scale: [0.7, 1.3, 0.7]
+            }}
+            transition={{ duration: 18, repeat: Infinity, delay: 5 }}
+          >
+            <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-500 rounded border-2 border-white/30 flex items-center justify-center">
+              <span className="text-white font-bold text-sm">C</span>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
 
@@ -207,21 +463,106 @@ export default function Landing() {
           </motion.div>
         </div>
 
-        {/* Floating Elements */}
+        {/* Large Floating Lab Equipment */}
         <motion.div 
-          className="absolute top-20 left-20 w-16 h-16 opacity-60"
-          animate={floatingAnimation}
-          transition={{ delay: 0 }}
+          className="absolute top-20 left-20 opacity-40"
+          animate={{
+            y: [-15, 15, -15],
+            rotate: [0, 5, -5, 0],
+            scale: [0.8, 1.1, 0.8]
+          }}
+          transition={{ duration: 8, repeat: Infinity, delay: 0 }}
         >
-          <div className="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 rounded-full shadow-lg"></div>
+          {/* Bunsen Burner */}
+          <svg width="48" height="64" viewBox="0 0 48 64" className="text-orange-400">
+            <rect x="18" y="40" width="12" height="24" fill="currentColor" opacity="0.6" rx="2"/>
+            <rect x="14" y="60" width="20" height="4" fill="currentColor" opacity="0.8"/>
+            <rect x="20" y="30" width="8" height="10" fill="currentColor" opacity="0.4"/>
+            <circle cx="24" cy="25" r="6" fill="#FF5722" opacity="0.8"/>
+            <circle cx="24" cy="25" r="3" fill="#FFC107" opacity="0.9"/>
+            <ellipse cx="24" cy="20" rx="4" ry="8" fill="#2196F3" opacity="0.7"/>
+          </svg>
         </motion.div>
         
         <motion.div 
-          className="absolute top-32 right-32 w-12 h-12 opacity-60"
-          animate={floatingAnimation}
-          transition={{ delay: 1 }}
+          className="absolute top-32 right-32 opacity-40"
+          animate={{
+            y: [-20, 20, -20],
+            rotate: [0, -8, 8, 0],
+            scale: [0.9, 1.2, 0.9]
+          }}
+          transition={{ duration: 10, repeat: Infinity, delay: 2 }}
         >
-          <div className="w-full h-full bg-gradient-to-br from-green-400 to-green-600 rounded-full shadow-lg"></div>
+          {/* Microscope */}
+          <svg width="56" height="72" viewBox="0 0 56 72" className="text-gray-400">
+            <rect x="20" y="60" width="16" height="12" fill="currentColor" opacity="0.8" rx="2"/>
+            <rect x="24" y="40" width="8" height="20" fill="currentColor" opacity="0.6"/>
+            <circle cx="28" cy="35" r="8" fill="currentColor" opacity="0.5"/>
+            <circle cx="28" cy="35" r="5" fill="#4CAF50" opacity="0.7"/>
+            <rect x="32" y="25" width="12" height="4" fill="currentColor" opacity="0.6"/>
+            <rect x="35" y="15" width="6" height="10" fill="currentColor" opacity="0.4"/>
+            <circle cx="38" cy="12" r="3" fill="#2196F3" opacity="0.8"/>
+          </svg>
+        </motion.div>
+
+        <motion.div 
+          className="absolute bottom-32 left-1/4 opacity-40"
+          animate={{
+            y: [-25, 25, -25],
+            rotate: [0, 10, -10, 0],
+            scale: [0.7, 1.0, 0.7]
+          }}
+          transition={{ duration: 12, repeat: Infinity, delay: 4 }}
+        >
+          {/* Graduated Cylinder */}
+          <svg width="32" height="80" viewBox="0 0 32 80" className="text-blue-400">
+            <rect x="8" y="10" width="16" height="60" fill="currentColor" opacity="0.3" stroke="currentColor" strokeWidth="1"/>
+            <rect x="6" y="8" width="20" height="4" fill="currentColor" opacity="0.6" rx="2"/>
+            <rect x="10" y="35" width="12" height="25" fill="#03A9F4" opacity="0.8"/>
+            {[...Array(8)].map((_, i) => (
+              <line key={i} x1="8" y1={15 + i * 7} x2="12" y2={15 + i * 7} stroke="currentColor" strokeWidth="0.5" opacity="0.6"/>
+            ))}
+          </svg>
+        </motion.div>
+
+        <motion.div 
+          className="absolute top-1/2 right-20 opacity-40"
+          animate={{
+            y: [-30, 30, -30],
+            rotate: [0, -12, 12, 0],
+            scale: [0.8, 1.1, 0.8]
+          }}
+          transition={{ duration: 9, repeat: Infinity, delay: 1 }}
+        >
+          {/* Petri Dish */}
+          <svg width="44" height="20" viewBox="0 0 44 20" className="text-green-400">
+            <ellipse cx="22" cy="10" rx="20" ry="8" fill="currentColor" opacity="0.3" stroke="currentColor" strokeWidth="1"/>
+            <ellipse cx="22" cy="8" rx="18" ry="6" fill="currentColor" opacity="0.2"/>
+            <circle cx="15" cy="8" r="2" fill="#4CAF50" opacity="0.8"/>
+            <circle cx="28" cy="9" r="1.5" fill="#4CAF50" opacity="0.7"/>
+            <circle cx="22" cy="6" r="1" fill="#81C784" opacity="0.9"/>
+            <circle cx="18" cy="11" r="0.8" fill="#A5D6A7" opacity="0.6"/>
+          </svg>
+        </motion.div>
+
+        <motion.div 
+          className="absolute bottom-20 right-1/3 opacity-40"
+          animate={{
+            y: [-18, 18, -18],
+            rotate: [0, 15, -15, 0],
+            scale: [0.9, 1.3, 0.9]
+          }}
+          transition={{ duration: 7, repeat: Infinity, delay: 3 }}
+        >
+          {/* Round Bottom Flask */}
+          <svg width="40" height="52" viewBox="0 0 40 52" className="text-purple-400">
+            <rect x="18" y="0" width="4" height="20" fill="currentColor" opacity="0.6"/>
+            <circle cx="20" cy="35" r="15" fill="currentColor" opacity="0.3" stroke="currentColor" strokeWidth="1"/>
+            <circle cx="20" cy="35" r="12" fill="#9C27B0" opacity="0.6"/>
+            <circle cx="16" cy="32" r="1.5" fill="#E1BEE7" opacity="0.9"/>
+            <circle cx="24" cy="38" r="1" fill="#E1BEE7" opacity="0.8"/>
+            <circle cx="20" cy="40" r="0.8" fill="#CE93D8" opacity="0.7"/>
+          </svg>
         </motion.div>
       </motion.section>
 
