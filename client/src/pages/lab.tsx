@@ -109,73 +109,106 @@ export default function Lab() {
         </button>
       </div>
       
-      {/* Mobile Controls */}
-      {window.innerWidth < 768 && (
-        <div style={{
-          position: 'absolute',
-          bottom: '20px',
-          right: '20px',
-          zIndex: 1000,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px'
-        }}>
-          <button
-            style={{
-              background: '#2196F3',
+      {/* Dynamic Platform-Specific Controls */}
+      <div style={{
+        position: 'absolute',
+        bottom: '20px',
+        right: '20px',
+        zIndex: 1000,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px'
+      }}>
+        {/* Mobile/Touch Controls */}
+        {window.innerWidth < 768 && (
+          <>
+            <button
+              style={{
+                background: '#2196F3',
+                color: 'white',
+                border: 'none',
+                padding: '12px 16px',
+                borderRadius: '8px',
+                fontSize: '14px',
+                boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+              }}
+            >
+              📱 Touch to Interact
+            </button>
+            <div style={{
+              background: 'rgba(0,0,0,0.8)',
               color: 'white',
-              border: 'none',
-              padding: '12px 16px',
+              padding: '10px 14px',
               borderRadius: '8px',
-              fontSize: '14px',
-              boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
-            }}
-          >
-            📱 Tap to Interact
-          </button>
+              fontSize: '11px',
+              textAlign: 'center',
+              maxWidth: '200px'
+            }}>
+              <strong>Touch Controls:</strong><br/>
+              🚶 <em>Drag:</em> Walk & look around<br/>
+              🤏 <em>Pinch:</em> Zoom in/out<br/>
+              👆 <em>Tap:</em> Grab/release objects<br/>
+              🔄 <em>Rotate:</em> Swipe left/right to turn<br/>
+              {window.innerWidth > 600 && '📱 <em>Tilt device</em> for immersion'}
+            </div>
+          </>
+        )}
+        
+        {/* Tablet Controls */}
+        {window.innerWidth >= 768 && window.innerWidth < 1024 && (
           <div style={{
-            background: 'rgba(0,0,0,0.7)',
+            background: 'rgba(0,0,0,0.8)',
             color: 'white',
-            padding: '8px 12px',
-            borderRadius: '6px',
+            padding: '10px 14px',
+            borderRadius: '8px',
             fontSize: '12px',
             textAlign: 'center'
           }}>
-            🚶 Drag to walk around<br/>
-            👆 Tap objects to grab/release<br/>
-            🔄 Drag left/right to look around
+            <strong>Tablet Controls:</strong><br/>
+            🤏 <em>Two-finger pinch:</em> Zoom<br/>
+            👆 <em>Drag:</em> Move & look around<br/>
+            🎯 <em>Tap:</em> Interact with objects<br/>
+            ⌨️ <em>Keyboard:</em> WASD to move
           </div>
-        </div>
-      )}
-      
-      {/* Desktop Mouse Controls */}
-      {window.innerWidth >= 768 && (
-        <div style={{
-          position: 'absolute',
-          bottom: '20px',
-          right: '20px',
-          zIndex: 1000,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px'
+        )}
+        
+        {/* Desktop Controls */}
+        {window.innerWidth >= 1024 && (
+          <div style={{
+            background: 'rgba(0,0,0,0.8)',
+            color: 'white',
+            padding: '10px 14px',
+            borderRadius: '8px',
+            fontSize: '12px',
+            textAlign: 'center'
+          }}>
+            <strong>Desktop Controls:</strong><br/>
+            🖱️ <em>Mouse wheel:</em> Zoom in/out<br/>
+            🖱️ <em>Drag:</em> Look around<br/>
+            ⏰ <em>Long click + drag:</em> Walk mode<br/>
+            👆 <em>Click:</em> Grab/release objects<br/>
+            ⌨️ <em>WASD:</em> Walk around<br/>
+            ⌨️ <em>G/R:</em> Grab/Release<br/>
+            🎮 <em>Gamepad supported</em>
+          </div>
+        )}
+        
+        {/* VR Controls Indicator */}
+        <div id="vr-status" style={{
+          background: 'rgba(76, 175, 80, 0.9)',
+          color: 'white',
+          padding: '8px 12px',
+          borderRadius: '6px',
+          fontSize: '11px',
+          textAlign: 'center',
+          display: 'none'
         }}>
-          <div style={{
-            background: 'rgba(0,0,0,0.7)',
-            color: 'white',
-            padding: '8px 12px',
-            borderRadius: '6px',
-            fontSize: '12px',
-            textAlign: 'center'
-          }}>
-            🖱️ <strong>Mouse Controls:</strong><br/>
-            🔍 Scroll wheel to zoom<br/>
-            🖱️ Drag to look around<br/>
-            ⏰ Long click + move for cursor movement<br/>
-            👆 Click objects to grab/release<br/>
-            ⌨️ WASD keys to move
-          </div>
+          🥽 <strong>VR Mode Active</strong><br/>
+          👋 Use hand gestures to interact<br/>
+          🤏 Reach objects to grab them<br/>
+          🫱 Hold over beakers to pour
         </div>
-      )}
+      </div>
       
       {/* Back to Landing Button */}
       <div style={{ 
