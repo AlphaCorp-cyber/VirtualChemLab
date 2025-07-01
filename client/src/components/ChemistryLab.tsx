@@ -2,6 +2,8 @@ import { useFrame } from "@react-three/fiber";
 import { LabEnvironment } from "./LabEnvironment";
 import { LabEquipment } from "./LabEquipment";
 import { FlameTestLab } from "./FlameTestLab";
+import DisplacementLab from './DisplacementLab';
+import PHTestStrip from './PHTestStrip';
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
 import { useKeyboardControls } from "@react-three/drei";
 import { useRef } from "react";
@@ -15,12 +17,12 @@ export function ChemistryLab() {
   useFrame((state, delta) => {
     // Update physics simulation
     updatePhysics(delta);
-    
+
     // Handle camera movement for non-VR mode
     const controls = getState();
     const camera = state.camera;
     const speed = 2;
-    
+
     if (controls.forward) {
       camera.position.z -= speed * delta;
     }
@@ -33,7 +35,7 @@ export function ChemistryLab() {
     if (controls.rightward) {
       camera.position.x += speed * delta;
     }
-    
+
     // Add up/down movement for top-down view
     if (controls.interact) {
       camera.position.y += speed * delta;
@@ -41,14 +43,14 @@ export function ChemistryLab() {
     if (controls.grab) {
       camera.position.y -= speed * delta;
     }
-    
+
     // Top-down view toggle with release key
     if (controls.release) {
       // Set camera to top-down position and look down
       camera.position.set(0, 8, 0);
       camera.lookAt(0, 0, 0);
     }
-    
+
     // Constrain camera movement to lab area
     camera.position.x = THREE.MathUtils.clamp(camera.position.x, -8, 8);
     camera.position.z = THREE.MathUtils.clamp(camera.position.z, -5, 8);
@@ -71,12 +73,12 @@ export function ChemistryLab() {
         shadow-camera-top={10}
         shadow-camera-bottom={-10}
       />
-      
+
       {/* Dedicated beaker rim lighting */}
       <pointLight position={[0, 2.2, -1]} intensity={0.8} color="#ffffff" />
       <pointLight position={[-2, 2.2, -1]} intensity={0.6} color="#ffffff" />
       <pointLight position={[2, 2.2, -1]} intensity={0.6} color="#ffffff" />
-      
+
       {/* Top-down lighting for beaker rims */}
       <directionalLight
         position={[0, 5, 0]}
@@ -84,12 +86,12 @@ export function ChemistryLab() {
         intensity={0.7}
         color="#ffffff"
       />
-      
+
       {/* Enhanced rim highlighting lights */}
       <pointLight position={[-1, 1.9, -0.8]} intensity={0.5} color="#e8f4f8" />
       <pointLight position={[0, 1.9, -0.8]} intensity={0.5} color="#e8f4f8" />
       <pointLight position={[1, 1.9, -0.8]} intensity={0.5} color="#e8f4f8" />
-      
+
       {/* Focused spotlights on beaker tops */}
       <spotLight
         position={[-2, 3, -1]}
@@ -115,11 +117,15 @@ export function ChemistryLab() {
         intensity={0.6}
         color="#ffffff"
       />
-      
+
       {/* Lab environment and equipment */}
       <LabEnvironment />
       {currentExperiment === "pH Testing" && <LabEquipment />}
       {currentExperiment === "Flame Tests" && <FlameTestLab />}
+
+        {currentExperiment === "Displacement Reactions" && (
+          <DisplacementLab onExperimentComplete={handleExperimentComplete} />
+        )}
     </>
   );
 }

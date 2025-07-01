@@ -38,6 +38,16 @@ const experiments: Experiment[] = [
     available: true
   },
   {
+    id: "displacement-reactions",
+    title: "Displacement Reactions Laboratory",
+    description: "Observe how reactive metals displace less reactive metals from solutions in the reactivity series.",
+    duration: "15-20 minutes",
+    difficulty: "Beginner",
+    category: "Reactivity Series",
+    features: ["Metal Reactivity", "Solution Color Changes", "Copper Deposition", "Chemical Displacement"],
+    available: true
+  },
+  {
     id: "titration",
     title: "Acid-Base Titration",
     description: "Perform precise titrations using virtual burettes and indicators to determine unknown concentrations.",
@@ -407,6 +417,7 @@ export default function Landing() {
                           <span className="text-black text-2xl">
                             {experiment.id === 'ph-testing' ? '🧪' : 
                              experiment.id === 'flame-tests' ? '🔥' :
+                             experiment.id === 'displacement-reactions' ? '⚡' :
                              experiment.id === 'titration' ? '⚗️' :
                              experiment.id === 'crystallization' ? '💎' :
                              experiment.id === 'synthesis' ? '🧬' : '📊'}

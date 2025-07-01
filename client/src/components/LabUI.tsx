@@ -55,6 +55,15 @@ export function LabUI() {
                 <Flame className="w-4 h-4" />
                 Flame Tests
               </Button>
+              <Button
+                variant={currentExperiment === "Displacement Reactions" ? "default" : "outline"}
+                size="sm"
+                onClick={() => switchExperiment("Displacement Reactions")}
+                className="flex items-center gap-2"
+              >
+                <FlaskConical className="w-4 h-4" />
+                Displacement
+              </Button>
             </div>
           </CardContent>
         </Card>

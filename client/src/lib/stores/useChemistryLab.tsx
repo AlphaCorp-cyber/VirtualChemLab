@@ -43,26 +43,28 @@ interface FlameTestResult {
   timestamp: number;
 }
 
+type ExperimentType = "pH Testing" | "Flame Tests" | "Displacement Reactions";
+
 interface ChemistryLabState {
   // Lab state
   beakers: Beaker[];
   testStrips: TestStrip[];
   selectedStripId: string | null;
-  currentExperiment: string;
-  
+  currentExperiment: ExperimentType;
+
   // Flame test state
   metalSalts: MetalSalt[];
   bunsenBurnerOn: boolean;
   wireLoopSelected: boolean;
   selectedSaltId: string | null;
   lastFlameTestResult: FlameTestResult | null;
-  
+
   // Progress tracking
   completedTests: number;
   totalTests: number;
   progress: number;
   lastTestResult: TestResult | null;
-  
+
   // Actions
   initializeLab: () => void;
   grabTestStrip: (stripId: string) => void;
@@ -70,16 +72,16 @@ interface ChemistryLabState {
   testStripInLiquid: (stripId: string, beakerId: string) => void;
   updatePhysics: (delta: number) => void;
   resetLab: () => void;
-  
+
   // Flame test actions
   selectSalt: (saltId: string) => void;
   performFlameTest: (saltId: string) => void;
   toggleBunsenBurner: () => void;
   selectWireLoop: () => void;
   releaseWireLoop: () => void;
-  
+
   // Experiment switching
-  switchExperiment: (experiment: string) => void;
+  switchExperiment: (experiment: ExperimentType) => void;
 }
 
 const initialBeakers: Beaker[] = [
@@ -105,7 +107,7 @@ const initialBeakers: Beaker[] = [
     liquidColor: "#00b894",
     solutionName: "NaOH (Strong Base)"
   },
-  
+
   // Experiment 2: Comparing acid/base strength
   {
     id: "beaker-4",
@@ -121,7 +123,7 @@ const initialBeakers: Beaker[] = [
     liquidColor: "#a29bfe",
     solutionName: "Ammonia (Weak Base)"
   },
-  
+
   // Experiment 3: Dilution effects
   {
     id: "beaker-6",
@@ -130,7 +132,7 @@ const initialBeakers: Beaker[] = [
     liquidColor: "#ff7675",
     solutionName: "Diluted HCl"
   },
-  
+
   // Experiment 4: Salt solutions (perpendicular table section)
   {
     id: "beaker-7",
@@ -153,7 +155,7 @@ const initialBeakers: Beaker[] = [
     liquidColor: "#55a3ff",
     solutionName: "Na₂CO₃ (Basic Salt)"
   },
-  
+
   // Experiment 5: Neutralization reaction sample
   {
     id: "beaker-10",
@@ -266,7 +268,7 @@ export const useChemistryLab = create<ChemistryLabState>()(
     grabTestStrip: (stripId: string) => {
       const { selectedStripId } = get();
       if (selectedStripId) return; // Already holding a strip
-      
+
       set({ selectedStripId: stripId });
       console.log(`Grabbed test strip: ${stripId}`);
     },
@@ -274,52 +276,52 @@ export const useChemistryLab = create<ChemistryLabState>()(
     releaseTestStrip: () => {
       const { selectedStripId } = get();
       if (!selectedStripId) return;
-      
+
       set({ selectedStripId: null });
       console.log(`Released test strip: ${selectedStripId}`);
     },
 
     testStripInLiquid: (stripId: string, beakerId: string) => {
       const { beakers, testStrips, completedTests, totalTests } = get();
-      
+
       const beaker = beakers.find(b => b.id === beakerId);
       if (!beaker) return;
-      
+
       // Update the test strip with the pH value
       const updatedStrips = testStrips.map(strip => 
         strip.id === stripId 
           ? { ...strip, phValue: beaker.phValue }
           : strip
       );
-      
+
       const testResult: TestResult = {
         phValue: beaker.phValue,
         color: getPHColor(beaker.phValue),
         solutionName: beaker.solutionName,
         timestamp: Date.now()
       };
-      
+
       const newCompletedTests = completedTests + 1;
       const newProgress = (newCompletedTests / totalTests) * 100;
-      
+
       set({
         testStrips: updatedStrips,
         lastTestResult: testResult,
         completedTests: newCompletedTests,
         progress: newProgress
       });
-      
+
       console.log(`Test completed: pH ${beaker.phValue} - ${beaker.solutionName}`);
     },
 
     updatePhysics: (delta: number) => {
       const { selectedStripId, beakers, testStrips } = get();
-      
+
       if (!selectedStripId) return;
-      
+
       const selectedStrip = testStrips.find(s => s.id === selectedStripId);
       if (!selectedStrip) return;
-      
+
       // Check for collisions with beakers
       beakers.forEach(beaker => {
         if (checkCollision(selectedStrip.position, beaker.position, 0.5)) {
@@ -343,15 +345,15 @@ export const useChemistryLab = create<ChemistryLabState>()(
 
     performFlameTest: (saltId: string) => {
       const { metalSalts, wireLoopSelected, bunsenBurnerOn, completedTests, totalTests } = get();
-      
+
       if (!wireLoopSelected || !bunsenBurnerOn) {
         console.log("Need wire loop and lit bunsen burner to perform flame test");
         return;
       }
-      
+
       const salt = metalSalts.find(s => s.id === saltId);
       if (!salt) return;
-      
+
       const flameTestResult: FlameTestResult = {
         saltName: salt.name,
         ion: salt.ion,
@@ -359,16 +361,16 @@ export const useChemistryLab = create<ChemistryLabState>()(
         flameColorName: salt.flameColorName,
         timestamp: Date.now()
       };
-      
+
       const newCompletedTests = completedTests + 1;
       const newProgress = (newCompletedTests / totalTests) * 100;
-      
+
       set({
         lastFlameTestResult: flameTestResult,
         completedTests: newCompletedTests,
         progress: newProgress
       });
-      
+
       console.log(`Flame test completed: ${salt.ion} produces ${salt.flameColorName} flame`);
     },
 
@@ -388,7 +390,7 @@ export const useChemistryLab = create<ChemistryLabState>()(
       console.log("Wire loop released");
     },
 
-    switchExperiment: (experiment: string) => {
+    switchExperiment: (experiment: ExperimentType) => {
       set({ 
         currentExperiment: experiment,
         completedTests: 0,
