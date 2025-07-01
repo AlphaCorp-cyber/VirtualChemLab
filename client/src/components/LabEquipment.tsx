@@ -7,11 +7,12 @@ import { useKeyboardControls } from "@react-three/drei";
 import * as THREE from "three";
 
 // Enhanced beaker with better visibility and pH indicator support
-function Beaker({ position, liquidColor, phValue, id }: {
+function Beaker({ position, liquidColor, phValue, id, solutionName }: {
   position: [number, number, number];
   liquidColor: string;
   phValue: number;
   id: string;
+  solutionName: string;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -138,13 +139,37 @@ function Beaker({ position, liquidColor, phValue, id }: {
       {/* Solution name */}
       <Text
         position={[0, 0.25, 0.01]}
-        fontSize={0.05}
-        color="#666666"
+        fontSize={0.045}
+        color="#2c3e50"
         anchorX="center"
         anchorY="middle"
       >
-        {hasIndicator ? 'With Indicator' : 'Unknown Solution'}
+        {solutionName}
       </Text>
+
+      {/* pH classification */}
+      <Text
+        position={[0, 0.18, 0.01]}
+        fontSize={0.03}
+        color={phValue < 7 ? "#e74c3c" : phValue > 7 ? "#3498db" : "#27ae60"}
+        anchorX="center"
+        anchorY="middle"
+      >
+        {phValue < 7 ? "ACIDIC" : phValue > 7 ? "BASIC" : "NEUTRAL"}
+      </Text>
+      
+      {/* Indicator status */}
+      {hasIndicator && (
+        <Text
+          position={[0, 0.15, 0.01]}
+          fontSize={0.035}
+          color="#00aa00"
+          anchorX="center"
+          anchorY="middle"
+        >
+          + pH Indicator
+        </Text>
+      )}
       
       {/* Pouring effect */}
       {isPouring && (
@@ -264,6 +289,7 @@ export function LabEquipment() {
           liquidColor={beaker.liquidColor}
           phValue={beaker.phValue}
           id={beaker.id}
+          solutionName={beaker.solutionName}
         />
       ))}
       
