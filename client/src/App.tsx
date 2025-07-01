@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Landing from "./pages/landing-new";
+import Landing from "./pages/landing";
 import Lab from "./pages/lab";
 import NotFound from "./pages/not-found";
 import "@fontsource/inter";
