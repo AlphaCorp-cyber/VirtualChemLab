@@ -73,25 +73,25 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
   return (
     <group>
       {/* Lab Bench */}
-      <mesh position={[0, -0.5, 0]} receiveShadow>
+      <mesh position={[0, 1.46, 0]} receiveShadow>
         <boxGeometry args={[4, 0.1, 2]} />
         <meshStandardMaterial color="#8B4513" />
       </mesh>
 
       {/* Test Tube Rack */}
-      <mesh position={[0, -0.3, 0]} castShadow>
+      <mesh position={[0, 1.67, 0]} castShadow>
         <boxGeometry args={[0.8, 0.1, 0.3]} />
         <meshStandardMaterial color="#654321" />
       </mesh>
 
       {/* Test Tube Holes */}
-      <mesh position={[0, -0.25, 0]}>
+      <mesh position={[0, 1.71, 0]}>
         <cylinderGeometry args={[0.08, 0.08, 0.05, 8]} />
         <meshStandardMaterial color="#333333" />
       </mesh>
 
       {/* Test Tube */}
-      <group ref={testTubeRef} position={[0, 0, 0]}>
+      <group ref={testTubeRef} position={[0, 1.96, 0]}>
         {/* Glass tube */}
         <mesh position={[0, 0.3, 0]} castShadow>
           <cylinderGeometry args={[0.07, 0.07, 0.6, 16]} />
@@ -157,7 +157,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
       </group>
 
       {/* Labels */}
-      <group position={[-1.5, 0.5, 0]}>
+      <group position={[-1.5, 2.46, 0]}>
         <mesh>
           <planeGeometry args={[0.8, 0.3]} />
           <meshStandardMaterial color="#ffffff" />
@@ -165,7 +165,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
       </group>
 
       {/* Metal Selection Area */}
-      <group position={[-2, -0.2, 0]}>
+      <group position={[-2, 1.74, 0]}>
         {/* Iron piece */}
         <mesh 
           position={[-0.3, 0, 0]} 
@@ -228,7 +228,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
       </group>
 
       {/* Solution Bottles */}
-      <group position={[2, -0.1, 0]}>
+      <group position={[2, 1.85, 0]}>
         {/* Copper sulfate bottle */}
         <mesh 
           position={[-0.3, 0.2, 0]} 
@@ -288,7 +288,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
 
       {/* Reset Button */}
       <mesh 
-        position={[1.5, 0.5, 0]} 
+        position={[1.5, 2.46, 0]} 
         castShadow
         onClick={resetExperiment}
         onPointerOver={(e) => {
