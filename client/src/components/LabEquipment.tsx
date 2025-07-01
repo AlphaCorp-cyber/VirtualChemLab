@@ -104,25 +104,58 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         />
       </mesh>
       
-      {/* Subtle edge highlight for glass thickness visibility */}
+      {/* Enhanced edge highlight for better glass visibility */}
       <mesh>
-        <cylinderGeometry args={[beakerRadius + 0.001, beakerRadius + 0.001, beakerHeight, 64]} />
-        <meshBasicMaterial color="#e3f2fd" wireframe opacity={0.15} transparent />
+        <cylinderGeometry args={[beakerRadius + 0.002, beakerRadius + 0.002, beakerHeight, 64]} />
+        <meshStandardMaterial 
+          color="#ffffff" 
+          transparent 
+          opacity={0.4}
+          emissive="#e3f2fd"
+          emissiveIntensity={0.2}
+        />
       </mesh>
       
-      {/* Professional beaker rim - thick and sturdy */}
+      {/* Top rim glow for enhanced visibility */}
+      <mesh position={[0, beakerHeight/2, 0]}>
+        <cylinderGeometry args={[beakerRadius + 0.005, beakerRadius + 0.005, 0.008, 32]} />
+        <meshStandardMaterial 
+          color="#ffffff" 
+          transparent 
+          opacity={0.7}
+          emissive="#ffffff"
+          emissiveIntensity={0.4}
+        />
+      </mesh>
+      
+      {/* Professional beaker rim - thick and sturdy with enhanced visibility */}
       <mesh position={[0, beakerHeight/2, 0]}>
         <cylinderGeometry args={[beakerRadius + rimThickness, beakerRadius, rimThickness * 2, 32]} />
         <meshPhysicalMaterial 
-          color="#4682B4" 
+          color="#ffffff" 
           transparent 
-          opacity={0.45}
-          roughness={0.05}
-          transmission={0.65}
+          opacity={0.8}
+          roughness={0.1}
+          transmission={0.3}
           thickness={rimThickness}
           ior={1.52}
           clearcoat={1.0}
-          clearcoatRoughness={0.02}
+          clearcoatRoughness={0.01}
+          emissive="#ffffff"
+          emissiveIntensity={0.2}
+          reflectivity={0.9}
+        />
+      </mesh>
+      
+      {/* Additional rim highlight for better visibility */}
+      <mesh position={[0, beakerHeight/2 + rimThickness, 0]}>
+        <cylinderGeometry args={[beakerRadius + rimThickness + 0.002, beakerRadius + rimThickness + 0.002, 0.003, 32]} />
+        <meshStandardMaterial 
+          color="#ffffff" 
+          transparent 
+          opacity={0.9}
+          emissive="#ffffff"
+          emissiveIntensity={0.3}
         />
       </mesh>
       

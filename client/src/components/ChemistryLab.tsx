@@ -56,11 +56,12 @@ export function ChemistryLab() {
 
   return (
     <>
-      {/* Enhanced lighting setup for better glass visibility */}
-      <ambientLight intensity={0.6} />
+      {/* Enhanced lighting setup for better beaker rim visibility */}
+      <ambientLight intensity={0.8} color="#f8f9fa" />
       <directionalLight
         position={[10, 10, 5]}
-        intensity={1.2}
+        intensity={1.5}
+        color="#ffffff"
         castShadow
         shadow-mapSize={[2048, 2048]}
         shadow-camera-far={50}
@@ -69,27 +70,49 @@ export function ChemistryLab() {
         shadow-camera-top={10}
         shadow-camera-bottom={-10}
       />
-      <pointLight position={[0, 3, 0]} intensity={0.5} />
       
-      {/* Enhanced lighting for VR glass visibility */}
-      <pointLight position={[-2, 2, -1]} intensity={0.5} color="#ffffff" />
-      <pointLight position={[2, 2, -1]} intensity={0.5} color="#ffffff" />
-      <pointLight position={[0, 2, 1]} intensity={0.4} color="#ffffff" />
+      {/* Dedicated beaker rim lighting */}
+      <pointLight position={[0, 2.2, -1]} intensity={0.8} color="#ffffff" />
+      <pointLight position={[-2, 2.2, -1]} intensity={0.6} color="#ffffff" />
+      <pointLight position={[2, 2.2, -1]} intensity={0.6} color="#ffffff" />
       
-      {/* VR-specific rim lighting for glass objects */}
-      <pointLight position={[-1, 1.8, 0]} intensity={0.3} color="#e3f2fd" />
-      <pointLight position={[1, 1.8, 0]} intensity={0.3} color="#e3f2fd" />
-      <pointLight position={[0, 1.8, 1]} intensity={0.3} color="#e3f2fd" />
-      
-      {/* Overhead spotlights for glass highlighting */}
-      <spotLight
-        position={[0, 3, 0]}
-        target-position={[0, 1.5, 0]}
-        angle={Math.PI / 3}
-        penumbra={0.3}
-        intensity={0.4}
+      {/* Top-down lighting for beaker rims */}
+      <directionalLight
+        position={[0, 5, 0]}
+        target-position={[0, 1.6, -1]}
+        intensity={0.7}
         color="#ffffff"
-        castShadow
+      />
+      
+      {/* Enhanced rim highlighting lights */}
+      <pointLight position={[-1, 1.9, -0.8]} intensity={0.5} color="#e8f4f8" />
+      <pointLight position={[0, 1.9, -0.8]} intensity={0.5} color="#e8f4f8" />
+      <pointLight position={[1, 1.9, -0.8]} intensity={0.5} color="#e8f4f8" />
+      
+      {/* Focused spotlights on beaker tops */}
+      <spotLight
+        position={[-2, 3, -1]}
+        target-position={[-2, 1.6, -0.8]}
+        angle={Math.PI / 6}
+        penumbra={0.2}
+        intensity={0.6}
+        color="#ffffff"
+      />
+      <spotLight
+        position={[0, 3, -1]}
+        target-position={[0, 1.6, -0.8]}
+        angle={Math.PI / 6}
+        penumbra={0.2}
+        intensity={0.6}
+        color="#ffffff"
+      />
+      <spotLight
+        position={[2, 3, -1]}
+        target-position={[2, 1.6, -0.8]}
+        angle={Math.PI / 6}
+        penumbra={0.2}
+        intensity={0.6}
+        color="#ffffff"
       />
       
       {/* Lab environment and equipment */}
