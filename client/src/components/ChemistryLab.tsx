@@ -14,6 +14,10 @@ export function ChemistryLab() {
   const { updatePhysics, currentExperiment } = useChemistryLab();
   const [subscribe, getState] = useKeyboardControls();
 
+  const handleExperimentComplete = (result: string) => {
+    console.log("Experiment completed:", result);
+  };
+
   useFrame((state, delta) => {
     // Update physics simulation
     updatePhysics(delta);
@@ -122,10 +126,9 @@ export function ChemistryLab() {
       <LabEnvironment />
       {currentExperiment === "pH Testing" && <LabEquipment />}
       {currentExperiment === "Flame Tests" && <FlameTestLab />}
-
-        {currentExperiment === "Displacement Reactions" && (
-          <DisplacementLab onExperimentComplete={handleExperimentComplete} />
-        )}
+      {currentExperiment === "Displacement Reactions" && (
+        <DisplacementLab onExperimentComplete={handleExperimentComplete} />
+      )}
     </>
   );
 }
