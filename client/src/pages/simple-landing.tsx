@@ -72,6 +72,16 @@ const experiments: Experiment[] = [
     category: "Organic Chemistry", 
     features: ["Reaction Pathways", "Product Analysis", "Safety Equipment", "Yield Calculations"],
     available: false
+  },
+  {
+    id: "paper-chromatography",
+    title: "Paper Chromatography",
+    description: "Separate ink pigments using chromatography techniques.",
+    duration: "15-20 minutes",
+    difficulty: "Beginner",
+    category: "Separation Techniques",
+    features: ["Filter paper", "Pencil for baseline", "Capillary tube or dropper", "Ink sample", "Beaker with solvent"],
+    available: true
   }
 ];
 
@@ -213,7 +223,8 @@ export default function SimpleLanding() {
                          experiment.id === 'flame-tests' ? '🔥' :
                          experiment.id === 'displacement-reactions' ? '⚡' :
                          experiment.id === 'titration' ? '⚗️' :
-                         experiment.id === 'molecular-modeling' ? '🔬' : '📊'}
+                         experiment.id === 'molecular-modeling' ? '🔬' :
+                         experiment.id === 'paper-chromatography' ? '📄' : '📊'}
                       </span>
                     </div>
 

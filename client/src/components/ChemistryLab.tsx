@@ -3,6 +3,7 @@ import { LabEnvironment } from "./LabEnvironment";
 import { LabEquipment } from "./LabEquipment";
 import { FlameTestLab } from "./FlameTestLab";
 import DisplacementLab from './DisplacementLab';
+import PaperChromatographyLab from './PaperChromatographyLab';
 import PHTestStrip from './PHTestStrip';
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
 import { useKeyboardControls } from "@react-three/drei";
@@ -128,6 +129,9 @@ export function ChemistryLab() {
       {currentExperiment === "Flame Tests" && <FlameTestLab />}
       {currentExperiment === "Displacement Reactions" && (
         <DisplacementLab onExperimentComplete={handleExperimentComplete} />
+      )}
+      {currentExperiment === "Paper Chromatography" && (
+        <PaperChromatographyLab onExperimentComplete={handleExperimentComplete} />
       )}
     </>
   );

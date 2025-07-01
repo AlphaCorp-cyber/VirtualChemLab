@@ -43,7 +43,7 @@ interface FlameTestResult {
   timestamp: number;
 }
 
-type ExperimentType = "pH Testing" | "Flame Tests" | "Displacement Reactions";
+type ExperimentType = "pH Testing" | "Flame Tests" | "Displacement Reactions" | "Paper Chromatography";
 
 interface ChemistryLabState {
   // Lab state

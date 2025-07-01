@@ -76,6 +76,16 @@ const experiments: Experiment[] = [
     category: "Organic Chemistry", 
     features: ["Reaction Mechanisms", "3D Molecular Building", "Safety Equipment", "Yield Calculations"],
     available: false
+  },
+  {
+    id: "paper-chromatography",
+    title: "Paper Chromatography",
+    description: "Separate ink pigments using chromatography techniques.",
+    duration: "15-20 minutes",
+    difficulty: "Beginner",
+    category: "Separation Techniques",
+    features: ["Filter paper", "Pencil for baseline", "Ink sample", "Beaker with solvent"],
+    available: true
   }
 ];
 
@@ -135,7 +145,7 @@ export default function Landing() {
                   >
                     ChemiQ
                   </motion.h1>
-                  
+
                   {/* Floating Lab Equipment Around Logo */}
                   <motion.div
                     className="absolute -top-8 -left-8"
@@ -310,7 +320,7 @@ export default function Landing() {
                 </div>
                 <h1 className="text-3xl font-bold">ChemiQ</h1>
               </motion.div>
-              
+
               <nav className="hidden md:flex space-x-8">
                 <a href="#experiments" className="hover:text-gray-300 transition-colors">Experiments</a>
                 <a href="#features" className="hover:text-gray-300 transition-colors">Features</a>
@@ -338,7 +348,7 @@ export default function Landing() {
               <br />
               Chemistry Lab
             </motion.h2>
-            
+
             <motion.p
               className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed"
               initial={{ opacity: 0 }}
@@ -420,7 +430,8 @@ export default function Landing() {
                              experiment.id === 'displacement-reactions' ? '⚡' :
                              experiment.id === 'titration' ? '⚗️' :
                              experiment.id === 'crystallization' ? '💎' :
-                             experiment.id === 'synthesis' ? '🧬' : '📊'}
+                             experiment.id === 'synthesis' ? '🧬' : 
+                             experiment.id === 'paper-chromatography' ? '🧫' : '📊'}
                           </span>
                         </div>
                       </div>
@@ -538,7 +549,7 @@ export default function Landing() {
               <br />
               Chemistry Education?
             </motion.h3>
-            
+
             <motion.div
               className="flex flex-col sm:flex-row gap-6 justify-center"
               initial={{ opacity: 0, y: 20 }}
