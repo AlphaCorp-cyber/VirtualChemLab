@@ -148,6 +148,35 @@ export default function Lab() {
         </div>
       )}
       
+      {/* Desktop Mouse Controls */}
+      {window.innerWidth >= 768 && (
+        <div style={{
+          position: 'absolute',
+          bottom: '20px',
+          right: '20px',
+          zIndex: 1000,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px'
+        }}>
+          <div style={{
+            background: 'rgba(0,0,0,0.7)',
+            color: 'white',
+            padding: '8px 12px',
+            borderRadius: '6px',
+            fontSize: '12px',
+            textAlign: 'center'
+          }}>
+            🖱️ <strong>Mouse Controls:</strong><br/>
+            🔍 Scroll wheel to zoom<br/>
+            🖱️ Drag to look around<br/>
+            ⏰ Long click + move for cursor movement<br/>
+            👆 Click objects to grab/release<br/>
+            ⌨️ WASD keys to move
+          </div>
+        </div>
+      )}
+      
       {/* Back to Landing Button */}
       <div style={{ 
         position: 'absolute', 

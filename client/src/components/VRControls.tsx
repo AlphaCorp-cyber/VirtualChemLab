@@ -35,6 +35,17 @@ export function VRControls() {
   const [isDragging, setIsDragging] = useState(false);
   const [multiTouch, setMultiTouch] = useState(false);
   
+  // Mouse control states
+  const [mousePosition, setMousePosition] = useState<THREE.Vector2 | null>(null);
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [mouseDownTime, setMouseDownTime] = useState(0);
+  const [lastMousePosition, setLastMousePosition] = useState<THREE.Vector2 | null>(null);
+  const [isMouseDragging, setIsMouseDragging] = useState(false);
+  const [mouseStartPosition, setMouseStartPosition] = useState<THREE.Vector2 | null>(null);
+  const [isLongClick, setIsLongClick] = useState(false);
+  const [cursorMovementMode, setCursorMovementMode] = useState(false);
+  const [mouseWheelZoom, setMouseWheelZoom] = useState(0);
+  
   const isMobileDevice = isMobile();
   
   // Hand collision detection
@@ -115,6 +126,111 @@ export function VRControls() {
       }
     };
   }, [isMobileDevice, touchStartTime, lastTouchPosition]);
+
+  // Mouse event handlers for desktop
+  useEffect(() => {
+    if (isMobileDevice) return;
+    
+    const handleMouseDown = (event: MouseEvent) => {
+      const mousePos = new THREE.Vector2(
+        (event.clientX / window.innerWidth) * 2 - 1,
+        -(event.clientY / window.innerHeight) * 2 + 1
+      );
+      setMousePosition(mousePos);
+      setLastMousePosition(mousePos);
+      setMouseStartPosition(mousePos);
+      setMouseDownTime(Date.now());
+      setIsMouseDown(true);
+      setIsMouseDragging(false);
+      setIsLongClick(false);
+      
+      // Start long click timer
+      setTimeout(() => {
+        if (isMouseDown && !isMouseDragging) {
+          setIsLongClick(true);
+          setCursorMovementMode(true);
+          console.log('Long click detected - cursor movement mode activated');
+        }
+      }, 500); // 500ms for long click
+    };
+    
+    const handleMouseMove = (event: MouseEvent) => {
+      const mousePos = new THREE.Vector2(
+        (event.clientX / window.innerWidth) * 2 - 1,
+        -(event.clientY / window.innerHeight) * 2 + 1
+      );
+      
+      if (isMouseDown && mouseStartPosition) {
+        const dragDistance = mousePos.distanceTo(mouseStartPosition);
+        if (dragDistance > 0.02) { // Threshold for drag detection
+          setIsMouseDragging(true);
+          setIsLongClick(false);
+        }
+      }
+      
+      setMousePosition(mousePos);
+    };
+    
+    const handleMouseUp = (event: MouseEvent) => {
+      const clickDuration = Date.now() - mouseDownTime;
+      
+      // Handle different click types
+      if (isLongClick && cursorMovementMode) {
+        // Exit cursor movement mode on mouse up after long click
+        setCursorMovementMode(false);
+        console.log('Cursor movement mode deactivated');
+      } else if (clickDuration < 200 && !isMouseDragging && lastMousePosition) {
+        // Handle quick click interaction
+        handleMouseClick(lastMousePosition);
+      }
+      
+      setIsMouseDown(false);
+      setIsMouseDragging(false);
+      setIsLongClick(false);
+      setMousePosition(null);
+      setLastMousePosition(null);
+      setMouseStartPosition(null);
+    };
+    
+    const handleMouseWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      const zoomDelta = event.deltaY * -0.001;
+      setMouseWheelZoom(prev => prev + zoomDelta);
+    };
+    
+    const canvas = document.querySelector('canvas');
+    if (canvas) {
+      // Disable right-click context menu for better control
+      canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+      canvas.addEventListener('mousedown', handleMouseDown);
+      canvas.addEventListener('mousemove', handleMouseMove);
+      canvas.addEventListener('mouseup', handleMouseUp);
+      canvas.addEventListener('wheel', handleMouseWheel, { passive: false });
+    }
+    
+    return () => {
+      if (canvas) {
+        canvas.removeEventListener('contextmenu', (e) => e.preventDefault());
+        canvas.removeEventListener('mousedown', handleMouseDown);
+        canvas.removeEventListener('mousemove', handleMouseMove);
+        canvas.removeEventListener('mouseup', handleMouseUp);
+        canvas.removeEventListener('wheel', handleMouseWheel);
+      }
+    };
+  }, [isMobileDevice, isMouseDown, isMouseDragging, mouseDownTime, lastMousePosition, mouseStartPosition, cursorMovementMode]);
+  
+  const handleMouseClick = (mousePos: THREE.Vector2) => {
+    // Mouse click interaction: click to grab/release test strips
+    if (!selectedStripId) {
+      console.log('Mouse click: Grabbing test strip');
+      grabTestStrip('indicator-1');
+      setGrippedObject('indicator-1');
+    } else {
+      console.log('Mouse click: Releasing test strip');
+      releaseTestStrip();
+      setGrippedObject(null);
+    }
+  };
   
   const handleMobileTap = (touchPos: THREE.Vector2) => {
     // Simple mobile interaction: tap to grab/release test strips
@@ -281,8 +397,91 @@ export function VRControls() {
       }
     }
     
-    // Fallback keyboard controls for desktop mode
+    // Mouse controls for desktop (non-VR mode)
     if (!session && !isMobileDevice) {
+      // Handle mouse wheel zoom
+      if (mouseWheelZoom !== 0) {
+        const zoomSpeed = 2;
+        const forward = new THREE.Vector3(0, 0, mouseWheelZoom * zoomSpeed);
+        forward.applyQuaternion(camera.quaternion);
+        camera.position.addScaledVector(forward, delta * 10);
+        
+        // Gradually reset zoom accumulator
+        setMouseWheelZoom(prev => prev * 0.9);
+      }
+      
+      // Cursor movement mode (activated by long click)
+      if (cursorMovementMode && mousePosition && lastMousePosition) {
+        const deltaX = (mousePosition.x - lastMousePosition.x) * 5;
+        const deltaY = (mousePosition.y - lastMousePosition.y) * 5;
+        
+        // Move camera based on cursor movement
+        if (Math.abs(deltaY) > 0.005) {
+          const forward = new THREE.Vector3(0, 0, -deltaY * speed * 3);
+          forward.applyQuaternion(camera.quaternion);
+          forward.y = 0; // Keep movement horizontal
+          camera.position.addScaledVector(forward, 1);
+        }
+        
+        if (Math.abs(deltaX) > 0.005) {
+          const right = new THREE.Vector3(deltaX * speed * 3, 0, 0);
+          right.applyQuaternion(camera.quaternion);
+          right.y = 0; // Keep movement horizontal
+          camera.position.addScaledVector(right, 1);
+        }
+        
+        // Camera rotation for look around
+        if (Math.abs(deltaX) > 0.01) {
+          camera.rotation.y -= deltaX * 0.3;
+        }
+        
+        // Update last position for continuous movement
+        setLastMousePosition(mousePosition.clone());
+      }
+      
+      // Regular mouse drag (when not in cursor movement mode)
+      else if (isMouseDragging && mousePosition && lastMousePosition && !cursorMovementMode) {
+        const deltaX = (mousePosition.x - lastMousePosition.x) * 2;
+        const deltaY = (mousePosition.y - lastMousePosition.y) * 2;
+        
+        // Pan camera based on mouse drag
+        if (Math.abs(deltaX) > 0.01) {
+          camera.rotation.y -= deltaX * 0.5;
+        }
+        
+        if (Math.abs(deltaY) > 0.01) {
+          camera.rotation.x = THREE.MathUtils.clamp(
+            camera.rotation.x - deltaY * 0.5,
+            -Math.PI / 3, // Look down limit
+            Math.PI / 3   // Look up limit
+          );
+        }
+        
+        setLastMousePosition(mousePosition.clone());
+      }
+      
+      // Mouse interactions with objects
+      if (mousePosition && !isMouseDragging && !cursorMovementMode) {
+        if (grippedObject) {
+          // Check if mouse is over a beaker for pouring
+          beakers.forEach(beaker => {
+            const beakerPos = new THREE.Vector3(...beaker.position);
+            const raycaster = new THREE.Raycaster();
+            raycaster.setFromCamera(mousePosition, camera);
+            
+            const intersects = raycaster.intersectObjects(scene.children, true);
+            if (intersects.length > 0) {
+              const distance = intersects[0].distance;
+              if (distance < 8) { // Within mouse interaction range
+                console.log(`Mouse pour: ${grippedObject} into ${beaker.solutionName}`);
+                testStripInLiquid(grippedObject, beaker.id);
+              }
+            }
+          });
+        }
+      }
+      
+      // Fallback keyboard controls
       if (controls.grab && !selectedStripId) {
         grabTestStrip('indicator-1');
       }
@@ -297,6 +496,28 @@ export function VRControls() {
 
   return (
     <>
+      {/* Cursor Movement Mode Indicator */}
+      {cursorMovementMode && !session && (
+        <group position={[0, 2, -1]}>
+          <mesh>
+            <sphereGeometry args={[0.02]} />
+            <meshStandardMaterial 
+              color="#00FF00" 
+              emissive="#00FF00" 
+              emissiveIntensity={0.5}
+            />
+          </mesh>
+          <mesh position={[0, 0.1, 0]}>
+            <boxGeometry args={[0.3, 0.05, 0.02]} />
+            <meshStandardMaterial 
+              color="#FFFFFF" 
+              transparent 
+              opacity={0.8}
+            />
+          </mesh>
+        </group>
+      )}
+      
       {/* VR Hand Controllers with Enhanced Hand Models */}
       {session && (
         <group>
