@@ -13,6 +13,38 @@ function BunsenBurner({ position, isLit, onToggle }: {
   onToggle: () => void;
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const flameRef = useRef<THREE.Group>(null);
+  const innerFlameRef = useRef<THREE.Mesh>(null);
+  const outerFlameRef = useRef<THREE.Mesh>(null);
+  const flameLightRef = useRef<THREE.PointLight>(null);
+
+  // Animate flame flickering
+  useFrame((state) => {
+    if (isLit && flameRef.current && innerFlameRef.current && outerFlameRef.current && flameLightRef.current) {
+      const time = state.clock.elapsedTime;
+      
+      // Create flickering effect with multiple sine waves
+      const flicker1 = Math.sin(time * 8) * 0.1;
+      const flicker2 = Math.sin(time * 12 + 1) * 0.05;
+      const flicker3 = Math.sin(time * 15 + 2) * 0.03;
+      const totalFlicker = flicker1 + flicker2 + flicker3;
+      
+      // Animate flame height and scale
+      const baseScale = 1 + totalFlicker * 0.3;
+      flameRef.current.scale.set(baseScale, baseScale, baseScale);
+      
+      // Animate individual flame components
+      innerFlameRef.current.scale.y = 1 + totalFlicker * 0.2;
+      outerFlameRef.current.scale.y = 1 + totalFlicker * 0.15;
+      
+      // Animate light intensity
+      flameLightRef.current.intensity = 0.8 + totalFlicker * 0.3;
+      
+      // Slight flame movement
+      const sway = Math.sin(time * 4) * 0.01;
+      flameRef.current.position.x = sway;
+    }
+  });
   
   return (
     <group position={position}>
@@ -36,9 +68,9 @@ function BunsenBurner({ position, isLit, onToggle }: {
       
       {/* Flame when lit */}
       {isLit && (
-        <group position={[0, 0.22, 0]}>
+        <group ref={flameRef} position={[0, 0.22, 0]}>
           {/* Blue inner flame */}
-          <mesh>
+          <mesh ref={innerFlameRef}>
             <coneGeometry args={[0.015, 0.06, 8]} />
             <meshStandardMaterial 
               color="#0099ff" 
@@ -50,7 +82,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
           </mesh>
           
           {/* Outer flame */}
-          <mesh>
+          <mesh ref={outerFlameRef}>
             <coneGeometry args={[0.025, 0.08, 8]} />
             <meshStandardMaterial 
               color="#ff6600" 
@@ -63,6 +95,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
           
           {/* Flame light */}
           <pointLight 
+            ref={flameLightRef}
             position={[0, 0.03, 0]} 
             intensity={0.8} 
             color="#ff6600"
