@@ -2,6 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import { Suspense, useEffect } from "react";
 import { KeyboardControls } from "@react-three/drei";
 import { XR, createXRStore } from "@react-three/xr";
+import { useParams } from "react-router-dom";
 import { ChemistryLab } from "../components/ChemistryLab";
 import { LabUI } from "../components/LabUI";
 import { useAudio } from "../lib/stores/useAudio";
@@ -22,8 +23,9 @@ const controls = [
 ];
 
 export default function Lab() {
+  const { experimentId } = useParams();
   const { initializeAudio } = useAudio();
-  const { initializeLab } = useChemistryLab();
+  const { initializeLab, switchExperiment } = useChemistryLab();
 
   useEffect(() => {
     // Add lab-specific CSS class to body for fixed layout
@@ -32,11 +34,27 @@ export default function Lab() {
     initializeAudio();
     initializeLab();
     
+    // Set the specific experiment based on the route parameter
+    if (experimentId) {
+      const experimentMap: Record<string, any> = {
+        'ph-testing': 'pH Testing',
+        'flame-tests': 'Flame Tests',
+        'gas-tests': 'Gas Tests',
+        'displacement-reactions': 'Displacement Reactions',
+        'paper-chromatography': 'Paper Chromatography'
+      };
+      
+      const experimentName = experimentMap[experimentId];
+      if (experimentName) {
+        switchExperiment(experimentName);
+      }
+    }
+    
     // Cleanup on unmount
     return () => {
       document.body.classList.remove('lab-page');
     };
-  }, [initializeAudio, initializeLab]);
+  }, [initializeAudio, initializeLab, switchExperiment, experimentId]);
 
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
@@ -64,7 +82,7 @@ export default function Lab() {
           </Canvas>
       </KeyboardControls>
       
-      <LabUI />
+      <LabUI experimentId={experimentId} />
       
       {/* VR Entry Button */}
       <div style={{ 

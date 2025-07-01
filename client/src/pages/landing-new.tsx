@@ -344,12 +344,7 @@ export default function Landing() {
         </motion.header>
 
         {/* Hero Section */}
-        <motion.section
-          className="relative z-10 py-20 text-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-        >
+        <section className="relative z-10 py-20 text-center">
           <div className="container mx-auto px-6">
             <motion.h2
               className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-white via-gray-300 to-gray-500 bg-clip-text text-transparent"
@@ -394,7 +389,7 @@ export default function Landing() {
               </Button>
             </motion.div>
           </div>
-        </motion.section>
+        </section>
 
         {/* Experiments Selection */}
         <motion.section

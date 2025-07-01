@@ -6,7 +6,11 @@ import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
 import { Volume2, VolumeX, RotateCcw, FlaskConical, Flame } from "lucide-react";
 
-export function LabUI() {
+interface LabUIProps {
+  experimentId?: string;
+}
+
+export function LabUI({ experimentId }: LabUIProps) {
   const { 
     currentExperiment, 
     progress, 
@@ -31,12 +35,13 @@ export function LabUI() {
   return (
     <div className="fixed inset-0 pointer-events-none">
       <div className="absolute top-4 left-4 space-y-4 pointer-events-auto">
-        {/* Experiment Selector */}
-        <Card className="bg-white/90 backdrop-blur-sm">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Select Experiment</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
+        {/* Experiment Selector - only show if no specific experiment is selected */}
+        {!experimentId && (
+          <Card className="bg-white/90 backdrop-blur-sm">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Select Experiment</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
             <div className="flex gap-2">
               <Button
                 variant={currentExperiment === "pH Testing" ? "default" : "outline"}
@@ -86,6 +91,7 @@ export function LabUI() {
             </div>
           </CardContent>
         </Card>
+        )}
 
         {/* Experiment Info */}
         <Card className="bg-white/90 backdrop-blur-sm">
