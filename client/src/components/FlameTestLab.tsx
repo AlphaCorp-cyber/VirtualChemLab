@@ -119,7 +119,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
           setIsHovered(false);
           document.body.style.cursor = 'default';
         }}
-      ></mesh>
+      >
         <cylinderGeometry args={[0.1, 0.1, 0.2, 16]} />
         <meshStandardMaterial 
           color={isHovered ? "#3498db" : "transparent"}
@@ -193,7 +193,7 @@ function WireLoop({ position, isSelected, onSelect, onRelease }: {
           setIsHovered(false);
           document.body.style.cursor = 'default';
         }}
-      ></mesh>
+      >
         <cylinderGeometry args={[0.03, 0.03, 0.18, 16]} />
         <meshStandardMaterial 
           color={isHovered ? "#3498db" : "transparent"}
@@ -314,7 +314,7 @@ function MetalSaltSample({ salt, isSelected, onSelect, onFlameTest, wireLoopSele
           setIsHovered(false);
           document.body.style.cursor = 'default';
         }}
-      ></mesh>
+      >
         <cylinderGeometry args={[0.06, 0.06, 0.05, 16]} />
         <meshStandardMaterial 
           color={isHovered ? "#3498db" : "transparent"}
