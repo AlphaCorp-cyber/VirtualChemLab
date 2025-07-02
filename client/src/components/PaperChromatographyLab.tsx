@@ -2,12 +2,14 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Text } from '@react-three/drei';
 import * as THREE from 'three';
+import { useAudio } from '../lib/stores/useAudio';
 
 interface PaperChromatographyLabProps {
   onExperimentComplete?: (result: string) => void;
 }
 
 const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExperimentComplete }) => {
+  const { playHit, playSuccess } = useAudio();
   const [experimentStarted, setExperimentStarted] = useState(false);
   const [solventHeight, setSolventHeight] = useState(0);
   const [pigmentSeparation, setPigmentSeparation] = useState(0);
@@ -65,17 +67,20 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
       }
 
       if (solventHeight >= 1.4 && pigmentSeparation >= 0.9) {
+        playSuccess(); // Play success sound when experiment completes
         onExperimentComplete?.(`Chromatography complete! ${selectedInk} ink separated into ${pigmentData[selectedInk].length} pigments.`);
       }
     }
   });
 
   const applyInk = () => {
+    playHit(); // Play hit sound when applying ink
     setInkApplied(true);
   };
 
   const startChromatography = () => {
     if (inkApplied) {
+      playHit(); // Play hit sound when starting experiment
       setExperimentStarted(true);
       setSolventHeight(0.1);
     }

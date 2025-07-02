@@ -24,10 +24,41 @@ export const useAudio = create<AudioState>((set, get) => ({
   backgroundMusic: null,
   hitSound: null,
   successSound: null,
-  isMuted: true, // Start muted by default
+  isMuted: false, // Start unmuted by default
   
   initializeAudio: () => {
-    console.log("Audio system initialized");
+    console.log("Initializing audio system...");
+    
+    try {
+      // Load background music
+      const bgMusic = new Audio('/sounds/background.mp3');
+      bgMusic.loop = true;
+      bgMusic.volume = 0.2;
+      
+      // Load hit sound
+      const hitSnd = new Audio('/sounds/hit.mp3');
+      hitSnd.volume = 0.3;
+      
+      // Load success sound
+      const successSnd = new Audio('/sounds/success.mp3');
+      successSnd.volume = 0.4;
+      
+      // Store in state
+      set({ 
+        backgroundMusic: bgMusic,
+        hitSound: hitSnd,
+        successSound: successSnd
+      });
+      
+      // Try to start background music
+      bgMusic.play().catch(error => {
+        console.log("Background music requires user interaction to start:", error);
+      });
+      
+      console.log("Audio system initialized successfully");
+    } catch (error) {
+      console.error("Failed to initialize audio:", error);
+    }
   },
   
   setBackgroundMusic: (music) => set({ backgroundMusic: music }),
@@ -35,13 +66,23 @@ export const useAudio = create<AudioState>((set, get) => ({
   setSuccessSound: (sound) => set({ successSound: sound }),
   
   toggleMute: () => {
-    const { isMuted } = get();
+    const { isMuted, backgroundMusic } = get();
     const newMutedState = !isMuted;
     
-    // Just update the muted state
+    // Update the muted state
     set({ isMuted: newMutedState });
     
-    // Log the change
+    // Control background music
+    if (backgroundMusic) {
+      if (newMutedState) {
+        backgroundMusic.pause();
+      } else {
+        backgroundMusic.play().catch(error => {
+          console.log("Background music play prevented:", error);
+        });
+      }
+    }
+    
     console.log(`Sound ${newMutedState ? 'muted' : 'unmuted'}`);
   },
   

@@ -4,6 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
 import { useKeyboardControls } from "@react-three/drei";
+import { useAudio } from "../lib/stores/useAudio";
 import * as THREE from "three";
 
 // Bunsen Burner Component
