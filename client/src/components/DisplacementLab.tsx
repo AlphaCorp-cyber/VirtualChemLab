@@ -86,7 +86,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
       </mesh>
 
       {/* Test Tube */}
-      <group ref={testTubeRef} position={[0, 1.81, 0]}>
+      <group ref={testTubeRef} position={[0, 1.57, 0]}>
         {/* Glass tube */}
         <mesh position={[0, 0.3, 0]} castShadow>
           <cylinderGeometry args={[0.07, 0.07, 0.6, 16]} />
