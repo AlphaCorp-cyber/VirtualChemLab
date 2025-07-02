@@ -50,6 +50,7 @@ export function PHTestStrip({
 
   return (
     <group position={isSelected ? [0, 0, 0] : position} rotation={rotation}>
+      {/* Green bottle container for pH indicator */}
       <mesh
         ref={meshRef}
         onPointerEnter={() => setIsHovered(true)}
@@ -58,20 +59,62 @@ export function PHTestStrip({
         castShadow
         scale={isHovered || isSelected ? 1.1 : 1}
       >
-        {/* Strip handle */}
-        <boxGeometry args={[0.02, 0.3, 0.005]} />
+        {/* Bottle body */}
+        <cylinderGeometry args={[0.04, 0.05, 0.15, 8]} />
         <meshStandardMaterial 
-          color={isSelected ? "#ffff00" : "#f0f0f0"} 
-          emissive={isSelected ? "#444400" : "#000000"}
+          color={isSelected ? "#66ff66" : "#228B22"} 
+          emissive={isSelected ? "#004400" : "#000000"}
+          transparent
+          opacity={0.8}
         />
       </mesh>
       
-      {/* Test area of strip */}
-      <mesh position={[0, -0.12, 0]}>
-        <boxGeometry args={[0.025, 0.06, 0.006]} />
+      {/* Bottle neck */}
+      <mesh position={[0, 0.09, 0]}>
+        <cylinderGeometry args={[0.02, 0.025, 0.06, 8]} />
+        <meshStandardMaterial 
+          color={isSelected ? "#66ff66" : "#228B22"} 
+          transparent
+          opacity={0.8}
+        />
+      </mesh>
+      
+      {/* Bottle cap */}
+      <mesh position={[0, 0.135, 0]}>
+        <cylinderGeometry args={[0.025, 0.025, 0.03, 8]} />
+        <meshStandardMaterial 
+          color="#333333"
+        />
+      </mesh>
+      
+      {/* pH indicator liquid inside bottle */}
+      <mesh position={[0, -0.02, 0]}>
+        <cylinderGeometry args={[0.035, 0.045, 0.12, 8]} />
         <meshStandardMaterial 
           color={stripColor}
           emissive={phValue >= 0 ? new THREE.Color(stripColor).multiplyScalar(0.1) : "#000000"}
+          transparent
+          opacity={0.9}
+        />
+      </mesh>
+      
+      {/* Bottle label */}
+      <mesh position={[0, 0.02, 0.051]}>
+        <planeGeometry args={[0.06, 0.08]} />
+        <meshStandardMaterial 
+          color="#ffffff"
+          transparent
+          opacity={0.9}
+        />
+      </mesh>
+      
+      {/* Label text area */}
+      <mesh position={[0, 0.02, 0.052]}>
+        <planeGeometry args={[0.05, 0.06]} />
+        <meshStandardMaterial 
+          color="#f0f0f0"
+          transparent
+          opacity={0.8}
         />
       </mesh>
       
@@ -91,12 +134,12 @@ export function PHTestStrip({
       
       {/* Highlight when selected */}
       {isSelected && (
-        <mesh position={[0, 0, 0.01]}>
-          <boxGeometry args={[0.04, 0.32, 0.007]} />
+        <mesh position={[0, 0, 0]}>
+          <cylinderGeometry args={[0.06, 0.07, 0.18, 8]} />
           <meshStandardMaterial 
             color="#ffff00" 
             transparent 
-            opacity={0.3}
+            opacity={0.2}
             emissive="#444400"
           />
         </mesh>
