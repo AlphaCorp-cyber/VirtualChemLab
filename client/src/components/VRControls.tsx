@@ -200,9 +200,17 @@ export function VRControls() {
 
   // Enhanced mouse controls for desktop
   useEffect(() => {
-    if (!platform.isDesktop) return;
+    console.log('Platform detection:', platform);
+    console.log('Is desktop:', platform.isDesktop);
+    // Temporarily remove platform restriction to test mouse controls
+    // if (!platform.isDesktop) {
+    //   console.log('Skipping mouse controls - not detected as desktop');
+    //   return;
+    // }
+    console.log('Setting up mouse controls...');
     
     const handleMouseDown = (event: MouseEvent) => {
+      console.log('Mouse down event triggered!', event);
       const mousePos = new THREE.Vector2(
         (event.clientX / window.innerWidth) * 2 - 1,
         -(event.clientY / window.innerHeight) * 2 + 1
