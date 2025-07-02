@@ -26,11 +26,20 @@ const detectPlatform = () => {
 };
 
 export function VRControls() {
-  const { session, isPresenting } = useXR();
+  const { session } = useXR();
   const { camera, scene, gl } = useThree();
   const { selectedStripId, grabTestStrip, releaseTestStrip, testStripInLiquid, beakers } = useChemistryLab();
   const [subscribe, getState] = useKeyboardControls();
   const movementVector = useRef(new THREE.Vector3());
+  
+  // VR comfort settings
+  const vrComfortSettings = {
+    scale: 0.6, // Make everything smaller for VR comfort
+    userHeight: 1.6, // Standard user height in meters
+    reachDistance: 0.8 // Comfortable reach distance
+  };
+  
+  const isPresenting = !!session;
   
   // Platform detection
   const platform = detectPlatform();

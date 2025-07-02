@@ -8,7 +8,7 @@ import { LabUI } from "../components/LabUI";
 import { useAudio } from "../lib/stores/useAudio";
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
 
-// Create XR store for VR support
+// Create XR store for VR support with better settings
 const xrStore = createXRStore();
 
 // Define control keys for the lab
@@ -62,9 +62,9 @@ export default function Lab() {
         <Canvas
             shadows
             camera={{
-              position: [0, 1.6, 3],
-              fov: 75,
-              near: 0.1,
+              position: [0, 1.6, 8],
+              fov: 60,
+              near: 0.01,
               far: 1000
             }}
             gl={{
@@ -75,9 +75,12 @@ export default function Lab() {
             <XR store={xrStore}>
               <color attach="background" args={["#f0f8ff"]} />
               
-              <Suspense fallback={null}>
-                <ChemistryLab />
-              </Suspense>
+              {/* VR-specific scaling group */}
+              <group scale={[0.3, 0.3, 0.3]} position={[0, -0.5, 0]}>
+                <Suspense fallback={null}>
+                  <ChemistryLab />
+                </Suspense>
+              </group>
             </XR>
           </Canvas>
       </KeyboardControls>
