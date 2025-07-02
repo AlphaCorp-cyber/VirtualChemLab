@@ -610,68 +610,72 @@ export function VRControls() {
       }
     }
     
-    // ===== KEYBOARD CONTROLS (Only for desktop mode) =====
-    if (!isPresenting) {
-      // WASD movement
-      if (controls.forward) {
-        const forward = new THREE.Vector3(0, 0, -1);
-        forward.applyQuaternion(camera.quaternion);
-        forward.y = 0;
-        forward.normalize();
-        camera.position.addScaledVector(forward, speed);
-      }
-      
-      if (controls.back || controls.backward) {
-        const forward = new THREE.Vector3(0, 0, 1);
-        forward.applyQuaternion(camera.quaternion);
-        forward.y = 0;
-        forward.normalize();
-        camera.position.addScaledVector(forward, speed);
-      }
-      
-      if (controls.left || controls.leftward) {
-        const right = new THREE.Vector3(-1, 0, 0);
-        right.applyQuaternion(camera.quaternion);
-        right.y = 0;
-        right.normalize();
-        camera.position.addScaledVector(right, speed);
-      }
-      
-      if (controls.right || controls.rightward) {
-        const right = new THREE.Vector3(1, 0, 0);
-        right.applyQuaternion(camera.quaternion);
-        right.y = 0;
-        right.normalize();
-        camera.position.addScaledVector(right, speed);
-      }
-      
-      // Height adjustment with E and Q keys (Desktop only)
-      if (controls.interact) { // E key - raise camera
-        camera.position.y = THREE.MathUtils.clamp(camera.position.y + speed * 4, 0.5, 12);
-        console.log('E key pressed - raising camera to:', camera.position.y);
-      }
-      
-      if (controls.jump) { // Q key - lower camera
-        camera.position.y = THREE.MathUtils.clamp(camera.position.y - speed * 4, 0.5, 12);
-        console.log('Q key pressed - lowering camera to:', camera.position.y);
-      }
-      
-      // Keyboard interactions
-      if (controls.grab && !selectedStripId) {
-        grabTestStrip('indicator-1');
-        setGrippedObject('indicator-1');
-      }
-      
-      if (controls.release && selectedStripId) {
-        releaseTestStrip();
-        setGrippedObject(null);
-      }
-      
-      // Constrain camera to lab bounds
-      camera.position.x = THREE.MathUtils.clamp(camera.position.x, -8, 8);
-      camera.position.z = THREE.MathUtils.clamp(camera.position.z, -5, 8);
-      camera.position.y = THREE.MathUtils.clamp(camera.position.y, 0.5, 12);
+    // ===== KEYBOARD CONTROLS (Universal - works in all modes) =====
+    // WASD movement
+    if (controls.forward) {
+      const forward = new THREE.Vector3(0, 0, -1);
+      forward.applyQuaternion(camera.quaternion);
+      forward.y = 0;
+      forward.normalize();
+      camera.position.addScaledVector(forward, speed);
+      console.log('W key - moving forward');
     }
+    
+    if (controls.back || controls.backward) {
+      const forward = new THREE.Vector3(0, 0, 1);
+      forward.applyQuaternion(camera.quaternion);
+      forward.y = 0;
+      forward.normalize();
+      camera.position.addScaledVector(forward, speed);
+      console.log('S key - moving backward');
+    }
+    
+    if (controls.left || controls.leftward) {
+      const right = new THREE.Vector3(-1, 0, 0);
+      right.applyQuaternion(camera.quaternion);
+      right.y = 0;
+      right.normalize();
+      camera.position.addScaledVector(right, speed);
+      console.log('A key - moving left');
+    }
+    
+    if (controls.right || controls.rightward) {
+      const right = new THREE.Vector3(1, 0, 0);
+      right.applyQuaternion(camera.quaternion);
+      right.y = 0;
+      right.normalize();
+      camera.position.addScaledVector(right, speed);
+      console.log('D key - moving right');
+    }
+    
+    // Height adjustment with E and Q keys
+    if (controls.interact) { // E key - raise camera
+      camera.position.y = THREE.MathUtils.clamp(camera.position.y + speed * 4, 0.5, 12);
+      console.log('E key pressed - raising camera to:', camera.position.y);
+    }
+    
+    if (controls.jump) { // Q key - lower camera
+      camera.position.y = THREE.MathUtils.clamp(camera.position.y - speed * 4, 0.5, 12);
+      console.log('Q key pressed - lowering camera to:', camera.position.y);
+    }
+    
+    // Keyboard interactions
+    if (controls.grab && !selectedStripId) {
+      grabTestStrip('indicator-1');
+      setGrippedObject('indicator-1');
+      console.log('Space key - grabbing test strip');
+    }
+    
+    if (controls.release && selectedStripId) {
+      releaseTestStrip();
+      setGrippedObject(null);
+      console.log('R key - releasing test strip');
+    }
+    
+    // Constrain camera to lab bounds (always apply)
+    camera.position.x = THREE.MathUtils.clamp(camera.position.x, -8, 8);
+    camera.position.z = THREE.MathUtils.clamp(camera.position.z, -5, 8);
+    camera.position.y = THREE.MathUtils.clamp(camera.position.y, 0.5, 12);
   });
 
   return (
