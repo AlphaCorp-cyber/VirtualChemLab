@@ -232,6 +232,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         <group position={[-0.3, 0, 0]}>
           <mesh 
             onClick={() => setSelectedInk('black')}
+            onPointerDown={() => setSelectedInk('black')}
             castShadow
           >
             <cylinderGeometry args={[0.05, 0.05, 0.1, 8]} />
@@ -266,6 +267,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         <group position={[0, 0, 0]}>
           <mesh 
             onClick={() => setSelectedInk('blue')}
+            onPointerDown={() => setSelectedInk('blue')}
             castShadow
           >
             <cylinderGeometry args={[0.05, 0.05, 0.1, 8]} />
@@ -300,6 +302,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         <group position={[0.3, 0, 0]}>
           <mesh 
             onClick={() => setSelectedInk('red')}
+            onPointerDown={() => setSelectedInk('red')}
             castShadow
           >
             <cylinderGeometry args={[0.05, 0.05, 0.1, 8]} />
@@ -347,6 +350,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         <mesh 
           position={[0, 0.1, 0]} 
           onClick={applyInk}
+          onPointerDown={applyInk}
           castShadow
         >
           <boxGeometry args={[0.3, 0.08, 0.05]} />
@@ -368,6 +372,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         <mesh 
           position={[0, -0.1, 0]} 
           onClick={startChromatography}
+          onPointerDown={startChromatography}
           castShadow
         >
           <boxGeometry args={[0.3, 0.08, 0.05]} />
@@ -389,6 +394,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         <mesh 
           position={[0, -0.3, 0]} 
           onClick={resetExperiment}
+          onPointerDown={resetExperiment}
           castShadow
         >
           <boxGeometry args={[0.3, 0.08, 0.05]} />

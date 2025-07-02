@@ -317,6 +317,61 @@ export function MobileControls({ isVisible, onMove, onZoom }: MobileControlsProp
         </button>
       </div>
 
+      {/* Action Buttons - Right Side, Below Zoom */}
+      <div style={{
+        position: 'absolute',
+        bottom: '150px',
+        right: '20px',
+        pointerEvents: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px',
+      }}>
+        {/* Grab Button (G key) */}
+        <button
+          style={{
+            ...zoomButtonStyle,
+            backgroundColor: 'rgba(76, 175, 80, 0.8)',
+            fontSize: '14px',
+            width: '60px',
+            height: '50px',
+          }}
+          onTouchStart={(e) => {
+            e.preventDefault();
+            const event = new KeyboardEvent('keydown', { code: 'KeyG' });
+            window.dispatchEvent(event);
+          }}
+          onClick={() => {
+            const event = new KeyboardEvent('keydown', { code: 'KeyG' });
+            window.dispatchEvent(event);
+          }}
+        >
+          G
+        </button>
+
+        {/* Release Button (R key) */}
+        <button
+          style={{
+            ...zoomButtonStyle,
+            backgroundColor: 'rgba(255, 87, 34, 0.8)',
+            fontSize: '14px',
+            width: '60px',
+            height: '50px',
+          }}
+          onTouchStart={(e) => {
+            e.preventDefault();
+            const event = new KeyboardEvent('keydown', { code: 'KeyR' });
+            window.dispatchEvent(event);
+          }}
+          onClick={() => {
+            const event = new KeyboardEvent('keydown', { code: 'KeyR' });
+            window.dispatchEvent(event);
+          }}
+        >
+          R
+        </button>
+      </div>
+
       {/* Instructions - Top Center */}
       <div style={{
         position: 'absolute',
@@ -332,8 +387,8 @@ export function MobileControls({ isVisible, onMove, onZoom }: MobileControlsProp
         pointerEvents: 'auto',
         maxWidth: '300px',
       }}>
-        📱 <strong>Touch Controls Active</strong><br/>
-        Use buttons to move around the lab
+        <strong>Touch Controls Active</strong><br/>
+        Move: D-pad | G: Grab | R: Release
       </div>
     </div>
   );

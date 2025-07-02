@@ -52,9 +52,28 @@ export default function Lab() {
     // Detect device types
     const checkDeviceTypes = () => {
       const width = window.innerWidth;
-      setIsMobile(width < 768);
-      setIsTablet(width >= 768 && width < 1024);
-      setIsDesktop(width >= 1024);
+      const height = window.innerHeight;
+      const userAgent = navigator.userAgent;
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isMobileUserAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+      
+      // More comprehensive mobile detection
+      const isMobileWidth = width < 768;
+      const isMobileHeight = height < 600;
+      const isMobileDetected = isMobileUserAgent || isTouchDevice || (isMobileWidth && isMobileHeight);
+      
+      setIsMobile(isMobileDetected);
+      setIsTablet(!isMobileDetected && width >= 768 && width < 1024);
+      setIsDesktop(!isMobileDetected && width >= 1024);
+      
+      console.log('Device detection:', {
+        width,
+        height,
+        isTouchDevice,
+        isMobileUserAgent,
+        isMobileDetected,
+        userAgent
+      });
     };
     
     checkDeviceTypes();
