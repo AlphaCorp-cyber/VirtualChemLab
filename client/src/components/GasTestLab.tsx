@@ -23,7 +23,7 @@ function LitSplint({ position, isSelected, onSelect }: {
   });
 
   return (
-    <group position={position} onClick={onSelect}>
+    <group position={position} onClick={onSelect} onPointerDown={onSelect}>
       {/* Splint handle */}
       <RoundedBox
         ref={meshRef}
@@ -67,7 +67,7 @@ function GlowingSplint({ position, isSelected, onSelect }: {
   });
 
   return (
-    <group position={position} onClick={onSelect}>
+    <group position={position} onClick={onSelect} onPointerDown={onSelect}>
       {/* Splint handle */}
       <RoundedBox
         ref={meshRef}
@@ -112,7 +112,7 @@ function LitmusPaper({ position, isSelected, onSelect, color }: {
   });
 
   return (
-    <group position={position} onClick={onSelect}>
+    <group position={position} onClick={onSelect} onPointerDown={onSelect}>
       {/* Paper strip */}
       <RoundedBox
         ref={meshRef}
@@ -150,7 +150,7 @@ function Limewater({ position, isSelected, onSelect }: {
   });
 
   return (
-    <group position={position} onClick={onSelect}>
+    <group position={position} onClick={onSelect} onPointerDown={onSelect}>
       {/* Test tube */}
       <RoundedBox
         ref={meshRef}

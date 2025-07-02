@@ -117,6 +117,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           position={[0, 0.2, 0]} 
           castShadow
           onClick={startReaction}
+          onPointerDown={startReaction}
           onPointerOver={(e) => {
             document.body.style.cursor = 'pointer';
           }}
@@ -260,6 +261,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           position={[-0.3, 0, 0]} 
           castShadow
           onClick={() => setSelectedMetal('iron')}
+          onPointerDown={() => setSelectedMetal('iron')}
           onPointerOver={(e) => {
             document.body.style.cursor = 'pointer';
           }}
@@ -280,6 +282,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           position={[0, 0, 0]} 
           castShadow
           onClick={() => setSelectedMetal('zinc')}
+          onPointerDown={() => setSelectedMetal('zinc')}
           onPointerOver={(e) => {
             document.body.style.cursor = 'pointer';
           }}
@@ -300,6 +303,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           position={[0.3, 0, 0]} 
           castShadow
           onClick={() => setSelectedMetal('magnesium')}
+          onPointerDown={() => setSelectedMetal('magnesium')}
           onPointerOver={(e) => {
             document.body.style.cursor = 'pointer';
           }}
@@ -387,6 +391,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           position={[-0.3, 0.2, 0]} 
           castShadow
           onClick={() => setSelectedSolution('copper')}
+          onPointerDown={() => setSelectedSolution('copper')}
           onPointerOver={(e) => {
             document.body.style.cursor = 'pointer';
           }}
@@ -415,6 +420,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           position={[0.3, 0.2, 0]} 
           castShadow
           onClick={() => setSelectedSolution('iron')}
+          onPointerDown={() => setSelectedSolution('iron')}
           onPointerOver={(e) => {
             document.body.style.cursor = 'pointer';
           }}
@@ -444,6 +450,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
         position={[1.5, 1.8, 0]} 
         castShadow
         onClick={resetExperiment}
+        onPointerDown={resetExperiment}
         onPointerOver={(e) => {
           document.body.style.cursor = 'pointer';
         }}

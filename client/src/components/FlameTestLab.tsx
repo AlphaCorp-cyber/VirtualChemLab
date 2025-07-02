@@ -110,6 +110,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
       <mesh
         position={[0, 0.1, 0]}
         onClick={onToggle}
+        onPointerDown={onToggle}
         onPointerEnter={() => {
           setIsHovered(true);
           document.body.style.cursor = 'pointer';
@@ -118,7 +119,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
           setIsHovered(false);
           document.body.style.cursor = 'default';
         }}
-      >
+      ></mesh>
         <cylinderGeometry args={[0.1, 0.1, 0.2, 16]} />
         <meshStandardMaterial 
           color={isHovered ? "#3498db" : "transparent"}
@@ -183,6 +184,7 @@ function WireLoop({ position, isSelected, onSelect, onRelease }: {
       {/* Interactive area */}
       <mesh
         onClick={isSelected ? onRelease : onSelect}
+        onPointerDown={isSelected ? onRelease : onSelect}
         onPointerEnter={() => {
           setIsHovered(true);
           document.body.style.cursor = 'pointer';
@@ -191,7 +193,7 @@ function WireLoop({ position, isSelected, onSelect, onRelease }: {
           setIsHovered(false);
           document.body.style.cursor = 'default';
         }}
-      >
+      ></mesh>
         <cylinderGeometry args={[0.03, 0.03, 0.18, 16]} />
         <meshStandardMaterial 
           color={isHovered ? "#3498db" : "transparent"}
@@ -303,6 +305,7 @@ function MetalSaltSample({ salt, isSelected, onSelect, onFlameTest, wireLoopSele
       {/* Interactive area */}
       <mesh
         onClick={handleClick}
+        onPointerDown={handleClick}
         onPointerEnter={() => {
           setIsHovered(true);
           document.body.style.cursor = 'pointer';
@@ -311,7 +314,7 @@ function MetalSaltSample({ salt, isSelected, onSelect, onFlameTest, wireLoopSele
           setIsHovered(false);
           document.body.style.cursor = 'default';
         }}
-      >
+      ></mesh>
         <cylinderGeometry args={[0.06, 0.06, 0.05, 16]} />
         <meshStandardMaterial 
           color={isHovered ? "#3498db" : "transparent"}
