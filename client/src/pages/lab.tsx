@@ -62,7 +62,7 @@ export default function Lab() {
         <Canvas
             shadows
             camera={{
-              position: [0, 1.6, 8],
+              position: [0, 1.6, 3],
               fov: 60,
               near: 0.01,
               far: 1000
@@ -76,7 +76,7 @@ export default function Lab() {
               <color attach="background" args={["#f0f8ff"]} />
               
               {/* VR-specific scaling group with height adjustment */}
-              <group scale={[0.3, 0.3, 0.3]} position={[0, -1.2, 0]}>
+              <group scale={[0.3, 0.3, 0.3]} position={[0, -0.3, 0]}>
                 <Suspense fallback={null}>
                   <ChemistryLab />
                 </Suspense>

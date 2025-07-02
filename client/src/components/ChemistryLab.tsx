@@ -17,7 +17,7 @@ export function ChemistryLab() {
   const cameraRef = useRef<THREE.Camera>();
   const { updatePhysics, currentExperiment } = useChemistryLab();
   const [subscribe, getState] = useKeyboardControls();
-  const [vrHeight, setVrHeight] = useState(-1.2); // Initial height adjustment
+  const [vrHeight, setVrHeight] = useState(0.0); // Initial height adjustment at eye level
   
   const isInVR = !!session;
   
@@ -195,12 +195,24 @@ export function ChemistryLab() {
         <PaperChromatographyLab onExperimentComplete={handleExperimentComplete} />
       )}
       
-      {/* Height adjustment indicator for VR */}
+      {/* Height adjustment indicator and orientation helper for VR */}
       {isInVR && (
-        <mesh position={[3, 2, 0]}>
-          <boxGeometry args={[0.1, 0.1, 0.1]} />
-          <meshBasicMaterial color={vrHeight > -1 ? "green" : "red"} />
-        </mesh>
+        <>
+          {/* Height indicator */}
+          <mesh position={[3, 2, 0]}>
+            <boxGeometry args={[0.1, 0.1, 0.1]} />
+            <meshBasicMaterial color={vrHeight > -1 ? "green" : "red"} />
+          </mesh>
+          
+          {/* VR orientation helper - shows front of lab */}
+          <mesh position={[0, 1.5, -2]}>
+            <boxGeometry args={[0.5, 0.1, 0.1]} />
+            <meshBasicMaterial color="cyan" />
+          </mesh>
+          
+          {/* Floor reference grid for VR */}
+          <gridHelper args={[6, 10]} position={[0, 0, 0]} />
+        </>
       )}
     </group>
   );
