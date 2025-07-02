@@ -58,7 +58,8 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           if (pigment) {
             child.position.y = 1.0 + (pigment.height * pigmentSeparation);
             const material = (child as THREE.Mesh).material as THREE.MeshStandardMaterial;
-            material.opacity = Math.min(pigmentSeparation * 2, 1);
+            // Keep pigments fully visible once they start separating
+            material.opacity = pigmentSeparation > 0.1 ? 1.0 : 0;
           }
         });
       }
@@ -573,10 +574,31 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
                 anchorX="left"
                 anchorY="middle"
               >
-                Rf: {(pigment.height * pigmentSeparation).toFixed(2)}
+                Distance: {(pigment.height * pigmentSeparation * 10).toFixed(1)} cm
               </Text>
             </group>
           ))}
+
+          {/* Add solvent front distance for Rf calculation */}
+          <Text
+            position={[0, -0.3, 0.01]}
+            fontSize={0.04}
+            color="#e74c3c"
+            anchorX="center"
+            anchorY="middle"
+          >
+            Solvent Front: {(solventHeight * 10).toFixed(1)} cm
+          </Text>
+
+          <Text
+            position={[0, -0.45, 0.01]}
+            fontSize={0.035}
+            color="#7f8c8d"
+            anchorX="center"
+            anchorY="middle"
+          >
+            Calculate Rf = Distance traveled by pigment ÷ Distance traveled by solvent
+          </Text>
 
           <Text
             position={[0, -0.5, 0.01]}
