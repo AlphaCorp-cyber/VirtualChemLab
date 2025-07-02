@@ -327,6 +327,57 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
     selectedGasId
   } = useChemistryLab();
 
+  // Fallback gas data in case store data is not available
+  const fallbackGasTests = [
+    {
+      id: "gas-1",
+      position: [-2, 1.5, 0] as [number, number, number],
+      gasName: "Hydrogen",
+      formula: "H₂",
+      color: "#ff6b6b",
+      testMethod: "lit-splint",
+      expectedResult: "Burns with a pop sound"
+    },
+    {
+      id: "gas-2", 
+      position: [-1, 1.5, 0] as [number, number, number],
+      gasName: "Oxygen",
+      formula: "O₂", 
+      color: "#4ecdc4",
+      testMethod: "glowing-splint",
+      expectedResult: "Rekindies glowing splint"
+    },
+    {
+      id: "gas-3",
+      position: [0, 1.5, 0] as [number, number, number],
+      gasName: "Carbon Dioxide",
+      formula: "CO₂",
+      color: "#45b7d1", 
+      testMethod: "limewater",
+      expectedResult: "Turns limewater milky"
+    },
+    {
+      id: "gas-4",
+      position: [1, 1.5, 0] as [number, number, number],
+      gasName: "Ammonia",
+      formula: "NH₃",
+      color: "#96ceb4",
+      testMethod: "red-litmus",
+      expectedResult: "Turns red litmus blue"
+    },
+    {
+      id: "gas-5",
+      position: [2, 1.5, 0] as [number, number, number],
+      gasName: "Chlorine", 
+      formula: "Cl₂",
+      color: "#ffeaa7",
+      testMethod: "blue-litmus",
+      expectedResult: "Bleaches litmus paper"
+    }
+  ];
+
+  const displayGasTests = gasTests.length > 0 ? gasTests : fallbackGasTests;
+
   const handleToolSelect = (tool: string) => {
     selectTestTool(tool);
   };
@@ -348,8 +399,19 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
 
   return (
     <group>
+      {/* Lighting for the gas test lab */}
+      <ambientLight intensity={0.6} />
+      <directionalLight position={[5, 5, 5]} intensity={0.8} />
+      <pointLight position={[0, 3, 0]} intensity={0.5} />
+
+      {/* Lab background/floor */}
+      <mesh position={[0, -1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[10, 10]} />
+        <meshStandardMaterial color="#f0f0f0" />
+      </mesh>
+      
       {/* Gas test tubes */}
-      {gasTests.map((gas) => (
+      {displayGasTests.map((gas) => (
         <GasTestTube
           key={gas.id}
           gas={gas}
