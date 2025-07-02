@@ -23,7 +23,7 @@ function LitSplint({ position, isSelected, onSelect }: {
   });
 
   return (
-    <group position={position} onClick={onSelect} style={{ cursor: 'pointer' }}>
+    <group position={position} onClick={onSelect}>
       {/* Splint handle */}
       <RoundedBox
         ref={meshRef}
@@ -67,7 +67,7 @@ function GlowingSplint({ position, isSelected, onSelect }: {
   });
 
   return (
-    <group position={position} onClick={onSelect} style={{ cursor: 'pointer' }}>
+    <group position={position} onClick={onSelect}>
       {/* Splint handle */}
       <RoundedBox
         ref={meshRef}
@@ -112,7 +112,7 @@ function LitmusPaper({ position, isSelected, onSelect, color }: {
   });
 
   return (
-    <group position={position} onClick={onSelect} style={{ cursor: 'pointer' }}>
+    <group position={position} onClick={onSelect}>
       {/* Paper strip */}
       <RoundedBox
         ref={meshRef}
@@ -150,7 +150,7 @@ function Limewater({ position, isSelected, onSelect }: {
   });
 
   return (
-    <group position={position} onClick={onSelect} style={{ cursor: 'pointer' }}>
+    <group position={position} onClick={onSelect}>
       {/* Test tube */}
       <RoundedBox
         ref={meshRef}
@@ -244,7 +244,7 @@ function GasTestTube({ gas, onTest }: {
       </RoundedBox>
 
       <Text
-        position={[0, -0.3, 0]}
+        position={[0, 0.45, 0]}
         fontSize={0.09}
         color={isSelected ? "#ff6b35" : "#2c3e50"}
         anchorX="center"
@@ -254,7 +254,7 @@ function GasTestTube({ gas, onTest }: {
       </Text>
 
       <Text
-        position={[0, -0.42, 0]}
+        position={[0, 0.57, 0]}
         fontSize={0.07}
         color={isSelected ? "#ff6b35" : "#34495e"}
         anchorX="center"
@@ -264,7 +264,7 @@ function GasTestTube({ gas, onTest }: {
       </Text>
 
       <Text
-        position={[0, -0.54, 0]}
+        position={[0, 0.69, 0]}
         fontSize={0.05}
         color="#7f8c8d"
         anchorX="center"
@@ -275,7 +275,7 @@ function GasTestTube({ gas, onTest }: {
 
       {selectedTestTool && isSelected && (
         <Text
-          position={[0, 0.4, 0]}
+          position={[0, -0.3, 0]}
           fontSize={0.06}
           color="#ff6b35"
           anchorX="center"
