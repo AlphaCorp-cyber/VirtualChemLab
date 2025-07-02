@@ -76,12 +76,10 @@ export default function Lab() {
             <XR store={xrStore}>
               <color attach="background" args={["#f0f8ff"]} />
               
-              {/* VR-specific scaling group with height adjustment */}
-              <group scale={[0.3, 0.3, 0.3]} position={[0, 0.8, 0]}>
-                <Suspense fallback={null}>
-                  <ChemistryLab />
-                </Suspense>
-              </group>
+              {/* Scaled lab for both VR and desktop - scaling handled inside ChemistryLab */}
+              <Suspense fallback={null}>
+                <ChemistryLab />
+              </Suspense>
             </XR>
           </Canvas>
       </KeyboardControls>
