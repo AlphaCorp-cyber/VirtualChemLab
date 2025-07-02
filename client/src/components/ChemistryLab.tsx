@@ -110,12 +110,12 @@ export function ChemistryLab({ mobileControls }: ChemistryLabProps = {}) {
         camera.position.x += speed * delta;
       }
 
-      // Desktop camera height controls with E and Q
+      // Desktop camera height controls with E and Q - much slower
       if (controls.interact) { // E key - raise camera
-        camera.position.y += speed * delta;
+        camera.position.y += speed * delta * 0.25;
       }
       if (controls.jump) { // Q key - lower camera
-        camera.position.y -= speed * delta;
+        camera.position.y -= speed * delta * 0.25;
       }
 
       // Top-down view toggle with release key
