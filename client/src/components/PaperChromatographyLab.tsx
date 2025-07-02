@@ -24,18 +24,18 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
   // Pigment data for different inks
   const pigmentData = {
     black: [
-      { color: '#FFD700', height: 0.3, name: 'Yellow' },
-      { color: '#FF4500', height: 0.5, name: 'Orange' },
-      { color: '#DC143C', height: 0.7, name: 'Red' },
-      { color: '#000080', height: 0.9, name: 'Blue' }
-    ],
-    blue: [
-      { color: '#00CED1', height: 0.4, name: 'Cyan' },
+      { color: '#FFD700', height: 0.2, name: 'Yellow' },
+      { color: '#FF4500', height: 0.4, name: 'Orange' },
+      { color: '#DC143C', height: 0.6, name: 'Red' },
       { color: '#000080', height: 0.8, name: 'Blue' }
     ],
+    blue: [
+      { color: '#00CED1', height: 0.3, name: 'Cyan' },
+      { color: '#000080', height: 0.6, name: 'Blue' }
+    ],
     red: [
-      { color: '#FFD700', height: 0.3, name: 'Yellow' },
-      { color: '#DC143C', height: 0.7, name: 'Red' }
+      { color: '#FFD700', height: 0.2, name: 'Yellow' },
+      { color: '#DC143C', height: 0.5, name: 'Red' }
     ]
   };
 
@@ -60,8 +60,11 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           if (pigment) {
             // Position pigments correctly on the paper, starting from baseline moving up
             const baselineY = 0.74;
-            const maxHeight = 1.5; // Maximum height for separation
-            child.position.y = baselineY + (pigment.height * pigmentSeparation * maxHeight);
+            const maxHeight = 0.8; // Reduced maximum height to keep pigments on paper
+            const paperTop = 2.54; // Top of the paper
+            const targetY = baselineY + (pigment.height * pigmentSeparation * maxHeight);
+            // Ensure pigments don't go above the paper
+            child.position.y = Math.min(targetY, paperTop - 0.1);
             const material = (child as THREE.Mesh).material as THREE.MeshStandardMaterial;
             // Make pigments visible as soon as separation starts
             material.opacity = pigmentSeparation > 0.05 ? 0.9 : 0;
