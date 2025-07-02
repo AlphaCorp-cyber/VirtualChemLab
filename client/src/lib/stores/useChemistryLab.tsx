@@ -402,22 +402,9 @@ export const useChemistryLab = create<ChemistryLabState>()(
     },
 
     updatePhysics: (delta: number) => {
-      const { selectedStripId, beakers, testStrips } = get();
-
-      if (!selectedStripId) return;
-
-      const selectedStrip = testStrips.find(s => s.id === selectedStripId);
-      if (!selectedStrip) return;
-
-      // Check for collisions with beakers
-      beakers.forEach(beaker => {
-        if (checkCollision(selectedStrip.position, beaker.position, 0.5)) {
-          // Auto-test when strip gets close to liquid
-          if (selectedStrip.phValue === -1) { // Only test unused strips
-            get().testStripInLiquid(selectedStripId, beaker.id);
-          }
-        }
-      });
+      // Physics update function - currently used for frame-based updates
+      // Removed automatic collision testing to prevent false progress increments
+      // Tests should only be performed through explicit user interactions
     },
 
     resetLab: () => {
