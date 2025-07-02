@@ -245,8 +245,8 @@ function GasTestTube({ gas, onTest }: {
 
       <Text
         position={[0, -0.3, 0]}
-        fontSize={0.08}
-        color={isSelected ? "#ff6b35" : "#333"}
+        fontSize={0.09}
+        color={isSelected ? "#ff6b35" : "#2c3e50"}
         anchorX="center"
         anchorY="middle"
       >
@@ -254,13 +254,23 @@ function GasTestTube({ gas, onTest }: {
       </Text>
 
       <Text
-        position={[0, -0.4, 0]}
-        fontSize={0.06}
-        color="#666"
+        position={[0, -0.42, 0]}
+        fontSize={0.07}
+        color={isSelected ? "#ff6b35" : "#34495e"}
         anchorX="center"
         anchorY="middle"
       >
         {gas.formula}
+      </Text>
+
+      <Text
+        position={[0, -0.54, 0]}
+        fontSize={0.05}
+        color="#7f8c8d"
+        anchorX="center"
+        anchorY="middle"
+      >
+        Sample {gas.id.replace('gas-', '').toUpperCase()}
       </Text>
 
       {selectedTestTool && isSelected && (
@@ -356,7 +366,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
       <group position={[0, 2.2, -1]}>
         <Text
           position={[0, 0, 0]}
-          fontSize={0.1}
+          fontSize={0.11}
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
@@ -365,12 +375,12 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
         </Text>
         <Text
           position={[0, -0.15, 0]}
-          fontSize={0.06}
-          color="#7f8c8d"
+          fontSize={0.07}
+          color="#e74c3c"
           anchorX="center"
           anchorY="middle"
         >
-          (Unknown gases to identify)
+          Each tube contains a different gas - Test to identify!
         </Text>
       </group>
 
