@@ -152,6 +152,25 @@ export function LabEnvironment() {
         <meshStandardMaterial color="#f8f8f8" />
       </mesh>
       
+      {/* Front wall (with opening for entrance) */}
+      <group position={[0, 2, 3]}>
+        {/* Left section of front wall */}
+        <mesh position={[-4, 0, 0]} receiveShadow>
+          <planeGeometry args={[4, 4]} />
+          <meshStandardMaterial color="#f8f8f8" />
+        </mesh>
+        {/* Right section of front wall */}
+        <mesh position={[4, 0, 0]} receiveShadow>
+          <planeGeometry args={[4, 4]} />
+          <meshStandardMaterial color="#f8f8f8" />
+        </mesh>
+        {/* Top section above door */}
+        <mesh position={[0, 1.5, 0]} receiveShadow>
+          <planeGeometry args={[4, 1]} />
+          <meshStandardMaterial color="#f8f8f8" />
+        </mesh>
+      </group>
+      
       {/* Side walls */}
       <mesh position={[-6, 2, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow>
         <planeGeometry args={[6, 4]} />
@@ -162,6 +181,137 @@ export function LabEnvironment() {
         <planeGeometry args={[6, 4]} />
         <meshStandardMaterial color="#f0f0f0" />
       </mesh>
+
+      {/* Ceiling */}
+      <mesh rotation={[0, 0, 0]} position={[0, 4, 0]} receiveShadow>
+        <planeGeometry args={[12, 6]} />
+        <meshStandardMaterial color="#ffffff" />
+      </mesh>
+
+      {/* Ceiling tiles pattern */}
+      <group position={[0, 3.95, 0]} rotation={[Math.PI, 0, 0]}>
+        {Array.from({ length: 6 }, (_, i) =>
+          Array.from({ length: 3 }, (_, j) => (
+            <mesh
+              key={`ceiling-tile-${i}-${j}`}
+              position={[-5 + i * 2, 0, -2 + j * 2]}
+            >
+              <planeGeometry args={[1.9, 1.9]} />
+              <meshStandardMaterial 
+                color="#f5f5f5" 
+                transparent 
+                opacity={0.8}
+              />
+            </mesh>
+          ))
+        )}
+      </group>
+
+      {/* Wall baseboards */}
+      <group>
+        {/* Back wall baseboard */}
+        <mesh position={[0, 0.1, -2.95]}>
+          <boxGeometry args={[12, 0.2, 0.1]} />
+          <meshStandardMaterial color="#d0d0d0" />
+        </mesh>
+        
+        {/* Left wall baseboard */}
+        <mesh position={[-5.95, 0.1, 0]} rotation={[0, Math.PI / 2, 0]}>
+          <boxGeometry args={[6, 0.2, 0.1]} />
+          <meshStandardMaterial color="#d0d0d0" />
+        </mesh>
+        
+        {/* Right wall baseboard */}
+        <mesh position={[5.95, 0.1, 0]} rotation={[0, -Math.PI / 2, 0]}>
+          <boxGeometry args={[6, 0.2, 0.1]} />
+          <meshStandardMaterial color="#d0d0d0" />
+        </mesh>
+        
+        {/* Front wall baseboards */}
+        <mesh position={[-4, 0.1, 2.95]}>
+          <boxGeometry args={[4, 0.2, 0.1]} />
+          <meshStandardMaterial color="#d0d0d0" />
+        </mesh>
+        <mesh position={[4, 0.1, 2.95]}>
+          <boxGeometry args={[4, 0.2, 0.1]} />
+          <meshStandardMaterial color="#d0d0d0" />
+        </mesh>
+      </group>
+
+      {/* Corner trim */}
+      <group>
+        {/* Vertical corner trims */}
+        <mesh position={[-6, 2, -3]}>
+          <boxGeometry args={[0.05, 4, 0.05]} />
+          <meshStandardMaterial color="#e0e0e0" />
+        </mesh>
+        <mesh position={[6, 2, -3]}>
+          <boxGeometry args={[0.05, 4, 0.05]} />
+          <meshStandardMaterial color="#e0e0e0" />
+        </mesh>
+        <mesh position={[-6, 2, 3]}>
+          <boxGeometry args={[0.05, 4, 0.05]} />
+          <meshStandardMaterial color="#e0e0e0" />
+        </mesh>
+        <mesh position={[6, 2, 3]}>
+          <boxGeometry args={[0.05, 4, 0.05]} />
+          <meshStandardMaterial color="#e0e0e0" />
+        </mesh>
+      </group>
+
+      {/* Window on back wall */}
+      <group position={[3, 2.5, -2.95]}>
+        {/* Window frame */}
+        <mesh>
+          <boxGeometry args={[2, 1.2, 0.05]} />
+          <meshStandardMaterial color="#8B4513" />
+        </mesh>
+        
+        {/* Window glass */}
+        <mesh position={[0, 0, 0.03]}>
+          <planeGeometry args={[1.8, 1]} />
+          <meshPhysicalMaterial 
+            color="#87CEEB" 
+            transparent 
+            opacity={0.3}
+            transmission={0.9}
+            roughness={0.1}
+          />
+        </mesh>
+        
+        {/* Window cross divider */}
+        <mesh position={[0, 0, 0.04]}>
+          <boxGeometry args={[0.02, 1, 0.01]} />
+          <meshStandardMaterial color="#8B4513" />
+        </mesh>
+        <mesh position={[0, 0, 0.04]}>
+          <boxGeometry args={[1.8, 0.02, 0.01]} />
+          <meshStandardMaterial color="#8B4513" />
+        </mesh>
+      </group>
+
+      {/* Ventilation grill on ceiling */}
+      <mesh position={[-3, 3.95, 1]} rotation={[Math.PI, 0, 0]}>
+        <planeGeometry args={[1, 0.5]} />
+        <meshStandardMaterial color="#666666" />
+      </mesh>
+      
+      {/* Door frame on front wall */}
+      <group position={[0, 1, 2.95]}>
+        {/* Door frame */}
+        <mesh position={[-1.1, 0, 0]}>
+          <boxGeometry args={[0.1, 2.2, 0.05]} />
+          <meshStandardMaterial color="#8B4513" />
+        </mesh>
+        <mesh position={[1.1, 0, 0]}>
+          <boxGeometry args={[0.1, 2.2, 0.05]} />
+          <meshStandardMaterial color="#8B4513" />
+        </mesh>
+        <mesh position={[0, 1.05, 0]}>
+          <boxGeometry args={[2.2, 0.1, 0.05]} />
+          <meshStandardMaterial color="#8B4513" />
+        </mesh>
+      </group>
     </>
   );
 }
