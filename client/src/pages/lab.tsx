@@ -17,8 +17,8 @@ const controls = [
   { name: "backward", keys: ["KeyS", "ArrowDown"] },
   { name: "leftward", keys: ["KeyA", "ArrowLeft"] },
   { name: "rightward", keys: ["KeyD", "ArrowRight"] },
-  { name: "interact", keys: ["KeyE", "Space"] },
-  { name: "grab", keys: ["KeyG"] },
+  { name: "interact", keys: ["KeyE", "Space"] }, // Also used for VR height up
+  { name: "grab", keys: ["KeyG"] }, // Also used for VR height down
   { name: "release", keys: ["KeyR"] },
 ];
 
@@ -75,8 +75,8 @@ export default function Lab() {
             <XR store={xrStore}>
               <color attach="background" args={["#f0f8ff"]} />
               
-              {/* VR-specific scaling group */}
-              <group scale={[0.3, 0.3, 0.3]} position={[0, -0.5, 0]}>
+              {/* VR-specific scaling group with height adjustment */}
+              <group scale={[0.3, 0.3, 0.3]} position={[0, -1.2, 0]}>
                 <Suspense fallback={null}>
                   <ChemistryLab />
                 </Suspense>
@@ -209,7 +209,8 @@ export default function Lab() {
           🥽 <strong>VR Mode Active</strong><br/>
           👋 Use hand gestures to interact<br/>
           🤏 Reach objects to grab them<br/>
-          🫱 Hold over beakers to pour
+          🫱 Hold over beakers to pour<br/>
+          📏 <strong>Height Adjust:</strong> E (up) / G (down)
         </div>
       </div>
       

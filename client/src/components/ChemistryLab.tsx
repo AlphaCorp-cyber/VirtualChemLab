@@ -9,7 +9,7 @@ import PaperChromatographyLab from './PaperChromatographyLab';
 import { PHTestStrip } from './PHTestStrip';
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
 import { useKeyboardControls } from "@react-three/drei";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import * as THREE from "three";
 
 export function ChemistryLab() {
@@ -17,6 +17,7 @@ export function ChemistryLab() {
   const cameraRef = useRef<THREE.Camera>();
   const { updatePhysics, currentExperiment } = useChemistryLab();
   const [subscribe, getState] = useKeyboardControls();
+  const [vrHeight, setVrHeight] = useState(-1.2); // Initial height adjustment
   
   const isInVR = !!session;
 
@@ -28,9 +29,18 @@ export function ChemistryLab() {
     // Update physics simulation
     updatePhysics(delta);
 
+    const controls = getState();
+    
+    // VR Height adjustment controls (works in both VR and desktop mode)
+    if (controls.interact) { // E key or Space - raise lab
+      setVrHeight(prev => Math.min(prev + 1.0 * delta, 1.0));
+    }
+    if (controls.grab) { // G key - lower lab
+      setVrHeight(prev => Math.max(prev - 1.0 * delta, -3.0));
+    }
+
     // Only handle camera movement for non-VR mode
     if (!isInVR) {
-      const controls = getState();
       const camera = state.camera;
       const speed = 2;
 
@@ -45,14 +55,6 @@ export function ChemistryLab() {
       }
       if (controls.rightward) {
         camera.position.x += speed * delta;
-      }
-
-      // Add up/down movement for top-down view
-      if (controls.interact) {
-        camera.position.y += speed * delta;
-      }
-      if (controls.grab) {
-        camera.position.y -= speed * delta;
       }
 
       // Top-down view toggle with release key
@@ -70,7 +72,7 @@ export function ChemistryLab() {
   });
 
   return (
-    <>
+    <group position={[0, isInVR ? vrHeight : 0, 0]}>
       {/* Enhanced lighting setup for better beaker rim visibility */}
       <ambientLight intensity={0.8} color="#f8f9fa" />
       <directionalLight
@@ -143,6 +145,14 @@ export function ChemistryLab() {
       {currentExperiment === "Paper Chromatography" && (
         <PaperChromatographyLab onExperimentComplete={handleExperimentComplete} />
       )}
-    </>
+      
+      {/* Height adjustment indicator for VR */}
+      {isInVR && (
+        <mesh position={[3, 2, 0]}>
+          <boxGeometry args={[0.1, 0.1, 0.1]} />
+          <meshBasicMaterial color={vrHeight > -1 ? "green" : "red"} />
+        </mesh>
+      )}
+    </group>
   );
 }
