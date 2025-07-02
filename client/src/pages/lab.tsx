@@ -1,10 +1,11 @@
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { KeyboardControls } from "@react-three/drei";
 import { XR, createXRStore } from "@react-three/xr";
 import { useParams } from "react-router-dom";
 import { ChemistryLab } from "../components/ChemistryLab";
 import { LabUI } from "../components/LabUI";
+import { MobileControls } from "../components/MobileControls";
 import { useAudio } from "../lib/stores/useAudio";
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
 
@@ -27,6 +28,19 @@ export default function Lab() {
   const { experimentId } = useParams();
   const { initializeAudio } = useAudio();
   const { initializeLab, switchExperiment } = useChemistryLab();
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  
+  // Mobile camera control state
+  const [mobileControls, setMobileControls] = useState({
+    forward: false,
+    backward: false,
+    leftward: false,
+    rightward: false,
+    up: false,
+    down: false,
+  });
 
   useEffect(() => {
     // Add lab-specific CSS class to body for fixed layout
@@ -34,6 +48,17 @@ export default function Lab() {
     
     initializeAudio();
     initializeLab();
+    
+    // Detect device types
+    const checkDeviceTypes = () => {
+      const width = window.innerWidth;
+      setIsMobile(width < 768);
+      setIsTablet(width >= 768 && width < 1024);
+      setIsDesktop(width >= 1024);
+    };
+    
+    checkDeviceTypes();
+    window.addEventListener('resize', checkDeviceTypes);
     
     // Set the specific experiment based on the route parameter
     if (experimentId) {
@@ -54,8 +79,49 @@ export default function Lab() {
     // Cleanup on unmount
     return () => {
       document.body.classList.remove('lab-page');
+      window.removeEventListener('resize', checkDeviceTypes);
     };
   }, [initializeAudio, initializeLab, switchExperiment, experimentId]);
+  
+  // Mobile control handlers
+  const handleMobileMove = (direction: string) => {
+    console.log('Mobile move:', direction);
+    // Map mobile directions to keyboard controls
+    const directionMap: Record<string, string> = {
+      'forward': 'forward',
+      'backward': 'backward', 
+      'left': 'leftward',
+      'right': 'rightward',
+      'up': 'interact',    // E key - raise camera
+      'down': 'jump'       // Q key - lower camera
+    };
+    
+    const mappedDirection = directionMap[direction];
+    if (mappedDirection) {
+      setMobileControls(prev => ({
+        ...prev,
+        [mappedDirection]: true
+      }));
+      
+      // Reset the control after a short time to simulate key release
+      setTimeout(() => {
+        setMobileControls(prev => ({
+          ...prev,
+          [mappedDirection]: false
+        }));
+      }, 100);
+    }
+  };
+  
+  const handleMobileZoom = (direction: 'in' | 'out') => {
+    console.log('Mobile zoom:', direction);
+    // For zoom we trigger forward/backward movement
+    if (direction === 'in') {
+      handleMobileMove('forward');
+    } else {
+      handleMobileMove('backward');
+    }
+  };
 
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
@@ -88,13 +154,20 @@ export default function Lab() {
       
       <LabUI experimentId={experimentId} />
       
+      {/* Mobile Controller Buttons - Only visible on mobile */}
+      <MobileControls 
+        isVisible={isMobile} 
+        onMove={handleMobileMove}
+        onZoom={handleMobileZoom}
+      />
+      
       {/* VR Entry Button - Hidden on Mobile */}
       <div style={{ 
         position: 'absolute', 
         bottom: '20px', 
         right: '20px', 
         zIndex: 1000,
-        display: window.innerWidth < 768 ? 'none' : 'block'
+        display: isMobile ? 'none' : 'block'
       }}>
         <button
           onClick={() => xrStore.enterVR()}
@@ -124,7 +197,7 @@ export default function Lab() {
         gap: '10px'
       }}>
         {/* Mobile/Touch Controls */}
-        {window.innerWidth < 768 && (
+        {isMobile && (
           <>
             <button
               style={{
@@ -159,7 +232,7 @@ export default function Lab() {
         )}
         
         {/* Tablet Controls */}
-        {window.innerWidth >= 768 && window.innerWidth < 1024 && (
+        {isTablet && (
           <div style={{
             background: 'rgba(0,0,0,0.8)',
             color: 'white',
@@ -177,7 +250,7 @@ export default function Lab() {
         )}
         
         {/* Desktop Controls */}
-        {window.innerWidth >= 1024 && (
+        {isDesktop && (
           <div style={{
             background: 'rgba(0,0,0,0.8)',
             color: 'white',
