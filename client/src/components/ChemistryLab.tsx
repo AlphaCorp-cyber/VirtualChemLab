@@ -7,6 +7,7 @@ import { GasTestLab } from "./GasTestLab";
 import DisplacementLab from './DisplacementLab';
 import PaperChromatographyLab from './PaperChromatographyLab';
 import { PHTestStrip } from './PHTestStrip';
+import { VRControls } from './VRControls';
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
 import { useKeyboardControls } from "@react-three/drei";
 import { useRef, useState, useEffect } from "react";
@@ -189,6 +190,9 @@ export function ChemistryLab() {
         color="#ffffff"
       />
 
+      {/* VR Controls for mouse, touch, and VR interactions */}
+      <VRControls />
+      
       {/* Lab environment and equipment */}
       <LabEnvironment />
       {currentExperiment === "pH Testing" && <LabEquipment />}

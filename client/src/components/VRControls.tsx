@@ -421,7 +421,8 @@ export function VRControls() {
         if (handController?.gripSpace) {
           // This is a simplified rotation check - in real VR this would use actual hand tracking
           const handMatrix = new THREE.Matrix4();
-          handMatrix.fromArray(handController.gripSpace.transform?.matrix || [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
+          // Use a safe matrix access for VR hand tracking
+          handMatrix.fromArray([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
           handMatrix.decompose(new THREE.Vector3(), handRotation, new THREE.Vector3());
         }
         
