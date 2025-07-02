@@ -21,7 +21,8 @@ export function LabUI({ experimentId }: LabUIProps) {
     lastTestResult,
     lastFlameTestResult,
     lastGasTestResult,
-    switchExperiment
+    switchExperiment,
+    selectedTestTool
   } = useChemistryLab();
 
   const { isMuted, toggleMute } = useAudio();
@@ -246,9 +247,26 @@ export function LabUI({ experimentId }: LabUIProps) {
               {currentExperiment === "Flame Tests" && (
                 <>
                   <p>Select a metal salt sample</p>
-                  <p>Use the wire loop to perform flame test</p>
-                  <p>Observe the flame color to identify the metal ion</p>
+                  <p>Use the wire loop to perform flame tests</p>
                 </>
+              )}
+              {currentExperiment === "Gas Tests" && (
+                selectedTestTool ? (
+                  <>
+                    <p>✓ Test tool selected: {selectedTestTool.replace('-', ' ')}</p>
+                    <p>→ Click on a gas tube to test it</p>
+                    <p>Compare the result with expected outcomes</p>
+                  </>
+                ) : (
+                  <>
+                    <p>Select a test tool first:</p>
+                    <p>• Lit Splint - Tests for hydrogen (pop sound)</p>
+                    <p>• Glowing Splint - Tests for oxygen (relights)</p>
+                    <p>• Red Litmus - Tests for ammonia (turns blue)</p>
+                    <p>• Blue Litmus - Tests for chlorine (turns red)</p>
+                    <p>• Limewater - Tests for CO₂ (turns milky)</p>
+                  </>
+                )
               )}
               {currentExperiment === "Displacement Reactions" && (
                 <>

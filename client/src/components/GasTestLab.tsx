@@ -23,7 +23,7 @@ function LitSplint({ position, isSelected, onSelect }: {
   });
 
   return (
-    <group position={position} onClick={onSelect}>
+    <group position={position} onClick={onSelect} style={{ cursor: 'pointer' }}>
       {/* Splint handle */}
       <RoundedBox
         ref={meshRef}
@@ -33,13 +33,13 @@ function LitSplint({ position, isSelected, onSelect }: {
       >
         <meshStandardMaterial color={isSelected ? "#ff6b35" : "#8B4513"} />
       </RoundedBox>
-      
+
       {/* Flame when lit */}
       <mesh position={[0, 0.18, 0]} scale={[0.03, 0.05, 0.03]}>
         <sphereGeometry args={[1, 8, 8]} />
         <meshBasicMaterial color="#ff4500" transparent opacity={0.8} />
       </mesh>
-      
+
       <Text
         position={[0, -0.3, 0]}
         fontSize={0.08}
@@ -67,7 +67,7 @@ function GlowingSplint({ position, isSelected, onSelect }: {
   });
 
   return (
-    <group position={position} onClick={onSelect}>
+    <group position={position} onClick={onSelect} style={{ cursor: 'pointer' }}>
       {/* Splint handle */}
       <RoundedBox
         ref={meshRef}
@@ -77,13 +77,13 @@ function GlowingSplint({ position, isSelected, onSelect }: {
       >
         <meshStandardMaterial color={isSelected ? "#ff6b35" : "#8B4513"} />
       </RoundedBox>
-      
+
       {/* Glowing tip */}
       <mesh position={[0, 0.18, 0]} scale={[0.025, 0.025, 0.025]}>
         <sphereGeometry args={[1, 8, 8]} />
         <meshBasicMaterial color="#ff8c00" transparent opacity={0.9} />
       </mesh>
-      
+
       <Text
         position={[0, -0.3, 0]}
         fontSize={0.08}
@@ -112,7 +112,7 @@ function LitmusPaper({ position, isSelected, onSelect, color }: {
   });
 
   return (
-    <group position={position} onClick={onSelect}>
+    <group position={position} onClick={onSelect} style={{ cursor: 'pointer' }}>
       {/* Paper strip */}
       <RoundedBox
         ref={meshRef}
@@ -122,7 +122,7 @@ function LitmusPaper({ position, isSelected, onSelect, color }: {
       >
         <meshStandardMaterial color={isSelected ? "#ff6b35" : color === "red" ? "#ff6b6b" : "#74b9ff"} />
       </RoundedBox>
-      
+
       <Text
         position={[0, -0.2, 0]}
         fontSize={0.06}
@@ -150,7 +150,7 @@ function Limewater({ position, isSelected, onSelect }: {
   });
 
   return (
-    <group position={position} onClick={onSelect}>
+    <group position={position} onClick={onSelect} style={{ cursor: 'pointer' }}>
       {/* Test tube */}
       <RoundedBox
         ref={meshRef}
@@ -160,7 +160,7 @@ function Limewater({ position, isSelected, onSelect }: {
       >
         <meshStandardMaterial color="transparent" transparent opacity={0.3} />
       </RoundedBox>
-      
+
       {/* Limewater liquid */}
       <RoundedBox
         args={[0.06, 0.2, 0.06]}
@@ -169,7 +169,7 @@ function Limewater({ position, isSelected, onSelect }: {
       >
         <meshStandardMaterial color={isSelected ? "#e0e0e0" : "#f0f0f0"} />
       </RoundedBox>
-      
+
       <Text
         position={[0, -0.25, 0]}
         fontSize={0.06}
@@ -220,7 +220,7 @@ function GasTestTube({ gas, onTest }: {
           side={THREE.DoubleSide}
         />
       </RoundedBox>
-      
+
       {/* Gas visualization (subtle color) */}
       <RoundedBox
         args={[0.1, 0.35, 0.1]}
@@ -233,7 +233,7 @@ function GasTestTube({ gas, onTest }: {
           opacity={isSelected ? 0.4 : 0.2}
         />
       </RoundedBox>
-      
+
       {/* Stopper */}
       <RoundedBox
         args={[0.08, 0.06, 0.08]}
@@ -242,7 +242,7 @@ function GasTestTube({ gas, onTest }: {
       >
         <meshStandardMaterial color="#8B4513" />
       </RoundedBox>
-      
+
       <Text
         position={[0, -0.3, 0]}
         fontSize={0.08}
@@ -252,7 +252,7 @@ function GasTestTube({ gas, onTest }: {
       >
         {gas.gasName}
       </Text>
-      
+
       <Text
         position={[0, -0.4, 0]}
         fontSize={0.06}
@@ -262,7 +262,7 @@ function GasTestTube({ gas, onTest }: {
       >
         {gas.formula}
       </Text>
-      
+
       {selectedTestTool && isSelected && (
         <Text
           position={[0, 0.4, 0]}
@@ -318,40 +318,40 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
           onTest={handleGasTest}
         />
       ))}
-      
+
       {/* Test tools */}
       <LitSplint
         position={[-3, 1.62, -0.5]}
         isSelected={selectedTestTool === "lit-splint"}
         onSelect={() => handleToolSelect("lit-splint")}
       />
-      
+
       <GlowingSplint
         position={[-2, 1.62, -0.5]}
         isSelected={selectedTestTool === "glowing-splint"}
         onSelect={() => handleToolSelect("glowing-splint")}
       />
-      
+
       <LitmusPaper
         position={[-1, 1.62, -0.5]}
         isSelected={selectedTestTool === "red-litmus"}
         onSelect={() => handleToolSelect("red-litmus")}
         color="red"
       />
-      
+
       <LitmusPaper
         position={[0, 1.62, -0.5]}
         isSelected={selectedTestTool === "blue-litmus"}
         onSelect={() => handleToolSelect("blue-litmus")}
         color="blue"
       />
-      
+
       <Limewater
         position={[1, 1.62, -0.5]}
         isSelected={selectedTestTool === "limewater"}
         onSelect={() => handleToolSelect("limewater")}
       />
-      
+
       {/* Equipment Labels */}
       <group position={[0, 2.2, -1]}>
         <Text
@@ -456,7 +456,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
       >
         Gas Tests - Select a test tool, then click on a gas
       </Text>
-      
+
       {selectedTestTool && (
         <Text
           position={[0, 2.3, 0]}
@@ -468,7 +468,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
           Selected: {selectedTestTool.replace('-', ' ')}
         </Text>
       )}
-      
+
       {lastGasTestResult && (
         <group>
           <Text
