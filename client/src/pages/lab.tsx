@@ -13,25 +13,13 @@ const xrStore = createXRStore();
 
 // Define control keys for the lab
 const controls = [
-  { name: 'forward', keys: ['KeyW', 'ArrowUp'] },
-  { name: 'backward', keys: ['KeyS', 'ArrowDown'] },
-  { name: 'left', keys: ['KeyA', 'ArrowLeft'] },
-  { name: 'right', keys: ['KeyD', 'ArrowRight'] },
-  { name: 'leftward', keys: ['KeyA', 'ArrowLeft'] },
-  { name: 'rightward', keys: ['KeyD', 'ArrowRight'] },
-  { name: 'back', keys: ['KeyS', 'ArrowDown'] },
-  { name: 'grab', keys: ['KeyG'] },
-  { name: 'release', keys: ['KeyR'] },
-  { name: 'interact', keys: ['KeyE'] }, // Raise camera/lab
-  { name: 'jump', keys: ['KeyQ'] }, // Lower camera/lab
-];
-const controls = [
   { name: "forward", keys: ["KeyW", "ArrowUp"] },
   { name: "backward", keys: ["KeyS", "ArrowDown"] },
   { name: "leftward", keys: ["KeyA", "ArrowLeft"] },
   { name: "rightward", keys: ["KeyD", "ArrowRight"] },
-  { name: "interact", keys: ["KeyE", "Space"] }, // Also used for VR height up
-  { name: "grab", keys: ["KeyG"] }, // Also used for VR height down
+  { name: "interact", keys: ["KeyE"] }, // Raise camera/lab
+  { name: "jump", keys: ["KeyQ"] }, // Lower camera/lab
+  { name: "grab", keys: ["KeyG"] },
   { name: "release", keys: ["KeyR"] },
 ];
 
