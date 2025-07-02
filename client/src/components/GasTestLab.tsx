@@ -214,14 +214,16 @@ function GasTestTube({ gas, onTest }: {
         position={[0, 0, 0]}
       >
         <meshStandardMaterial 
-          color="white" 
+          color="#e8f4fd" 
           transparent 
-          opacity={0.2} 
+          opacity={0.6} 
           side={THREE.DoubleSide}
+          metalness={0.1}
+          roughness={0.1}
         />
       </RoundedBox>
 
-      {/* Gas visualization (subtle color) */}
+      {/* Gas visualization with proper colors */}
       <RoundedBox
         args={[0.1, 0.35, 0.1]}
         radius={0.015}
@@ -230,7 +232,9 @@ function GasTestTube({ gas, onTest }: {
         <meshStandardMaterial 
           color={gas.color} 
           transparent 
-          opacity={isSelected ? 0.4 : 0.2}
+          opacity={isSelected ? 0.7 : 0.5}
+          emissive={gas.color}
+          emissiveIntensity={isSelected ? 0.1 : 0.05}
         />
       </RoundedBox>
 
@@ -240,7 +244,11 @@ function GasTestTube({ gas, onTest }: {
         radius={0.01}
         position={[0, 0.23, 0]}
       >
-        <meshStandardMaterial color="#8B4513" />
+        <meshStandardMaterial 
+          color="#8B4513" 
+          metalness={0.3}
+          roughness={0.7}
+        />
       </RoundedBox>
 
       {/* Gas Name - Large and prominent */}
