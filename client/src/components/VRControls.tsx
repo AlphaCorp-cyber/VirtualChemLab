@@ -362,7 +362,9 @@ export function VRControls() {
       release
     };
 
-    const speed = 3 * delta;
+    // Movement speed based on device type and frame rate
+    const baseSpeed = platform.isMobile ? 1.5 : 2.0;
+    const speed = baseSpeed * delta;
 
     // Movement controls
     if (combinedControls.forward) {
