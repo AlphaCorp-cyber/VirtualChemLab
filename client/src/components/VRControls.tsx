@@ -327,27 +327,15 @@ export function VRControls() {
     return () => clearInterval(gamepadInterval);
   }, [platform.supportsGamepad]);
   
-  // Interaction handlers
+  // Interaction handlers - removed automatic grabbing to prevent unwanted pH tests
   const handleTouchTap = (touchPos: THREE.Vector2) => {
-    console.log('Touch tap interaction');
-    if (!selectedStripId) {
-      grabTestStrip('indicator-1');
-      setGrippedObject('indicator-1');
-    } else {
-      releaseTestStrip();
-      setGrippedObject(null);
-    }
+    console.log('Touch tap interaction - use G key to grab items');
+    // Removed automatic grabbing - users should use G key instead
   };
   
   const handleMouseClick = (mousePos: THREE.Vector2) => {
-    console.log('Mouse click interaction');
-    if (!selectedStripId) {
-      grabTestStrip('indicator-1');
-      setGrippedObject('indicator-1');
-    } else {
-      releaseTestStrip();
-      setGrippedObject(null);
-    }
+    console.log('Mouse click interaction - use G key to grab items');
+    // Removed automatic grabbing - users should use G key instead
   };
 
   useFrame((state, delta) => {
