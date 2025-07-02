@@ -455,8 +455,16 @@ export function LabEquipment() {
   const [subscribe, getState] = useKeyboardControls();
 
   useFrame(() => {
-    // Removed automatic grab/release controls to prevent unintended pH testing
-    // Users must now explicitly click on test strips to interact with them
+    const controls = getState();
+
+    if (controls.grab && !selectedStripId) {
+      // Find nearest test strip and grab it
+      grabTestStrip("strip-1");
+    }
+
+    if (controls.release && selectedStripId) {
+      releaseTestStrip();
+    }
   });
 
   return (
@@ -531,6 +539,72 @@ export function LabEquipment() {
             roughness={0.9}
           />
         </mesh>
+      </group>
+
+      {/* Bottle holder stand */}
+      <group position={[-1.5, 1.46, 0.8]}>
+        {/* Stand platform */}
+        <mesh position={[0, 0, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[0.12, 0.12, 0.04, 16]} />
+          <meshPhysicalMaterial 
+            color="#2c3e50" 
+            metalness={0.7} 
+            roughness={0.2}
+          />
+        </mesh>
+      </group>
+
+      {/* pH indicator bottles - professional lab bottle */}
+      <group position={[-1.5, 1.505, 0.8]}>
+        {/* Professional indicator bottle with better interaction */}
+        <mesh 
+          castShadow
+          onClick={() => {
+            grabTestStrip('indicator-1');
+            console.log('Picked up pH indicator solution - ready to pour into beakers');
+          }}
+          onPointerEnter={(e) => {
+            e.object.scale.setScalar(1.1);
+            document.body.style.cursor = 'pointer';
+          }}
+          onPointerLeave={(e) => {
+            e.object.scale.setScalar(1.0);
+            document.body.style.cursor = 'default';
+          }}
+        >
+          <cylinderGeometry args={[0.08, 0.06, 0.25, 8]} />
+          <meshStandardMaterial 
+            color="#32FF32" 
+            transparent 
+            opacity={0.9}
+            emissive="#32FF32"
+            emissiveIntensity={0.3}
+            roughness={0.2}
+            metalness={0.1}
+          />
+        </mesh>
+
+        {/* Professional label */}
+        <mesh position={[0, 0, 0.09]}>
+          <planeGeometry args={[0.12, 0.15]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+
+        {/* Cork stopper */}
+        <mesh position={[0, 0.15, 0]}>
+          <cylinderGeometry args={[0.04, 0.04, 0.08, 8]} />
+          <meshStandardMaterial color="#8B4513" />
+        </mesh>
+
+        {/* Label */}
+        <Text
+          position={[0, -0.2, 0]}
+          fontSize={0.05}
+          color="black"
+          anchorX="center"
+        >
+          pH Indicator
+        </Text>
       </group>
 
       {/* Lab shelf for glassware */}
