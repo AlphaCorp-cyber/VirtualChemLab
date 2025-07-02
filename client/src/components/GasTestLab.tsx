@@ -214,16 +214,14 @@ function GasTestTube({ gas, onTest }: {
         position={[0, 0, 0]}
       >
         <meshStandardMaterial 
-          color="#e8f4fd" 
+          color="white" 
           transparent 
-          opacity={0.6} 
+          opacity={0.2} 
           side={THREE.DoubleSide}
-          metalness={0.1}
-          roughness={0.1}
         />
       </RoundedBox>
 
-      {/* Gas visualization with proper colors */}
+      {/* Gas visualization (subtle color) */}
       <RoundedBox
         args={[0.1, 0.35, 0.1]}
         radius={0.015}
@@ -232,9 +230,7 @@ function GasTestTube({ gas, onTest }: {
         <meshStandardMaterial 
           color={gas.color} 
           transparent 
-          opacity={isSelected ? 0.7 : 0.5}
-          emissive={gas.color}
-          emissiveIntensity={isSelected ? 0.1 : 0.05}
+          opacity={isSelected ? 0.4 : 0.2}
         />
       </RoundedBox>
 
@@ -244,61 +240,37 @@ function GasTestTube({ gas, onTest }: {
         radius={0.01}
         position={[0, 0.23, 0]}
       >
-        <meshStandardMaterial 
-          color="#8B4513" 
-          metalness={0.3}
-          roughness={0.7}
-        />
+        <meshStandardMaterial color="#8B4513" />
       </RoundedBox>
 
-      {/* Gas Name - Large and prominent */}
       <Text
-        position={[0, -0.28, 0]}
-        fontSize={0.11}
+        position={[0, -0.3, 0]}
+        fontSize={0.09}
         color={isSelected ? "#ff6b35" : "#2c3e50"}
         anchorX="center"
         anchorY="middle"
-        font="/fonts/inter.json"
       >
         {gas.gasName}
       </Text>
 
-      {/* Chemical Formula */}
       <Text
         position={[0, -0.42, 0]}
-        fontSize={0.08}
+        fontSize={0.07}
         color={isSelected ? "#ff6b35" : "#34495e"}
         anchorX="center"
         anchorY="middle"
-        font="/fonts/inter.json"
       >
         {gas.formula}
       </Text>
 
-      {/* Sample ID */}
       <Text
         position={[0, -0.54, 0]}
-        fontSize={0.06}
+        fontSize={0.05}
         color="#7f8c8d"
         anchorX="center"
         anchorY="middle"
       >
         Sample {gas.id.replace('gas-', '').toUpperCase()}
-      </Text>
-
-      {/* Gas Properties - Additional info */}
-      <Text
-        position={[0, -0.66, 0]}
-        fontSize={0.05}
-        color="#95a5a6"
-        anchorX="center"
-        anchorY="middle"
-      >
-        {gas.gasName === "Hydrogen" && "Lightest gas"}
-        {gas.gasName === "Oxygen" && "Supports combustion"}
-        {gas.gasName === "Carbon Dioxide" && "Acidic gas"}
-        {gas.gasName === "Ammonia" && "Basic gas"}
-        {gas.gasName === "Chlorine" && "Halogen gas"}
       </Text>
 
       {selectedTestTool && isSelected && (
@@ -327,57 +299,6 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
     selectedGasId
   } = useChemistryLab();
 
-  // Fallback gas data in case store data is not available
-  const fallbackGasTests = [
-    {
-      id: "gas-1",
-      position: [-2, 1.5, 0] as [number, number, number],
-      gasName: "Hydrogen",
-      formula: "H₂",
-      color: "#ff6b6b",
-      testMethod: "lit-splint",
-      expectedResult: "Burns with a pop sound"
-    },
-    {
-      id: "gas-2", 
-      position: [-1, 1.5, 0] as [number, number, number],
-      gasName: "Oxygen",
-      formula: "O₂", 
-      color: "#4ecdc4",
-      testMethod: "glowing-splint",
-      expectedResult: "Rekindies glowing splint"
-    },
-    {
-      id: "gas-3",
-      position: [0, 1.5, 0] as [number, number, number],
-      gasName: "Carbon Dioxide",
-      formula: "CO₂",
-      color: "#45b7d1", 
-      testMethod: "limewater",
-      expectedResult: "Turns limewater milky"
-    },
-    {
-      id: "gas-4",
-      position: [1, 1.5, 0] as [number, number, number],
-      gasName: "Ammonia",
-      formula: "NH₃",
-      color: "#96ceb4",
-      testMethod: "red-litmus",
-      expectedResult: "Turns red litmus blue"
-    },
-    {
-      id: "gas-5",
-      position: [2, 1.5, 0] as [number, number, number],
-      gasName: "Chlorine", 
-      formula: "Cl₂",
-      color: "#ffeaa7",
-      testMethod: "blue-litmus",
-      expectedResult: "Bleaches litmus paper"
-    }
-  ];
-
-  const displayGasTests = gasTests.length > 0 ? gasTests : fallbackGasTests;
-
   const handleToolSelect = (tool: string) => {
     selectTestTool(tool);
   };
@@ -399,19 +320,8 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
 
   return (
     <group>
-      {/* Lighting for the gas test lab */}
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[5, 5, 5]} intensity={0.8} />
-      <pointLight position={[0, 3, 0]} intensity={0.5} />
-
-      {/* Lab background/floor */}
-      <mesh position={[0, -1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[10, 10]} />
-        <meshStandardMaterial color="#f0f0f0" />
-      </mesh>
-      
       {/* Gas test tubes */}
-      {displayGasTests.map((gas) => (
+      {gasTests.map((gas) => (
         <GasTestTube
           key={gas.id}
           gas={gas}
@@ -461,16 +371,16 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
           anchorX="center"
           anchorY="middle"
         >
-          Gas Sample Tubes - Identified
+          Gas Sample Tubes
         </Text>
         <Text
           position={[0, -0.15, 0]}
           fontSize={0.07}
-          color="#27ae60"
+          color="#e74c3c"
           anchorX="center"
           anchorY="middle"
         >
-          Each gas is clearly labeled with name and properties
+          Each tube contains a different gas - Test to identify!
         </Text>
       </group>
 
@@ -554,7 +464,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
         anchorX="center"
         anchorY="middle"
       >
-        Gas Identification Lab - All gases are labeled for study
+        Gas Tests - Select a test tool, then click on a gas
       </Text>
 
       {selectedTestTool && (
