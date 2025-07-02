@@ -113,7 +113,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
         {/* Metal piece (iron nail) */}
         <mesh 
           ref={metalRef}
-          position={[0, 0.1, 0]} 
+          position={[0, 0.2, 0]} 
           castShadow
           onClick={startReaction}
           onPointerOver={(e) => {
@@ -123,7 +123,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
             document.body.style.cursor = 'default';
           }}
         >
-          <boxGeometry args={[0.02, 0.25, 0.02]} />
+          <boxGeometry args={[0.025, 0.3, 0.025]} />
           <meshStandardMaterial 
             color="#666666"
             metalness={0.8}
