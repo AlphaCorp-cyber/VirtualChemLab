@@ -61,8 +61,8 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
     
     if (solutionRef.current) {
       const material = solutionRef.current.material as THREE.MeshStandardMaterial;
-      material.color.setHex(selectedSolution === 'copper' ? 0x0066cc : 0x228b22);
-      material.opacity = 0.8;
+      material.color.setHex(selectedSolution === 'copper' ? 0x0080ff : 0x228b22);
+      material.opacity = 0.7;
     }
     
     if (metalRef.current) {
@@ -91,11 +91,12 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
         <mesh position={[0, 0.3, 0]} castShadow>
           <cylinderGeometry args={[0.07, 0.07, 0.6, 16]} />
           <meshPhysicalMaterial 
-            color="#ffffff" 
+            color="#c0c0c0" 
             transparent={true} 
-            opacity={0.2} 
-            roughness={0.1}
-            transmission={0.9}
+            opacity={0.3} 
+            roughness={0.2}
+            metalness={0.1}
+            transmission={0.7}
             thickness={0.02}
           />
         </mesh>
@@ -104,9 +105,9 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
         <mesh ref={solutionRef} position={[0, 0.15, 0]}>
           <cylinderGeometry args={[0.065, 0.065, 0.3, 16]} />
           <meshStandardMaterial 
-            color={selectedSolution === 'copper' ? 0x0066cc : 0x228b22}
+            color={selectedSolution === 'copper' ? 0x0080ff : 0x228b22}
             transparent={true}
-            opacity={0.8}
+            opacity={0.7}
           />
         </mesh>
 
