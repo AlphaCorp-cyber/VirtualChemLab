@@ -1,3 +1,4 @@
+
 import { useXR } from "@react-three/xr";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
@@ -16,7 +17,7 @@ const detectPlatform = () => {
   const isTablet = /iPad/i.test(userAgent) || (isMobile && window.innerWidth > 768);
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   const isDesktop = !isMobile && !isTablet;
-
+  
   return {
     isMobile: isMobile && !isTablet,
     isTablet,
@@ -33,30 +34,27 @@ export function VRControls() {
   const { selectedStripId, grabTestStrip, releaseTestStrip, testStripInLiquid, beakers } = useChemistryLab();
   const [subscribe, getState] = useKeyboardControls();
   const movementVector = useRef(new THREE.Vector3());
-
+  
   // VR comfort settings
   const vrComfortSettings = {
     scale: 0.6, // Make everything smaller for VR comfort
     userHeight: 1.6, // Standard user height in meters
     reachDistance: 0.8 // Comfortable reach distance
   };
-
+  
   const isPresenting = !!session;
-
+  
   // Platform detection
   const platform = detectPlatform();
-
-  // Platform-specific visual indicators
+  
+  // VR Hand tracking states
   const [leftHandPosition, setLeftHandPosition] = useState(new THREE.Vector3());
   const [rightHandPosition, setRightHandPosition] = useState(new THREE.Vector3());
   const [leftHandGripping, setLeftHandGripping] = useState(false);
   const [rightHandGripping, setRightHandGripping] = useState(false);
   const [grippedObject, setGrippedObject] = useState<string | null>(null);
   const [pourGesture, setPourGesture] = useState(false);
-
-  // Tooltip visibility states with auto-hide
-  const [showTooltips, setShowTooltips] = useState(true);
-
+  
   // Mobile/Touch states
   const [touchState, setTouchState] = useState({
     position: null as THREE.Vector2 | null,
@@ -70,7 +68,7 @@ export function VRControls() {
     lastPinchDistance: 0,
     rotationAngle: 0
   });
-
+  
   // Desktop/Mouse states
   const [mouseState, setMouseState] = useState({
     position: null as THREE.Vector2 | null,
@@ -83,7 +81,7 @@ export function VRControls() {
     movementMode: false,
     wheelZoom: 0
   });
-
+  
   // Gamepad states
   const [gamepadState, setGamepadState] = useState({
     connected: false,
@@ -92,31 +90,31 @@ export function VRControls() {
     buttons: [] as boolean[],
     lastButtons: [] as boolean[]
   });
-
+  
   // Controller references
   const leftControllerRef = useRef<THREE.Group>(null);
   const rightControllerRef = useRef<THREE.Group>(null);
-
+  
   // Interaction settings
   const handRadius = 0.1; // VR hand interaction radius
   const touchSensitivity = platform.isTablet ? 1.5 : 2.0; // Adjusted for tablet vs phone
   const mouseSensitivity = 1.0;
   const gamepadSensitivity = 1.5;
-
+  
   // Touch event handlers with enhanced multi-touch support
   useEffect(() => {
     if (!platform.isTouchDevice) return;
-
+    
     const handleTouchStart = (event: TouchEvent) => {
       event.preventDefault();
       const touches = Array.from(event.touches);
       const primaryTouch = touches[0];
-
+      
       const touchPos = new THREE.Vector2(
         (primaryTouch.clientX / window.innerWidth) * 2 - 1,
         -(primaryTouch.clientY / window.innerHeight) * 2 + 1
       );
-
+      
       setTouchState(prev => ({
         ...prev,
         position: touchPos,
@@ -129,20 +127,20 @@ export function VRControls() {
           Math.hypot(touches[1].clientX - touches[0].clientX, touches[1].clientY - touches[0].clientY) : 0
       }));
     };
-
+    
     const handleTouchMove = (event: TouchEvent) => {
       event.preventDefault();
       const touches = Array.from(event.touches);
       const primaryTouch = touches[0];
-
+      
       const touchPos = new THREE.Vector2(
         (primaryTouch.clientX / window.innerWidth) * 2 - 1,
         -(primaryTouch.clientY / window.innerHeight) * 2 + 1
       );
-
+      
       setTouchState(prev => {
         const newState = { ...prev, position: touchPos };
-
+        
         // Multi-touch pinch detection
         if (touches.length > 1) {
           const newPinchDistance = Math.hypot(
@@ -152,7 +150,7 @@ export function VRControls() {
           newState.lastPinchDistance = prev.pinchDistance;
           newState.pinchDistance = newPinchDistance;
         }
-
+        
         // Drag detection
         if (prev.startPosition && !prev.isMultiTouch) {
           const dragDistance = touchPos.distanceTo(prev.startPosition);
@@ -160,21 +158,21 @@ export function VRControls() {
             newState.isDragging = true;
           }
         }
-
+        
         return newState;
       });
     };
-
+    
     const handleTouchEnd = (event: TouchEvent) => {
       event.preventDefault();
-
+      
       const touchDuration = Date.now() - touchState.startTime;
-
+      
       // Handle different gesture types
       if (touchDuration < 300 && !touchState.isDragging && touchState.lastPosition) {
         handleTouchTap(touchState.lastPosition);
       }
-
+      
       setTouchState(prev => ({
         ...prev,
         isTouching: false,
@@ -187,12 +185,12 @@ export function VRControls() {
         lastPinchDistance: 0
       }));
     };
-
+    
     const canvas = gl.domElement;
     canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
     canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
     canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
-
+    
     return () => {
       canvas.removeEventListener('touchstart', handleTouchStart);
       canvas.removeEventListener('touchmove', handleTouchMove);
@@ -210,14 +208,14 @@ export function VRControls() {
     //   return;
     // }
     console.log('Setting up mouse controls...');
-
+    
     const handleMouseDown = (event: MouseEvent) => {
       console.log('Mouse down event triggered!', event);
       const mousePos = new THREE.Vector2(
         (event.clientX / window.innerWidth) * 2 - 1,
         -(event.clientY / window.innerHeight) * 2 + 1
       );
-
+      
       setMouseState(prev => ({
         ...prev,
         position: mousePos,
@@ -228,7 +226,7 @@ export function VRControls() {
         isDragging: false,
         isLongClick: false
       }));
-
+      
       // Long click detection
       setTimeout(() => {
         setMouseState(current => {
@@ -239,16 +237,16 @@ export function VRControls() {
         });
       }, 500);
     };
-
+    
     const handleMouseMove = (event: MouseEvent) => {
       const mousePos = new THREE.Vector2(
         (event.clientX / window.innerWidth) * 2 - 1,
         -(event.clientY / window.innerHeight) * 2 + 1
       );
-
+      
       setMouseState(prev => {
         const newState = { ...prev, position: mousePos };
-
+        
         if (prev.isDown && prev.startPosition) {
           const dragDistance = mousePos.distanceTo(prev.startPosition);
           if (dragDistance > 0.02) {
@@ -256,20 +254,20 @@ export function VRControls() {
             newState.isLongClick = false;
           }
         }
-
+        
         return newState;
       });
     };
-
+    
     const handleMouseUp = (event: MouseEvent) => {
       const clickDuration = Date.now() - mouseState.downTime;
-
+      
       if (mouseState.isLongClick && mouseState.movementMode) {
         setMouseState(prev => ({ ...prev, movementMode: false }));
       } else if (clickDuration < 200 && !mouseState.isDragging && mouseState.lastPosition) {
         handleMouseClick(mouseState.lastPosition);
       }
-
+      
       setMouseState(prev => ({
         ...prev,
         isDown: false,
@@ -280,20 +278,20 @@ export function VRControls() {
         startPosition: null
       }));
     };
-
+    
     const handleMouseWheel = (event: WheelEvent) => {
       event.preventDefault();
       const zoomDelta = event.deltaY * -0.001;
       setMouseState(prev => ({ ...prev, wheelZoom: prev.wheelZoom + zoomDelta }));
     };
-
+    
     const canvas = gl.domElement;
     canvas.addEventListener('contextmenu', (e) => e.preventDefault());
     canvas.addEventListener('mousedown', handleMouseDown);
     canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('mouseup', handleMouseUp);
     canvas.addEventListener('wheel', handleMouseWheel, { passive: false });
-
+    
     return () => {
       canvas.removeEventListener('contextmenu', (e) => e.preventDefault());
       canvas.removeEventListener('mousedown', handleMouseDown);
@@ -302,15 +300,15 @@ export function VRControls() {
       canvas.removeEventListener('wheel', handleMouseWheel);
     };
   }, [platform.isDesktop, mouseState.downTime, mouseState.isDragging, gl.domElement]);
-
+  
   // Gamepad support
   useEffect(() => {
     if (!platform.supportsGamepad) return;
-
+    
     const updateGamepad = () => {
       const gamepads = navigator.getGamepads();
       const gamepad = gamepads[0];
-
+      
       if (gamepad) {
         setGamepadState(prev => ({
           connected: true,
@@ -323,12 +321,12 @@ export function VRControls() {
         setGamepadState(prev => ({ ...prev, connected: false }));
       }
     };
-
+    
     const gamepadInterval = setInterval(updateGamepad, 16); // 60fps
-
+    
     return () => clearInterval(gamepadInterval);
   }, [platform.supportsGamepad]);
-
+  
   // Interaction handlers
   const handleTouchTap = (touchPos: THREE.Vector2) => {
     console.log('Touch tap interaction');
@@ -340,7 +338,7 @@ export function VRControls() {
       setGrippedObject(null);
     }
   };
-
+  
   const handleMouseClick = (mousePos: THREE.Vector2) => {
     console.log('Mouse click interaction');
     if (!selectedStripId) {
@@ -352,62 +350,51 @@ export function VRControls() {
     }
   };
 
-  // Auto-hide tooltip effect
-  useEffect(() => {
-    if (showTooltips) {
-      const timer = setTimeout(() => {
-        setShowTooltips(false);
-      }, 5000); // Hide after 5 seconds
-
-      return () => clearTimeout(timer); // Clear timeout if component unmounts
-    }
-  }, [showTooltips]);
-
   useFrame((state, delta) => {
     const controls = getState();
     const speed = 3 * delta;
-
+    
     // ===== VR CONTROLS =====
     if (isPresenting && session && leftControllerRef.current && rightControllerRef.current) {
       // VR hand tracking and natural gesture interactions
       const leftPos = new THREE.Vector3();
       const rightPos = new THREE.Vector3();
-
+      
       leftControllerRef.current.getWorldPosition(leftPos);
       rightControllerRef.current.getWorldPosition(rightPos);
-
+      
       setLeftHandPosition(leftPos);
       setRightHandPosition(rightPos);
-
+      
       // Realistic VR grip detection - check for hand proximity AND grip gesture
       const stripPositions = [
         { id: 'indicator-1', pos: new THREE.Vector3(1.2, 1.0, -0.5) },
         { id: 'indicator-2', pos: new THREE.Vector3(1.3, 1.0, -0.5) },
         { id: 'indicator-3', pos: new THREE.Vector3(1.4, 1.0, -0.5) }
       ];
-
+      
       // Get VR controller input states
       const leftController = session?.inputSources?.[0];
       const rightController = session?.inputSources?.[1];
-
+      
       // Check for grip/squeeze gestures
       const leftGripPressed = leftController?.gamepad?.buttons?.[1]?.pressed || false; // Grip button
       const rightGripPressed = rightController?.gamepad?.buttons?.[1]?.pressed || false; // Grip button
       const leftTriggerPressed = leftController?.gamepad?.buttons?.[0]?.pressed || false; // Trigger
       const rightTriggerPressed = rightController?.gamepad?.buttons?.[0]?.pressed || false; // Trigger
-
+      
       // Consider gripping if either grip button or trigger is pressed
       const leftIsGripping = leftGripPressed || leftTriggerPressed;
       const rightIsGripping = rightGripPressed || rightTriggerPressed;
-
+      
       stripPositions.forEach(strip => {
         const leftDistance = leftPos.distanceTo(strip.pos);
         const rightDistance = rightPos.distanceTo(strip.pos);
-
+        
         // Only grab if hand is close AND user is making grip gesture AND not already holding something
         const leftCanGrab = leftDistance < handRadius && leftIsGripping && !selectedStripId;
         const rightCanGrab = rightDistance < handRadius && rightIsGripping && !selectedStripId;
-
+        
         if (leftCanGrab || rightCanGrab) {
           grabTestStrip(strip.id);
           setGrippedObject(strip.id);
@@ -415,7 +402,7 @@ export function VRControls() {
           setRightHandGripping(rightCanGrab);
         }
       });
-
+      
       // Release object when grip is released
       if (grippedObject && !leftIsGripping && !rightIsGripping) {
         releaseTestStrip();
@@ -423,12 +410,12 @@ export function VRControls() {
         setLeftHandGripping(false);
         setRightHandGripping(false);
       }
-
+      
       // Realistic pouring - require hand positioning and deliberate dipping motion
       if (grippedObject && (leftHandGripping || rightHandGripping)) {
         const handPos = leftHandGripping ? leftPos : rightPos;
         const handController = leftHandGripping ? leftController : rightController;
-
+        
         // Get hand rotation to detect tilting/dipping gesture
         const handRotation = new THREE.Quaternion();
         if (handController?.gripSpace) {
@@ -438,28 +425,28 @@ export function VRControls() {
           handMatrix.fromArray([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
           handMatrix.decompose(new THREE.Vector3(), handRotation, new THREE.Vector3());
         }
-
+        
         beakers.forEach(beaker => {
           const beakerPos = new THREE.Vector3(...beaker.position);
           const distance = handPos.distanceTo(beakerPos);
-
+          
           // Check if hand is close to beaker AND positioned above it
           const isAboveBeaker = handPos.y > beakerPos.y + 0.1;
           const isCloseEnough = distance < 0.3;
-
+          
           // Detect downward dipping motion (simplified - checking Y velocity)
           const previousHandPos = leftHandGripping ? 
             new THREE.Vector3().copy(leftHandPosition) : 
             new THREE.Vector3().copy(rightHandPosition);
           const isMovingDown = handPos.y < previousHandPos.y - 0.01;
-
+          
           if (isCloseEnough && isAboveBeaker && isMovingDown) {
             setPourGesture(true);
-
+            
             // Only test if hand moves into the beaker liquid level
             if (handPos.y <= beakerPos.y + 0.15) {
               testStripInLiquid(grippedObject, beaker.id);
-
+              
               setTimeout(() => {
                 setPourGesture(false);
               }, 1500);
@@ -470,7 +457,7 @@ export function VRControls() {
         });
       }
     }
-
+    
     // ===== MOBILE/TOUCH CONTROLS =====
     else if (platform.isTouchDevice && touchState.isTouching) {
       // Multi-touch pinch zoom
@@ -480,12 +467,12 @@ export function VRControls() {
         forward.applyQuaternion(camera.quaternion);
         camera.position.addScaledVector(forward, touchSensitivity);
       }
-
+      
       // Single touch movement and look
       else if (touchState.isDragging && touchState.position && touchState.lastPosition) {
         const deltaX = (touchState.position.x - touchState.lastPosition.x) * touchSensitivity;
         const deltaY = (touchState.position.y - touchState.lastPosition.y) * touchSensitivity;
-
+        
         // Forward/backward movement
         if (Math.abs(deltaY) > 0.01) {
           const forward = new THREE.Vector3(0, 0, -deltaY * speed * 2);
@@ -493,36 +480,36 @@ export function VRControls() {
           forward.y = 0;
           camera.position.addScaledVector(forward, 1);
         }
-
+        
         // Left/right strafe
         if (Math.abs(deltaX) > 0.01) {
           const right = new THREE.Vector3(deltaX * speed * 2, 0, 0);
           right.applyQuaternion(camera.quaternion);
           camera.position.addScaledVector(right, 1);
         }
-
+        
         // Camera rotation
         if (Math.abs(deltaX) > 0.02) {
           camera.rotation.y -= deltaX * 0.5;
         }
       }
-
+      
       // Touch interaction with objects
       if (grippedObject && touchState.position) {
         const raycaster = new THREE.Raycaster();
         raycaster.setFromCamera(touchState.position, camera);
-
+        
         beakers.forEach(beaker => {
           const beakerPos = new THREE.Vector3(...beaker.position);
           const intersects = raycaster.intersectObjects(scene.children, true);
-
+          
           if (intersects.length > 0 && intersects[0].distance < 5) {
             testStripInLiquid(grippedObject, beaker.id);
           }
         });
       }
     }
-
+    
     // ===== DESKTOP/MOUSE CONTROLS =====
     else if (platform.isDesktop) {
       // Mouse wheel zoom
@@ -532,12 +519,12 @@ export function VRControls() {
         camera.position.addScaledVector(forward, delta * 10);
         setMouseState(prev => ({ ...prev, wheelZoom: prev.wheelZoom * 0.9 }));
       }
-
+      
       // Cursor movement mode
       if (mouseState.movementMode && mouseState.position && mouseState.lastPosition) {
         const deltaX = (mouseState.position.x - mouseState.lastPosition.x) * mouseSensitivity * 3;
         const deltaY = (mouseState.position.y - mouseState.lastPosition.y) * mouseSensitivity * 3;
-
+        
         // Movement
         if (Math.abs(deltaY) > 0.005) {
           const forward = new THREE.Vector3(0, 0, -deltaY * speed * 3);
@@ -545,29 +532,29 @@ export function VRControls() {
           forward.y = 0;
           camera.position.addScaledVector(forward, 1);
         }
-
+        
         if (Math.abs(deltaX) > 0.005) {
           const right = new THREE.Vector3(deltaX * speed * 3, 0, 0);
           right.applyQuaternion(camera.quaternion);
           camera.position.addScaledVector(right, 1);
         }
-
+        
         // Look around
         if (Math.abs(deltaX) > 0.01) {
           camera.rotation.y -= deltaX * 0.3;
         }
       }
-
+      
       // Regular mouse drag
       else if (mouseState.isDragging && mouseState.position && mouseState.lastPosition && !mouseState.movementMode) {
         const deltaX = (mouseState.position.x - mouseState.lastPosition.x) * mouseSensitivity;
         const deltaY = (mouseState.position.y - mouseState.lastPosition.y) * mouseSensitivity;
-
+        
         // Camera rotation
         if (Math.abs(deltaX) > 0.01) {
           camera.rotation.y -= deltaX * 0.5;
         }
-
+        
         if (Math.abs(deltaY) > 0.01) {
           camera.rotation.x = THREE.MathUtils.clamp(
             camera.rotation.x - deltaY * 0.5,
@@ -576,12 +563,12 @@ export function VRControls() {
           );
         }
       }
-
+      
       // Mouse object interaction
       if (mouseState.position && !mouseState.isDragging && !mouseState.movementMode && grippedObject) {
         const raycaster = new THREE.Raycaster();
         raycaster.setFromCamera(mouseState.position, camera);
-
+        
         beakers.forEach(beaker => {
           const intersects = raycaster.intersectObjects(scene.children, true);
           if (intersects.length > 0 && intersects[0].distance < 8) {
@@ -590,26 +577,26 @@ export function VRControls() {
         });
       }
     }
-
+    
     // ===== GAMEPAD CONTROLS =====
     if (gamepadState.connected) {
       const deadzone = 0.1;
-
+      
       // Movement with left stick
       if (Math.abs(gamepadState.leftStick.x) > deadzone || Math.abs(gamepadState.leftStick.y) > deadzone) {
         const forward = new THREE.Vector3(0, 0, -gamepadState.leftStick.y * speed * gamepadSensitivity);
         const right = new THREE.Vector3(gamepadState.leftStick.x * speed * gamepadSensitivity, 0, 0);
-
+        
         forward.applyQuaternion(camera.quaternion);
         right.applyQuaternion(camera.quaternion);
-
+        
         forward.y = 0;
         right.y = 0;
-
+        
         camera.position.addScaledVector(forward, 1);
         camera.position.addScaledVector(right, 1);
       }
-
+      
       // Look with right stick
       if (Math.abs(gamepadState.rightStick.x) > deadzone || Math.abs(gamepadState.rightStick.y) > deadzone) {
         camera.rotation.y -= gamepadState.rightStick.x * delta * 2;
@@ -619,7 +606,7 @@ export function VRControls() {
           Math.PI / 3
         );
       }
-
+      
       // Button interactions
       if (gamepadState.buttons[0] && !gamepadState.lastButtons[0]) { // A button
         if (!selectedStripId) {
@@ -631,7 +618,7 @@ export function VRControls() {
         }
       }
     }
-
+    
     // ===== KEYBOARD CONTROLS (Universal fallback) =====
     // WASD movement
     if (controls.forward) {
@@ -641,7 +628,7 @@ export function VRControls() {
       forward.normalize();
       camera.position.addScaledVector(forward, speed);
     }
-
+    
     if (controls.back || controls.backward) {
       const forward = new THREE.Vector3(0, 0, 1);
       forward.applyQuaternion(camera.quaternion);
@@ -649,7 +636,7 @@ export function VRControls() {
       forward.normalize();
       camera.position.addScaledVector(forward, speed);
     }
-
+    
     if (controls.left || controls.leftward) {
       const right = new THREE.Vector3(-1, 0, 0);
       right.applyQuaternion(camera.quaternion);
@@ -657,7 +644,7 @@ export function VRControls() {
       right.normalize();
       camera.position.addScaledVector(right, speed);
     }
-
+    
     if (controls.right || controls.rightward) {
       const right = new THREE.Vector3(1, 0, 0);
       right.applyQuaternion(camera.quaternion);
@@ -665,27 +652,27 @@ export function VRControls() {
       right.normalize();
       camera.position.addScaledVector(right, speed);
     }
-
+    
     // Keyboard interactions
     if (controls.grab && !selectedStripId) {
       grabTestStrip('indicator-1');
       setGrippedObject('indicator-1');
     }
-
+    
     if (controls.release && selectedStripId) {
       releaseTestStrip();
       setGrippedObject(null);
     }
-
+    
     // Height adjustment with E and Q keys
     if (controls.interact) { // E key - raise camera/lab
       camera.position.y = THREE.MathUtils.clamp(camera.position.y + speed * 2, 0.5, 12);
     }
-
+    
     if (controls.jump) { // Q key - lower camera/lab  
       camera.position.y = THREE.MathUtils.clamp(camera.position.y - speed * 2, 0.5, 12);
     }
-
+    
     // Constrain camera to lab bounds
     camera.position.x = THREE.MathUtils.clamp(camera.position.x, -8, 8);
     camera.position.z = THREE.MathUtils.clamp(camera.position.z, -5, 8);
@@ -695,7 +682,7 @@ export function VRControls() {
   return (
     <>
       {/* Platform-specific visual indicators */}
-      {showTooltips && mouseState.movementMode && platform.isDesktop && (
+      {mouseState.movementMode && platform.isDesktop && (
         <group position={[0, 2, -1]}>
           <mesh>
             <sphereGeometry args={[0.02]} />
@@ -703,8 +690,8 @@ export function VRControls() {
           </mesh>
         </group>
       )}
-
-      {showTooltips && touchState.isMultiTouch && platform.isTouchDevice && (
+      
+      {touchState.isMultiTouch && platform.isTouchDevice && (
         <group position={[0, 2.2, -1]}>
           <mesh>
             <sphereGeometry args={[0.03]} />
@@ -712,8 +699,8 @@ export function VRControls() {
           </mesh>
         </group>
       )}
-
-      {showTooltips && gamepadState.connected && (
+      
+      {gamepadState.connected && (
         <group position={[0, 2.4, -1]}>
           <mesh>
             <sphereGeometry args={[0.025]} />
@@ -721,7 +708,7 @@ export function VRControls() {
           </mesh>
         </group>
       )}
-
+      
       {/* VR Hand Controllers */}
       {isPresenting && session && (
         <group>
@@ -735,7 +722,7 @@ export function VRControls() {
                 roughness={0.6}
               />
             </mesh>
-
+            
             {/* Fingers - curl when gripping */}
             {[0, 1, 2, 3].map(i => (
               <group key={i} position={[(-1.5 + i) * 0.02, 0.08, 0]}>
@@ -749,7 +736,7 @@ export function VRControls() {
                     roughness={0.6}
                   />
                 </mesh>
-
+                
                 {/* Finger tip */}
                 <mesh 
                   position={[0, leftHandGripping ? 0.02 : 0.04, leftHandGripping ? 0.03 : 0]}
@@ -763,7 +750,7 @@ export function VRControls() {
                 </mesh>
               </group>
             ))}
-
+            
             {/* Thumb */}
             <mesh 
               position={[-0.04, 0.02, 0.02]} 
@@ -775,7 +762,7 @@ export function VRControls() {
                 roughness={0.6}
               />
             </mesh>
-
+            
             {/* Grip indicator */}
             {leftHandGripping && (
               <mesh position={[0, 0.15, 0]}>
@@ -783,7 +770,7 @@ export function VRControls() {
                 <meshStandardMaterial color="#00FF00" emissive="#00FF00" emissiveIntensity={0.5} />
               </mesh>
             )}
-
+            
             {/* Proximity indicator when near grabbable objects */}
             {!leftHandGripping && (
               <mesh position={[0, -0.05, 0]} scale={[1, 0.1, 1]}>
@@ -797,7 +784,7 @@ export function VRControls() {
               </mesh>
             )}
           </group>
-
+          
           {/* Enhanced right hand with realistic grip animation */}
           <group ref={rightControllerRef} position={[0.3, 1.2, -0.5]}>
             {/* Palm */}
@@ -808,7 +795,7 @@ export function VRControls() {
                 roughness={0.6}
               />
             </mesh>
-
+            
             {/* Fingers - curl when gripping */}
             {[0, 1, 2, 3].map(i => (
               <group key={i} position={[(-1.5 + i) * 0.02, 0.08, 0]}>
@@ -822,7 +809,7 @@ export function VRControls() {
                     roughness={0.6}
                   />
                 </mesh>
-
+                
                 {/* Finger tip */}
                 <mesh 
                   position={[0, rightHandGripping ? 0.02 : 0.04, rightHandGripping ? 0.03 : 0]}
@@ -836,7 +823,7 @@ export function VRControls() {
                 </mesh>
               </group>
             ))}
-
+            
             {/* Thumb */}
             <mesh 
               position={[0.04, 0.02, 0.02]} 
@@ -848,7 +835,7 @@ export function VRControls() {
                 roughness={0.6}
               />
             </mesh>
-
+            
             {/* Grip indicator */}
             {rightHandGripping && (
               <mesh position={[0, 0.15, 0]}>
@@ -856,7 +843,7 @@ export function VRControls() {
                 <meshStandardMaterial color="#00FF00" emissive="#00FF00" emissiveIntensity={0.5} />
               </mesh>
             )}
-
+            
             {/* Proximity indicator when near grabbable objects */}
             {!rightHandGripping && (
               <mesh position={[0, -0.05, 0]} scale={[1, 0.1, 1]}>
@@ -870,7 +857,7 @@ export function VRControls() {
               </mesh>
             )}
           </group>
-
+          
           {/* Pouring visualization */}
           {pourGesture && grippedObject && (
             <group position={leftHandGripping ? leftHandPosition.toArray() : rightHandPosition.toArray()}>
