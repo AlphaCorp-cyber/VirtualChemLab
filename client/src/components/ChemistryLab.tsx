@@ -9,7 +9,7 @@ import PaperChromatographyLab from './PaperChromatographyLab';
 import { PHTestStrip } from './PHTestStrip';
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
 import { useKeyboardControls } from "@react-three/drei";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 
 export function ChemistryLab() {
@@ -20,6 +20,55 @@ export function ChemistryLab() {
   const [vrHeight, setVrHeight] = useState(-1.2); // Initial height adjustment
   
   const isInVR = !!session;
+  
+  // VR controller input handling
+  useEffect(() => {
+    if (!isInVR || !session) return;
+    
+    const handleInputSourceChange = () => {
+      if (session.inputSources) {
+        session.inputSources.forEach((inputSource) => {
+          if (inputSource.gamepad) {
+            const gamepad = inputSource.gamepad;
+            
+            // Use thumbstick for height adjustment
+            // Right thumbstick Y-axis (axis 3) for height control
+            if (gamepad.axes && gamepad.axes.length > 3) {
+              const thumbstickY = gamepad.axes[3]; // Right thumbstick Y
+              
+              if (Math.abs(thumbstickY) > 0.1) { // Dead zone
+                setVrHeight(prev => {
+                  const newHeight = prev + (thumbstickY * 0.01); // Smooth adjustment
+                  return Math.max(-3.0, Math.min(1.0, newHeight));
+                });
+              }
+            }
+            
+            // Alternative: Use shoulder buttons for discrete adjustment
+            if (gamepad.buttons) {
+              // Right shoulder button (index 5) - raise height
+              if (gamepad.buttons[5] && gamepad.buttons[5].pressed) {
+                setVrHeight(prev => Math.min(prev + 0.02, 1.0));
+              }
+              // Left shoulder button (index 4) - lower height  
+              if (gamepad.buttons[4] && gamepad.buttons[4].pressed) {
+                setVrHeight(prev => Math.max(prev - 0.02, -3.0));
+              }
+            }
+          }
+        });
+      }
+    };
+
+    const animationFrame = () => {
+      if (session && isInVR) {
+        handleInputSourceChange();
+      }
+      requestAnimationFrame(animationFrame);
+    };
+    
+    animationFrame();
+  }, [isInVR, session]);
 
   const handleExperimentComplete = (result: string) => {
     console.log("Experiment completed:", result);

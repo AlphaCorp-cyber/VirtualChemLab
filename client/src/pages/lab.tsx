@@ -210,7 +210,7 @@ export default function Lab() {
           👋 Use hand gestures to interact<br/>
           🤏 Reach objects to grab them<br/>
           🫱 Hold over beakers to pour<br/>
-          📏 <strong>Height Adjust:</strong> E (up) / G (down)
+          📏 <strong>Height Adjust:</strong> Right thumbstick up/down or shoulder buttons
         </div>
       </div>
       

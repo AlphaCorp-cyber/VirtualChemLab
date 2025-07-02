@@ -7,6 +7,9 @@ import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 import { checkCollision, getDistance } from "../lib/labPhysics";
 
+// Height adjustment state that can be shared between components
+let vrHeightAdjustment = -1.2;
+
 // Enhanced platform detection utility
 const detectPlatform = () => {
   const userAgent = navigator.userAgent;
