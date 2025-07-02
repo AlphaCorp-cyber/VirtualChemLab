@@ -80,12 +80,14 @@ export function ChemistryLab() {
 
     const controls = getState();
     
-    // VR Height adjustment controls (works in both VR and desktop mode)
-    if (controls.interact) { // E key or Space - raise lab
-      setVrHeight(prev => Math.min(prev + 1.0 * delta, 1.0));
-    }
-    if (controls.grab) { // G key - lower lab
-      setVrHeight(prev => Math.max(prev - 1.0 * delta, -3.0));
+    // VR Height adjustment controls (works only in VR mode)
+    if (isInVR) {
+      if (controls.interact) { // E key - raise lab in VR
+        setVrHeight(prev => Math.min(prev + 1.0 * delta, 1.0));
+      }
+      if (controls.jump) { // Q key - lower lab in VR
+        setVrHeight(prev => Math.max(prev - 1.0 * delta, -3.0));
+      }
     }
 
     // Only handle camera movement for non-VR mode
