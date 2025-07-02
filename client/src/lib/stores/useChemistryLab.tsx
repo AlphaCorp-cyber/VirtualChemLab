@@ -157,7 +157,7 @@ const initialBeakers: Beaker[] = [
   // Experiment 3: Dilution effects
   {
     id: "beaker-6",
-    position: [2, 1.54, -0.8],
+    position: [3, 1.54, -0.8],
     phValue: 2.8,
     liquidColor: "#ff7675",
     solutionName: "Diluted HCl"
