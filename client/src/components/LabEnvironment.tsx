@@ -146,46 +146,45 @@ export function LabEnvironment() {
         </mesh>
       </group>
       
-      {/* Back wall - solid 3D wall */}
-      <mesh position={[0, 2, -3]} receiveShadow castShadow>
-        <boxGeometry args={[12, 4, 0.2]} />
+      {/* Back wall */}
+      <mesh position={[0, 2, -3]} receiveShadow>
+        <planeGeometry args={[12, 4]} />
         <meshStandardMaterial color="#f8f8f8" />
       </mesh>
       
-      {/* Front wall with door opening - 3D sections */}
+      {/* Front wall (with opening for entrance) */}
       <group position={[0, 2, 3]}>
         {/* Left section of front wall */}
-        <mesh position={[-4, 0, 0]} receiveShadow castShadow>
-          <boxGeometry args={[4, 4, 0.2]} />
+        <mesh position={[-4, 0, 0]} receiveShadow>
+          <planeGeometry args={[4, 4]} />
           <meshStandardMaterial color="#f8f8f8" />
         </mesh>
         {/* Right section of front wall */}
-        <mesh position={[4, 0, 0]} receiveShadow castShadow>
-          <boxGeometry args={[4, 4, 0.2]} />
+        <mesh position={[4, 0, 0]} receiveShadow>
+          <planeGeometry args={[4, 4]} />
           <meshStandardMaterial color="#f8f8f8" />
         </mesh>
         {/* Top section above door */}
-        <mesh position={[0, 1.5, 0]} receiveShadow castShadow>
-          <boxGeometry args={[4, 1, 0.2]} />
+        <mesh position={[0, 1.5, 0]} receiveShadow>
+          <planeGeometry args={[4, 1]} />
           <meshStandardMaterial color="#f8f8f8" />
         </mesh>
       </group>
       
-      {/* Left side wall - solid 3D wall */}
-      <mesh position={[-6, 2, 0]} receiveShadow castShadow>
-        <boxGeometry args={[0.2, 4, 6]} />
+      {/* Side walls */}
+      <mesh position={[-6, 2, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow>
+        <planeGeometry args={[6, 4]} />
         <meshStandardMaterial color="#f0f0f0" />
       </mesh>
       
-      {/* Right side wall - solid 3D wall */}
-      <mesh position={[6, 2, 0]} receiveShadow castShadow>
-        <boxGeometry args={[0.2, 4, 6]} />
+      <mesh position={[6, 2, 0]} rotation={[0, -Math.PI / 2, 0]} receiveShadow>
+        <planeGeometry args={[6, 4]} />
         <meshStandardMaterial color="#f0f0f0" />
       </mesh>
 
-      {/* Ceiling - solid 3D surface */}
-      <mesh rotation={[0, 0, 0]} position={[0, 4, 0]} receiveShadow castShadow>
-        <boxGeometry args={[12, 0.1, 6]} />
+      {/* Ceiling */}
+      <mesh rotation={[0, 0, 0]} position={[0, 4, 0]} receiveShadow>
+        <planeGeometry args={[12, 6]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
 
@@ -261,16 +260,16 @@ export function LabEnvironment() {
       </group>
 
       {/* Window on back wall */}
-      <group position={[3, 2.5, -3]}>
+      <group position={[3, 2.5, -2.95]}>
         {/* Window frame */}
-        <mesh position={[0, 0, 0.1]}>
-          <boxGeometry args={[2, 1.2, 0.2]} />
+        <mesh>
+          <boxGeometry args={[2, 1.2, 0.05]} />
           <meshStandardMaterial color="#8B4513" />
         </mesh>
         
         {/* Window glass */}
-        <mesh position={[0, 0, 0.15]}>
-          <boxGeometry args={[1.8, 1, 0.05]} />
+        <mesh position={[0, 0, 0.03]}>
+          <planeGeometry args={[1.8, 1]} />
           <meshPhysicalMaterial 
             color="#87CEEB" 
             transparent 
@@ -281,12 +280,12 @@ export function LabEnvironment() {
         </mesh>
         
         {/* Window cross divider */}
-        <mesh position={[0, 0, 0.16]}>
-          <boxGeometry args={[0.02, 1, 0.02]} />
+        <mesh position={[0, 0, 0.04]}>
+          <boxGeometry args={[0.02, 1, 0.01]} />
           <meshStandardMaterial color="#8B4513" />
         </mesh>
-        <mesh position={[0, 0, 0.16]}>
-          <boxGeometry args={[1.8, 0.02, 0.02]} />
+        <mesh position={[0, 0, 0.04]}>
+          <boxGeometry args={[1.8, 0.02, 0.01]} />
           <meshStandardMaterial color="#8B4513" />
         </mesh>
       </group>
@@ -298,18 +297,18 @@ export function LabEnvironment() {
       </mesh>
       
       {/* Door frame on front wall */}
-      <group position={[0, 1, 3]}>
+      <group position={[0, 1, 2.95]}>
         {/* Door frame */}
-        <mesh position={[-1.1, 0, 0.1]}>
-          <boxGeometry args={[0.1, 2.2, 0.2]} />
+        <mesh position={[-1.1, 0, 0]}>
+          <boxGeometry args={[0.1, 2.2, 0.05]} />
           <meshStandardMaterial color="#8B4513" />
         </mesh>
-        <mesh position={[1.1, 0, 0.1]}>
-          <boxGeometry args={[0.1, 2.2, 0.2]} />
+        <mesh position={[1.1, 0, 0]}>
+          <boxGeometry args={[0.1, 2.2, 0.05]} />
           <meshStandardMaterial color="#8B4513" />
         </mesh>
-        <mesh position={[0, 1.05, 0.1]}>
-          <boxGeometry args={[2.2, 0.1, 0.2]} />
+        <mesh position={[0, 1.05, 0]}>
+          <boxGeometry args={[2.2, 0.1, 0.05]} />
           <meshStandardMaterial color="#8B4513" />
         </mesh>
       </group>
