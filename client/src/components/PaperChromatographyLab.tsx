@@ -178,12 +178,14 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
 
-      {/* Ink spot */}
+      {/* Ink spot - stays visible throughout experiment */}
       {inkApplied && (
         <mesh position={[0, 0.74, 0.52]}>
           <circleGeometry args={[0.03, 8]} />
           <meshStandardMaterial 
             color={selectedInk === 'black' ? '#000000' : selectedInk === 'blue' ? '#0000FF' : '#FF0000'} 
+            transparent
+            opacity={experimentStarted ? 0.7 : 1.0}
           />
         </mesh>
       )}
@@ -214,44 +216,118 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           Select Ink Type
         </Text>
 
-        {/* Black Ink */}
-        <mesh 
-          position={[-0.3, 0, 0]} 
-          onClick={() => setSelectedInk('black')}
-          castShadow
+        {/* Current selection indicator */}
+        <Text
+          position={[0, 0.15, 0]}
+          fontSize={0.07}
+          color="#27ae60"
+          anchorX="center"
+          anchorY="middle"
         >
-          <cylinderGeometry args={[0.05, 0.05, 0.1, 8]} />
-          <meshStandardMaterial 
-            color="#000000" 
-            emissive={selectedInk === 'black' ? '#333333' : '#000000'}
-          />
-        </mesh>
+          Current: {selectedInk.toUpperCase()} ink
+        </Text>
+
+        {/* Black Ink */}
+        <group position={[-0.3, 0, 0]}>
+          <mesh 
+            onClick={() => setSelectedInk('black')}
+            castShadow
+          >
+            <cylinderGeometry args={[0.05, 0.05, 0.1, 8]} />
+            <meshStandardMaterial 
+              color="#000000" 
+              emissive={selectedInk === 'black' ? '#333333' : '#000000'}
+            />
+          </mesh>
+          {/* Selection highlight ring */}
+          {selectedInk === 'black' && (
+            <mesh position={[0, 0, 0]}>
+              <ringGeometry args={[0.06, 0.08, 16]} />
+              <meshStandardMaterial 
+                color="#FFD700" 
+                emissive="#FFD700"
+                emissiveIntensity={0.5}
+              />
+            </mesh>
+          )}
+          <Text
+            position={[0, -0.15, 0]}
+            fontSize={0.04}
+            color="#2c3e50"
+            anchorX="center"
+            anchorY="middle"
+          >
+            Black
+          </Text>
+        </group>
 
         {/* Blue Ink */}
-        <mesh 
-          position={[0, 0, 0]} 
-          onClick={() => setSelectedInk('blue')}
-          castShadow
-        >
-          <cylinderGeometry args={[0.05, 0.05, 0.1, 8]} />
-          <meshStandardMaterial 
-            color="#0000FF" 
-            emissive={selectedInk === 'blue' ? '#0000AA' : '#000000'}
-          />
-        </mesh>
+        <group position={[0, 0, 0]}>
+          <mesh 
+            onClick={() => setSelectedInk('blue')}
+            castShadow
+          >
+            <cylinderGeometry args={[0.05, 0.05, 0.1, 8]} />
+            <meshStandardMaterial 
+              color="#0000FF" 
+              emissive={selectedInk === 'blue' ? '#0000AA' : '#000000'}
+            />
+          </mesh>
+          {/* Selection highlight ring */}
+          {selectedInk === 'blue' && (
+            <mesh position={[0, 0, 0]}>
+              <ringGeometry args={[0.06, 0.08, 16]} />
+              <meshStandardMaterial 
+                color="#FFD700" 
+                emissive="#FFD700"
+                emissiveIntensity={0.5}
+              />
+            </mesh>
+          )}
+          <Text
+            position={[0, -0.15, 0]}
+            fontSize={0.04}
+            color="#2c3e50"
+            anchorX="center"
+            anchorY="middle"
+          >
+            Blue
+          </Text>
+        </group>
 
         {/* Red Ink */}
-        <mesh 
-          position={[0.3, 0, 0]} 
-          onClick={() => setSelectedInk('red')}
-          castShadow
-        >
-          <cylinderGeometry args={[0.05, 0.05, 0.1, 8]} />
-          <meshStandardMaterial 
-            color="#FF0000" 
-            emissive={selectedInk === 'red' ? '#AA0000' : '#000000'}
-          />
-        </mesh>
+        <group position={[0.3, 0, 0]}>
+          <mesh 
+            onClick={() => setSelectedInk('red')}
+            castShadow
+          >
+            <cylinderGeometry args={[0.05, 0.05, 0.1, 8]} />
+            <meshStandardMaterial 
+              color="#FF0000" 
+              emissive={selectedInk === 'red' ? '#AA0000' : '#000000'}
+            />
+          </mesh>
+          {/* Selection highlight ring */}
+          {selectedInk === 'red' && (
+            <mesh position={[0, 0, 0]}>
+              <ringGeometry args={[0.06, 0.08, 16]} />
+              <meshStandardMaterial 
+                color="#FFD700" 
+                emissive="#FFD700"
+                emissiveIntensity={0.5}
+              />
+            </mesh>
+          )}
+          <Text
+            position={[0, -0.15, 0]}
+            fontSize={0.04}
+            color="#2c3e50"
+            anchorX="center"
+            anchorY="middle"
+          >
+            Red
+          </Text>
+        </group>
       </group>
 
       {/* Controls */}
