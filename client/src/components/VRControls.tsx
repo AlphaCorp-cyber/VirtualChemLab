@@ -655,6 +655,15 @@ export function VRControls() {
       setGrippedObject(null);
     }
     
+    // Height adjustment with E and Q keys
+    if (controls.interact) { // E key - raise camera/lab
+      camera.position.y = THREE.MathUtils.clamp(camera.position.y + speed * 2, 0.5, 12);
+    }
+    
+    if (controls.jump) { // Q key - lower camera/lab  
+      camera.position.y = THREE.MathUtils.clamp(camera.position.y - speed * 2, 0.5, 12);
+    }
+    
     // Constrain camera to lab bounds
     camera.position.x = THREE.MathUtils.clamp(camera.position.x, -8, 8);
     camera.position.z = THREE.MathUtils.clamp(camera.position.z, -5, 8);

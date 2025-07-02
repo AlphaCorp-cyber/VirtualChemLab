@@ -13,6 +13,19 @@ const xrStore = createXRStore();
 
 // Define control keys for the lab
 const controls = [
+  { name: 'forward', keys: ['KeyW', 'ArrowUp'] },
+  { name: 'backward', keys: ['KeyS', 'ArrowDown'] },
+  { name: 'left', keys: ['KeyA', 'ArrowLeft'] },
+  { name: 'right', keys: ['KeyD', 'ArrowRight'] },
+  { name: 'leftward', keys: ['KeyA', 'ArrowLeft'] },
+  { name: 'rightward', keys: ['KeyD', 'ArrowRight'] },
+  { name: 'back', keys: ['KeyS', 'ArrowDown'] },
+  { name: 'grab', keys: ['KeyG'] },
+  { name: 'release', keys: ['KeyR'] },
+  { name: 'interact', keys: ['KeyE'] }, // Raise camera/lab
+  { name: 'jump', keys: ['KeyQ'] }, // Lower camera/lab
+];
+const controls = [
   { name: "forward", keys: ["KeyW", "ArrowUp"] },
   { name: "backward", keys: ["KeyS", "ArrowDown"] },
   { name: "leftward", keys: ["KeyA", "ArrowLeft"] },
@@ -191,6 +204,7 @@ export default function Lab() {
             ⏰ <em>Long click + drag:</em> Walk mode<br/>
             👆 <em>Click:</em> Grab/release objects<br/>
             ⌨️ <em>WASD:</em> Walk around<br/>
+            ⌨️ <em>E/Q:</em> Raise/Lower height<br/>
             ⌨️ <em>G/R:</em> Grab/Release<br/>
             🎮 <em>Gamepad supported</em>
           </div>
