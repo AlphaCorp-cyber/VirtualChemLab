@@ -157,7 +157,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
             </Text>
           </group>
         ))}
-        
+
         {/* Minor graduation lines (every 0.5 cm) */}
         {Array.from({ length: 21 }, (_, i) => (
           <mesh key={`minor-${i}`} position={[0.135, 0.9 - (i * 0.09), 0]}>
@@ -165,7 +165,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
             <meshStandardMaterial color="#7f8c8d" />
           </mesh>
         ))}
-        
+
         {/* Unit label */}
         <Text
           position={[0.18, -1.05, 0]}
@@ -199,12 +199,14 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
       {/* Separated Pigments */}
       <group ref={pigmentGroupRef}>
         {pigmentData[selectedInk].map((pigment, index) => (
-          <mesh key={index} position={[0, 1.0, 0.52]}>
-            <circleGeometry args={[0.025, 8]} />
+          <mesh key={index} position={[0, 1.0, 0.001 + (index * 0.0001)]}>
+            <circleGeometry args={[0.018, 32]} />
             <meshStandardMaterial 
               color={pigment.color} 
-              transparent 
+              transparent
               opacity={0}
+              emissive={pigment.color}
+              emissiveIntensity={0.1}
             />
           </mesh>
         ))}
