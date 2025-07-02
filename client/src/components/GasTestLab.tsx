@@ -243,34 +243,54 @@ function GasTestTube({ gas, onTest }: {
         <meshStandardMaterial color="#8B4513" />
       </RoundedBox>
 
+      {/* Gas Name - Large and prominent */}
       <Text
-        position={[0, -0.3, 0]}
-        fontSize={0.09}
+        position={[0, -0.28, 0]}
+        fontSize={0.11}
         color={isSelected ? "#ff6b35" : "#2c3e50"}
         anchorX="center"
         anchorY="middle"
+        font="/fonts/inter.json"
       >
         {gas.gasName}
       </Text>
 
+      {/* Chemical Formula */}
       <Text
         position={[0, -0.42, 0]}
-        fontSize={0.07}
+        fontSize={0.08}
         color={isSelected ? "#ff6b35" : "#34495e"}
         anchorX="center"
         anchorY="middle"
+        font="/fonts/inter.json"
       >
         {gas.formula}
       </Text>
 
+      {/* Sample ID */}
       <Text
         position={[0, -0.54, 0]}
-        fontSize={0.05}
+        fontSize={0.06}
         color="#7f8c8d"
         anchorX="center"
         anchorY="middle"
       >
         Sample {gas.id.replace('gas-', '').toUpperCase()}
+      </Text>
+
+      {/* Gas Properties - Additional info */}
+      <Text
+        position={[0, -0.66, 0]}
+        fontSize={0.05}
+        color="#95a5a6"
+        anchorX="center"
+        anchorY="middle"
+      >
+        {gas.gasName === "Hydrogen" && "Lightest gas"}
+        {gas.gasName === "Oxygen" && "Supports combustion"}
+        {gas.gasName === "Carbon Dioxide" && "Acidic gas"}
+        {gas.gasName === "Ammonia" && "Basic gas"}
+        {gas.gasName === "Chlorine" && "Halogen gas"}
       </Text>
 
       {selectedTestTool && isSelected && (
@@ -371,16 +391,16 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
           anchorX="center"
           anchorY="middle"
         >
-          Gas Sample Tubes
+          Gas Sample Tubes - Identified
         </Text>
         <Text
           position={[0, -0.15, 0]}
           fontSize={0.07}
-          color="#e74c3c"
+          color="#27ae60"
           anchorX="center"
           anchorY="middle"
         >
-          Each tube contains a different gas - Test to identify!
+          Each gas is clearly labeled with name and properties
         </Text>
       </group>
 
@@ -464,7 +484,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
         anchorX="center"
         anchorY="middle"
       >
-        Gas Tests - Select a test tool, then click on a gas
+        Gas Identification Lab - All gases are labeled for study
       </Text>
 
       {selectedTestTool && (
