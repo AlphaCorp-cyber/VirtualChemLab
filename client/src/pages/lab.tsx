@@ -76,7 +76,7 @@ export default function Lab() {
               <color attach="background" args={["#f0f8ff"]} />
               
               {/* VR-specific scaling group with height adjustment */}
-              <group scale={[0.3, 0.3, 0.3]} position={[0, -0.3, 0]}>
+              <group scale={[0.3, 0.3, 0.3]} position={[0, 0.2, 0]}>
                 <Suspense fallback={null}>
                   <ChemistryLab />
                 </Suspense>
