@@ -80,14 +80,6 @@ export function ChemistryLab() {
 
     const controls = getState();
     
-    // VR Height adjustment controls (works in both VR and desktop mode)
-    if (controls.interact) { // E key or Space - raise lab
-      setVrHeight(prev => Math.min(prev + 1.0 * delta, 1.0));
-    }
-    if (controls.grab) { // G key - lower lab
-      setVrHeight(prev => Math.max(prev - 1.0 * delta, -3.0));
-    }
-
     // Only handle camera movement for non-VR mode
     if (!isInVR) {
       const camera = state.camera;
@@ -106,6 +98,14 @@ export function ChemistryLab() {
         camera.position.x += speed * delta;
       }
 
+      // Desktop camera height controls with E and Q
+      if (controls.interact) { // E key - raise camera
+        camera.position.y += speed * delta;
+      }
+      if (controls.jump) { // Q key - lower camera
+        camera.position.y -= speed * delta;
+      }
+
       // Top-down view toggle with release key
       if (controls.release) {
         // Set camera to top-down position and look down
@@ -117,6 +117,14 @@ export function ChemistryLab() {
       camera.position.x = THREE.MathUtils.clamp(camera.position.x, -8, 8);
       camera.position.z = THREE.MathUtils.clamp(camera.position.z, -5, 8);
       camera.position.y = THREE.MathUtils.clamp(camera.position.y, 0.5, 12);
+    } else {
+      // VR Height adjustment controls (only in VR mode)
+      if (controls.interact) { // E key - raise lab in VR
+        setVrHeight(prev => Math.min(prev + 1.0 * delta, 1.0));
+      }
+      if (controls.grab) { // G key - lower lab in VR
+        setVrHeight(prev => Math.max(prev - 1.0 * delta, -3.0));
+      }
     }
   });
 
