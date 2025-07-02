@@ -113,6 +113,7 @@ Changelog:
 - July 01, 2025. Successfully migrated from Replit Agent to Replit environment 
 - July 01, 2025. Added Gas Tests experiment with 5 common gas identification tests (H₂, O₂, CO₂, NH₃, Cl₂)
 - July 01, 2025. Completed migration to Replit environment - fixed landing page scrolling issue by removing overflow-hidden classes
+- July 02, 2025. Fixed VR scaling and stability issues - reduced scene scale to 0.3x for comfortable viewing, disabled desktop camera controls in VR mode to prevent lab movement when turning head
 ```
 
 ## User Preferences

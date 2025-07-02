@@ -1,4 +1,5 @@
 import { useFrame } from "@react-three/fiber";
+import { useXR } from "@react-three/xr";
 import { LabEnvironment } from "./LabEnvironment";
 import { LabEquipment } from "./LabEquipment";
 import { FlameTestLab } from "./FlameTestLab";
@@ -12,9 +13,12 @@ import { useRef } from "react";
 import * as THREE from "three";
 
 export function ChemistryLab() {
+  const { session } = useXR();
   const cameraRef = useRef<THREE.Camera>();
   const { updatePhysics, currentExperiment } = useChemistryLab();
   const [subscribe, getState] = useKeyboardControls();
+  
+  const isInVR = !!session;
 
   const handleExperimentComplete = (result: string) => {
     console.log("Experiment completed:", result);
@@ -24,43 +28,45 @@ export function ChemistryLab() {
     // Update physics simulation
     updatePhysics(delta);
 
-    // Handle camera movement for non-VR mode
-    const controls = getState();
-    const camera = state.camera;
-    const speed = 2;
+    // Only handle camera movement for non-VR mode
+    if (!isInVR) {
+      const controls = getState();
+      const camera = state.camera;
+      const speed = 2;
 
-    if (controls.forward) {
-      camera.position.z -= speed * delta;
-    }
-    if (controls.backward) {
-      camera.position.z += speed * delta;
-    }
-    if (controls.leftward) {
-      camera.position.x -= speed * delta;
-    }
-    if (controls.rightward) {
-      camera.position.x += speed * delta;
-    }
+      if (controls.forward) {
+        camera.position.z -= speed * delta;
+      }
+      if (controls.backward) {
+        camera.position.z += speed * delta;
+      }
+      if (controls.leftward) {
+        camera.position.x -= speed * delta;
+      }
+      if (controls.rightward) {
+        camera.position.x += speed * delta;
+      }
 
-    // Add up/down movement for top-down view
-    if (controls.interact) {
-      camera.position.y += speed * delta;
-    }
-    if (controls.grab) {
-      camera.position.y -= speed * delta;
-    }
+      // Add up/down movement for top-down view
+      if (controls.interact) {
+        camera.position.y += speed * delta;
+      }
+      if (controls.grab) {
+        camera.position.y -= speed * delta;
+      }
 
-    // Top-down view toggle with release key
-    if (controls.release) {
-      // Set camera to top-down position and look down
-      camera.position.set(0, 8, 0);
-      camera.lookAt(0, 0, 0);
-    }
+      // Top-down view toggle with release key
+      if (controls.release) {
+        // Set camera to top-down position and look down
+        camera.position.set(0, 8, 0);
+        camera.lookAt(0, 0, 0);
+      }
 
-    // Constrain camera movement to lab area
-    camera.position.x = THREE.MathUtils.clamp(camera.position.x, -8, 8);
-    camera.position.z = THREE.MathUtils.clamp(camera.position.z, -5, 8);
-    camera.position.y = THREE.MathUtils.clamp(camera.position.y, 0.5, 12);
+      // Constrain camera movement to lab area
+      camera.position.x = THREE.MathUtils.clamp(camera.position.x, -8, 8);
+      camera.position.z = THREE.MathUtils.clamp(camera.position.z, -5, 8);
+      camera.position.y = THREE.MathUtils.clamp(camera.position.y, 0.5, 12);
+    }
   });
 
   return (
