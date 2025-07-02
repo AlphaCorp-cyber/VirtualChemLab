@@ -31,7 +31,7 @@ export default function Lab() {
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
-  
+
   // Mobile camera control state
   const [mobileControls, setMobileControls] = useState({
     forward: false,
@@ -45,10 +45,10 @@ export default function Lab() {
   useEffect(() => {
     // Add lab-specific CSS class to body for fixed layout
     document.body.classList.add('lab-page');
-    
+
     initializeAudio();
     initializeLab();
-    
+
     // Detect device types
     const checkDeviceTypes = () => {
       const width = window.innerWidth;
@@ -56,16 +56,16 @@ export default function Lab() {
       const userAgent = navigator.userAgent;
       const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
       const isMobileUserAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-      
+
       // More comprehensive mobile detection
       const isMobileWidth = width < 768;
       const isMobileHeight = height < 600;
       const isMobileDetected = isMobileUserAgent || isTouchDevice || (isMobileWidth && isMobileHeight);
-      
+
       setIsMobile(isMobileDetected);
       setIsTablet(!isMobileDetected && width >= 768 && width < 1024);
       setIsDesktop(!isMobileDetected && width >= 1024);
-      
+
       console.log('Device detection:', {
         width,
         height,
@@ -75,10 +75,10 @@ export default function Lab() {
         userAgent
       });
     };
-    
+
     checkDeviceTypes();
     window.addEventListener('resize', checkDeviceTypes);
-    
+
     // Set the specific experiment based on the route parameter
     if (experimentId) {
       const experimentMap: Record<string, any> = {
@@ -88,20 +88,20 @@ export default function Lab() {
         'displacement-reactions': 'Displacement Reactions',
         'paper-chromatography': 'Paper Chromatography'
       };
-      
+
       const experimentName = experimentMap[experimentId];
       if (experimentName) {
         switchExperiment(experimentName);
       }
     }
-    
+
     // Cleanup on unmount
     return () => {
       document.body.classList.remove('lab-page');
       window.removeEventListener('resize', checkDeviceTypes);
     };
   }, [initializeAudio, initializeLab, switchExperiment, experimentId]);
-  
+
   // Mobile control handlers
   const handleMobileMove = (direction: string) => {
     console.log('Mobile move:', direction);
@@ -114,14 +114,14 @@ export default function Lab() {
       'up': 'interact',    // E key - raise camera
       'down': 'jump'       // Q key - lower camera
     };
-    
+
     const mappedDirection = directionMap[direction];
     if (mappedDirection) {
       setMobileControls(prev => ({
         ...prev,
         [mappedDirection]: true
       }));
-      
+
       // Reset the control after a short time to simulate key release
       setTimeout(() => {
         setMobileControls(prev => ({
@@ -131,7 +131,7 @@ export default function Lab() {
       }, 100);
     }
   };
-  
+
   const handleMobileZoom = (direction: 'in' | 'out') => {
     console.log('Mobile zoom:', direction);
     // For zoom we trigger forward/backward movement
@@ -160,7 +160,7 @@ export default function Lab() {
           >
             <XR store={xrStore}>
               <color attach="background" args={["#f0f8ff"]} />
-              
+
               {/* VR-specific scaling group with height adjustment */}
               <group scale={[0.3, 0.3, 0.3]} position={[0, 0.8, 0]}>
                 <Suspense fallback={null}>
@@ -170,16 +170,16 @@ export default function Lab() {
             </XR>
           </Canvas>
       </KeyboardControls>
-      
+
       <LabUI experimentId={experimentId} />
-      
+
       {/* Mobile Controller Buttons - Only visible on mobile */}
       <MobileControls 
         isVisible={isMobile} 
         onMove={handleMobileMove}
         onZoom={handleMobileZoom}
       />
-      
+
       {/* VR Entry Button - Hidden on Mobile */}
       <div style={{ 
         position: 'absolute', 
@@ -204,7 +204,7 @@ export default function Lab() {
           🥽 Enter VR
         </button>
       </div>
-      
+
       {/* Dynamic Platform-Specific Controls */}
       <div style={{
         position: 'absolute',
@@ -249,7 +249,7 @@ export default function Lab() {
             </div>
           </>
         )}
-        
+
         {/* Tablet Controls */}
         {isTablet && (
           <div style={{
@@ -267,7 +267,7 @@ export default function Lab() {
             ⌨️ <em>Keyboard:</em> WASD to move
           </div>
         )}
-        
+
         {/* Desktop Controls */}
         {isDesktop && (
           <div style={{
@@ -289,7 +289,7 @@ export default function Lab() {
             🎮 <em>Gamepad supported</em>
           </div>
         )}
-        
+
         {/* VR Controls Indicator */}
         <div id="vr-status" style={{
           background: 'rgba(76, 175, 80, 0.9)',
@@ -307,7 +307,7 @@ export default function Lab() {
           📏 <strong>Height Adjust:</strong> Right thumbstick up/down or shoulder buttons
         </div>
       </div>
-      
+
       {/* Back to Landing Button */}
       <div style={{ 
         position: 'absolute', 

@@ -13,7 +13,18 @@ import { useKeyboardControls } from "@react-three/drei";
 import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 
-export function ChemistryLab() {
+interface ChemistryLabProps {
+  mobileControls?: {
+    forward: boolean;
+    backward: boolean; 
+    leftward: boolean;
+    rightward: boolean;
+    up: boolean;
+    down: boolean;
+  };
+}
+
+export function ChemistryLab({ mobileControls }: ChemistryLabProps = {}) {
   const { session } = useXR();
   const cameraRef = useRef<THREE.Camera>();
   const { updatePhysics, currentExperiment } = useChemistryLab();
@@ -191,7 +202,7 @@ export function ChemistryLab() {
       />
 
       {/* VR Controls for mouse, touch, and VR interactions */}
-      <VRControls />
+      <VRControls mobileControls={mobileControls} />
       
       {/* Lab environment and equipment */}
       <LabEnvironment />
