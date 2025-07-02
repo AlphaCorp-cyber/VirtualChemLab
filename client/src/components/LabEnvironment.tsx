@@ -88,10 +88,14 @@ export function LabEnvironment() {
         ))}
       </group>
 
-      {/* Simple ground plane in open bluish space */}
+      {/* Professional tiled lab floor with better materials */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
-        <planeGeometry args={[50, 50]} />
-        <meshStandardMaterial color="#e3f2fd" opacity={0.8} transparent />
+        <planeGeometry args={[20, 20]} />
+        <meshStandardMaterial 
+          map={new THREE.CanvasTexture(createTileTexture())} 
+          roughness={0.2}
+          metalness={0.05}
+        />
       </mesh>
       
       {/* L-shaped lab bench - main horizontal section */}
@@ -141,6 +145,23 @@ export function LabEnvironment() {
           <meshStandardMaterial color="#bdc3c7" />
         </mesh>
       </group>
+      
+      {/* Back wall */}
+      <mesh position={[0, 2, -3]} receiveShadow>
+        <planeGeometry args={[12, 4]} />
+        <meshStandardMaterial color="#f8f8f8" />
+      </mesh>
+      
+      {/* Side walls */}
+      <mesh position={[-6, 2, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow>
+        <planeGeometry args={[6, 4]} />
+        <meshStandardMaterial color="#f0f0f0" />
+      </mesh>
+      
+      <mesh position={[6, 2, 0]} rotation={[0, -Math.PI / 2, 0]} receiveShadow>
+        <planeGeometry args={[6, 4]} />
+        <meshStandardMaterial color="#f0f0f0" />
+      </mesh>
     </>
   );
 }
