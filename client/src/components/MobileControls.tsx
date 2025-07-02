@@ -58,7 +58,9 @@ export function MobileControls({ isVisible, onMove, onZoom }: MobileControlsProp
 
   const buttonStyle: React.CSSProperties = {
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    border: '2px solid rgba(255, 255, 255, 0.3)',
+    borderWidth: '2px',
+    borderStyle: 'solid',
+    borderColor: 'rgba(255, 255, 255, 0.3)',
     borderRadius: '50%',
     width: '60px',
     height: '60px',
