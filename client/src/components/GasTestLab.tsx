@@ -40,23 +40,10 @@ function LitSplint({ position, isSelected, onSelect }: {
         <meshBasicMaterial color="#ff4500" transparent opacity={0.8} />
       </mesh>
 
-      {/* Background panel for label */}
-      <RoundedBox
-        args={[0.25, 0.08, 0.01]}
-        radius={0.01}
-        position={[0, -0.35, 0]}
-      >
-        <meshStandardMaterial 
-          color={isSelected ? "#fff8f0" : "#ffffff"} 
-          transparent 
-          opacity={0.9}
-        />
-      </RoundedBox>
-
       <Text
-        position={[0, -0.35, 0.02]}
-        fontSize={0.06}
-        color={isSelected ? "#ff6b35" : "#333"}
+        position={[0, -0.3, 0]}
+        fontSize={0.08}
+        color={isSelected ? "#ff6b35" : "#666"}
         anchorX="center"
         anchorY="middle"
       >
@@ -97,23 +84,10 @@ function GlowingSplint({ position, isSelected, onSelect }: {
         <meshBasicMaterial color="#ff8c00" transparent opacity={0.9} />
       </mesh>
 
-      {/* Background panel for label */}
-      <RoundedBox
-        args={[0.3, 0.08, 0.01]}
-        radius={0.01}
-        position={[0, -0.35, 0]}
-      >
-        <meshStandardMaterial 
-          color={isSelected ? "#fff8f0" : "#ffffff"} 
-          transparent 
-          opacity={0.9}
-        />
-      </RoundedBox>
-
       <Text
-        position={[0, -0.35, 0.02]}
-        fontSize={0.06}
-        color={isSelected ? "#ff6b35" : "#333"}
+        position={[0, -0.3, 0]}
+        fontSize={0.08}
+        color={isSelected ? "#ff6b35" : "#666"}
         anchorX="center"
         anchorY="middle"
       >
@@ -149,23 +123,10 @@ function LitmusPaper({ position, isSelected, onSelect, color }: {
         <meshStandardMaterial color={isSelected ? "#ff6b35" : color === "red" ? "#ff6b6b" : "#74b9ff"} />
       </RoundedBox>
 
-      {/* Background panel for label */}
-      <RoundedBox
-        args={[0.25, 0.08, 0.01]}
-        radius={0.01}
-        position={[0, -0.25, 0]}
-      >
-        <meshStandardMaterial 
-          color={isSelected ? "#fff8f0" : "#ffffff"} 
-          transparent 
-          opacity={0.9}
-        />
-      </RoundedBox>
-
       <Text
-        position={[0, -0.25, 0.02]}
-        fontSize={0.055}
-        color={isSelected ? "#ff6b35" : "#333"}
+        position={[0, -0.2, 0]}
+        fontSize={0.06}
+        color={isSelected ? "#ff6b35" : "#666"}
         anchorX="center"
         anchorY="middle"
       >
@@ -209,23 +170,10 @@ function Limewater({ position, isSelected, onSelect }: {
         <meshStandardMaterial color={isSelected ? "#e0e0e0" : "#f0f0f0"} />
       </RoundedBox>
 
-      {/* Background panel for label */}
-      <RoundedBox
-        args={[0.25, 0.08, 0.01]}
-        radius={0.01}
-        position={[0, -0.3, 0]}
-      >
-        <meshStandardMaterial 
-          color={isSelected ? "#fff8f0" : "#ffffff"} 
-          transparent 
-          opacity={0.9}
-        />
-      </RoundedBox>
-
       <Text
-        position={[0, -0.3, 0.02]}
-        fontSize={0.055}
-        color={isSelected ? "#ff6b35" : "#333"}
+        position={[0, -0.25, 0]}
+        fontSize={0.06}
+        color={isSelected ? "#ff6b35" : "#666"}
         anchorX="center"
         anchorY="middle"
       >
@@ -295,34 +243,18 @@ function GasTestTube({ gas, onTest }: {
         <meshStandardMaterial color="#8B4513" />
       </RoundedBox>
 
-      {/* Label background panel */}
-      <RoundedBox
-        args={[0.35, 0.4, 0.02]}
-        radius={0.02}
-        position={[0, 0.64, 0.1]}
-      >
-        <meshStandardMaterial 
-          color={isSelected ? "#fff8f0" : "#ffffff"} 
-          transparent 
-          opacity={0.9}
-        />
-      </RoundedBox>
-
-      {/* Gas Name - Primary label */}
       <Text
-        position={[0, 0.52, 0.12]}
-        fontSize={0.08}
+        position={[0, 0.45, 0]}
+        fontSize={0.09}
         color={isSelected ? "#ff6b35" : "#2c3e50"}
         anchorX="center"
         anchorY="middle"
-        font="bold"
       >
         {gas.gasName}
       </Text>
 
-      {/* Chemical Formula - Secondary label */}
       <Text
-        position={[0, 0.68, 0.12]}
+        position={[0, 0.57, 0]}
         fontSize={0.07}
         color={isSelected ? "#ff6b35" : "#34495e"}
         anchorX="center"
@@ -331,9 +263,8 @@ function GasTestTube({ gas, onTest }: {
         {gas.formula}
       </Text>
 
-      {/* Sample ID - Tertiary label */}
       <Text
-        position={[0, 0.82, 0.12]}
+        position={[0, 0.69, 0]}
         fontSize={0.05}
         color="#7f8c8d"
         anchorX="center"
@@ -389,55 +320,6 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
 
   return (
     <group>
-      {/* Section Header for Gas Samples */}
-      <group position={[0, 2.2, -1]}>
-        <RoundedBox
-          args={[4, 0.15, 0.02]}
-          radius={0.02}
-          position={[0, 0, 0]}
-        >
-          <meshStandardMaterial 
-            color="#f8f9fa" 
-            transparent 
-            opacity={0.95}
-          />
-        </RoundedBox>
-        <Text
-          position={[0, 0, 0.02]}
-          fontSize={0.1}
-          color="#2c3e50"
-          anchorX="center"
-          anchorY="middle"
-          font="bold"
-        >
-          Gas Samples - Select a test tool first, then click a gas sample
-        </Text>
-      </group>
-
-      {/* Section Header for Test Tools */}
-      <group position={[-1.5, 1.9, -0.3]}>
-        <RoundedBox
-          args={[3, 0.12, 0.02]}
-          radius={0.02}
-          position={[0, 0, 0]}
-        >
-          <meshStandardMaterial 
-            color="#e8f4f8" 
-            transparent 
-            opacity={0.95}
-          />
-        </RoundedBox>
-        <Text
-          position={[0, 0, 0.02]}
-          fontSize={0.08}
-          color="#34495e"
-          anchorX="center"
-          anchorY="middle"
-        >
-          Test Tools - Click to select
-        </Text>
-      </group>
-
       {/* Gas test tubes */}
       {gasTests.map((gas) => (
         <GasTestTube
@@ -447,35 +329,35 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
         />
       ))}
 
-      {/* Test tools with better spacing */}
+      {/* Test tools */}
       <LitSplint
-        position={[-3.5, 1.62, -0.3]}
+        position={[-3, 1.62, -0.5]}
         isSelected={selectedTestTool === "lit-splint"}
         onSelect={() => handleToolSelect("lit-splint")}
       />
 
       <GlowingSplint
-        position={[-2.5, 1.62, -0.3]}
+        position={[-2, 1.62, -0.5]}
         isSelected={selectedTestTool === "glowing-splint"}
         onSelect={() => handleToolSelect("glowing-splint")}
       />
 
       <LitmusPaper
-        position={[-1.5, 1.62, -0.3]}
+        position={[-1, 1.62, -0.5]}
         isSelected={selectedTestTool === "red-litmus"}
         onSelect={() => handleToolSelect("red-litmus")}
         color="red"
       />
 
       <LitmusPaper
-        position={[-0.5, 1.62, -0.3]}
+        position={[0, 1.62, -0.5]}
         isSelected={selectedTestTool === "blue-litmus"}
         onSelect={() => handleToolSelect("blue-litmus")}
         color="blue"
       />
 
       <Limewater
-        position={[0.5, 1.62, -0.3]}
+        position={[1, 1.62, -0.5]}
         isSelected={selectedTestTool === "limewater"}
         onSelect={() => handleToolSelect("limewater")}
       />

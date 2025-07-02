@@ -129,10 +129,7 @@ export function ChemistryLab() {
   });
 
   return (
-    <group 
-      scale={isInVR ? [0.3, 0.3, 0.3] : [1, 1, 1]}
-      position={[0, isInVR ? vrHeight + 0.8 : 0, 0]}
-    >
+    <group position={[0, isInVR ? vrHeight : 0, 0]}>
       {/* Enhanced lighting setup for better beaker rim visibility */}
       <ambientLight intensity={0.8} color="#f8f9fa" />
       <directionalLight

@@ -525,8 +525,7 @@ export const useChemistryLab = create<ChemistryLabState>()(
     },
 
     switchExperiment: (experiment: ExperimentType) => {
-      // Initialize experiment-specific data based on the experiment type
-      const updates: Partial<ChemistryLabState> = {
+      set({ 
         currentExperiment: experiment,
         completedTests: 0,
         progress: 0,
@@ -539,19 +538,7 @@ export const useChemistryLab = create<ChemistryLabState>()(
         selectedTestTool: null,
         bunsenBurnerOn: false,
         wireLoopSelected: false
-      };
-
-      // Initialize experiment-specific data
-      if (experiment === "pH Testing") {
-        updates.beakers = initialBeakers;
-        updates.testStrips = initialTestStrips;
-      } else if (experiment === "Flame Tests") {
-        updates.metalSalts = initialMetalSalts;
-      } else if (experiment === "Gas Tests") {
-        updates.gasTests = initialGasTests;
-      }
-
-      set(updates);
+      });
       console.log(`Switched to experiment: ${experiment}`);
     }
   }))
