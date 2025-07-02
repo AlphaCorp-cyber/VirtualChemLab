@@ -13,13 +13,25 @@ const xrStore = createXRStore();
 
 // Define control keys for the lab
 const controls = [
+  { name: 'forward', keys: ['KeyW', 'ArrowUp'] },
+  { name: 'backward', keys: ['KeyS', 'ArrowDown'] },
+  { name: 'left', keys: ['KeyA', 'ArrowLeft'] },
+  { name: 'right', keys: ['KeyD', 'ArrowRight'] },
+  { name: 'leftward', keys: ['KeyA', 'ArrowLeft'] },
+  { name: 'rightward', keys: ['KeyD', 'ArrowRight'] },
+  { name: 'back', keys: ['KeyS', 'ArrowDown'] },
+  { name: 'grab', keys: ['KeyG'] },
+  { name: 'release', keys: ['KeyR'] },
+  { name: 'interact', keys: ['KeyE'] }, // Raise camera/lab
+  { name: 'jump', keys: ['KeyQ'] }, // Lower camera/lab
+];
+const controls = [
   { name: "forward", keys: ["KeyW", "ArrowUp"] },
   { name: "backward", keys: ["KeyS", "ArrowDown"] },
   { name: "leftward", keys: ["KeyA", "ArrowLeft"] },
   { name: "rightward", keys: ["KeyD", "ArrowRight"] },
-  { name: "interact", keys: ["KeyE"] }, // Raise camera/lab
-  { name: "jump", keys: ["KeyQ"] }, // Lower camera/lab
-  { name: "grab", keys: ["KeyG"] },
+  { name: "interact", keys: ["KeyE", "Space"] }, // Also used for VR height up
+  { name: "grab", keys: ["KeyG"] }, // Also used for VR height down
   { name: "release", keys: ["KeyR"] },
 ];
 
@@ -31,10 +43,10 @@ export default function Lab() {
   useEffect(() => {
     // Add lab-specific CSS class to body for fixed layout
     document.body.classList.add('lab-page');
-
+    
     initializeAudio();
     initializeLab();
-
+    
     // Set the specific experiment based on the route parameter
     if (experimentId) {
       const experimentMap: Record<string, any> = {
@@ -44,13 +56,13 @@ export default function Lab() {
         'displacement-reactions': 'Displacement Reactions',
         'paper-chromatography': 'Paper Chromatography'
       };
-
+      
       const experimentName = experimentMap[experimentId];
       if (experimentName) {
         switchExperiment(experimentName);
       }
     }
-
+    
     // Cleanup on unmount
     return () => {
       document.body.classList.remove('lab-page');
@@ -75,7 +87,7 @@ export default function Lab() {
           >
             <XR store={xrStore}>
               <color attach="background" args={["#f0f8ff"]} />
-
+              
               {/* VR-specific scaling group with height adjustment */}
               <group scale={[0.3, 0.3, 0.3]} position={[0, 0.8, 0]}>
                 <Suspense fallback={null}>
@@ -85,9 +97,9 @@ export default function Lab() {
             </XR>
           </Canvas>
       </KeyboardControls>
-
+      
       <LabUI experimentId={experimentId} />
-
+      
       {/* VR Entry Button - Hidden on Mobile */}
       <div style={{ 
         position: 'absolute', 
@@ -112,7 +124,7 @@ export default function Lab() {
           🥽 Enter VR
         </button>
       </div>
-
+      
       {/* Dynamic Platform-Specific Controls */}
       <div style={{
         position: 'absolute',
@@ -157,7 +169,7 @@ export default function Lab() {
             </div>
           </>
         )}
-
+        
         {/* Tablet Controls */}
         {window.innerWidth >= 768 && window.innerWidth < 1024 && (
           <div style={{
@@ -175,7 +187,7 @@ export default function Lab() {
             ⌨️ <em>Keyboard:</em> WASD to move
           </div>
         )}
-
+        
         {/* Desktop Controls */}
         {window.innerWidth >= 1024 && (
           <div style={{
@@ -197,7 +209,7 @@ export default function Lab() {
             🎮 <em>Gamepad supported</em>
           </div>
         )}
-
+        
         {/* VR Controls Indicator */}
         <div id="vr-status" style={{
           background: 'rgba(76, 175, 80, 0.9)',
@@ -215,7 +227,7 @@ export default function Lab() {
           📏 <strong>Height Adjust:</strong> Right thumbstick up/down or shoulder buttons
         </div>
       </div>
-
+      
       {/* Back to Landing Button */}
       <div style={{ 
         position: 'absolute', 

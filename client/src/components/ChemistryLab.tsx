@@ -80,22 +80,43 @@ export function ChemistryLab() {
 
     const controls = getState();
     
-    // VR Height adjustment controls (works only in VR mode)
-    if (isInVR) {
-      if (controls.interact) { // E key - raise lab in VR
-        setVrHeight(prev => Math.min(prev + 1.0 * delta, 1.0));
-      }
-      if (controls.jump) { // Q key - lower lab in VR
-        setVrHeight(prev => Math.max(prev - 1.0 * delta, -3.0));
-      }
+    // VR Height adjustment controls (works in both VR and desktop mode)
+    if (controls.interact) { // E key or Space - raise lab
+      setVrHeight(prev => Math.min(prev + 1.0 * delta, 1.0));
+    }
+    if (controls.grab) { // G key - lower lab
+      setVrHeight(prev => Math.max(prev - 1.0 * delta, -3.0));
     }
 
-    // Camera controls are now handled by VRControls.tsx for desktop mode
-    // Only keep the top-down view toggle for desktop mode
-    if (!isInVR && controls.release) {
-      // Set camera to top-down position and look down
-      state.camera.position.set(0, 8, 0);
-      state.camera.lookAt(0, 0, 0);
+    // Only handle camera movement for non-VR mode
+    if (!isInVR) {
+      const camera = state.camera;
+      const speed = 2;
+
+      if (controls.forward) {
+        camera.position.z -= speed * delta;
+      }
+      if (controls.backward) {
+        camera.position.z += speed * delta;
+      }
+      if (controls.leftward) {
+        camera.position.x -= speed * delta;
+      }
+      if (controls.rightward) {
+        camera.position.x += speed * delta;
+      }
+
+      // Top-down view toggle with release key
+      if (controls.release) {
+        // Set camera to top-down position and look down
+        camera.position.set(0, 8, 0);
+        camera.lookAt(0, 0, 0);
+      }
+
+      // Constrain camera movement to lab area
+      camera.position.x = THREE.MathUtils.clamp(camera.position.x, -8, 8);
+      camera.position.z = THREE.MathUtils.clamp(camera.position.z, -5, 8);
+      camera.position.y = THREE.MathUtils.clamp(camera.position.y, 0.5, 12);
     }
   });
 
