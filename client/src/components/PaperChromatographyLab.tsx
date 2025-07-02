@@ -58,10 +58,13 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         pigmentGroupRef.current.children.forEach((child, index) => {
           const pigment = pigmentData[selectedInk][index];
           if (pigment) {
-            child.position.y = 1.0 + (pigment.height * pigmentSeparation);
+            // Position pigments correctly on the paper, starting from baseline moving up
+            const baselineY = 0.74;
+            const maxHeight = 1.5; // Maximum height for separation
+            child.position.y = baselineY + (pigment.height * pigmentSeparation * maxHeight);
             const material = (child as THREE.Mesh).material as THREE.MeshStandardMaterial;
-            // Keep pigments fully visible once they start separating
-            material.opacity = pigmentSeparation > 0.1 ? 1.0 : 0;
+            // Make pigments visible as soon as separation starts
+            material.opacity = pigmentSeparation > 0.05 ? 0.9 : 0;
           }
         });
       }
@@ -199,14 +202,15 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
       {/* Separated Pigments */}
       <group ref={pigmentGroupRef}>
         {pigmentData[selectedInk].map((pigment, index) => (
-          <mesh key={index} position={[0, 1.0, 0.001 + (index * 0.0001)]}>
-            <circleGeometry args={[0.018, 32]} />
+          <mesh key={index} position={[0, 0.74, 0.52 + (index * 0.001)]}>
+            <circleGeometry args={[0.025, 32]} />
             <meshStandardMaterial 
               color={pigment.color} 
               transparent
               opacity={0}
               emissive={pigment.color}
-              emissiveIntensity={0.1}
+              emissiveIntensity={0.2}
+              side={THREE.DoubleSide}
             />
           </mesh>
         ))}
