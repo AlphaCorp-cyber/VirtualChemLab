@@ -326,15 +326,73 @@ export function VRControls() {
     return () => clearInterval(gamepadInterval);
   }, [platform.supportsGamepad]);
 
-  // Interaction handlers - removed automatic grabbing to prevent unwanted pH tests
+  // Interaction handlers with proper raycasting for object selection
   const handleTouchTap = (touchPos: THREE.Vector2) => {
-    console.log('Touch tap interaction - use G key to grab items');
-    // Removed automatic grabbing - users should use G key instead
+    console.log('Touch tap at:', touchPos);
+    performRaycastInteraction(touchPos);
   };
 
   const handleMouseClick = (mousePos: THREE.Vector2) => {
-    console.log('Mouse click interaction - use G key to grab items');
-    // Removed automatic grabbing - users should use G key instead
+    console.log('Mouse click at:', mousePos);
+    performRaycastInteraction(mousePos);
+  };
+
+  // Raycast interaction system
+  const performRaycastInteraction = (screenPos: THREE.Vector2) => {
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(screenPos, camera);
+
+    // Find intersectable objects in the scene
+    const intersectableObjects: THREE.Object3D[] = [];
+    scene.traverse((child) => {
+      if (child.type === 'Mesh' && (
+        child.userData.interactable ||
+        child.name.includes('test-strip') ||
+        child.name.includes('beaker') ||
+        child.name.includes('bunsen') ||
+        child.name.includes('sample') ||
+        child.name.includes('splint') ||
+        child.name.includes('litmus') ||
+        child.name.includes('tube')
+      )) {
+        intersectableObjects.push(child);
+      }
+    });
+
+    const intersects = raycaster.intersectObjects(intersectableObjects, true);
+
+    if (intersects.length > 0) {
+      const intersected = intersects[0].object;
+      console.log('Interacted with:', intersected.name, intersected.userData);
+
+      // Handle different types of interactions
+      if (intersected.name.includes('test-strip') || intersected.userData.type === 'test-strip') {
+        if (!selectedStripId) {
+          const stripId = intersected.userData.stripId || 'indicator-1';
+          console.log('Grabbing test strip:', stripId);
+          grabTestStrip(stripId);
+        } else {
+          console.log('Releasing test strip');
+          releaseTestStrip();
+        }
+      } else if (intersected.name.includes('beaker') || intersected.userData.type === 'beaker') {
+        if (selectedStripId) {
+          const beakerId = intersected.userData.beakerId || intersected.userData.id;
+          console.log('Testing pH in beaker:', beakerId, 'with strip:', selectedStripId);
+          testStripInLiquid(selectedStripId, beakerId);
+        } else {
+          console.log('Need to grab a test strip first');
+        }
+      } else if (intersected.userData.interactable) {
+        // Generic interactable object
+        console.log('Interacting with:', intersected.name);
+        if (intersected.userData.onInteract) {
+          intersected.userData.onInteract();
+        }
+      }
+    } else {
+      console.log('No interactable objects found at position');
+    }
   };
 
   const [mobileControls, setMobileControls] = useState({

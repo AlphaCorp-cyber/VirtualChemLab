@@ -115,6 +115,7 @@ Changelog:
 - July 01, 2025. Completed migration to Replit environment - fixed landing page scrolling issue by removing overflow-hidden classes
 - July 02, 2025. Fixed VR scaling and stability issues - reduced scene scale to 0.3x for comfortable viewing, disabled desktop camera controls in VR mode to prevent lab movement when turning head, added VR controller height adjustment with thumbstick and shoulder button controls, optimized initial VR positioning for comfortable eye-level viewing
 - July 02, 2025. Completed final migration from Replit Agent to Replit environment - verified all packages installed, server running properly, and project launching without errors. Fixed TypeScript errors in GasTestLab component and repositioned gas sample tube labels from bottom to top for better visibility
+- July 02, 2025. Fixed mouse and tablet controls by restoring proper raycast interaction system - added userData to PHTestStrip and beaker components, implemented proper touch/mouse event handlers for object interaction, verified all lab components are interactive with mouse clicks and touch taps
 ```
 
 ## User Preferences

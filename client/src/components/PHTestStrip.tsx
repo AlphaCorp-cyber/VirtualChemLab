@@ -53,6 +53,13 @@ export function PHTestStrip({
       {/* Green bottle container for pH indicator */}
       <mesh
         ref={meshRef}
+        name={`test-strip-${stripId}`}
+        userData={{ 
+          type: 'test-strip', 
+          stripId: stripId, 
+          interactable: true,
+          onInteract: handleClick 
+        }}
         onPointerEnter={() => setIsHovered(true)}
         onPointerLeave={() => setIsHovered(false)}
         onClick={handleClick}

@@ -75,6 +75,14 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
       {/* Main beaker walls - realistic proportions */}
       <mesh
         ref={meshRef}
+        name={`beaker-${id}`}
+        userData={{
+          type: 'beaker',
+          beakerId: id,
+          id: id,
+          interactable: true,
+          onInteract: handleClick
+        }}
         onPointerEnter={(e) => {
           setIsHovered(true);
           handleHover(e, true);
