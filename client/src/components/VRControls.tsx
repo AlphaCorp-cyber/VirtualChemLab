@@ -257,6 +257,22 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
           if (dragDistance > 0.02) {
             newState.isDragging = true;
             newState.isLongClick = false;
+            
+            // If right mouse button, rotate camera
+            if (event.buttons === 2) {
+              const deltaX = mousePos.x - prev.lastPosition!.x;
+              const deltaY = mousePos.y - prev.lastPosition!.y;
+              
+              // Rotate camera around Y axis for left/right movement
+              camera.rotateY(-deltaX * 0.5);
+              
+              // Tilt camera for up/down movement (limited)
+              const currentRotationX = camera.rotation.x;
+              const newRotationX = currentRotationX - deltaY * 0.3;
+              camera.rotation.x = THREE.MathUtils.clamp(newRotationX, -Math.PI/3, Math.PI/3);
+              
+              console.log('🎮 CAMERA ROTATION');
+            }
           }
         }
 
@@ -287,24 +303,62 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
     };
 
     const handleMouseWheel = (event: WheelEvent) => {
+      console.log('🖱️ MOUSE WHEEL!', event.deltaY);
       event.preventDefault();
-      const zoomDelta = event.deltaY * -0.001;
-      setMouseState(prev => ({ ...prev, wheelZoom: prev.wheelZoom + zoomDelta }));
+      
+      // Apply zoom immediately by moving camera
+      const zoomSpeed = 0.5;
+      const direction = new THREE.Vector3();
+      camera.getWorldDirection(direction);
+      
+      if (event.deltaY < 0) {
+        // Zoom in
+        camera.position.addScaledVector(direction, zoomSpeed);
+        console.log('🔍 ZOOMING IN');
+      } else {
+        // Zoom out  
+        camera.position.addScaledVector(direction, -zoomSpeed);
+        console.log('🔍 ZOOMING OUT');
+      }
+      
+      // Keep camera within bounds
+      camera.position.x = THREE.MathUtils.clamp(camera.position.x, -8, 8);
+      camera.position.z = THREE.MathUtils.clamp(camera.position.z, -5, 8);
+      camera.position.y = THREE.MathUtils.clamp(camera.position.y, 0.5, 12);
     };
 
     const canvas = gl.domElement;
-    canvas.addEventListener('contextmenu', (e) => e.preventDefault());
-    canvas.addEventListener('mousedown', handleMouseDown);
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseup', handleMouseUp);
-    canvas.addEventListener('wheel', handleMouseWheel, { passive: false });
+    console.log('🎯 ADDING MOUSE LISTENERS TO CANVAS', canvas);
+    
+    // Prevent context menu
+    const preventContext = (e: Event) => e.preventDefault();
+    canvas.addEventListener('contextmenu', preventContext);
+    
+    // Add mouse event listeners
+    canvas.addEventListener('mousedown', handleMouseDown, { capture: true });
+    canvas.addEventListener('mousemove', handleMouseMove, { capture: true });
+    canvas.addEventListener('mouseup', handleMouseUp, { capture: true });
+    canvas.addEventListener('wheel', handleMouseWheel, { passive: false, capture: true });
+    
+    // Also add click listener as fallback
+    const handleDirectClick = (event: MouseEvent) => {
+      console.log('🎯 DIRECT CLICK CAPTURED!');
+      event.preventDefault();
+      const mousePos = new THREE.Vector2(
+        (event.clientX / window.innerWidth) * 2 - 1,
+        -(event.clientY / window.innerHeight) * 2 + 1
+      );
+      handleMouseClick(mousePos);
+    };
+    canvas.addEventListener('click', handleDirectClick, { capture: true });
 
     return () => {
-      canvas.removeEventListener('contextmenu', (e) => e.preventDefault());
+      canvas.removeEventListener('contextmenu', preventContext);
       canvas.removeEventListener('mousedown', handleMouseDown);
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('mouseup', handleMouseUp);
       canvas.removeEventListener('wheel', handleMouseWheel);
+      canvas.removeEventListener('click', handleDirectClick);
     };
   }, [platform.isDesktop, mouseState.downTime, mouseState.isDragging, gl.domElement]);
 
