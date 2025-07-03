@@ -111,8 +111,8 @@ export default function Lab() {
       'backward': 'backward', 
       'left': 'leftward',
       'right': 'rightward',
-      'up': 'interact',    // E key - raise camera
-      'down': 'jump'       // Q key - lower camera
+      'up': 'up',         // Store as 'up' for mobile controls
+      'down': 'down'      // Store as 'down' for mobile controls
     };
 
     const mappedDirection = directionMap[direction];

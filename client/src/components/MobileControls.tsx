@@ -360,24 +360,7 @@ export function MobileControls({ isVisible, onMove, onZoom }: MobileControlsProp
 
       
 
-      {/* Instructions - Top Center */}
-      <div style={{
-        position: 'absolute',
-        top: '20px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        color: 'white',
-        padding: '8px 16px',
-        borderRadius: '20px',
-        fontSize: '12px',
-        textAlign: 'center',
-        pointerEvents: 'auto',
-        maxWidth: '300px',
-      }}>
-        <strong>Touch Controls Active</strong><br/>
-        Move: D-pad | Touch: Select & Interact
-      </div>
+
     </div>
   );
 }
