@@ -8,6 +8,7 @@ import DisplacementLab from './DisplacementLab';
 import PaperChromatographyLab from './PaperChromatographyLab';
 import { PHTestStrip } from './PHTestStrip';
 import { VRControls } from './VRControls';
+import { VRTableHeightControl } from './VRTableHeightControl';
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
 import { useKeyboardControls } from "@react-three/drei";
 import { useRef, useState, useEffect } from "react";
@@ -203,6 +204,9 @@ export function ChemistryLab({ mobileControls }: ChemistryLabProps = {}) {
 
       {/* VR Controls for mouse, touch, and VR interactions */}
       <VRControls mobileControls={mobileControls} />
+      
+      {/* VR Table Height Control - Red Ball */}
+      <VRTableHeightControl />
       
       {/* Lab environment and equipment */}
       <LabEnvironment />
