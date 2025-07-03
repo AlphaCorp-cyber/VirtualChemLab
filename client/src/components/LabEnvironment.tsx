@@ -146,21 +146,38 @@ export function LabEnvironment() {
         </mesh>
       </group>
       
-      {/* Back wall */}
-      <mesh position={[0, 2, -3]} receiveShadow>
-        <planeGeometry args={[12, 4]} />
+      {/* Back wall - taller and wider */}
+      <mesh position={[0, 3.5, -10]} receiveShadow>
+        <planeGeometry args={[20, 7]} />
         <meshStandardMaterial color="#f8f8f8" />
       </mesh>
       
-      {/* Side walls */}
-      <mesh position={[-6, 2, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow>
-        <planeGeometry args={[6, 4]} />
+      {/* Left wall - taller and longer */}
+      <mesh position={[-10, 3.5, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow>
+        <planeGeometry args={[20, 7]} />
         <meshStandardMaterial color="#f0f0f0" />
       </mesh>
       
-      <mesh position={[6, 2, 0]} rotation={[0, -Math.PI / 2, 0]} receiveShadow>
-        <planeGeometry args={[6, 4]} />
+      {/* Right wall - taller and longer */}
+      <mesh position={[10, 3.5, 0]} rotation={[0, -Math.PI / 2, 0]} receiveShadow>
+        <planeGeometry args={[20, 7]} />
         <meshStandardMaterial color="#f0f0f0" />
+      </mesh>
+      
+      {/* Front wall - new addition to fully enclose the lab */}
+      <mesh position={[0, 3.5, 10]} rotation={[0, Math.PI, 0]} receiveShadow>
+        <planeGeometry args={[20, 7]} />
+        <meshStandardMaterial color="#f8f8f8" />
+      </mesh>
+      
+      {/* Ceiling - complete the enclosed laboratory */}
+      <mesh position={[0, 7, 0]} rotation={[Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[20, 20]} />
+        <meshStandardMaterial 
+          color="#ffffff" 
+          roughness={0.1} 
+          metalness={0.05}
+        />
       </mesh>
     </>
   );
