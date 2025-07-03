@@ -1,4 +1,4 @@
-import { useTexture, Text } from "@react-three/drei";
+import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
@@ -937,18 +937,6 @@ export function LabEnvironment() {
           <planeGeometry args={[1.6, 0.2]} />
           <meshStandardMaterial color="#ffffff" />
         </mesh>
-        
-        {/* Navigation text */}
-        <Text
-          position={[0, 0.5, 0.003]}
-          fontSize={0.08}
-          color="#000000"
-          anchorX="center"
-          anchorY="middle"
-          font="/fonts/Inter-Bold.ttf"
-        >
-          NAVIGATION
-        </Text>
         
         {/* Main Menu Button */}
         <mesh 
