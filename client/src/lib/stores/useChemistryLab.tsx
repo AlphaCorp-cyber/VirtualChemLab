@@ -89,6 +89,9 @@ interface ChemistryLabState {
   progress: number;
   lastTestResult: TestResult | null;
 
+  // VR table height control
+  vrTableHeight: number;
+
   // Actions
   initializeLab: () => void;
   grabTestStrip: (stripId: string) => void;
@@ -112,6 +115,9 @@ interface ChemistryLabState {
 
   // Experiment switching
   switchExperiment: (experiment: ExperimentType) => void;
+
+  // VR table height actions
+  setVrTableHeight: (height: number) => void;
 }
 
 const initialBeakers: Beaker[] = [
@@ -330,6 +336,7 @@ export const useChemistryLab = create<ChemistryLabState>()(
     totalTests: 10,
     progress: 0,
     lastTestResult: null,
+    vrTableHeight: 0,
 
     initializeLab: () => {
       set({
@@ -527,6 +534,10 @@ export const useChemistryLab = create<ChemistryLabState>()(
         wireLoopSelected: false
       });
       console.log(`Switched to experiment: ${experiment}`);
+    },
+
+    setVrTableHeight: (height: number) => {
+      set({ vrTableHeight: height });
     }
   }))
 );

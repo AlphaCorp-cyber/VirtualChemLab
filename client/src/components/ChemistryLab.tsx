@@ -27,7 +27,7 @@ interface ChemistryLabProps {
 export function ChemistryLab({ mobileControls }: ChemistryLabProps = {}) {
   const { session } = useXR();
   const cameraRef = useRef<THREE.Camera>();
-  const { updatePhysics, currentExperiment } = useChemistryLab();
+  const { updatePhysics, currentExperiment, vrTableHeight } = useChemistryLab();
   const [subscribe, getState] = useKeyboardControls();
   const [vrHeight, setVrHeight] = useState(0.0); // Initial height adjustment at eye level
   
@@ -141,7 +141,7 @@ export function ChemistryLab({ mobileControls }: ChemistryLabProps = {}) {
   });
 
   return (
-    <group position={[0, isInVR ? vrHeight : 0, 0]}>
+    <group position={[0, isInVR ? vrHeight + vrTableHeight : 0, 0]}>
       {/* Enhanced lighting setup for better beaker rim visibility */}
       <ambientLight intensity={0.8} color="#f8f9fa" />
       <directionalLight
