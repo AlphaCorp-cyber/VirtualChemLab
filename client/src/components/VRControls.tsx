@@ -574,34 +574,98 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
         }
       });
 
-      // Simple VR controller button support for table height (no complex hand tracking)
+      // Simplified hand tracking for VR gesture controls
       if (leftHand && rightHand) {
-        // Use controller buttons for table height
-        inputSources.forEach(source => {
-          if (source.gamepad) {
-            const gamepad = source.gamepad;
-            
-            // Use shoulder buttons (L1/R1) for table height
-            if (gamepad.buttons.length > 4) {
-              const leftShoulder = gamepad.buttons[4]?.pressed; // L1 button
-              const rightShoulder = gamepad.buttons[5]?.pressed; // R1 button
-              
-              if (leftShoulder) {
-                // Lower table
-                const newHeight = THREE.MathUtils.clamp(tableHeightOffset - 0.5 * delta, -2, 2);
-                setTableHeightOffset(newHeight);
-                setVrTableHeight(newHeight);
-                console.log('Lowering table with L1 button');
-              } else if (rightShoulder) {
-                // Raise table
-                const newHeight = THREE.MathUtils.clamp(tableHeightOffset + 0.5 * delta, -2, 2);
-                setTableHeightOffset(newHeight);
-                setVrTableHeight(newHeight);
-                console.log('Raising table with R1 button');
+        try {
+          // Get hand controller positions (simplified approach)
+          const frame = state.gl.xr.getFrame();
+          if (frame) {
+            // Use controller position instead of hand tracking for better compatibility
+            inputSources.forEach(source => {
+              if (source.gripSpace && source.handedness) {
+                const referenceSpace = state.gl.xr.getReferenceSpace();
+                if (referenceSpace) {
+                  const pose = frame.getPose(source.gripSpace, referenceSpace);
+                  if (pose) {
+                    const position = new THREE.Vector3(
+                      pose.transform.position.x,
+                      pose.transform.position.y, 
+                      pose.transform.position.z
+                    );
+                    
+                    if (source.handedness === 'left') {
+                      setLeftHandPosition(position);
+                    } else if (source.handedness === 'right') {
+                      setRightHandPosition(position);
+                    }
+                  }
+                }
               }
+            });
+
+            // Simple gesture detection: both hands at similar height
+            const avgHandHeight = (leftHandPosition.y + rightHandPosition.y) / 2;
+            const handDistance = leftHandPosition.distanceTo(rightHandPosition);
+            const currentTime = Date.now();
+            
+            // Gesture conditions: hands spread apart horizontally
+            const isGestureValid = handDistance > 0.3 && handDistance < 1.5;
+            const heightDifference = Math.abs(leftHandPosition.y - rightHandPosition.y);
+            const handsLevel = heightDifference < 0.3;
+            
+            if (isGestureValid && handsLevel) {
+              if (!isAdjustingHeight) {
+                setIsAdjustingHeight(true);
+                setGestureBaseHeight(avgHandHeight);
+                console.log('🙌 VR hand gesture: Table height adjustment started');
+              } else {
+                // Adjust table height based on hand movement
+                const heightChange = (avgHandHeight - gestureBaseHeight) * 1.5;
+                const newOffset = THREE.MathUtils.clamp(heightChange, -2, 2);
+                setTableHeightOffset(newOffset);
+                setVrTableHeight(newOffset); // Update store
+                
+                if (currentTime - lastGestureTime.current > 300) {
+                  console.log(`🔧 Table height: ${newOffset.toFixed(2)}m`);
+                  lastGestureTime.current = currentTime;
+                }
+              }
+            } else if (isAdjustingHeight && currentTime - lastGestureTime.current > 1500) {
+              setIsAdjustingHeight(false);
+              console.log('🛑 Table height gesture ended');
             }
           }
-        });
+        } catch (error) {
+          // Fallback: Use controller buttons for height adjustment
+          console.log('Hand tracking not available, using controller buttons for table height');
+          
+          // Alternative: Check for controller button presses for table height
+          inputSources.forEach(source => {
+            if (source.gamepad) {
+              const gamepad = source.gamepad;
+              
+              // Use shoulder buttons (L1/R1) or trigger buttons for table height
+              if (gamepad.buttons.length > 4) {
+                const leftShoulder = gamepad.buttons[4]?.pressed; // L1 button
+                const rightShoulder = gamepad.buttons[5]?.pressed; // R1 button
+                
+                if (leftShoulder) {
+                  // Lower table
+                  const newHeight = THREE.MathUtils.clamp(tableHeightOffset - 0.5 * delta, -2, 2);
+                  setTableHeightOffset(newHeight);
+                  setVrTableHeight(newHeight);
+                  console.log('🔽 Lowering table with L1 button');
+                } else if (rightShoulder) {
+                  // Raise table
+                  const newHeight = THREE.MathUtils.clamp(tableHeightOffset + 0.5 * delta, -2, 2);
+                  setTableHeightOffset(newHeight);
+                  setVrTableHeight(newHeight);
+                  console.log('🔼 Raising table with R1 button');
+                }
+              }
+            }
+          });
+        }
       }
     }
 
