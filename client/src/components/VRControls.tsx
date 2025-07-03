@@ -151,21 +151,66 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
       setTouchState(prev => {
         const newState = { ...prev, position: touchPos };
 
-        // Multi-touch pinch detection
+        // Multi-touch pinch detection and zoom
         if (touches.length > 1) {
           const newPinchDistance = Math.hypot(
             touches[1].clientX - touches[0].clientX,
             touches[1].clientY - touches[0].clientY
           );
+          
+          if (prev.pinchDistance > 0) {
+            const pinchDelta = newPinchDistance - prev.pinchDistance;
+            const zoomSpeed = 0.01;
+            
+            // Apply pinch zoom
+            const direction = new THREE.Vector3();
+            camera.getWorldDirection(direction);
+            
+            if (pinchDelta > 0) {
+              // Pinch out - zoom in
+              camera.position.addScaledVector(direction, pinchDelta * zoomSpeed);
+              console.log('🤏 PINCH ZOOM IN');
+            } else {
+              // Pinch in - zoom out
+              camera.position.addScaledVector(direction, pinchDelta * zoomSpeed);
+              console.log('🤏 PINCH ZOOM OUT');
+            }
+            
+            // Keep camera within bounds
+            camera.position.x = THREE.MathUtils.clamp(camera.position.x, -8, 8);
+            camera.position.z = THREE.MathUtils.clamp(camera.position.z, -5, 8);
+            camera.position.y = THREE.MathUtils.clamp(camera.position.y, 0.5, 12);
+          }
+          
           newState.lastPinchDistance = prev.pinchDistance;
           newState.pinchDistance = newPinchDistance;
         }
 
-        // Drag detection
-        if (prev.startPosition && !prev.isMultiTouch) {
+        // Single touch drag detection for panning
+        if (touches.length === 1 && prev.startPosition && !prev.isMultiTouch) {
           const dragDistance = touchPos.distanceTo(prev.startPosition);
           if (dragDistance > 0.05) {
             newState.isDragging = true;
+            
+            // Touch drag panning
+            const deltaX = touchPos.x - prev.lastPosition!.x;
+            const deltaY = touchPos.y - prev.lastPosition!.y;
+            const moveSpeed = 1.5;
+            
+            const right = new THREE.Vector3();
+            const up = new THREE.Vector3(0, 1, 0);
+            camera.getWorldDirection(right);
+            right.cross(up).normalize();
+            
+            camera.position.addScaledVector(right, -deltaX * moveSpeed);
+            camera.position.addScaledVector(up, deltaY * moveSpeed);
+            
+            // Keep within bounds
+            camera.position.x = THREE.MathUtils.clamp(camera.position.x, -8, 8);
+            camera.position.z = THREE.MathUtils.clamp(camera.position.z, -5, 8);
+            camera.position.y = THREE.MathUtils.clamp(camera.position.y, 0.5, 12);
+            
+            console.log('👆 TOUCH DRAG MOVEMENT');
           }
         }
 
@@ -177,9 +222,11 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
       event.preventDefault();
 
       const touchDuration = Date.now() - touchState.startTime;
+      const remainingTouches = event.touches.length;
 
-      // Handle different gesture types
-      if (touchDuration < 300 && !touchState.isDragging && touchState.lastPosition) {
+      // Only handle tap if it was a quick single touch without dragging
+      if (remainingTouches === 0 && touchDuration < 300 && !touchState.isDragging && !touchState.isMultiTouch && touchState.lastPosition) {
+        console.log('👆 TOUCH TAP DETECTED!');
         handleTouchTap(touchState.lastPosition);
       }
 
@@ -190,9 +237,9 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
         position: null,
         lastPosition: null,
         startPosition: null,
-        isMultiTouch: false,
-        pinchDistance: 0,
-        lastPinchDistance: 0
+        isMultiTouch: remainingTouches > 1,
+        pinchDistance: remainingTouches > 1 ? prev.pinchDistance : 0,
+        lastPinchDistance: remainingTouches > 1 ? prev.lastPinchDistance : 0
       }));
     };
 

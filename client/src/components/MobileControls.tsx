@@ -9,6 +9,7 @@ interface MobileControlsProps {
 export function MobileControls({ isVisible, onMove, onZoom }: MobileControlsProps) {
   const [isMoving, setIsMoving] = useState<string | null>(null);
   const [moveInterval, setMoveInterval] = useState<NodeJS.Timeout | null>(null);
+  const [showInstructions, setShowInstructions] = useState(true);
 
   // Handle movement
   const handleMove = (direction: string) => {
@@ -100,6 +101,44 @@ export function MobileControls({ isVisible, onMove, onZoom }: MobileControlsProp
       pointerEvents: 'none',
       zIndex: 1000,
     }}>
+      {/* Touch Instructions Panel */}
+      {showInstructions && (
+        <div style={{
+          position: 'absolute',
+          top: '20px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          color: 'white',
+          padding: '15px 20px',
+          borderRadius: '10px',
+          fontSize: '14px',
+          maxWidth: '300px',
+          textAlign: 'center',
+          pointerEvents: 'auto',
+          border: '2px solid rgba(255, 255, 255, 0.3)',
+        }}>
+          <div style={{ marginBottom: '10px', fontWeight: 'bold' }}>Touch Controls</div>
+          <div style={{ marginBottom: '5px' }}>📱 Use buttons to move around</div>
+          <div style={{ marginBottom: '5px' }}>🤏 Pinch to zoom in/out</div>
+          <div style={{ marginBottom: '5px' }}>👆 Tap objects to interact</div>
+          <button
+            onClick={() => setShowInstructions(false)}
+            style={{
+              marginTop: '10px',
+              backgroundColor: 'rgba(33, 150, 243, 0.8)',
+              color: 'white',
+              border: 'none',
+              padding: '8px 15px',
+              borderRadius: '5px',
+              fontSize: '12px',
+              cursor: 'pointer',
+            }}
+          >
+            Got it!
+          </button>
+        </div>
+      )}
       {/* Movement Controls - Left Side */}
       <div style={{
         position: 'absolute',
