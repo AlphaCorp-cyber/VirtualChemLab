@@ -356,6 +356,253 @@ export function LabEnvironment() {
           <meshStandardMaterial color="#f39c12" />
         </mesh>
       </group>
+
+      {/* Laboratory Fume Hood */}
+      <group position={[-6, 2.2, -9]}>
+        {/* Hood frame */}
+        <mesh>
+          <boxGeometry args={[3, 2.4, 1.2]} />
+          <meshStandardMaterial color="#e8e8e8" transparent opacity={0.3} />
+        </mesh>
+        
+        {/* Hood base */}
+        <mesh position={[0, -1.3, 0]}>
+          <boxGeometry args={[3.2, 0.2, 1.4]} />
+          <meshStandardMaterial color="#bdc3c7" />
+        </mesh>
+        
+        {/* Ventilation grilles */}
+        {[-0.8, 0, 0.8].map((x, i) => (
+          <mesh key={i} position={[x, 1, -0.55]}>
+            <planeGeometry args={[0.4, 0.8]} />
+            <meshStandardMaterial color="#34495e" />
+          </mesh>
+        ))}
+        
+        {/* Control panel */}
+        <mesh position={[1.3, 0, 0.7]}>
+          <boxGeometry args={[0.3, 0.4, 0.05]} />
+          <meshStandardMaterial color="#2c3e50" />
+        </mesh>
+        
+        {/* Control lights */}
+        <mesh position={[1.32, 0.1, 0.7]}>
+          <sphereGeometry args={[0.02]} />
+          <meshStandardMaterial color="#e74c3c" emissive="#e74c3c" emissiveIntensity={0.3} />
+        </mesh>
+        <mesh position={[1.32, -0.1, 0.7]}>
+          <sphereGeometry args={[0.02]} />
+          <meshStandardMaterial color="#27ae60" emissive="#27ae60" emissiveIntensity={0.3} />
+        </mesh>
+      </group>
+
+      {/* Laboratory Shelving Unit */}
+      <group position={[8, 2, 5]}>
+        {/* Shelving frame */}
+        <mesh>
+          <boxGeometry args={[0.1, 4, 2]} />
+          <meshStandardMaterial color="#7f8c8d" metalness={0.6} roughness={0.3} />
+        </mesh>
+        <mesh position={[1.5, 0, 0]}>
+          <boxGeometry args={[0.1, 4, 2]} />
+          <meshStandardMaterial color="#7f8c8d" metalness={0.6} roughness={0.3} />
+        </mesh>
+        
+        {/* Shelves */}
+        {[1.5, 0.5, -0.5, -1.5].map((y, i) => (
+          <mesh key={i} position={[0.75, y, 0]}>
+            <boxGeometry args={[1.6, 0.05, 2]} />
+            <meshStandardMaterial color="#ecf0f1" />
+          </mesh>
+        ))}
+        
+        {/* Chemical bottles on shelves */}
+        {[1.7, 0.7, -0.3, -1.3].map((y, shelf) =>
+          [-0.5, 0, 0.5].map((z, bottle) => (
+            <group key={`${shelf}-${bottle}`} position={[0.75, y, z]}>
+              <mesh>
+                <cylinderGeometry args={[0.06, 0.06, 0.2]} />
+                <meshStandardMaterial 
+                  color={
+                    bottle === 0 ? "#3498db" : 
+                    bottle === 1 ? "#e74c3c" : "#27ae60"
+                  } 
+                  transparent 
+                  opacity={0.7} 
+                />
+              </mesh>
+              {/* Bottle caps */}
+              <mesh position={[0, 0.12, 0]}>
+                <cylinderGeometry args={[0.04, 0.04, 0.03]} />
+                <meshStandardMaterial color="#2c3e50" />
+              </mesh>
+            </group>
+          ))
+        )}
+      </group>
+
+      {/* Safety Equipment Station */}
+      <group position={[-8, 1.5, 8]}>
+        {/* Eye wash station */}
+        <mesh>
+          <boxGeometry args={[0.3, 0.8, 0.3]} />
+          <meshStandardMaterial color="#27ae60" />
+        </mesh>
+        
+        {/* Eye wash nozzles */}
+        <mesh position={[0, 0.3, 0.2]}>
+          <cylinderGeometry args={[0.02, 0.02, 0.1]} />
+          <meshStandardMaterial color="#bdc3c7" metalness={0.8} roughness={0.2} />
+        </mesh>
+        
+        {/* Safety shower above */}
+        <mesh position={[0, 2, 0]}>
+          <cylinderGeometry args={[0.05, 0.05, 0.3]} />
+          <meshStandardMaterial color="#7f8c8d" metalness={0.6} roughness={0.3} />
+        </mesh>
+        
+        {/* Shower head */}
+        <mesh position={[0, 1.7, 0]}>
+          <cylinderGeometry args={[0.08, 0.08, 0.05]} />
+          <meshStandardMaterial color="#bdc3c7" metalness={0.7} roughness={0.2} />
+        </mesh>
+        
+        {/* Pull chain */}
+        <mesh position={[0.15, 1.3, 0]}>
+          <cylinderGeometry args={[0.005, 0.005, 0.4]} />
+          <meshStandardMaterial color="#f39c12" />
+        </mesh>
+      </group>
+
+      {/* Digital Scale */}
+      <group position={[1, 1.53, -0.5]}>
+        <mesh>
+          <boxGeometry args={[0.25, 0.06, 0.2]} />
+          <meshStandardMaterial color="#ecf0f1" />
+        </mesh>
+        
+        {/* Display */}
+        <mesh position={[0, 0.04, -0.08]}>
+          <planeGeometry args={[0.15, 0.04]} />
+          <meshStandardMaterial color="#2c3e50" emissive="#2c3e50" emissiveIntensity={0.1} />
+        </mesh>
+        
+        {/* Scale plate */}
+        <mesh position={[0, 0.04, 0.03]}>
+          <cylinderGeometry args={[0.08, 0.08, 0.01]} />
+          <meshStandardMaterial color="#bdc3c7" metalness={0.6} roughness={0.1} />
+        </mesh>
+      </group>
+
+      {/* Laboratory Clock */}
+      <group position={[0, 5.5, -9.9]}>
+        <mesh>
+          <cylinderGeometry args={[0.3, 0.3, 0.05]} />
+          <meshStandardMaterial color="#ecf0f1" />
+        </mesh>
+        
+        {/* Clock face */}
+        <mesh position={[0, 0, 0.03]}>
+          <cylinderGeometry args={[0.25, 0.25, 0.001]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+        
+        {/* Clock hands */}
+        <mesh position={[0, 0.1, 0.035]} rotation={[0, 0, Math.PI / 4]}>
+          <boxGeometry args={[0.15, 0.01, 0.001]} />
+          <meshStandardMaterial color="#2c3e50" />
+        </mesh>
+        <mesh position={[0, 0.05, 0.036]} rotation={[0, 0, -Math.PI / 6]}>
+          <boxGeometry args={[0.08, 0.008, 0.001]} />
+          <meshStandardMaterial color="#e74c3c" />
+        </mesh>
+      </group>
+
+      {/* Molecular Models Display */}
+      <group position={[6, 2, -9]}>
+        {/* Display case */}
+        <mesh>
+          <boxGeometry args={[1.5, 1, 0.3]} />
+          <meshStandardMaterial color="#ecf0f1" transparent opacity={0.3} />
+        </mesh>
+        
+        {/* Molecular models */}
+        {[-0.4, 0, 0.4].map((x, i) => (
+          <group key={i} position={[x, 0, 0.1]}>
+            {/* Atoms */}
+            <mesh>
+              <sphereGeometry args={[0.06]} />
+              <meshStandardMaterial color={i === 0 ? "#e74c3c" : i === 1 ? "#3498db" : "#27ae60"} />
+            </mesh>
+            <mesh position={[0, 0.12, 0]}>
+              <sphereGeometry args={[0.04]} />
+              <meshStandardMaterial color="#ecf0f1" />
+            </mesh>
+            
+            {/* Bonds */}
+            <mesh position={[0, 0.06, 0]} rotation={[Math.PI / 2, 0, 0]}>
+              <cylinderGeometry args={[0.01, 0.01, 0.08]} />
+              <meshStandardMaterial color="#34495e" />
+            </mesh>
+          </group>
+        ))}
+      </group>
+
+      {/* Air Quality Monitor */}
+      <group position={[9, 3, 0]}>
+        <mesh>
+          <boxGeometry args={[0.2, 0.3, 0.1]} />
+          <meshStandardMaterial color="#2c3e50" />
+        </mesh>
+        
+        {/* Status LED */}
+        <mesh position={[0, 0.1, 0.06]}>
+          <sphereGeometry args={[0.01]} />
+          <meshStandardMaterial color="#27ae60" emissive="#27ae60" emissiveIntensity={0.5} />
+        </mesh>
+        
+        {/* Sensor grille */}
+        <mesh position={[0, -0.05, 0.06]}>
+          <planeGeometry args={[0.12, 0.08]} />
+          <meshStandardMaterial color="#34495e" />
+        </mesh>
+      </group>
+
+      {/* Laboratory Stool */}
+      <group position={[-1, 0.4, 1]}>
+        {/* Seat */}
+        <mesh position={[0, 0.35, 0]}>
+          <cylinderGeometry args={[0.2, 0.2, 0.05]} />
+          <meshStandardMaterial color="#8e44ad" />
+        </mesh>
+        
+        {/* Adjustable post */}
+        <mesh>
+          <cylinderGeometry args={[0.03, 0.03, 0.7]} />
+          <meshStandardMaterial color="#7f8c8d" metalness={0.6} roughness={0.3} />
+        </mesh>
+        
+        {/* Base */}
+        <mesh position={[0, -0.35, 0]}>
+          <cylinderGeometry args={[0.25, 0.25, 0.05]} />
+          <meshStandardMaterial color="#2c3e50" metalness={0.7} roughness={0.3} />
+        </mesh>
+        
+        {/* Wheels */}
+        {[0, 1, 2, 3, 4].map((i) => (
+          <mesh 
+            key={i} 
+            position={[
+              Math.cos(i * Math.PI * 2 / 5) * 0.2, 
+              -0.4, 
+              Math.sin(i * Math.PI * 2 / 5) * 0.2
+            ]}
+          >
+            <sphereGeometry args={[0.025]} />
+            <meshStandardMaterial color="#34495e" />
+          </mesh>
+        ))}
+      </group>
     </>
   );
 }
