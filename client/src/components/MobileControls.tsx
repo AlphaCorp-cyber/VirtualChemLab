@@ -9,7 +9,7 @@ interface MobileControlsProps {
 export function MobileControls({ isVisible, onMove, onZoom }: MobileControlsProps) {
   const [isMoving, setIsMoving] = useState<string | null>(null);
   const [moveInterval, setMoveInterval] = useState<NodeJS.Timeout | null>(null);
-  const [showInstructions, setShowInstructions] = useState(true);
+  const [showInstructions, setShowInstructions] = useState(false);
 
   // Handle movement
   const handleMove = (direction: string) => {
