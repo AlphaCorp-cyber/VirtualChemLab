@@ -102,9 +102,9 @@ export default function Lab() {
     };
   }, [initializeAudio, initializeLab, switchExperiment, experimentId]);
 
-  // Mobile control handlers
+  // Mobile control handlers with continuous movement
   const handleMobileMove = (direction: string) => {
-    console.log('Mobile move:', direction);
+    console.log('📱 Mobile move:', direction);
     // Map mobile directions to keyboard controls
     const directionMap: Record<string, string> = {
       'forward': 'forward',
@@ -117,18 +117,19 @@ export default function Lab() {
 
     const mappedDirection = directionMap[direction];
     if (mappedDirection) {
+      console.log('📱 Setting mobile control:', mappedDirection, 'to true');
       setMobileControls(prev => ({
         ...prev,
         [mappedDirection]: true
       }));
 
-      // Reset the control after a short time to simulate key release
+      // Longer duration for better movement
       setTimeout(() => {
         setMobileControls(prev => ({
           ...prev,
           [mappedDirection]: false
         }));
-      }, 100);
+      }, 150);
     }
   };
 
@@ -164,7 +165,7 @@ export default function Lab() {
               {/* VR-specific scaling group with height adjustment */}
               <group scale={[0.3, 0.3, 0.3]} position={[0, 0.8, 0]}>
                 <Suspense fallback={null}>
-                  <ChemistryLab />
+                  <ChemistryLab mobileControls={mobileControls} />
                 </Suspense>
               </group>
             </XR>

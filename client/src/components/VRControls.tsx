@@ -546,6 +546,11 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
       release
     };
 
+    // Debug mobile controls
+    if (mobileControls && Object.values(mobileControls).some(Boolean)) {
+      console.log('📱 Active mobile controls:', mobileControls);
+    }
+
     // Movement speed based on device type and frame rate
     const baseSpeed = platform.isMobile ? 1.5 : 2.0;
     const speed = baseSpeed * delta;
