@@ -935,7 +935,7 @@ export function LabEnvironment() {
         {/* "NAVIGATION" text background */}
         <mesh position={[0, 0.5, 0.002]}>
           <planeGeometry args={[1.6, 0.2]} />
-          <meshStandardMaterial color="#ffffff" />
+          <meshStandardMaterial color="#2c3e50" />
         </mesh>
         
         {/* Main Menu Button */}
@@ -951,7 +951,7 @@ export function LabEnvironment() {
         {/* Button text background */}
         <mesh position={[0, 0.1, 0.02]}>
           <planeGeometry args={[1.4, 0.2]} />
-          <meshStandardMaterial color="#ffffff" />
+          <meshStandardMaterial color="#2c3e50" />
         </mesh>
         
         {/* Experiment Selection Button */}
@@ -967,7 +967,7 @@ export function LabEnvironment() {
         {/* Experiment button text background */}
         <mesh position={[0, -0.3, 0.02]}>
           <planeGeometry args={[1.4, 0.2]} />
-          <meshStandardMaterial color="#ffffff" />
+          <meshStandardMaterial color="#2c3e50" />
         </mesh>
         
         {/* Floating instructions */}
@@ -978,7 +978,7 @@ export function LabEnvironment() {
         
         <mesh position={[0, -0.7, 0.02]}>
           <planeGeometry args={[1.6, 0.15]} />
-          <meshStandardMaterial color="#ffffff" />
+          <meshStandardMaterial color="#2c3e50" />
         </mesh>
       </group>
     </>
