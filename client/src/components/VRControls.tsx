@@ -41,7 +41,7 @@ interface VRControlsProps {
 export function VRControls({ mobileControls }: VRControlsProps = {}) {
   const { session } = useXR();
   const { camera, scene, gl } = useThree();
-  const { selectedStripId, grabTestStrip, releaseTestStrip, testStripInLiquid, beakers, setVrTableHeight } = useChemistryLab();
+  const { selectedStripId, grabTestStrip, releaseTestStrip, testStripInLiquid, beakers, setVrTableHeight, setVrHeightLocked, vrHeightLocked } = useChemistryLab();
   const [subscribe, getState] = useKeyboardControls();
   const movementVector = useRef(new THREE.Vector3());
 
@@ -69,6 +69,7 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
   const [tableHeightOffset, setTableHeightOffset] = useState(0);
   const [gestureBaseHeight, setGestureBaseHeight] = useState(0);
   const [isAdjustingHeight, setIsAdjustingHeight] = useState(false);
+  // Remove local heightLocked state - now using store state
   const lastGestureTime = useRef(0);
 
   // Mobile/Touch states
@@ -603,17 +604,27 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
               }
             });
 
-            // Simple gesture detection: both hands at similar height
+            // Simple gesture detection with lock/unlock capability
             const avgHandHeight = (leftHandPosition.y + rightHandPosition.y) / 2;
             const handDistance = leftHandPosition.distanceTo(rightHandPosition);
             const currentTime = Date.now();
             
-            // Gesture conditions: hands spread apart horizontally
-            const isGestureValid = handDistance > 0.3 && handDistance < 1.5;
+            // Check for "hands together" gesture to lock/unlock height
+            const handsClose = handDistance < 0.15; // Hands very close together (clap-like)
             const heightDifference = Math.abs(leftHandPosition.y - rightHandPosition.y);
             const handsLevel = heightDifference < 0.3;
             
-            if (isGestureValid && handsLevel) {
+            // Lock/unlock gesture: bring hands close together
+            if (handsClose && handsLevel && currentTime - lastGestureTime.current > 1000) {
+              setVrHeightLocked(!vrHeightLocked);
+              console.log(vrHeightLocked ? '🔓 Table height UNLOCKED - spread hands to adjust' : '🔒 Table height LOCKED at current position');
+              lastGestureTime.current = currentTime;
+            }
+            
+            // Height adjustment gesture: hands spread apart (only when unlocked)
+            const isGestureValid = handDistance > 0.3 && handDistance < 1.5;
+            
+            if (!vrHeightLocked && isGestureValid && handsLevel) {
               if (!isAdjustingHeight) {
                 setIsAdjustingHeight(true);
                 setGestureBaseHeight(avgHandHeight);
@@ -630,7 +641,7 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
                   lastGestureTime.current = currentTime;
                 }
               }
-            } else if (isAdjustingHeight && currentTime - lastGestureTime.current > 1500) {
+            } else if (isAdjustingHeight && (vrHeightLocked || currentTime - lastGestureTime.current > 1500)) {
               setIsAdjustingHeight(false);
               console.log('🛑 Table height gesture ended');
             }

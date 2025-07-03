@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
-import { Volume2, VolumeX, RotateCcw, FlaskConical, Flame } from "lucide-react";
+import { Volume2, VolumeX, RotateCcw, FlaskConical, Flame, Lock, Unlock } from "lucide-react";
 
 interface LabUIProps {
   experimentId?: string;
@@ -22,7 +22,9 @@ export function LabUI({ experimentId }: LabUIProps) {
     lastFlameTestResult,
     lastGasTestResult,
     switchExperiment,
-    selectedTestTool
+    selectedTestTool,
+    vrHeightLocked,
+    vrTableHeight
   } = useChemistryLab();
 
   const { isMuted, toggleMute } = useAudio();
@@ -333,8 +335,39 @@ export function LabUI({ experimentId }: LabUIProps) {
         </div>
       )}
 
+      {/* VR Height Control Indicator */}
+      {(vrHeightLocked !== undefined || vrTableHeight !== 0) && (
+        <div className="absolute top-4 right-4 mb-16 pointer-events-auto">
+          <Card className="bg-white/90 backdrop-blur-sm">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2 text-sm">
+                {vrHeightLocked ? (
+                  <>
+                    <Lock size={16} className="text-red-500" />
+                    <span className="text-red-600 font-medium">Table Height Locked</span>
+                  </>
+                ) : (
+                  <>
+                    <Unlock size={16} className="text-green-500" />
+                    <span className="text-green-600 font-medium">Height Adjustable</span>
+                  </>
+                )}
+                {vrTableHeight !== 0 && (
+                  <span className="text-xs text-gray-500 ml-2">
+                    {vrTableHeight > 0 ? '+' : ''}{vrTableHeight.toFixed(1)}m
+                  </span>
+                )}
+              </div>
+              <div className="text-xs text-gray-500 mt-1">
+                {vrHeightLocked ? 'Bring hands together to unlock' : 'Spread hands to adjust height'}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       {/* Audio control and Reset button */}
-      <div className="absolute top-4 right-4 flex gap-2 pointer-events-auto">
+      <div className="absolute top-20 right-4 flex gap-2 pointer-events-auto">
         <Button
           variant="outline"
           size="icon"

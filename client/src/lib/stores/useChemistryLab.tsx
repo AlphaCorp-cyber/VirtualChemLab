@@ -91,6 +91,7 @@ interface ChemistryLabState {
 
   // VR table height control
   vrTableHeight: number;
+  vrHeightLocked: boolean;
 
   // Actions
   initializeLab: () => void;
@@ -118,6 +119,7 @@ interface ChemistryLabState {
 
   // VR table height actions
   setVrTableHeight: (height: number) => void;
+  setVrHeightLocked: (locked: boolean) => void;
 }
 
 const initialBeakers: Beaker[] = [
@@ -337,6 +339,7 @@ export const useChemistryLab = create<ChemistryLabState>()(
     progress: 0,
     lastTestResult: null,
     vrTableHeight: 0,
+    vrHeightLocked: false,
 
     initializeLab: () => {
       set({
@@ -538,6 +541,10 @@ export const useChemistryLab = create<ChemistryLabState>()(
 
     setVrTableHeight: (height: number) => {
       set({ vrTableHeight: height });
+    },
+
+    setVrHeightLocked: (locked: boolean) => {
+      set({ vrHeightLocked: locked });
     }
   }))
 );
