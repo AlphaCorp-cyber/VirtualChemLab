@@ -603,6 +603,320 @@ export function LabEnvironment() {
           </mesh>
         ))}
       </group>
+
+      {/* Advanced Microscope Station */}
+      <group position={[5, 1.53, -1]}>
+        {/* Base */}
+        <mesh>
+          <cylinderGeometry args={[0.15, 0.18, 0.08]} />
+          <meshStandardMaterial color="#2c3e50" metalness={0.8} roughness={0.2} />
+        </mesh>
+        
+        {/* Microscope arm */}
+        <mesh position={[0, 0.2, 0]} rotation={[0, 0, Math.PI / 12]}>
+          <cylinderGeometry args={[0.02, 0.02, 0.4]} />
+          <meshStandardMaterial color="#34495e" metalness={0.7} roughness={0.3} />
+        </mesh>
+        
+        {/* Eyepiece */}
+        <mesh position={[0.05, 0.38, 0]}>
+          <cylinderGeometry args={[0.025, 0.025, 0.08]} />
+          <meshStandardMaterial color="#2c3e50" />
+        </mesh>
+        
+        {/* Objective lenses */}
+        <mesh position={[-0.05, 0.25, 0]}>
+          <cylinderGeometry args={[0.03, 0.03, 0.06]} />
+          <meshStandardMaterial color="#1a1a1a" metalness={0.9} roughness={0.1} />
+        </mesh>
+        
+        {/* Stage */}
+        <mesh position={[-0.02, 0.15, 0]}>
+          <boxGeometry args={[0.12, 0.02, 0.1]} />
+          <meshStandardMaterial color="#bdc3c7" metalness={0.6} roughness={0.2} />
+        </mesh>
+        
+        {/* LED light ring */}
+        <mesh position={[-0.05, 0.32, 0]}>
+          <torusGeometry args={[0.04, 0.005]} />
+          <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.4} />
+        </mesh>
+      </group>
+
+      {/* Centrifuge Machine */}
+      <group position={[2.5, 1.53, 1]}>
+        {/* Main body */}
+        <mesh>
+          <cylinderGeometry args={[0.2, 0.2, 0.25]} />
+          <meshStandardMaterial color="#ecf0f1" />
+        </mesh>
+        
+        {/* Control panel */}
+        <mesh position={[0, 0.13, 0.18]}>
+          <boxGeometry args={[0.15, 0.08, 0.02]} />
+          <meshStandardMaterial color="#2c3e50" />
+        </mesh>
+        
+        {/* Digital display */}
+        <mesh position={[0, 0.15, 0.19]}>
+          <planeGeometry args={[0.08, 0.03]} />
+          <meshStandardMaterial color="#27ae60" emissive="#27ae60" emissiveIntensity={0.3} />
+        </mesh>
+        
+        {/* Control buttons */}
+        {[-0.04, 0, 0.04].map((x, i) => (
+          <mesh key={i} position={[x, 0.1, 0.19]}>
+            <cylinderGeometry args={[0.008, 0.008, 0.005]} />
+            <meshStandardMaterial color={i === 1 ? "#e74c3c" : "#34495e"} />
+          </mesh>
+        ))}
+        
+        {/* Rotor chamber (visible through transparent lid) */}
+        <mesh position={[0, 0.05, 0]}>
+          <cylinderGeometry args={[0.12, 0.12, 0.1]} />
+          <meshStandardMaterial color="#bdc3c7" transparent opacity={0.2} />
+        </mesh>
+      </group>
+
+      {/* pH Meter Station */}
+      <group position={[-2, 1.53, 0.5]}>
+        {/* Main unit */}
+        <mesh>
+          <boxGeometry args={[0.2, 0.15, 0.25]} />
+          <meshStandardMaterial color="#2c3e50" />
+        </mesh>
+        
+        {/* Display screen */}
+        <mesh position={[0, 0.08, 0.13]}>
+          <planeGeometry args={[0.12, 0.06]} />
+          <meshStandardMaterial color="#3498db" emissive="#3498db" emissiveIntensity={0.2} />
+        </mesh>
+        
+        {/* Probe holder */}
+        <mesh position={[0.15, 0.1, 0]} rotation={[0, 0, Math.PI / 4]}>
+          <cylinderGeometry args={[0.01, 0.01, 0.2]} />
+          <meshStandardMaterial color="#7f8c8d" metalness={0.8} roughness={0.2} />
+        </mesh>
+        
+        {/* pH probe */}
+        <mesh position={[0.22, 0.17, 0]}>
+          <cylinderGeometry args={[0.008, 0.008, 0.12]} />
+          <meshStandardMaterial color="#34495e" />
+        </mesh>
+        
+        {/* Probe tip */}
+        <mesh position={[0.25, 0.23, 0]}>
+          <sphereGeometry args={[0.01]} />
+          <meshStandardMaterial color="#f39c12" emissive="#f39c12" emissiveIntensity={0.2} />
+        </mesh>
+      </group>
+
+      {/* Spectrophotometer */}
+      <group position={[-4, 1.53, -2]}>
+        {/* Main housing */}
+        <mesh>
+          <boxGeometry args={[0.4, 0.2, 0.3]} />
+          <meshStandardMaterial color="#ecf0f1" />
+        </mesh>
+        
+        {/* Sample compartment */}
+        <mesh position={[0, 0.12, 0]}>
+          <boxGeometry args={[0.1, 0.05, 0.1]} />
+          <meshStandardMaterial color="#2c3e50" />
+        </mesh>
+        
+        {/* Control display */}
+        <mesh position={[0.15, 0.05, 0.16]}>
+          <planeGeometry args={[0.15, 0.08]} />
+          <meshStandardMaterial color="#2c3e50" />
+        </mesh>
+        
+        {/* Status lights */}
+        <mesh position={[0.15, 0.12, 0.16]}>
+          <sphereGeometry args={[0.01]} />
+          <meshStandardMaterial color="#27ae60" emissive="#27ae60" emissiveIntensity={0.4} />
+        </mesh>
+        <mesh position={[0.18, 0.12, 0.16]}>
+          <sphereGeometry args={[0.01]} />
+          <meshStandardMaterial color="#e74c3c" emissive="#e74c3c" emissiveIntensity={0.2} />
+        </mesh>
+      </group>
+
+      {/* Magnetic Stirrer Hot Plate */}
+      <group position={[4, 1.53, 0.5]}>
+        {/* Base unit */}
+        <mesh>
+          <cylinderGeometry args={[0.12, 0.12, 0.08]} />
+          <meshStandardMaterial color="#34495e" />
+        </mesh>
+        
+        {/* Heating plate */}
+        <mesh position={[0, 0.05, 0]}>
+          <cylinderGeometry args={[0.1, 0.1, 0.01]} />
+          <meshStandardMaterial color="#e74c3c" emissive="#e74c3c" emissiveIntensity={0.1} />
+        </mesh>
+        
+        {/* Control knobs */}
+        <mesh position={[0.08, 0.02, 0.08]}>
+          <cylinderGeometry args={[0.015, 0.015, 0.01]} />
+          <meshStandardMaterial color="#2c3e50" />
+        </mesh>
+        <mesh position={[-0.08, 0.02, 0.08]}>
+          <cylinderGeometry args={[0.015, 0.015, 0.01]} />
+          <meshStandardMaterial color="#2c3e50" />
+        </mesh>
+        
+        {/* Temperature display */}
+        <mesh position={[0, 0.02, 0.1]}>
+          <planeGeometry args={[0.04, 0.02]} />
+          <meshStandardMaterial color="#f39c12" emissive="#f39c12" emissiveIntensity={0.3} />
+        </mesh>
+      </group>
+
+      {/* Advanced Safety Shower with Emergency Button */}
+      <group position={[-9, 4, 9]}>
+        {/* Emergency button housing */}
+        <mesh>
+          <cylinderGeometry args={[0.15, 0.15, 0.1]} />
+          <meshStandardMaterial color="#e74c3c" />
+        </mesh>
+        
+        {/* Emergency button */}
+        <mesh position={[0, 0, 0.08]}>
+          <cylinderGeometry args={[0.08, 0.08, 0.03]} />
+          <meshStandardMaterial color="#c0392b" />
+        </mesh>
+        
+        {/* Warning text panel */}
+        <mesh position={[0, -0.25, 0]}>
+          <planeGeometry args={[0.2, 0.1]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+        
+        {/* Warning stripes */}
+        {[-0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3].map((y, i) => (
+          <mesh key={i} position={[0, y, 0.05]} rotation={[0, 0, Math.PI / 4]}>
+            <planeGeometry args={[0.05, 0.8]} />
+            <meshStandardMaterial color={i % 2 === 0 ? "#f39c12" : "#2c3e50"} />
+          </mesh>
+        ))}
+      </group>
+
+      {/* Chemical Disposal Station */}
+      <group position={[9, 1, 9]}>
+        {/* Main cabinet */}
+        <mesh>
+          <boxGeometry args={[1, 1.5, 0.6]} />
+          <meshStandardMaterial color="#e74c3c" />
+        </mesh>
+        
+        {/* Hazard symbols */}
+        <mesh position={[0, 0.3, 0.31]}>
+          <planeGeometry args={[0.2, 0.2]} />
+          <meshStandardMaterial color="#f39c12" />
+        </mesh>
+        <mesh position={[0, 0, 0.31]}>
+          <planeGeometry args={[0.2, 0.2]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+        <mesh position={[0, -0.3, 0.31]}>
+          <planeGeometry args={[0.2, 0.2]} />
+          <meshStandardMaterial color="#2c3e50" />
+        </mesh>
+        
+        {/* Ventilation grille */}
+        <mesh position={[0, 0.6, 0.31]}>
+          <planeGeometry args={[0.6, 0.2]} />
+          <meshStandardMaterial color="#34495e" />
+        </mesh>
+        
+        {/* Warning labels */}
+        <mesh position={[0.35, 0, 0.31]}>
+          <planeGeometry args={[0.25, 0.8]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+      </group>
+
+      {/* Interactive Whiteboard */}
+      <group position={[-6, 3.5, -9.9]}>
+        {/* Board surface */}
+        <mesh>
+          <planeGeometry args={[4, 2.5]} />
+          <meshStandardMaterial color="#ffffff" roughness={0.1} metalness={0.1} />
+        </mesh>
+        
+        {/* Frame */}
+        <mesh position={[0, 0, -0.01]}>
+          <planeGeometry args={[4.2, 2.7]} />
+          <meshStandardMaterial color="#2c3e50" />
+        </mesh>
+        
+        {/* Molecular diagrams drawn on board */}
+        {[-1.5, 0, 1.5].map((x, i) => (
+          <group key={i} position={[x, 0, 0.001]}>
+            <mesh>
+              <sphereGeometry args={[0.08]} />
+              <meshStandardMaterial color={i === 0 ? "#e74c3c" : i === 1 ? "#3498db" : "#27ae60"} />
+            </mesh>
+            <mesh position={[0, 0.3, 0]}>
+              <sphereGeometry args={[0.06]} />
+              <meshStandardMaterial color="#ecf0f1" />
+            </mesh>
+            {/* Chemical bonds */}
+            <mesh position={[0, 0.15, 0]} rotation={[Math.PI / 2, 0, 0]}>
+              <cylinderGeometry args={[0.01, 0.01, 0.15]} />
+              <meshStandardMaterial color="#2c3e50" />
+            </mesh>
+          </group>
+        ))}
+        
+        {/* Marker tray */}
+        <mesh position={[0, -1.4, 0.05]}>
+          <boxGeometry args={[3.8, 0.1, 0.05]} />
+          <meshStandardMaterial color="#bdc3c7" />
+        </mesh>
+        
+        {/* Markers */}
+        {[-0.5, 0, 0.5].map((x, i) => (
+          <mesh key={i} position={[x, -1.35, 0.08]}>
+            <cylinderGeometry args={[0.01, 0.01, 0.12]} />
+            <meshStandardMaterial color={i === 0 ? "#e74c3c" : i === 1 ? "#3498db" : "#2c3e50"} />
+          </mesh>
+        ))}
+      </group>
+
+      {/* Laboratory Computer Station */}
+      <group position={[7, 1.8, -7]}>
+        {/* Monitor */}
+        <mesh>
+          <boxGeometry args={[0.4, 0.25, 0.03]} />
+          <meshStandardMaterial color="#2c3e50" />
+        </mesh>
+        
+        {/* Screen */}
+        <mesh position={[0, 0, 0.02]}>
+          <planeGeometry args={[0.35, 0.2]} />
+          <meshStandardMaterial color="#3498db" emissive="#3498db" emissiveIntensity={0.2} />
+        </mesh>
+        
+        {/* Keyboard */}
+        <mesh position={[0, -0.2, 0.15]}>
+          <boxGeometry args={[0.3, 0.12, 0.02]} />
+          <meshStandardMaterial color="#ecf0f1" />
+        </mesh>
+        
+        {/* Mouse */}
+        <mesh position={[0.2, -0.2, 0.16]}>
+          <boxGeometry args={[0.05, 0.08, 0.02]} />
+          <meshStandardMaterial color="#34495e" />
+        </mesh>
+        
+        {/* Monitor stand */}
+        <mesh position={[0, -0.15, 0]}>
+          <cylinderGeometry args={[0.08, 0.08, 0.1]} />
+          <meshStandardMaterial color="#7f8c8d" metalness={0.6} roughness={0.3} />
+        </mesh>
+      </group>
     </>
   );
 }
