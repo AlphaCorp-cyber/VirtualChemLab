@@ -111,9 +111,9 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
   const mouseSensitivity = 1.0;
   const gamepadSensitivity = 1.5;
 
-  // Touch event handlers with enhanced multi-touch support
+  // Touch event handlers - ALWAYS enabled for testing
   useEffect(() => {
-    if (!platform.isTouchDevice) return;
+    console.log('FORCING touch controls setup...');
 
     const handleTouchStart = (event: TouchEvent) => {
       event.preventDefault();
@@ -208,19 +208,14 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
     };
   }, [platform.isTouchDevice, touchState.startTime, gl.domElement]);
 
-  // Enhanced mouse controls for desktop
+  // Enhanced mouse controls - ALWAYS enabled
   useEffect(() => {
     console.log('Platform detection:', platform);
-    console.log('Is desktop:', platform.isDesktop);
-    // Temporarily remove platform restriction to test mouse controls
-    // if (!platform.isDesktop) {
-    //   console.log('Skipping mouse controls - not detected as desktop');
-    //   return;
-    // }
-    console.log('Setting up mouse controls...');
+    console.log('FORCING mouse controls setup...');
 
     const handleMouseDown = (event: MouseEvent) => {
-      console.log('Mouse down event triggered!', event);
+      console.log('🖱️ MOUSE DOWN CAPTURED!', event.clientX, event.clientY);
+      event.preventDefault();
       const mousePos = new THREE.Vector2(
         (event.clientX / window.innerWidth) * 2 - 1,
         -(event.clientY / window.innerHeight) * 2 + 1
@@ -270,11 +265,13 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
     };
 
     const handleMouseUp = (event: MouseEvent) => {
+      console.log('🖱️ MOUSE UP CAPTURED!');
       const clickDuration = Date.now() - mouseState.downTime;
 
       if (mouseState.isLongClick && mouseState.movementMode) {
         setMouseState(prev => ({ ...prev, movementMode: false }));
-      } else if (clickDuration < 200 && !mouseState.isDragging && mouseState.lastPosition) {
+      } else if (clickDuration < 500 && !mouseState.isDragging && mouseState.lastPosition) {
+        console.log('🎯 TRIGGERING MOUSE CLICK!');
         handleMouseClick(mouseState.lastPosition);
       }
 
@@ -344,12 +341,13 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
   };
 
   const handleMouseClick = (mousePos: THREE.Vector2) => {
-    console.log('Mouse click at:', mousePos);
+    console.log('🎯 MOUSE CLICK HANDLER CALLED!', mousePos.x, mousePos.y);
     performRaycastInteraction(mousePos);
   };
 
   // Raycast interaction system
   const performRaycastInteraction = (screenPos: THREE.Vector2) => {
+    console.log('🔍 PERFORMING RAYCAST at screen pos:', screenPos.x, screenPos.y);
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(screenPos, camera);
 
@@ -370,7 +368,9 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
       }
     });
 
+    console.log('🎯 Found', intersectableObjects.length, 'interactable objects');
     const intersects = raycaster.intersectObjects(intersectableObjects, true);
+    console.log('🎯 Raycast hit', intersects.length, 'objects');
 
     if (intersects.length > 0) {
       const intersected = intersects[0].object;
