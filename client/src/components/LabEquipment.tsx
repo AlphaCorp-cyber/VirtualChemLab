@@ -964,7 +964,7 @@ export function LabEquipment() {
       </group>
 
       {/* Experiment labels on the lab table */}
-      <group position={[-2.5, 1.49, -1.5]}>
+      <group position={[-2.5, 1.89, -1.5]}>
         <Text
           position={[0, 0, 0]}
           fontSize={0.08}
@@ -976,7 +976,7 @@ export function LabEquipment() {
         </Text>
       </group>
 
-      <group position={[0.5, 1.49, -1.5]}>
+      <group position={[0.5, 1.89, -1.5]}>
         <Text
           position={[0, 0, 0]}
           fontSize={0.08}
@@ -1004,48 +1004,12 @@ export function LabEquipment() {
       {/* pH Color Scale Chart on table */}
       <group position={[0, 1.48, -1.2]}>
         {/* Chart background */}
-        <mesh position={[0, 0, 0]} receiveShadow>
-          <planeGeometry args={[1.4, 0.3]} />
-          <meshStandardMaterial color="#ffffff" />
-        </mesh>
+        
 
         {/* pH scale colors from 0-14 */}
-        {Array.from({ length: 15 }, (_, i) => {
-          const phColors = [
-            "#FF0000", "#FF3300", "#FF6600", "#FF9900", "#FFCC00", "#FFFF00", "#CCFF00", // 0-6 (acidic)
-            "#00FF00", // 7 (neutral) 
-            "#00CCFF", "#0099FF", "#0066FF", "#0033FF", "#0000FF", "#3300FF", "#6600FF" // 8-14 (basic)
-          ];
-          return (
-            <group key={i} position={[i * 0.09 - 0.63, 0, 0.01]}>
-              {/* Color square */}
-              <mesh>
-                <planeGeometry args={[0.08, 0.1]} />
-                <meshStandardMaterial color={phColors[i]} />
-              </mesh>
-              {/* pH number */}
-              <Text
-                position={[0, -0.08, 0.01]}
-                fontSize={0.025}
-                color="black"
-                anchorX="center"
-              >
-                {i}
-              </Text>
-            </group>
-          );
-        })}
+        
 
-        {/* Chart title */}
-        <Text
-          position={[0, 0.18, 0.01]}
-          fontSize={0.04}
-          color="black"
-          anchorX="center"
-          anchorY="middle"
-        >
-          pH Color Scale Reference
-        </Text>
+        
 
         {/* Labels */}
         <Text

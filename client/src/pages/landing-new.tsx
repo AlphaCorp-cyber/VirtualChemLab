@@ -120,7 +120,7 @@ export default function Landing() {
     "Initializing Virtual Reality Environment...",
     "Loading Chemistry Laboratory Assets...", 
     "Calibrating Hand Tracking Systems...",
-    "Welcome to ChemiQ"
+    "Welcome to NerdLabs"
   ];
 
   const handleExperimentSelect = (experimentId: string) => {
@@ -140,7 +140,7 @@ export default function Landing() {
           >
             {/* Animated Intro */}
             <div className="text-center">
-              {/* ChemiQ Logo Animation */}
+              {/* NerdLabs Logo Animation */}
               <motion.div
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
@@ -155,7 +155,7 @@ export default function Landing() {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1 }}
                   >
-                    ChemiQ
+                    NerdLabs
                   </motion.h1>
                   
                   {/* Floating Lab Equipment Around Logo */}
@@ -331,7 +331,7 @@ export default function Landing() {
                 <div className="w-12 h-12 bg-white text-black rounded-lg flex items-center justify-center font-bold text-xl">
                   Q
                 </div>
-                <h1 className="text-3xl font-bold">ChemiQ</h1>
+                <h1 className="text-3xl font-bold">NerdLabs</h1>
               </motion.div>
               
               <nav className="hidden md:flex space-x-8">
@@ -502,7 +502,7 @@ export default function Landing() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 2.2 }}
             >
-              <h3 className="text-5xl font-bold mb-6">Why ChemiQ?</h3>
+              <h3 className="text-5xl font-bold mb-6">Why NerdLabs?</h3>
               <p className="text-xl text-gray-300 max-w-3xl mx-auto">
                 Revolutionary VR technology meets rigorous chemistry education
               </p>

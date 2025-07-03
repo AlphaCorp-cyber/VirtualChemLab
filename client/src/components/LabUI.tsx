@@ -44,29 +44,7 @@ export function LabUI({ experimentId }: LabUIProps) {
     <div className="fixed inset-0 pointer-events-none">
       <div className="absolute top-4 left-4 space-y-4 pointer-events-auto">
         {/* VR Navigation Menu - Always visible */}
-        <Card className="bg-white/90 backdrop-blur-sm border-2 border-blue-500">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm flex items-center gap-2">
-              <Home className="w-4 h-4" />
-              VR Navigation
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <Button
-              onClick={handleReturnToMenu}
-              className="w-full text-sm"
-              variant="outline"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Main Menu
-            </Button>
-            {!experimentId && (
-              <div className="text-xs text-gray-600 mt-2">
-                👆 Touch above button to return to experiment selection
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        
         {/* Experiment Selector - only show if no specific experiment is selected */}
         {!experimentId && (
           <Card className="bg-white/90 backdrop-blur-sm">

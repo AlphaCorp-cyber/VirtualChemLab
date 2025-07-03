@@ -98,7 +98,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
           <pointLight 
             ref={flameLightRef}
             position={[0, 0.03, 0]} 
-            intensity={0.8} 
+            intensity={1.0} 
             color="#ff6600"
             distance={2}
             decay={2}
@@ -110,7 +110,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
       <mesh
         position={[0, 0.1, 0]}
         onClick={onToggle}
-        onPointerDown={onToggle}
+       
         onPointerEnter={() => {
           setIsHovered(true);
           document.body.style.cursor = 'pointer';
@@ -130,7 +130,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
       
       {/* Label */}
       <Text
-        position={[0, -0.1, 0]}
+        position={[0, 2.1, 0]}
         fontSize={0.04}
         color="black"
         anchorX="center"
@@ -140,7 +140,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
       </Text>
       
       <Text
-        position={[0, -0.15, 0]}
+        position={[0, 2.1, 0]}
         fontSize={0.03}
         color={isLit ? "#27ae60" : "#e74c3c"}
         anchorX="center"
@@ -184,7 +184,7 @@ function WireLoop({ position, isSelected, onSelect, onRelease }: {
       {/* Interactive area */}
       <mesh
         onClick={isSelected ? onRelease : onSelect}
-        onPointerDown={isSelected ? onRelease : onSelect}
+        
         onPointerEnter={() => {
           setIsHovered(true);
           document.body.style.cursor = 'pointer';
@@ -204,7 +204,7 @@ function WireLoop({ position, isSelected, onSelect, onRelease }: {
       
       {/* Label */}
       <Text
-        position={[0, -0.12, 0]}
+        position={[0, 2.0, 0]}
         fontSize={0.03}
         color="black"
         anchorX="center"
@@ -254,13 +254,13 @@ function MetalSaltSample({ salt, isSelected, onSelect, onFlameTest, wireLoopSele
     <group position={salt.position}>
       {/* Sample container */}
       <mesh castShadow receiveShadow>
-        <cylinderGeometry args={[0.04, 0.04, 0.02, 16]} />
+        <cylinderGeometry args={[0.06, 0.06, 0.03, 16]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
       
       {/* Salt powder */}
       <mesh position={[0, 0.005, 0]}>
-        <cylinderGeometry args={[0.035, 0.035, 0.01, 16]} />
+        <cylinderGeometry args={[0.055, 0.055, 0.015, 16]} />
         <meshStandardMaterial 
           color={salt.flameColor} 
           transparent 
@@ -325,7 +325,7 @@ function MetalSaltSample({ salt, isSelected, onSelect, onFlameTest, wireLoopSele
       
       {/* Labels */}
       <Text
-        position={[0, 0.08, 0]}
+        position={[0, 0.1, 0]}
         fontSize={0.025}
         color="black"
         anchorX="center"
@@ -335,7 +335,7 @@ function MetalSaltSample({ salt, isSelected, onSelect, onFlameTest, wireLoopSele
       </Text>
       
       <Text
-        position={[0, 0.05, 0]}
+        position={[0, 0.08, 0]}
         fontSize={0.02}
         color="#2c3e50"
         anchorX="center"
@@ -345,7 +345,7 @@ function MetalSaltSample({ salt, isSelected, onSelect, onFlameTest, wireLoopSele
       </Text>
       
       <Text
-        position={[0, 0.02, 0]}
+        position={[0, 0.06, 0]}
         fontSize={0.018}
         color="#7f8c8d"
         anchorX="center"
@@ -490,7 +490,7 @@ export function FlameTestLab() {
       </group>
       
       {/* Flame Color Reference Chart */}
-      <group position={[2.5, 1.48, -1.2]}>
+      <group position={[2.5, 1.68, -1.2]}>
         <mesh position={[0, 0, 0]} receiveShadow>
           <planeGeometry args={[1.2, 0.8]} />
           <meshStandardMaterial color="#ffffff" />
@@ -508,10 +508,10 @@ export function FlameTestLab() {
         
         {/* Color samples */}
         {[
-          { color: "#FFD700", name: "Yellow", ion: "Na⁺" },
-          { color: "#8A2BE2", name: "Lilac", ion: "K⁺" },
-          { color: "#B22222", name: "Brick Red", ion: "Ca²⁺" },
-          { color: "#00CED1", name: "Blue-Green", ion: "Cu²⁺" }
+          { color: "#FFD700", name: "Yellow", ion: "Na(+)" },
+          { color: "#8A2BE2", name: "Lilac", ion: "K(+)" },
+          { color: "#B22222", name: "Brick Red", ion: "Ca(2+)" },
+          { color: "#00CED1", name: "Blue-Green", ion: "Cu(2+)" }
         ].map((sample, i) => (
           <group key={i} position={[-0.4 + i * 0.25, 0, 0.01]}>
             <mesh position={[0, 0.1, 0]}>

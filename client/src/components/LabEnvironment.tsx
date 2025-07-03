@@ -2,6 +2,8 @@ import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
+import { Text as DreiText } from '@react-three/drei';
+
 
 function createTileTexture() {
   const canvas = document.createElement('canvas');
@@ -932,11 +934,6 @@ export function LabEnvironment() {
           <meshStandardMaterial color="#3498db" />
         </mesh>
         
-        {/* "NAVIGATION" text background */}
-        <mesh position={[0, 0.5, 0.002]}>
-          <planeGeometry args={[1.6, 0.2]} />
-          <meshStandardMaterial color="#ffffff" />
-        </mesh>
         
         {/* Main Menu Button */}
         <mesh 
@@ -953,12 +950,20 @@ export function LabEnvironment() {
           <planeGeometry args={[1.4, 0.2]} />
           <meshStandardMaterial color="#ffffff" />
         </mesh>
-        
+        <DreiText
+          position={[0, 0.1, 0.03]}
+          fontSize={0.09}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Main Menu
+        </DreiText>
         {/* Experiment Selection Button */}
         <mesh 
           position={[0, -0.3, 0.01]}
           userData={{ clickable: true, action: 'experiments' }}
-          onClick={() => window.location.href = '/'}
+          onClick={() => window.location.href = '/#experiments'}
         >
           <planeGeometry args={[1.6, 0.3]} />
           <meshStandardMaterial color="#e74c3c" />
@@ -969,7 +974,15 @@ export function LabEnvironment() {
           <planeGeometry args={[1.4, 0.2]} />
           <meshStandardMaterial color="#ffffff" />
         </mesh>
-        
+        <DreiText
+          position={[0, -0.3, 0.03]}
+          fontSize={0.09}
+          color="#2c3e50"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Experiments
+        </DreiText>
         {/* Floating instructions */}
         <mesh position={[0, -0.7, 0.01]}>
           <planeGeometry args={[1.8, 0.2]} />

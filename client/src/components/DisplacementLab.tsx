@@ -171,29 +171,12 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           anchorX="center"
           anchorY="middle"
         >
-          (Reaction Vessel)
+          (Reaction Vessel with Iron Nail(More Reactive Metal))
         </Text>
       </group>
 
       <group position={[0, 1.2, 0]}>
-        <Text
-          position={[0, 0, 0]}
-          fontSize={0.06}
-          color="#2c3e50"
-          anchorX="center"
-          anchorY="middle"
-        >
-          Iron Nail
-        </Text>
-        <Text
-          position={[0, -0.12, 0]}
-          fontSize={0.04}
-          color="#7f8c8d"
-          anchorX="center"
-          anchorY="middle"
-        >
-          (More Reactive Metal)
-        </Text>
+        
       </group>
 
       {/* Metal Selection Labels */}
@@ -218,7 +201,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
         </Text>
       </group>
 
-      <group position={[-2.3, 1.3, 0]}>
+      <group position={[-2.3, 1.73, 0]}>
         <Text
           position={[0, 0, 0]}
           fontSize={0.04}
@@ -230,7 +213,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
         </Text>
       </group>
 
-      <group position={[-2, 1.3, 0]}>
+      <group position={[-2, 1.73, 0]}>
         <Text
           position={[0, 0, 0]}
           fontSize={0.04}
@@ -242,7 +225,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
         </Text>
       </group>
 
-      <group position={[-1.7, 1.3, 0]}>
+      <group position={[-1.7, 1.73, 0]}>
         <Text
           position={[0, 0, 0]}
           fontSize={0.04}
@@ -321,7 +304,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
       </group>
 
       {/* Solution Labels */}
-      <group position={[2, 2.2, 0]}>
+      <group position={[2, 2.5, 0]}>
         <Text
           position={[0, 0, 0]}
           fontSize={0.08}
@@ -342,7 +325,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
         </Text>
       </group>
 
-      <group position={[1.7, 1.3, 0]}>
+      <group position={[1.7, 2.2, 0]}>
         <Text
           position={[0, 0, 0]}
           fontSize={0.04}
@@ -359,11 +342,11 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           anchorX="center"
           anchorY="middle"
         >
-          CuSO₄
+          CuSO4
         </Text>
       </group>
 
-      <group position={[2.3, 1.3, 0]}>
+      <group position={[2.3, 2.2, 0]}>
         <Text
           position={[0, 0, 0]}
           fontSize={0.04}
@@ -380,7 +363,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           anchorX="center"
           anchorY="middle"
         >
-          FeSO₄
+          FeSO4
         </Text>
       </group>
 

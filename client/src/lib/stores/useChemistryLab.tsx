@@ -184,14 +184,14 @@ const initialBeakers: Beaker[] = [
     position: [2.5, 1.54, 1.5],
     phValue: 5.6,
     liquidColor: "#fab1a0",
-    solutionName: "NH₄Cl (Acidic Salt)"
+    solutionName: "NH(4)Cl (Acidic Salt)"
   },
   {
     id: "beaker-9",
     position: [2.5, 1.54, 2.5],
     phValue: 8.4,
     liquidColor: "#55a3ff",
-    solutionName: "Na₂CO₃ (Basic Salt)"
+    solutionName: "Na(2)CO(3) (Basic Salt)"
   },
 
   // Experiment 5: Neutralization reaction sample
@@ -234,37 +234,37 @@ const initialTestStrips: TestStrip[] = [
 const initialMetalSalts: MetalSalt[] = [
   {
     id: "salt-1",
-    position: [-3, 1.54, -0.8],
+    position: [-0.9, 1.54, -0.2],
     name: "Sodium Chloride",
     formula: "NaCl",
-    ion: "Na⁺",
+    ion: "Na(+)",
     flameColor: "#FFD700",
     flameColorName: "Yellow"
   },
   {
     id: "salt-2",
-    position: [-2, 1.54, -0.8],
+    position: [-0.6, 1.54, -0.2],
     name: "Potassium Nitrate",
-    formula: "KNO₃",
-    ion: "K⁺",
+    formula: "KNO(3)",
+    ion: "K(+)",
     flameColor: "#8A2BE2",
     flameColorName: "Lilac/Purple"
   },
   {
     id: "salt-3",
-    position: [-1, 1.54, -0.8],
+    position: [-0.3, 1.54, -0.2],
     name: "Calcium Chloride",
-    formula: "CaCl₂",
-    ion: "Ca²⁺",
+    formula: "CaCl(2)",
+    ion: "Ca(2)^(+)",
     flameColor: "#B22222",
     flameColorName: "Brick Red"
   },
   {
     id: "salt-4",
-    position: [0, 1.54, -0.8],
+    position: [0, 1.54, -0.2],
     name: "Copper(II) Sulfate",
-    formula: "CuSO₄",
-    ion: "Cu²⁺",
+    formula: "CuSO(4)",
+    ion: "Cu(2)^(+)",
     flameColor: "#00CED1",
     flameColorName: "Blue-Green"
   }
@@ -275,7 +275,7 @@ const initialGasTests: GasTest[] = [
   {
     id: "gas-1",
     gasName: "Hydrogen",
-    formula: "H₂",
+    formula: "H(2)",
     position: [-2, 1.64, -1],
     testMethod: "lit-splint",
     expectedResult: "Pop sound",
@@ -284,7 +284,7 @@ const initialGasTests: GasTest[] = [
   {
     id: "gas-2", 
     gasName: "Oxygen",
-    formula: "O₂",
+    formula: "O(2)",
     position: [-1, 1.64, -1],
     testMethod: "glowing-splint",
     expectedResult: "Relights splint",
@@ -293,7 +293,7 @@ const initialGasTests: GasTest[] = [
   {
     id: "gas-3",
     gasName: "Carbon Dioxide", 
-    formula: "CO₂",
+    formula: "CO(2)",
     position: [0, 1.64, -1],
     testMethod: "limewater",
     expectedResult: "Turns milky",
@@ -302,7 +302,7 @@ const initialGasTests: GasTest[] = [
   {
     id: "gas-4",
     gasName: "Ammonia",
-    formula: "NH₃", 
+    formula: "NH(3)", 
     position: [1, 1.64, -1],
     testMethod: "red-litmus",
     expectedResult: "Turns blue",
@@ -311,7 +311,7 @@ const initialGasTests: GasTest[] = [
   {
     id: "gas-5",
     gasName: "Chlorine",
-    formula: "Cl₂",
+    formula: "Cl(2)",
     position: [2, 1.64, -1],
     testMethod: "blue-litmus",
     expectedResult: "Turns red then bleaches",

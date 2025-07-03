@@ -364,36 +364,12 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
 
       {/* Equipment Labels */}
       <group position={[0, 2.2, -1]}>
-        <Text
-          position={[0, 0, 0]}
-          fontSize={0.11}
-          color="#2c3e50"
-          anchorX="center"
-          anchorY="middle"
-        >
-          Gas Sample Tubes
-        </Text>
-        <Text
-          position={[0, -0.15, 0]}
-          fontSize={0.07}
-          color="#e74c3c"
-          anchorX="center"
-          anchorY="middle"
-        >
-          Each tube contains a different gas - Test to identify!
-        </Text>
+        
+       
       </group>
 
       <group position={[-1, 2.2, -0.5]}>
-        <Text
-          position={[0, 0, 0]}
-          fontSize={0.1}
-          color="#2c3e50"
-          anchorX="center"
-          anchorY="middle"
-        >
-          Test Tools
-        </Text>
+        
         <Text
           position={[0, -0.15, 0]}
           fontSize={0.06}
@@ -407,7 +383,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
 
       {/* Individual test tool labels */}
       <Text
-        position={[-3, 2.1, -0.5]}
+        position={[-3, 1.9, -0.5]}
         fontSize={0.05}
         color="#2c3e50"
         anchorX="center"
@@ -417,7 +393,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
       </Text>
 
       <Text
-        position={[-2, 2.1, -0.5]}
+        position={[-2, 1.9, -0.5]}
         fontSize={0.05}
         color="#2c3e50"
         anchorX="center"
@@ -427,7 +403,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
       </Text>
 
       <Text
-        position={[-1, 2.1, -0.5]}
+        position={[-1, 1.9, -0.5]}
         fontSize={0.05}
         color="#2c3e50"
         anchorX="center"
@@ -437,7 +413,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
       </Text>
 
       <Text
-        position={[0, 2.1, -0.5]}
+        position={[0, 1.9, -0.5]}
         fontSize={0.05}
         color="#2c3e50"
         anchorX="center"
@@ -447,7 +423,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
       </Text>
 
       <Text
-        position={[1, 2.1, -0.5]}
+        position={[1, 1.9, -0.5]}
         fontSize={0.05}
         color="#2c3e50"
         anchorX="center"
@@ -458,7 +434,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
 
       {/* Instructions */}
       <Text
-        position={[0, 2.5, 0]}
+        position={[0, 2.6, 0]}
         fontSize={0.12}
         color="#333"
         anchorX="center"

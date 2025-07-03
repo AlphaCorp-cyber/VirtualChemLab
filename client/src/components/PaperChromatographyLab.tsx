@@ -221,15 +221,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
 
       {/* Ink Selection Area */}
       <group position={[-2, 1.59, 0]}>
-        <Text
-          position={[0, 0.3, 0]}
-          fontSize={0.1}
-          color="#2c3e50"
-          anchorX="center"
-          anchorY="middle"
-        >
-          Select Ink Type
-        </Text>
+       
 
         {/* Current selection indicator */}
         <Text
@@ -349,7 +341,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
       </group>
 
       {/* Controls */}
-      <group position={[1.3, 1.59, 0.8]}>
+      <group position={[1.3, 1.99, 0.8]}>
         <Text
           position={[0, 0.3, 0]}
           fontSize={0.08}
