@@ -258,12 +258,32 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
             newState.isDragging = true;
             newState.isLongClick = false;
             
-            // If right mouse button, rotate camera
-            if (event.buttons === 2) {
-              const deltaX = mousePos.x - prev.lastPosition!.x;
-              const deltaY = mousePos.y - prev.lastPosition!.y;
+            // Handle different mouse buttons for different actions
+            const deltaX = mousePos.x - prev.lastPosition!.x;
+            const deltaY = mousePos.y - prev.lastPosition!.y;
+            
+            if (event.buttons === 1) {
+              // Left mouse button - Move camera position (pan)
+              const moveSpeed = 2.0;
+              const right = new THREE.Vector3();
+              const up = new THREE.Vector3(0, 1, 0);
               
-              // Rotate camera around Y axis for left/right movement
+              // Get camera right vector
+              camera.getWorldDirection(right);
+              right.cross(up).normalize();
+              
+              // Move camera based on mouse movement
+              camera.position.addScaledVector(right, -deltaX * moveSpeed);
+              camera.position.addScaledVector(up, deltaY * moveSpeed);
+              
+              // Keep camera within lab bounds
+              camera.position.x = THREE.MathUtils.clamp(camera.position.x, -8, 8);
+              camera.position.z = THREE.MathUtils.clamp(camera.position.z, -5, 8);
+              camera.position.y = THREE.MathUtils.clamp(camera.position.y, 0.5, 12);
+              
+              console.log('🎮 CAMERA MOVEMENT');
+            } else if (event.buttons === 2) {
+              // Right mouse button - Rotate camera view
               camera.rotateY(-deltaX * 0.5);
               
               // Tilt camera for up/down movement (limited)
@@ -284,11 +304,14 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
       console.log('🖱️ MOUSE UP CAPTURED!');
       const clickDuration = Date.now() - mouseState.downTime;
 
-      if (mouseState.isLongClick && mouseState.movementMode) {
-        setMouseState(prev => ({ ...prev, movementMode: false }));
-      } else if (clickDuration < 500 && !mouseState.isDragging && mouseState.lastPosition) {
+      // Only trigger click interaction if it was a short click without dragging and with left button
+      if (event.button === 0 && clickDuration < 300 && !mouseState.isDragging && mouseState.lastPosition) {
         console.log('🎯 TRIGGERING MOUSE CLICK!');
         handleMouseClick(mouseState.lastPosition);
+      }
+      
+      if (mouseState.isLongClick && mouseState.movementMode) {
+        setMouseState(prev => ({ ...prev, movementMode: false }));
       }
 
       setMouseState(prev => ({
