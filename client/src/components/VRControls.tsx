@@ -487,6 +487,7 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
     scene.traverse((child) => {
       if (child.type === 'Mesh' && (
         child.userData.interactable ||
+        child.userData.action || // Navigation buttons
         child.name.includes('test-strip') ||
         child.name.includes('beaker') ||
         child.name.includes('bunsen') ||
@@ -506,6 +507,15 @@ export function VRControls({ mobileControls }: VRControlsProps = {}) {
     if (intersects.length > 0) {
       const intersected = intersects[0].object;
       console.log('Interacted with:', intersected.name, intersected.userData);
+
+      // Handle navigation button clicks first
+      if (intersected.userData.action) {
+        console.log('🏠 Navigation button clicked:', intersected.userData.action);
+        if (intersected.userData.action === 'mainMenu' || intersected.userData.action === 'experiments') {
+          window.location.href = '/';
+        }
+        return;
+      }
 
       // Handle different types of interactions
       if (intersected.name.includes('test-strip') || intersected.userData.type === 'test-strip') {

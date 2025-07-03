@@ -917,6 +917,70 @@ export function LabEnvironment() {
           <meshStandardMaterial color="#7f8c8d" metalness={0.6} roughness={0.3} />
         </mesh>
       </group>
+
+      {/* VR Navigation Panel - 3D Clickable Buttons */}
+      <group position={[-8, 3, -2]} rotation={[0, Math.PI / 4, 0]}>
+        {/* Panel background */}
+        <mesh>
+          <planeGeometry args={[2, 1.5]} />
+          <meshStandardMaterial color="#2c3e50" />
+        </mesh>
+        
+        {/* Header */}
+        <mesh position={[0, 0.5, 0.001]}>
+          <planeGeometry args={[1.8, 0.3]} />
+          <meshStandardMaterial color="#3498db" />
+        </mesh>
+        
+        {/* "NAVIGATION" text background */}
+        <mesh position={[0, 0.5, 0.002]}>
+          <planeGeometry args={[1.6, 0.2]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+        
+        {/* Main Menu Button */}
+        <mesh 
+          position={[0, 0.1, 0.01]}
+          userData={{ clickable: true, action: 'mainMenu' }}
+          onClick={() => window.location.href = '/'}
+        >
+          <planeGeometry args={[1.6, 0.3]} />
+          <meshStandardMaterial color="#27ae60" />
+        </mesh>
+        
+        {/* Button text background */}
+        <mesh position={[0, 0.1, 0.02]}>
+          <planeGeometry args={[1.4, 0.2]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+        
+        {/* Experiment Selection Button */}
+        <mesh 
+          position={[0, -0.3, 0.01]}
+          userData={{ clickable: true, action: 'experiments' }}
+          onClick={() => window.location.href = '/'}
+        >
+          <planeGeometry args={[1.6, 0.3]} />
+          <meshStandardMaterial color="#e74c3c" />
+        </mesh>
+        
+        {/* Experiment button text background */}
+        <mesh position={[0, -0.3, 0.02]}>
+          <planeGeometry args={[1.4, 0.2]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+        
+        {/* Floating instructions */}
+        <mesh position={[0, -0.7, 0.01]}>
+          <planeGeometry args={[1.8, 0.2]} />
+          <meshStandardMaterial color="#f39c12" />
+        </mesh>
+        
+        <mesh position={[0, -0.7, 0.02]}>
+          <planeGeometry args={[1.6, 0.15]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+      </group>
     </>
   );
 }
