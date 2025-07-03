@@ -27,7 +27,18 @@ const detectPlatform = () => {
   };
 };
 
-export function VRControls() {
+interface VRControlsProps {
+  mobileControls?: {
+    forward: boolean;
+    backward: boolean;
+    leftward: boolean;
+    rightward: boolean;
+    up: boolean;
+    down: boolean;
+  };
+}
+
+export function VRControls({ mobileControls }: VRControlsProps = {}) {
   const { session } = useXR();
   const { camera, scene, gl } = useThree();
   const { selectedStripId, grabTestStrip, releaseTestStrip, testStripInLiquid, beakers } = useChemistryLab();
@@ -394,15 +405,6 @@ export function VRControls() {
       console.log('No interactable objects found at position');
     }
   };
-
-  const [mobileControls, setMobileControls] = useState({
-    forward: false,
-    backward: false,
-    leftward: false,
-    rightward: false,
-    up: false,
-    down: false,
-  });
 
   useFrame((state, delta) => {
     const keyboardControls = getState();
