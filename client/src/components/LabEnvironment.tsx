@@ -1,4 +1,4 @@
-import { useTexture } from "@react-three/drei";
+import { useTexture, Text } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
@@ -932,11 +932,17 @@ export function LabEnvironment() {
           <meshStandardMaterial color="#3498db" />
         </mesh>
         
-        {/* "NAVIGATION" text background */}
-        <mesh position={[0, 0.5, 0.002]}>
-          <planeGeometry args={[1.6, 0.2]} />
-          <meshStandardMaterial color="#2c3e50" />
-        </mesh>
+        {/* "NAVIGATION" text */}
+        <Text
+          position={[0, 0.5, 0.03]}
+          fontSize={0.1}
+          color="white"
+          anchorX="center"
+          anchorY="middle"
+          font="/fonts/roboto-regular.woff"
+        >
+          NAVIGATION
+        </Text>
         
         {/* Main Menu Button */}
         <mesh 
@@ -948,11 +954,17 @@ export function LabEnvironment() {
           <meshStandardMaterial color="#27ae60" />
         </mesh>
         
-        {/* Button text background */}
-        <mesh position={[0, 0.1, 0.02]}>
-          <planeGeometry args={[1.4, 0.2]} />
-          <meshStandardMaterial color="#2c3e50" />
-        </mesh>
+        {/* Main Menu Button Text */}
+        <Text
+          position={[0, 0.1, 0.03]}
+          fontSize={0.08}
+          color="white"
+          anchorX="center"
+          anchorY="middle"
+          font="/fonts/roboto-regular.woff"
+        >
+          MAIN MENU
+        </Text>
         
         {/* Experiment Selection Button */}
         <mesh 
@@ -964,11 +976,17 @@ export function LabEnvironment() {
           <meshStandardMaterial color="#e74c3c" />
         </mesh>
         
-        {/* Experiment button text background */}
-        <mesh position={[0, -0.3, 0.02]}>
-          <planeGeometry args={[1.4, 0.2]} />
-          <meshStandardMaterial color="#2c3e50" />
-        </mesh>
+        {/* Experiment Button Text */}
+        <Text
+          position={[0, -0.3, 0.03]}
+          fontSize={0.08}
+          color="white"
+          anchorX="center"
+          anchorY="middle"
+          font="/fonts/roboto-regular.woff"
+        >
+          EXPERIMENTS
+        </Text>
         
         {/* Floating instructions */}
         <mesh position={[0, -0.7, 0.01]}>
@@ -976,10 +994,17 @@ export function LabEnvironment() {
           <meshStandardMaterial color="#f39c12" />
         </mesh>
         
-        <mesh position={[0, -0.7, 0.02]}>
-          <planeGeometry args={[1.6, 0.15]} />
-          <meshStandardMaterial color="#2c3e50" />
-        </mesh>
+        {/* Instructions Text */}
+        <Text
+          position={[0, -0.7, 0.03]}
+          fontSize={0.06}
+          color="white"
+          anchorX="center"
+          anchorY="middle"
+          font="/fonts/roboto-regular.woff"
+        >
+          CLICK TO NAVIGATE
+        </Text>
       </group>
     </>
   );
