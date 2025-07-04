@@ -807,15 +807,12 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
         <boxGeometry args={[0.8, 0.2, 0.1]} />
         <meshStandardMaterial color="#e74c3c" />
       </mesh>
-      <mesh position={[2.5, 1.9, -0.98]}>
-        <boxGeometry args={[0.75, 0.15, 0.05]} />
-        <meshStandardMaterial color="#ffffff" />
-      </mesh>
+     
       <Text3D 
-        position={[2.5, 1.9, -0.97]} 
+        position={[2.3, 2.15, 0]} 
         text="RESET" 
-        fontSize={0.06} 
-        color="#e74c3c" 
+        fontSize={0.08} 
+        color="#ffffff" 
       />
 
       {/* Step indicators with arrows */}
