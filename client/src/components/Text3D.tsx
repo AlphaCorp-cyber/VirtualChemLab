@@ -25,7 +25,6 @@ export function Text3D({
       color={color}
       maxWidth={maxWidth}
       textAlign={textAlign}
-      font="/fonts/Inter-Medium.woff"
       anchorX="center"
       anchorY="middle"
     >
@@ -47,7 +46,6 @@ export function InstructionText({
       color={color}
       maxWidth={3}
       textAlign="left"
-      font="/fonts/Inter-Regular.woff"
       anchorX="left"
       anchorY="middle"
     >
@@ -69,7 +67,6 @@ export function LabelText({
       color={color}
       maxWidth={1.5}
       textAlign="center"
-      font="/fonts/Inter-Medium.woff"
       anchorX="center"
       anchorY="middle"
     >
