@@ -150,21 +150,44 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
 }) {
   return (
     <group position={position}>
-      {/* Outer dish */}
+      {/* Glass evaporating dish - realistic bowl shape */}
       <mesh
         onClick={onSelect}
         userData={{ interactable: true }}
       >
-        <cylinderGeometry args={[0.4, 0.4, 0.1]} />
+        <sphereGeometry args={[0.4, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
         <meshStandardMaterial 
-          color={isSelected ? "#3498db" : "#000000"} 
+          color="#ffffff"
+          transparent
+          opacity={0.15}
+          roughness={0.0}
+          metalness={0.0}
+          transmission={0.9}
+          thickness={0.01}
         />
       </mesh>
       
-      {/* Inner surface - dark when crystals are present, black otherwise */}
-      <mesh position={[0, 0.045, 0]}>
-        <cylinderGeometry args={[0.38, 0.38, 0.01]} />
-        <meshStandardMaterial color={saltCrystals ? "#1a1a1a" : "#000000"} />
+      {/* Glass rim for better visibility */}
+      <mesh position={[0, 0, 0]}>
+        <torusGeometry args={[0.4, 0.015, 8, 32]} />
+        <meshStandardMaterial 
+          color="#ffffff"
+          transparent
+          opacity={0.3}
+          roughness={0.1}
+          metalness={0.0}
+        />
+      </mesh>
+      
+      {/* Inner bottom surface for contrast */}
+      <mesh position={[0, -0.35, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[0.35, 32]} />
+        <meshStandardMaterial 
+          color={saltCrystals ? "#f8f8f8" : "#ffffff"}
+          transparent
+          opacity={0.8}
+          roughness={0.2}
+        />
       </mesh>
       
       {/* Salt solution - bluish water with animated level */}
