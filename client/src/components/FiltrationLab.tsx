@@ -161,10 +161,10 @@ function MixtureBeaker({ position, isSelected, onSelect, isEmpty, isPouring }: {
             <cylinderGeometry args={[0.28, 0.28, 0.5]} />
             <meshStandardMaterial 
               color="#A0522D" 
-              transparent 
+              
               opacity={1.0}
               emissive="#8B4513"
-              emissiveIntensity={0.3}
+              emissiveIntensity={1.3}
             />
           </mesh>
         </>
