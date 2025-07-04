@@ -617,7 +617,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
 
       <WaterStream 
         startPos={[-1.7, 2.4, -1]}
-        endPos={[0, 2.1, -1]}
+        endPos={[0, 2.05, -1]}
         isVisible={showWaterStream}
       />
       
