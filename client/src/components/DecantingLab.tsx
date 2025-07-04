@@ -57,24 +57,42 @@ function DecantingBeaker({ position, isSelected, onSelect, liquidLevel, sediment
         />
       </mesh>
 
-      {/* Sediment layer (dark red wine sediment) */}
+      {/* Sediment layer (dark red wine sediment) - more visible and realistic */}
       {sedimentLevel > 0 && (
-        <mesh position={[0, -0.3, 0]}>
+        <mesh position={[0, -0.3 + sedimentLevel / 2, 0]}>
           <cylinderGeometry args={[0.28, 0.28, sedimentLevel]} />
-          <meshStandardMaterial color="#722F37" />
+          <meshStandardMaterial 
+            color="#4A1A1A" 
+            roughness={0.8}
+            metalness={0.1}
+          />
         </mesh>
       )}
 
-      {/* Liquid layer (wine) */}
+      {/* Clear separation line between sediment and wine */}
+      {sedimentLevel > 0 && liquidLevel > 0 && (
+        <mesh position={[0, -0.3 + sedimentLevel, 0]}>
+          <cylinderGeometry args={[0.285, 0.285, 0.005]} />
+          <meshStandardMaterial 
+            color="#2A0A0A" 
+            transparent 
+            opacity={0.6}
+          />
+        </mesh>
+      )}
+
+      {/* Liquid layer (wine) - clearer and more transparent */}
       {liquidLevel > 0 && (
         <mesh position={[0, -0.3 + sedimentLevel + liquidLevel / 2, 0]}>
           <cylinderGeometry args={[0.28, 0.28, liquidLevel]} />
           <meshStandardMaterial 
             color={wineColor} 
             transparent 
-            opacity={0.9}
+            opacity={0.75}
             emissive={wineColor}
-            emissiveIntensity={0.1}
+            emissiveIntensity={0.05}
+            roughness={0.1}
+            metalness={0.05}
           />
         </mesh>
       )}
@@ -90,26 +108,58 @@ function ReceivingBeaker({ position, isSelected, onSelect, liquidLevel }: {
 }) {
   return (
     <group position={position}>
+      {/* Transparent glass beaker - clear with just outline */}
       <mesh
         onClick={onSelect}
         userData={{ interactable: true }}
       >
         <cylinderGeometry args={[0.3, 0.3, 0.8]} />
         <meshStandardMaterial 
-          color={isSelected ? "#3498db" : "#ecf0f1"} 
+          color="#ffffff" 
           transparent 
-          opacity={0.8}
+          opacity={0.1}
+          roughness={0.02}
+          metalness={0.1}
         />
       </mesh>
 
-      {/* Decanted liquid */}
+      {/* Glass beaker outline for visibility */}
+      <mesh>
+        <cylinderGeometry args={[0.305, 0.305, 0.805]} />
+        <meshStandardMaterial 
+          color="#000000" 
+          transparent
+          opacity={0.3}
+          side={THREE.BackSide}
+        />
+      </mesh>
+
+      {/* Decanted liquid - clearer wine color */}
       {liquidLevel > 0 && (
         <mesh position={[0, -0.3 + liquidLevel / 2, 0]}>
           <cylinderGeometry args={[0.28, 0.28, liquidLevel]} />
           <meshStandardMaterial 
-            color="#CD5C5C" 
+            color="#DC143C" 
             transparent 
-            opacity={0.7}
+            opacity={0.8}
+            emissive="#8B0000"
+            emissiveIntensity={0.1}
+            roughness={0.1}
+            metalness={0.05}
+          />
+        </mesh>
+      )}
+
+      {/* Liquid surface reflection */}
+      {liquidLevel > 0 && (
+        <mesh position={[0, -0.3 + liquidLevel, 0]}>
+          <cylinderGeometry args={[0.275, 0.275, 0.002]} />
+          <meshStandardMaterial 
+            color="#FF6B6B" 
+            transparent 
+            opacity={0.4}
+            emissive="#FF6B6B"
+            emissiveIntensity={0.2}
           />
         </mesh>
       )}
