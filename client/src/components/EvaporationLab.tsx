@@ -27,20 +27,22 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
         />
       </mesh>
       
-      {/* Inner black surface for better crystal visibility */}
+      {/* Inner black surface */}
       <mesh position={[0, 0.045, 0]}>
         <cylinderGeometry args={[0.38, 0.38, 0.01]} />
-        <meshStandardMaterial color="#1a1a1a" />
+        <meshStandardMaterial color="#000000" />
       </mesh>
       
-      {/* Salt solution */}
+      {/* Salt solution - bluish water with animated level */}
       {liquidLevel > 0 && (
-        <mesh position={[0, 0.05, 0]}>
-          <cylinderGeometry args={[0.36, 0.36, 0.02]} />
+        <mesh position={[0, 0.045 + (liquidLevel * 0.02), 0]}>
+          <cylinderGeometry args={[0.36 * liquidLevel, 0.36 * liquidLevel, liquidLevel * 0.04]} />
           <meshStandardMaterial 
-            color="#87ceeb" 
+            color="#4A90E2" 
             transparent 
-            opacity={0.7}
+            opacity={0.8}
+            emissive="#1E3A8A"
+            emissiveIntensity={0.1}
           />
         </mesh>
       )}
@@ -228,7 +230,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       setShowSmoke(true);
       setCountdown(10);
       
-      // Start evaporation process with countdown
+      // Start evaporation process with smooth countdown and liquid level animation
       const evaporationInterval = setInterval(() => {
         setCountdown(prev => {
           const newCount = prev - 1;
@@ -242,16 +244,17 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
             
             if (onExperimentComplete) {
               onExperimentComplete(
-                "Evaporation to dryness completed successfully! The water has completely evaporated, " +
-                "leaving behind white salt crystals in the evaporating dish. This separation technique " +
+                "Evaporation to dryness completed successfully! The bluish water has completely evaporated, " +
+                "leaving behind white salt crystals in the black evaporating dish. This separation technique " +
                 "is used to recover dissolved solids from their solutions."
               );
             }
             return 0;
           }
           
-          // Gradually reduce liquid level
-          setLiquidLevel(newCount / 10);
+          // Smoothly reduce liquid level proportionally
+          const newLiquidLevel = newCount / 10;
+          setLiquidLevel(newLiquidLevel);
           return newCount;
         });
       }, 1000);
