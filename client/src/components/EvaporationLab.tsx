@@ -22,7 +22,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
       >
         <cylinderGeometry args={[0.4, 0.4, 0.1]} />
         <meshStandardMaterial 
-          color={isSelected ? "#3498db" : "#ecf0f1"} 
+          color={isSelected ? "#3498db" : "#34495e"} 
         />
       </mesh>
       
@@ -38,11 +38,15 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
         </mesh>
       )}
       
-      {/* Salt crystals */}
+      {/* Salt crystals - made more visible */}
       {saltCrystals && (
         <mesh position={[0, 0.05, 0]}>
           <cylinderGeometry args={[0.35, 0.35, 0.01]} />
-          <meshStandardMaterial color="#ffffff" />
+          <meshStandardMaterial 
+            color="#ffffff" 
+            emissive="#ffffff"
+            emissiveIntensity={0.2}
+          />
         </mesh>
       )}
     </group>
@@ -65,14 +69,14 @@ function BunsenBurner({ position, isLit, onToggle }: {
 
   return (
     <group position={position}>
-      {/* Burner base - made taller to sit on table */}
+      {/* Burner base - properly sized for table height */}
       <mesh>
-        <cylinderGeometry args={[0.15, 0.15, 0.4]} />
+        <cylinderGeometry args={[0.15, 0.15, 0.2]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
       
       {/* Burner top */}
-      <mesh position={[0, 0.25, 0]}>
+      <mesh position={[0, 0.125, 0]}>
         <cylinderGeometry args={[0.1, 0.1, 0.05]} />
         <meshStandardMaterial color="#34495e" />
       </mesh>
@@ -81,7 +85,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
       {isLit && (
         <mesh 
           ref={flameRef}
-          position={[0, 0.5, 0]}
+          position={[0, 0.35, 0]}
           onClick={onToggle}
           userData={{ interactable: true }}
         >
@@ -96,14 +100,24 @@ function BunsenBurner({ position, isLit, onToggle }: {
         </mesh>
       )}
       
-      {/* Control knob */}
+      {/* Control knob - made larger and more accessible */}
       <mesh 
-        position={[0.2, 0, 0]}
+        position={[0.25, 0.1, 0]}
         onClick={onToggle}
         userData={{ interactable: true }}
       >
-        <cylinderGeometry args={[0.03, 0.03, 0.1]} />
+        <cylinderGeometry args={[0.05, 0.05, 0.15]} />
         <meshStandardMaterial color={isLit ? "#e74c3c" : "#95a5a6"} />
+      </mesh>
+      
+      {/* Click indicator for knob */}
+      <mesh position={[0.25, 0.1, 0]}>
+        <cylinderGeometry args={[0.06, 0.06, 0.16]} />
+        <meshStandardMaterial 
+          color={isLit ? "#e74c3c" : "#95a5a6"} 
+          transparent 
+          opacity={0.3}
+        />
       </mesh>
     </group>
   );
@@ -264,7 +278,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       />
       
       <BunsenBurner 
-        position={[0, 1.26, -1]} 
+        position={[0, 1.46, -1]} 
         isLit={isLit}
         onToggle={() => setIsLit(!isLit)}
       />
@@ -275,25 +289,25 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
         isActive={showSmoke}
       />
       
-      {/* Countdown timer display */}
+      {/* Countdown timer display - Above equipment */}
       {experimentStage === 'heating' && (
         <group>
-          <mesh position={[1.5, 2.5, -1]}>
+          <mesh position={[1.5, 3.2, -1]}>
             <planeGeometry args={[1.0, 0.4]} />
             <meshStandardMaterial color="#34495e" />
           </mesh>
-          <mesh position={[1.5, 2.5, -0.99]}>
+          <mesh position={[1.5, 3.2, -0.99]}>
             <planeGeometry args={[0.9, 0.3]} />
             <meshStandardMaterial color="#ffffff" />
           </mesh>
           <Text3D 
-            position={[1.5, 2.6, -0.98]} 
+            position={[1.5, 3.3, -0.98]} 
             text="EVAPORATING" 
             fontSize={0.06} 
             color="#e67e22" 
           />
           <Text3D 
-            position={[1.5, 2.4, -0.98]} 
+            position={[1.5, 3.1, -0.98]} 
             text={`${countdown}s remaining`} 
             fontSize={0.08} 
             color="#2c3e50" 
@@ -301,12 +315,12 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
         </group>
       )}
 
-      {/* Equipment Labels */}
-      <mesh position={[0, 0.7, -1]}>
+      {/* Equipment Labels - Above equipment */}
+      <mesh position={[0, 1.2, -1]}>
         <planeGeometry args={[1.5, 0.2]} />
         <meshStandardMaterial color="#e74c3c" />
       </mesh>
-      <Text3D position={[0, 0.7, -0.98]} text="Bunsen Burner" fontSize={0.06} color="#ffffff" />
+      <Text3D position={[0, 1.2, -0.98]} text="Bunsen Burner" fontSize={0.06} color="#ffffff" />
 
       <mesh position={[0, 2.4, -1]}>
         <planeGeometry args={[1.8, 0.2]} />
@@ -341,31 +355,31 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       <Text3D position={[3.5, 1.8, -0.98]} text="4. Salt crystals remain behind" fontSize={0.08} color="#2c3e50" />
       <Text3D position={[3.5, 1.4, -0.98]} text="5. Separation complete!" fontSize={0.08} color="#2c3e50" />
 
-      {/* Completion status */}
+      {/* Completion status - Above equipment */}
       {experimentStage === 'complete' && (
         <group>
-          <mesh position={[1.5, 1.2, -1]}>
+          <mesh position={[1.5, 3.2, -1]}>
             <planeGeometry args={[1.8, 0.6]} />
             <meshStandardMaterial color="#27ae60" />
           </mesh>
-          <mesh position={[1.5, 1.2, -0.99]}>
+          <mesh position={[1.5, 3.2, -0.99]}>
             <planeGeometry args={[1.7, 0.5]} />
             <meshStandardMaterial color="#ffffff" />
           </mesh>
           <Text3D 
-            position={[1.5, 1.4, -0.98]} 
+            position={[1.5, 3.4, -0.98]} 
             text="COMPLETE!" 
             fontSize={0.08} 
             color="#27ae60" 
           />
           <Text3D 
-            position={[1.5, 1.2, -0.98]} 
+            position={[1.5, 3.2, -0.98]} 
             text="Salt crystals" 
             fontSize={0.06} 
             color="#2c3e50" 
           />
           <Text3D 
-            position={[1.5, 1.0, -0.98]} 
+            position={[1.5, 3.0, -0.98]} 
             text="recovered!" 
             fontSize={0.06} 
             color="#2c3e50" 
