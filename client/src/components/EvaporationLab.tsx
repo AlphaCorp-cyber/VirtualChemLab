@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -7,12 +8,145 @@ interface EvaporationLabProps {
   onExperimentComplete?: (result: string) => void;
 }
 
-function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrystals }: {
+function WaterBeaker({ position, isSelected, onSelect, isEmpty, isPouring }: {
+  position: [number, number, number];
+  isSelected: boolean;
+  onSelect: () => void;
+  isEmpty: boolean;
+  isPouring: boolean;
+}) {
+  const beakerRef = useRef<THREE.Group>(null);
+
+  useFrame(() => {
+    if (beakerRef.current && isPouring) {
+      // Tilt beaker towards evaporating dish for realistic pouring
+      beakerRef.current.rotation.z = -0.6;
+      beakerRef.current.position.x = position[0] + 0.8;
+      beakerRef.current.position.y = position[1] + 0.4;
+    } else if (beakerRef.current && !isPouring) {
+      beakerRef.current.rotation.z = 0;
+      beakerRef.current.position.x = position[0];
+      beakerRef.current.position.y = position[1];
+    }
+  });
+
+  return (
+    <group ref={beakerRef} position={position}>
+      {/* Glass beaker - clear with outline */}
+      <mesh
+        onClick={onSelect}
+        userData={{ interactable: true }}
+      >
+        <cylinderGeometry args={[0.25, 0.25, 0.6]} />
+        <meshStandardMaterial 
+          color="#ffffff" 
+          transparent 
+          opacity={0.2}
+        />
+      </mesh>
+
+      {/* Beaker outline for visibility */}
+      <mesh>
+        <cylinderGeometry args={[0.255, 0.255, 0.605]} />
+        <meshStandardMaterial 
+          color="#000000" 
+          transparent
+          opacity={0.6}
+          side={THREE.BackSide}
+        />
+      </mesh>
+
+      {/* Water - clear blue water */}
+      {!isEmpty && (
+        <mesh position={[0, -0.1, 0]}>
+          <cylinderGeometry args={[0.23, 0.23, 0.4]} />
+          <meshStandardMaterial 
+            color="#4A90E2" 
+            transparent 
+            opacity={0.8}
+            emissive="#1E3A8A"
+            emissiveIntensity={0.1}
+          />
+        </mesh>
+      )}
+
+      {/* Water surface reflection */}
+      {!isEmpty && (
+        <mesh position={[0, 0.1, 0]}>
+          <cylinderGeometry args={[0.22, 0.22, 0.002]} />
+          <meshStandardMaterial 
+            color="#87CEEB" 
+            transparent 
+            opacity={0.6}
+            emissive="#87CEEB"
+            emissiveIntensity={0.2}
+          />
+        </mesh>
+      )}
+
+      {/* Pouring spout indicator */}
+      <mesh position={[0.3, 0.2, 0]} rotation={[0, 0, Math.PI/6]}>
+        <cylinderGeometry args={[0.02, 0.03, 0.1]} />
+        <meshStandardMaterial color="#000000" />
+      </mesh>
+    </group>
+  );
+}
+
+function WaterStream({ startPos, endPos, isVisible }: {
+  startPos: [number, number, number];
+  endPos: [number, number, number];
+  isVisible: boolean;
+}) {
+  const streamRef = useRef<THREE.Group>(null);
+
+  useFrame((state) => {
+    if (streamRef.current && isVisible) {
+      const time = state.clock.elapsedTime;
+      streamRef.current.children.forEach((droplet, index) => {
+        const mesh = droplet as THREE.Mesh;
+        const progress = (time * 2 + index * 0.2) % 1.5;
+        
+        if (progress < 1.0) {
+          const t = progress;
+          mesh.position.x = startPos[0] + (endPos[0] - startPos[0]) * t;
+          mesh.position.y = startPos[1] + (endPos[1] - startPos[1]) * t - 0.3 * t * t;
+          mesh.position.z = startPos[2];
+          mesh.visible = true;
+        } else {
+          mesh.visible = false;
+        }
+      });
+    }
+  });
+
+  if (!isVisible) return null;
+
+  return (
+    <group ref={streamRef}>
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <mesh key={i} position={startPos}>
+          <sphereGeometry args={[0.02, 8, 8]} />
+          <meshStandardMaterial 
+            color="#4A90E2" 
+            transparent 
+            opacity={0.9}
+            emissive="#1E3A8A"
+            emissiveIntensity={0.1}
+          />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrystals, hasSaltSolution }: {
   position: [number, number, number];
   isSelected: boolean;
   onSelect: () => void;
   liquidLevel: number;
   saltCrystals: boolean;
+  hasSaltSolution: boolean;
 }) {
   return (
     <group position={position}>
@@ -34,7 +168,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
       </mesh>
       
       {/* Salt solution - bluish water with animated level */}
-      {liquidLevel > 0 && (
+      {liquidLevel > 0 && hasSaltSolution && (
         <mesh position={[0, 0.045 + (liquidLevel * 0.02), 0]}>
           <cylinderGeometry args={[0.36 * liquidLevel, 0.36 * liquidLevel, liquidLevel * 0.04]} />
           <meshStandardMaterial 
@@ -343,18 +477,44 @@ function SmokeParticles({ position, isActive }: {
 
 export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
   const [selectedTool, setSelectedTool] = useState<string>('');
-  const [experimentStage, setExperimentStage] = useState<'setup' | 'heating' | 'evaporating' | 'complete'>('setup');
+  const [experimentStage, setExperimentStage] = useState<'setup' | 'pour-water' | 'light-burner' | 'heating' | 'evaporating' | 'complete'>('setup');
   const [isLit, setIsLit] = useState(false);
-  const [liquidLevel, setLiquidLevel] = useState(1);
+  const [liquidLevel, setLiquidLevel] = useState(0);
   const [saltCrystals, setSaltCrystals] = useState(false);
-  const [countdown, setCountdown] = useState(10);
+  const [countdown, setCountdown] = useState(8);
   const [showSmoke, setShowSmoke] = useState(false);
+  const [waterBeakerEmpty, setWaterBeakerEmpty] = useState(false);
+  const [isPouring, setIsPouring] = useState(false);
+  const [showWaterStream, setShowWaterStream] = useState(false);
+  const [hasSaltSolution, setHasSaltSolution] = useState(false);
 
-  const handleHeating = () => {
-    if (isLit && experimentStage === 'setup') {
+  const handleWaterPour = () => {
+    if (experimentStage === 'setup') {
+      setExperimentStage('pour-water');
+      setIsPouring(true);
+      setShowWaterStream(true);
+
+      // Simulate pouring duration
+      setTimeout(() => {
+        setWaterBeakerEmpty(true);
+        setLiquidLevel(1);
+        setHasSaltSolution(true);
+        setIsPouring(false);
+        setShowWaterStream(false);
+        setExperimentStage('light-burner');
+      }, 2000);
+    }
+  };
+
+  const handleBurnerToggle = () => {
+    const newLitState = !isLit;
+    setIsLit(newLitState);
+    
+    // If burner is lit and we have salt solution, start evaporation automatically
+    if (newLitState && hasSaltSolution && experimentStage === 'light-burner') {
       setExperimentStage('heating');
       setShowSmoke(true);
-      setCountdown(10);
+      setCountdown(8);
       
       // Start evaporation process with smooth countdown and liquid level animation
       const evaporationInterval = setInterval(() => {
@@ -370,7 +530,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
             
             if (onExperimentComplete) {
               onExperimentComplete(
-                "Evaporation to dryness completed successfully! The bluish water has completely evaporated, " +
+                "Evaporation to dryness completed successfully! The salt water has completely evaporated, " +
                 "leaving behind white salt crystals in the black evaporating dish. This separation technique " +
                 "is used to recover dissolved solids from their solutions."
               );
@@ -379,7 +539,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
           }
           
           // Smoothly reduce liquid level proportionally
-          const newLiquidLevel = newCount / 10;
+          const newLiquidLevel = newCount / 8;
           setLiquidLevel(newLiquidLevel);
           return newCount;
         });
@@ -390,11 +550,15 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
   const resetExperiment = () => {
     setExperimentStage('setup');
     setIsLit(false);
-    setLiquidLevel(1);
+    setLiquidLevel(0);
     setSaltCrystals(false);
     setSelectedTool('');
-    setCountdown(10);
+    setCountdown(8);
     setShowSmoke(false);
+    setWaterBeakerEmpty(false);
+    setIsPouring(false);
+    setShowWaterStream(false);
+    setHasSaltSolution(false);
   };
 
   return (
@@ -443,24 +607,35 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       )}
 
       {/* Equipment positioned on the existing white lab table */}
+      <WaterBeaker 
+        position={[-2.5, 1.9, -1]} 
+        isSelected={experimentStage === 'setup'}
+        onSelect={handleWaterPour}
+        isEmpty={waterBeakerEmpty}
+        isPouring={isPouring}
+      />
+
+      <WaterStream 
+        startPos={[-1.7, 2.4, -1]}
+        endPos={[0, 2.1, -1]}
+        isVisible={showWaterStream}
+      />
+      
       <TripodStand position={[0, 1.55, -1]} />
       
       <EvaporatingDish 
         position={[0, 2.0, -1]} 
         isSelected={false}
-        onSelect={() => {
-          if (experimentStage === 'setup' && isLit) {
-            handleHeating();
-          }
-        }}
+        onSelect={() => {}}
         liquidLevel={liquidLevel}
         saltCrystals={saltCrystals}
+        hasSaltSolution={hasSaltSolution}
       />
       
       <BunsenBurner 
         position={[0, 1.46, -1]} 
         isLit={isLit}
-        onToggle={() => setIsLit(!isLit)}
+        onToggle={handleBurnerToggle}
       />
       
       {/* Smoke effects during heating */}
@@ -496,6 +671,12 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       )}
 
       {/* Equipment Labels - Above equipment */}
+      <mesh position={[-2.5, 1.2, -1]}>
+        <planeGeometry args={[1.3, 0.2]} />
+        <meshStandardMaterial color="#3498db" />
+      </mesh>
+      <Text3D position={[-2.5, 1.2, -0.98]} text="Water Beaker" fontSize={0.06} color="#ffffff" />
+
       <mesh position={[0, 1.2, -1]}>
         <planeGeometry args={[1.5, 0.2]} />
         <meshStandardMaterial color="#e74c3c" />
@@ -529,11 +710,11 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       <Text3D position={[3.5, 3.5, -0.98]} text="EVAPORATION LAB" fontSize={0.12} color="#e67e22" />
       
       {/* Instructions */}
-      <Text3D position={[3.5, 3.0, -0.98]} text="1. Click Bunsen burner to light" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[3.5, 2.6, -0.98]} text="2. Click evaporating dish to start" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[3.5, 2.2, -0.98]} text="3. Watch water evaporate away" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[3.5, 1.8, -0.98]} text="4. Salt crystals remain behind" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[3.5, 1.4, -0.98]} text="5. Separation complete!" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[3.5, 3.0, -0.98]} text="1. Click water beaker to pour" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[3.5, 2.6, -0.98]} text="2. Click Bunsen burner to light" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[3.5, 2.2, -0.98]} text="3. Evaporation starts automatically" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[3.5, 1.8, -0.98]} text="4. Watch water evaporate away" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[3.5, 1.4, -0.98]} text="5. Salt crystals remain behind" fontSize={0.08} color="#2c3e50" />
 
       {/* Completion status - Above equipment */}
       {experimentStage === 'complete' && (
@@ -591,6 +772,8 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
         <meshStandardMaterial 
           color={
             experimentStage === 'setup' ? "#3498db" :
+            experimentStage === 'pour-water' ? "#9b59b6" :
+            experimentStage === 'light-burner' ? "#e74c3c" :
             experimentStage === 'heating' ? "#f39c12" :
             experimentStage === 'evaporating' ? "#e67e22" : "#27ae60"
           } 
@@ -601,6 +784,19 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
         <planeGeometry args={[7.5, 0.3]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
+
+      <Text3D 
+        position={[0, 4.5, 0.01]} 
+        text={
+          experimentStage === 'setup' ? "CLICK WATER BEAKER TO POUR SALT SOLUTION" :
+          experimentStage === 'pour-water' ? "POURING SALT SOLUTION..." :
+          experimentStage === 'light-burner' ? "CLICK BUNSEN BURNER TO START HEATING" :
+          experimentStage === 'heating' ? "HEATING - EVAPORATION IN PROGRESS..." : 
+          experimentStage === 'evaporating' ? "WATER EVAPORATING..." : "EVAPORATION COMPLETE!"
+        }
+        fontSize={0.08} 
+        color="#2c3e50" 
+      />
 
       {/* Reset button - positioned on table surface */}
       <mesh 
@@ -623,17 +819,24 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       />
 
       {/* Step indicators with arrows */}
-      {experimentStage === 'setup' && !isLit && (
+      {experimentStage === 'setup' && (
+        <mesh position={[-2, 2.5, 0]} rotation={[0, 0, -Math.PI/4]}>
+          <coneGeometry args={[0.1, 0.3, 4]} />
+          <meshStandardMaterial color="#3498db" />
+        </mesh>
+      )}
+
+      {experimentStage === 'light-burner' && (
         <mesh position={[0.5, 1.7, 0]} rotation={[0, 0, -Math.PI/4]}>
           <coneGeometry args={[0.1, 0.3, 4]} />
           <meshStandardMaterial color="#e74c3c" />
         </mesh>
       )}
 
-      {experimentStage === 'setup' && isLit && (
-        <mesh position={[0.5, 2.6, 0]} rotation={[0, 0, -Math.PI/4]}>
+      {experimentStage === 'pour-water' && (
+        <mesh position={[-1, 2.6, 0]} rotation={[0, 0, -Math.PI/6]}>
           <coneGeometry args={[0.1, 0.3, 4]} />
-          <meshStandardMaterial color="#f39c12" />
+          <meshStandardMaterial color="#9b59b6" />
         </mesh>
       )}
     </group>
