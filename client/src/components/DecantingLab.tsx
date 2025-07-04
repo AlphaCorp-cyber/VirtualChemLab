@@ -258,7 +258,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
     <group>
       {/* Equipment positioned on the existing white lab table */}
       <DecantingBeaker 
-        position={[-2.5, 1.55, -1]} 
+        position={[-2.5, 1.9, -1]} 
         isSelected={false}
         onSelect={() => {
           if (experimentStage === 'setup') {
@@ -274,7 +274,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       />
 
       <ReceivingBeaker 
-        position={[2.5, 1.55, -1]} 
+        position={[2.5, 1.9, -1]} 
         isSelected={selectedTool === 'receiving'}
         onSelect={() => setSelectedTool('receiving')}
         liquidLevel={receivingLiquidLevel}
