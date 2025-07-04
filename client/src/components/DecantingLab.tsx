@@ -274,7 +274,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       />
 
       <ReceivingBeaker 
-        position={[2.5, 1.9, -1]} 
+        position={[0.5, 1.9, -1]} 
         isSelected={selectedTool === 'receiving'}
         onSelect={() => setSelectedTool('receiving')}
         liquidLevel={receivingLiquidLevel}
@@ -283,7 +283,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       {/* Liquid stream animation */}
       <LiquidStream 
         startPos={[-1.5, 2.2, -1]}
-        endPos={[2.2, 1.9, -1]}
+        endPos={[0.2, 1.9, -1]}
         isVisible={showStream}
       />
 
@@ -294,11 +294,11 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       </mesh>
       <Text3D position={[-2.5, 0.8, -0.98]} text="Source Beaker" fontSize={0.06} color="#ffffff" />
 
-      <mesh position={[2.5, 0.8, -1]}>
+      <mesh position={[0.5, 0.8, -1]}>
         <planeGeometry args={[1.8, 0.25]} />
         <meshStandardMaterial color="#27ae60" />
       </mesh>
-      <Text3D position={[2.5, 0.8, -0.98]} text="Receiving Beaker" fontSize={0.06} color="#ffffff" />
+      <Text3D position={[0.5, 0.8, -0.98]} text="Receiving Beaker" fontSize={0.06} color="#ffffff" />
 
       {/* Instructions Panel */}
       <mesh position={[0, 3, -1]}>
@@ -351,14 +351,14 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       {experimentStage === 'complete' && (
         <>
           <mesh 
-            position={[4.5, 1.8, -1]} 
+            position={[3, 1.8, -1]} 
             onClick={resetExperiment}
             userData={{ interactable: true }}
           >
             <boxGeometry args={[1, 0.3, 0.1]} />
             <meshStandardMaterial color="#e74c3c" />
           </mesh>
-          <Text3D position={[4.5, 1.8, -0.98]} text="RESET" fontSize={0.06} color="#ffffff" />
+          <Text3D position={[3, 1.8, -0.98]} text="RESET" fontSize={0.06} color="#ffffff" />
         </>
       )}
 
