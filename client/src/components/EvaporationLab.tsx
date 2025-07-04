@@ -647,7 +647,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       <TripodStand position={[0, 1.55, -1]} />
       
       <EvaporatingDish 
-        position={[0, 2.0, -1]} 
+        position={[0, 2.05, -1]} 
         isSelected={false}
         onSelect={() => {}}
         liquidLevel={liquidLevel}
