@@ -309,7 +309,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
   const [showSmoke, setShowSmoke] = useState(false);
 
   const handleHeating = () => {
-    if (selectedTool === 'dish' && isLit && experimentStage === 'setup') {
+    if (isLit && experimentStage === 'setup') {
       setExperimentStage('heating');
       setShowSmoke(true);
       setCountdown(10);
@@ -384,13 +384,10 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       
       <EvaporatingDish 
         position={[0, 2.0, -1]} 
-        isSelected={selectedTool === 'dish'}
+        isSelected={false}
         onSelect={() => {
           if (experimentStage === 'setup' && isLit) {
-            setSelectedTool('dish');
             handleHeating();
-          } else if (experimentStage === 'setup') {
-            setSelectedTool('dish');
           }
         }}
         liquidLevel={liquidLevel}
