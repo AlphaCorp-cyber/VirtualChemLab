@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { LabelText, InstructionText, Text3D } from './Text3D';
 
 interface EvaporationLabProps {
   onExperimentComplete?: (result: string) => void;
@@ -181,17 +182,11 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
 
   return (
     <group>
-      {/* Lab bench - positioned at table height */}
-      <mesh position={[0, 1.5, 0]}>
-        <boxGeometry args={[12, 0.1, 6]} />
-        <meshStandardMaterial color="#8b4513" />
-      </mesh>
-
-      {/* Equipment positioned on the table */}
-      <TripodStand position={[0, 1.8, 0]} />
+      {/* Equipment positioned on the existing white lab table */}
+      <TripodStand position={[0, 1.55, -1]} />
       
       <EvaporatingDish 
-        position={[0, 2.35, 0]} 
+        position={[0, 2.0, -1]} 
         isSelected={selectedTool === 'dish'}
         onSelect={() => {
           setSelectedTool('dish');
@@ -202,38 +197,29 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       />
       
       <BunsenBurner 
-        position={[0, 1.4, 0]} 
+        position={[0, 1.05, -1]} 
         isLit={isLit}
         onToggle={() => setIsLit(!isLit)}
       />
 
       {/* Equipment Labels */}
-      <mesh position={[0, 1.1, 0]}>
+      <mesh position={[0, 0.7, -1]}>
         <planeGeometry args={[1.5, 0.2]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
-      <mesh position={[0, 1.1, 0.01]}>
-        <planeGeometry args={[1.4, 0.15]} />
-        <meshStandardMaterial color="#ffffff" />
-      </mesh>
+      <LabelText position={[0, 0.7, -0.98]} text="Bunsen Burner" color="#ffffff" />
 
-      <mesh position={[0, 2.8, 0]}>
+      <mesh position={[0, 2.4, -1]}>
         <planeGeometry args={[1.8, 0.2]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
-      <mesh position={[0, 2.8, 0.01]}>
-        <planeGeometry args={[1.7, 0.15]} />
-        <meshStandardMaterial color="#ffffff" />
-      </mesh>
+      <LabelText position={[0, 2.4, -0.98]} text="Evaporating Dish" color="#ffffff" />
 
-      <mesh position={[0, 3.2, 0]}>
+      <mesh position={[0, 2.8, -1]}>
         <planeGeometry args={[1.5, 0.2]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
-      <mesh position={[0, 3.2, 0.01]}>
-        <planeGeometry args={[1.4, 0.15]} />
-        <meshStandardMaterial color="#ffffff" />
-      </mesh>
+      <LabelText position={[0, 2.8, -0.98]} text="Tripod Stand" color="#ffffff" />
 
       {/* Instructions Panel */}
       <mesh position={[3.5, 2.5, 0]}>

@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { LabelText, InstructionText, Text3D } from './Text3D';
 
 interface DecantingLabProps {
   onExperimentComplete?: (result: string) => void;
@@ -193,15 +194,9 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
 
   return (
     <group>
-      {/* Lab bench - positioned at table height */}
-      <mesh position={[0, 1.5, 0]}>
-        <boxGeometry args={[12, 0.1, 6]} />
-        <meshStandardMaterial color="#8b4513" />
-      </mesh>
-
-      {/* Equipment positioned on the table */}
+      {/* Equipment positioned on the existing white lab table */}
       <DecantingBeaker 
-        position={[-2.5, 1.9, 0]} 
+        position={[-2.5, 1.55, -1]} 
         isSelected={selectedTool === 'source'}
         onSelect={() => {
           setSelectedTool('source');
@@ -217,7 +212,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       />
       
       <ReceivingBeaker 
-        position={[2.5, 1.9, 0]} 
+        position={[2.5, 1.55, -1]} 
         isSelected={selectedTool === 'receiving'}
         onSelect={() => setSelectedTool('receiving')}
         liquidLevel={receivingLiquidLevel}
@@ -225,29 +220,23 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
 
       {/* Liquid stream animation */}
       <LiquidStream 
-        startPos={[-2, 2.3, 0]}
-        endPos={[2, 2.3, 0]}
+        startPos={[-2, 1.9, -1]}
+        endPos={[2, 1.9, -1]}
         isVisible={showStream}
       />
 
       {/* Equipment Labels */}
-      <mesh position={[-2.5, 1.2, 0]}>
+      <mesh position={[-2.5, 0.8, -1]}>
         <planeGeometry args={[1.8, 0.25]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
-      <mesh position={[-2.5, 1.2, 0.01]}>
-        <planeGeometry args={[1.7, 0.2]} />
-        <meshStandardMaterial color="#ffffff" />
-      </mesh>
+      <LabelText position={[-2.5, 0.8, -0.98]} text="Source Beaker" color="#ffffff" />
       
-      <mesh position={[2.5, 1.2, 0]}>
+      <mesh position={[2.5, 0.8, -1]}>
         <planeGeometry args={[1.8, 0.25]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
-      <mesh position={[2.5, 1.2, 0.01]}>
-        <planeGeometry args={[1.7, 0.2]} />
-        <meshStandardMaterial color="#ffffff" />
-      </mesh>
+      <LabelText position={[2.5, 0.8, -0.98]} text="Receiving Beaker" color="#ffffff" />
 
       {/* Instructions Panel */}
       <mesh position={[0, 3, 0]}>

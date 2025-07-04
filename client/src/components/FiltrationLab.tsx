@@ -190,28 +190,22 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
 
   return (
     <group>
-      {/* Lab bench - positioned at table height */}
-      <mesh position={[0, 1.5, 0]}>
-        <boxGeometry args={[12, 0.1, 6]} />
-        <meshStandardMaterial color="#8b4513" />
-      </mesh>
-
-      {/* Equipment positioned on the table */}
+      {/* Equipment positioned on the existing white lab table */}
       <Funnel 
-        position={[-1, 2.3, 0]} 
+        position={[-1, 1.9, -1]} 
         isSelected={selectedTool === 'funnel'}
         onSelect={() => setSelectedTool('funnel')}
       />
       
       <FilterPaper 
-        position={[-1, 2.1, 0]} 
+        position={[-1, 1.7, -1]} 
         isSelected={selectedTool === 'filter'}
         onSelect={() => setSelectedTool('filter')}
         hasResidue={hasResidue}
       />
       
       <MixtureBeaker 
-        position={[-3, 1.9, 0]} 
+        position={[-3, 1.55, -1]} 
         isSelected={selectedTool === 'mixture'}
         onSelect={() => {
           setSelectedTool('mixture');
@@ -221,30 +215,30 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
       />
       
       <FiltrateBeaker 
-        position={[-1, 1.3, 0]} 
+        position={[-1, 0.9, -1]} 
         isSelected={selectedTool === 'filtrate'}
         onSelect={() => setSelectedTool('filtrate')}
         filtrateLevel={filtrateLevel}
       />
 
       {/* Equipment Labels */}
-      <mesh position={[-3, 1.2, 0]}>
+      <mesh position={[-3, 0.8, -1]}>
         <planeGeometry args={[1.2, 0.2]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
-      <LabelText position={[-3, 1.2, 0.02]} text="Sand + Water Mixture" color="#ffffff" />
+      <LabelText position={[-3, 0.8, -0.98]} text="Sand + Water Mixture" color="#ffffff" />
 
-      <mesh position={[-1, 2.8, 0]}>
+      <mesh position={[-1, 2.4, -1]}>
         <planeGeometry args={[1.2, 0.2]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
-      <LabelText position={[-1, 2.8, 0.02]} text="Funnel + Filter Paper" color="#ffffff" />
+      <LabelText position={[-1, 2.4, -0.98]} text="Funnel + Filter Paper" color="#ffffff" />
 
-      <mesh position={[-1, 0.8, 0]}>
+      <mesh position={[-1, 0.4, -1]}>
         <planeGeometry args={[1.2, 0.2]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
-      <LabelText position={[-1, 0.8, 0.02]} text="Clear Filtrate" color="#ffffff" />
+      <LabelText position={[-1, 0.4, -0.98]} text="Clear Filtrate" color="#ffffff" />
 
       {/* Instructions Panel */}
       <mesh position={[2.5, 2.5, 0]}>
