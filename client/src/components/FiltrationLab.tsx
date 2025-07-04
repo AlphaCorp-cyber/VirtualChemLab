@@ -156,15 +156,15 @@ function MixtureBeaker({ position, isSelected, onSelect, isEmpty, isPouring }: {
       {/* Blue water and brownish sand mixture */}
       {!isEmpty && (
         <>
-          {/* Bright blue water layer - more visible blue color */}
+          {/* Brown muddy water layer - showing sand-water mixture */}
           <mesh ref={waterRef} position={[0, 0.1, 0]}>
             <cylinderGeometry args={[0.28, 0.28, 0.3]} />
             <meshStandardMaterial 
-              color="#1E90FF" 
+              color="#8B4513" 
               transparent 
-              opacity={0.95}
-              emissive="#0066CC"
-              emissiveIntensity={0.2}
+              opacity={0.85}
+              emissive="#654321"
+              emissiveIntensity={0.1}
             />
           </mesh>
           {/* Brownish sand particles at bottom */}
