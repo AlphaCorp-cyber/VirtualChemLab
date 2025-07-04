@@ -19,11 +19,12 @@ function Funnel({ position, isSelected, onSelect, hasFilterPaper, solidResidue }
 
   return (
     <group position={position}>
-      {/* Glass funnel - clear with slight transparency like in diagram */}
+      {/* Glass funnel - inverted cone (wide at top, narrow at bottom) */}
       <mesh
         ref={meshRef}
         onClick={onSelect}
         userData={{ interactable: true }}
+        rotation={[Math.PI, 0, 0]}
       >
         <coneGeometry args={[0.3, 0.6, 32]} />
         <meshStandardMaterial 
@@ -36,7 +37,7 @@ function Funnel({ position, isSelected, onSelect, hasFilterPaper, solidResidue }
       </mesh>
       
       {/* Funnel outline - black line like in diagram */}
-      <mesh position={[0, 0, 0]}>
+      <mesh position={[0, 0, 0]} rotation={[Math.PI, 0, 0]}>
         <coneGeometry args={[0.305, 0.605, 32]} />
         <meshStandardMaterial 
           color="#000000" 
@@ -68,7 +69,7 @@ function Funnel({ position, isSelected, onSelect, hasFilterPaper, solidResidue }
       
       {/* Filter paper inside funnel - white like in diagram */}
       {hasFilterPaper && (
-        <mesh position={[0, 0.1, 0]}>
+        <mesh position={[0, -0.1, 0]} rotation={[Math.PI, 0, 0]}>
           <coneGeometry args={[0.25, 0.4, 32]} />
           <meshStandardMaterial 
             color="#ffffff" 
@@ -81,7 +82,7 @@ function Funnel({ position, isSelected, onSelect, hasFilterPaper, solidResidue }
       
       {/* Solid residue on filter paper - brownish sand color */}
       {solidResidue && hasFilterPaper && (
-        <mesh position={[0, 0.15, 0]}>
+        <mesh position={[0, -0.05, 0]}>
           <cylinderGeometry args={[0.15, 0.15, 0.05, 16]} />
           <meshStandardMaterial color="#D2691E" />
         </mesh>
@@ -103,13 +104,18 @@ function MixtureBeaker({ position, isSelected, onSelect, isEmpty, isPouring }: {
 
   useFrame((state) => {
     if (beakerRef.current && isPouring) {
-      // Tilt the beaker when pouring
-      beakerRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 2) * 0.3 + 0.5;
-      beakerRef.current.position.y = position[1] + 0.2 + Math.sin(state.clock.elapsedTime * 1.5) * 0.1;
+      // Float and tilt the beaker towards the funnel setup
+      const time = state.clock.elapsedTime * 2;
+      beakerRef.current.rotation.z = Math.sin(time) * 0.2 + 0.4;
+      beakerRef.current.position.y = position[1] + 0.3 + Math.sin(time * 1.5) * 0.1;
+      beakerRef.current.position.x = position[0] + Math.sin(time * 0.8) * 0.2 + 0.5;
+      beakerRef.current.position.z = position[2] + Math.sin(time * 1.2) * 0.1;
     } else if (beakerRef.current) {
       // Return to normal position
       beakerRef.current.rotation.z = 0;
       beakerRef.current.position.y = position[1];
+      beakerRef.current.position.x = position[0];
+      beakerRef.current.position.z = position[2];
     }
   });
 
@@ -142,19 +148,19 @@ function MixtureBeaker({ position, isSelected, onSelect, isEmpty, isPouring }: {
       {/* Blue water and brownish sand mixture */}
       {!isEmpty && (
         <>
-          {/* Blue water layer - bright blue like in diagram */}
+          {/* Bright cyan-blue water layer like in diagram */}
           <mesh ref={waterRef} position={[0, 0.1, 0]}>
             <cylinderGeometry args={[0.28, 0.28, 0.3]} />
             <meshStandardMaterial 
-              color="#00BFFF" 
+              color="#00CCFF" 
               transparent 
-              opacity={0.8}
+              opacity={0.9}
             />
           </mesh>
           {/* Brownish sand particles at bottom */}
           <mesh ref={sandRef} position={[0, -0.1, 0]}>
             <cylinderGeometry args={[0.28, 0.28, 0.1]} />
-            <meshStandardMaterial color="#D2691E" />
+            <meshStandardMaterial color="#CD853F" />
           </mesh>
         </>
       )}
@@ -201,9 +207,9 @@ function FiltrateBeaker({ position, isSelected, onSelect, filtrateLevel }: {
         <mesh ref={filtrateRef} position={[0, -0.3 + filtrateLevel * 0.25, 0]}>
           <cylinderGeometry args={[0.28, 0.28, filtrateLevel * 0.5, 32]} />
           <meshStandardMaterial 
-            color="#00BFFF" 
+            color="#00CCFF" 
             transparent 
-            opacity={0.8}
+            opacity={0.9}
           />
         </mesh>
       )}
