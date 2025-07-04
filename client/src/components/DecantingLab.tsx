@@ -7,35 +7,53 @@ interface DecantingLabProps {
   onExperimentComplete?: (result: string) => void;
 }
 
-function DecantingBeaker({ position, isSelected, onSelect, liquidLevel, sedimentLevel, isPouring }: {
+function DecantingBeaker({ position, isSelected, onSelect, liquidLevel, sedimentLevel, isPouring, wineColor }: {
   position: [number, number, number];
   isSelected: boolean;
   onSelect: () => void;
   liquidLevel: number;
   sedimentLevel: number;
   isPouring: boolean;
+  wineColor: string;
 }) {
   const beakerRef = useRef<THREE.Group>(null);
 
   useFrame(() => {
     if (beakerRef.current && isPouring) {
-      beakerRef.current.rotation.z = Math.sin(Date.now() * 0.005) * 0.3;
+      // Realistic pouring angle - tilt beaker towards receiving beaker
+      beakerRef.current.rotation.z = -0.4; // 23 degree tilt
+      beakerRef.current.position.x = position[0] + 0.8; // Move towards receiving beaker
+      beakerRef.current.position.y = position[1] + 0.2; // Slight lift
     } else if (beakerRef.current && !isPouring) {
       beakerRef.current.rotation.z = 0;
+      beakerRef.current.position.x = position[0];
+      beakerRef.current.position.y = position[1];
     }
   });
 
   return (
     <group ref={beakerRef} position={position}>
+      {/* Glass beaker - clear glass */}
       <mesh
         onClick={onSelect}
         userData={{ interactable: true }}
       >
         <cylinderGeometry args={[0.3, 0.3, 0.8]} />
         <meshStandardMaterial 
-          color="#ecf0f1" 
+          color="#ffffff" 
           transparent 
+          opacity={0.2}
+        />
+      </mesh>
+
+      {/* Beaker outline */}
+      <mesh>
+        <cylinderGeometry args={[0.305, 0.305, 0.805]} />
+        <meshStandardMaterial 
+          color="#000000" 
+          transparent
           opacity={0.8}
+          side={THREE.BackSide}
         />
       </mesh>
 
@@ -43,7 +61,7 @@ function DecantingBeaker({ position, isSelected, onSelect, liquidLevel, sediment
       {sedimentLevel > 0 && (
         <mesh position={[0, -0.3, 0]}>
           <cylinderGeometry args={[0.28, 0.28, sedimentLevel]} />
-          <meshStandardMaterial color="#8B0000" />
+          <meshStandardMaterial color="#722F37" />
         </mesh>
       )}
 
@@ -52,9 +70,11 @@ function DecantingBeaker({ position, isSelected, onSelect, liquidLevel, sediment
         <mesh position={[0, -0.3 + sedimentLevel + liquidLevel / 2, 0]}>
           <cylinderGeometry args={[0.28, 0.28, liquidLevel]} />
           <meshStandardMaterial 
-            color="#722F37" 
+            color={wineColor} 
             transparent 
             opacity={0.9}
+            emissive={wineColor}
+            emissiveIntensity={0.1}
           />
         </mesh>
       )}
@@ -102,31 +122,38 @@ function LiquidStream({ startPos, endPos, isVisible }: {
   endPos: [number, number, number];
   isVisible: boolean;
 }) {
-  const streamRef = useRef<THREE.Mesh>(null);
+  const streamRef = useRef<THREE.Group>(null);
 
-  useFrame(() => {
+  useFrame((state) => {
     if (streamRef.current && isVisible) {
-      streamRef.current.rotation.z += 0.1;
+      // Create flowing wine effect
+      const time = state.clock.elapsedTime;
+      streamRef.current.children.forEach((droplet, index) => {
+        const mesh = droplet as THREE.Mesh;
+        mesh.position.y = startPos[1] - (time * 2 + index * 0.2) % 1.0;
+        mesh.visible = mesh.position.y > endPos[1];
+      });
     }
   });
 
   if (!isVisible) return null;
 
-  const midPoint: [number, number, number] = [
-    (startPos[0] + endPos[0]) / 2,
-    (startPos[1] + endPos[1]) / 2,
-    (startPos[2] + endPos[2]) / 2
-  ];
-
   return (
-    <mesh ref={streamRef} position={midPoint}>
-      <cylinderGeometry args={[0.02, 0.02, 1.5]} />
-      <meshStandardMaterial 
-        color="#CD5C5C" 
-        transparent 
-        opacity={0.8}
-      />
-    </mesh>
+    <group ref={streamRef}>
+      {/* Multiple droplets to create realistic wine stream */}
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <mesh key={i} position={[startPos[0] + 0.5, startPos[1] - i * 0.15, startPos[2]]}>
+          <sphereGeometry args={[0.025, 8, 8]} />
+          <meshStandardMaterial 
+            color="#DC143C" 
+            transparent 
+            opacity={0.9}
+            emissive="#8B0000"
+            emissiveIntensity={0.1}
+          />
+        </mesh>
+      ))}
+    </group>
   );
 }
 
@@ -138,23 +165,50 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
   const [receivingLiquidLevel, setReceivingLiquidLevel] = useState(0);
   const [isPouring, setIsPouring] = useState(false);
   const [showStream, setShowStream] = useState(false);
+  const [wineColor, setWineColor] = useState('#8B0000'); // Start with deep red wine color
 
   const handleSettling = () => {
     if (experimentStage === 'setup') {
       setExperimentStage('settling');
 
-      // Animate sediment settling
+      // Animate sediment settling with realistic color changes
       let currentSediment = 0;
       const settlingInterval = setInterval(() => {
-        currentSediment += 0.03;
+        currentSediment += 0.02;
         setSedimentLevel(currentSediment);
+        
+        // Gradually change wine color from deep red to clearer as sediment settles
+        const settlingProgress = currentSediment / 0.15;
+        const newColor = interpolateColor('#8B0000', '#DC143C', settlingProgress);
+        setWineColor(newColor);
         
         if (currentSediment >= 0.15) {
           clearInterval(settlingInterval);
           setExperimentStage('decanting');
+          setWineColor('#DC143C'); // Final clear wine color
         }
-      }, 200);
+      }, 300); // Slower, more realistic settling
     }
+  };
+
+  // Helper function to interpolate between colors
+  const interpolateColor = (color1: string, color2: string, factor: number) => {
+    const c1 = parseInt(color1.substring(1), 16);
+    const c2 = parseInt(color2.substring(1), 16);
+    
+    const r1 = (c1 >> 16) & 0xff;
+    const g1 = (c1 >> 8) & 0xff;
+    const b1 = c1 & 0xff;
+    
+    const r2 = (c2 >> 16) & 0xff;
+    const g2 = (c2 >> 8) & 0xff;
+    const b2 = c2 & 0xff;
+    
+    const r = Math.round(r1 + (r2 - r1) * factor);
+    const g = Math.round(g1 + (g2 - g1) * factor);
+    const b = Math.round(b1 + (b2 - b1) * factor);
+    
+    return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
   };
 
   const handleDecanting = () => {
@@ -162,11 +216,11 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       setIsPouring(true);
       setShowStream(true);
 
-      // Animate the decanting process
+      // Animate the decanting process - slower and more realistic
       const decantingInterval = setInterval(() => {
         setSourceLiquidLevel(prev => {
-          const newLevel = prev - 0.05;
-          if (newLevel <= 0) {
+          const newLevel = prev - 0.03; // Slower pouring
+          if (newLevel <= 0.05) { // Leave some liquid with sediment
             setIsPouring(false);
             setShowStream(false);
             setExperimentStage('complete');
@@ -174,18 +228,18 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
 
             if (onExperimentComplete) {
               onExperimentComplete(
-                "Decanting completed successfully! The clear liquid has been carefully poured off, " +
-                "leaving the sediment (sand) behind in the original beaker. This separation technique " +
-                "is used to separate liquids from settled solids."
+                "Decanting completed successfully! The clear wine has been carefully poured off, " +
+                "leaving the dark sediment behind in the original beaker. This separation technique " +
+                "is used to separate clear liquids from settled solids."
               );
             }
-            return 0;
+            return 0.05; // Keep small amount with sediment
           }
           return newLevel;
         });
 
-        setReceivingLiquidLevel(prev => prev + 0.05);
-      }, 300);
+        setReceivingLiquidLevel(prev => prev + 0.03);
+      }, 400); // Slower pouring animation
     }
   };
 
@@ -197,6 +251,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
     setIsPouring(false);
     setShowStream(false);
     setSelectedTool('');
+    setWineColor('#8B0000'); // Reset to initial deep red wine color
   };
 
   return (
@@ -204,7 +259,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       {/* Equipment positioned on the existing white lab table */}
       <DecantingBeaker 
         position={[-2.5, 1.55, -1]} 
-        isSelected={selectedTool === 'source'}
+        isSelected={false}
         onSelect={() => {
           if (experimentStage === 'setup') {
             handleSettling();
@@ -215,6 +270,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         liquidLevel={sourceLiquidLevel}
         sedimentLevel={sourceSedimentLevel}
         isPouring={isPouring}
+        wineColor={wineColor}
       />
 
       <ReceivingBeaker 
@@ -226,8 +282,8 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
 
       {/* Liquid stream animation */}
       <LiquidStream 
-        startPos={[-2, 1.9, -1]}
-        endPos={[2, 1.9, -1]}
+        startPos={[-1.5, 2.2, -1]}
+        endPos={[2.2, 1.9, -1]}
         isVisible={showStream}
       />
 
@@ -259,10 +315,10 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       <Text3D position={[0, 3.7, -0.98]} text="DECANTING LAB" fontSize={0.12} color="#9b59b6" />
 
       {/* Instructions */}
-      <Text3D position={[0, 3.3, -0.98]} text="1. Click source beaker to start settling" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[0, 2.9, -0.98]} text="2. Wait for sediment to settle" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[0, 2.5, -0.98]} text="3. Click again to pour carefully" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[0, 2.1, -0.98]} text="4. Clear liquid separates from sand" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[0, 3.3, -0.98]} text="1. Click wine beaker to start settling" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[0, 2.9, -0.98]} text="2. Watch sediment settle to bottom" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[0, 2.5, -0.98]} text="3. Click again to pour wine carefully" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[0, 2.1, -0.98]} text="4. Clear wine separates from sediment" fontSize={0.08} color="#2c3e50" />
 
       {/* Process indicator */}
       <mesh position={[0, 4.5, 0]}>
@@ -293,14 +349,17 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
 
       {/* Reset button */}
       {experimentStage === 'complete' && (
-        <mesh 
-          position={[4.5, 1.8, 0]} 
-          onClick={resetExperiment}
-          userData={{ interactable: true }}
-        >
-          <boxGeometry args={[1, 0.3, 0.1]} />
-          <meshStandardMaterial color="#e74c3c" />
-        </mesh>
+        <>
+          <mesh 
+            position={[4.5, 1.8, -1]} 
+            onClick={resetExperiment}
+            userData={{ interactable: true }}
+          >
+            <boxGeometry args={[1, 0.3, 0.1]} />
+            <meshStandardMaterial color="#e74c3c" />
+          </mesh>
+          <Text3D position={[4.5, 1.8, -0.98]} text="RESET" fontSize={0.06} color="#ffffff" />
+        </>
       )}
 
       {/* Step indicators with arrows */}
