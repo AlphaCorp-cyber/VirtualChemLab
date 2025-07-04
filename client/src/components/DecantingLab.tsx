@@ -62,9 +62,11 @@ function DecantingBeaker({ position, isSelected, onSelect, liquidLevel, sediment
         <mesh position={[0, -0.3 + sedimentLevel / 2, 0]}>
           <cylinderGeometry args={[0.28, 0.28, sedimentLevel]} />
           <meshStandardMaterial 
-            color="#4A1A1A" 
-            roughness={0.8}
-            metalness={0.1}
+            color="#2D0A0A" 
+            roughness={0.9}
+            metalness={0.05}
+            emissive="#1A0505"
+            emissiveIntensity={0.1}
           />
         </mesh>
       )}
@@ -88,11 +90,11 @@ function DecantingBeaker({ position, isSelected, onSelect, liquidLevel, sediment
           <meshStandardMaterial 
             color={wineColor} 
             transparent 
-            opacity={0.9}
+            opacity={0.85}
             emissive={wineColor}
-            emissiveIntensity={0.2}
-            roughness={0.05}
-            metalness={0.02}
+            emissiveIntensity={0.15}
+            roughness={0.1}
+            metalness={0.05}
           />
         </mesh>
       )}
@@ -242,9 +244,9 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
           clearInterval(settlingInterval);
           // Ensure final state: sediment (0.15) + liquid (0.35) = 0.5 total
           setTimeout(() => {
-            setWineColor('#DC143C'); // Final clearer wine color - more visible
+            setWineColor('#E74C3C'); // Brighter, more visible wine color
             setSedimentLevel(0.15); // Final sediment level
-            setSourceLiquidLevel(0.4); // Increase liquid level to be more visible
+            setSourceLiquidLevel(0.35); // Proper liquid level (0.5 - 0.15 = 0.35)
             setExperimentStage('decanting');
           }, 100);
         }
