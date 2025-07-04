@@ -386,8 +386,12 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
         position={[0, 2.0, -1]} 
         isSelected={selectedTool === 'dish'}
         onSelect={() => {
-          setSelectedTool('dish');
-          handleHeating();
+          if (experimentStage === 'setup' && isLit) {
+            setSelectedTool('dish');
+            handleHeating();
+          } else if (experimentStage === 'setup') {
+            setSelectedTool('dish');
+          }
         }}
         liquidLevel={liquidLevel}
         saltCrystals={saltCrystals}
