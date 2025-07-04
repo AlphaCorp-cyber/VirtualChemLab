@@ -27,10 +27,10 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
         />
       </mesh>
       
-      {/* Inner black surface */}
+      {/* Inner surface - dark when crystals are present, black otherwise */}
       <mesh position={[0, 0.045, 0]}>
         <cylinderGeometry args={[0.38, 0.38, 0.01]} />
-        <meshStandardMaterial color="#000000" />
+        <meshStandardMaterial color={saltCrystals ? "#1a1a1a" : "#000000"} />
       </mesh>
       
       {/* Salt solution - bluish water with animated level */}
