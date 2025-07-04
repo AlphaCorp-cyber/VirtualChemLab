@@ -153,24 +153,19 @@ function MixtureBeaker({ position, isSelected, onSelect, isEmpty, isPouring }: {
         />
       </mesh>
       
-      {/* Blue water and brownish sand mixture */}
+      {/* Brown muddy sand-water mixture */}
       {!isEmpty && (
         <>
-          {/* Brown muddy water layer - showing sand-water mixture */}
-          <mesh ref={waterRef} position={[0, 0.1, 0]}>
-            <cylinderGeometry args={[0.28, 0.28, 0.3]} />
+          {/* Brown muddy mixture filling entire beaker */}
+          <mesh ref={waterRef} position={[0, 0, 0]}>
+            <cylinderGeometry args={[0.28, 0.28, 0.5]} />
             <meshStandardMaterial 
               color="#8B4513" 
               transparent 
-              opacity={0.85}
+              opacity={0.9}
               emissive="#654321"
-              emissiveIntensity={0.1}
+              emissiveIntensity={0.15}
             />
-          </mesh>
-          {/* Brownish sand particles at bottom */}
-          <mesh ref={sandRef} position={[0, -0.1, 0]}>
-            <cylinderGeometry args={[0.28, 0.28, 0.1]} />
-            <meshStandardMaterial color="#CD853F" />
           </mesh>
         </>
       )}
@@ -278,7 +273,7 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
   const [showStream, setShowStream] = useState(false);
 
   const handleFiltration = () => {
-    if (selectedTool === 'mixture' && experimentStage === 'setup') {
+    if (experimentStage === 'setup') {
       setExperimentStage('filtering');
       setIsPouring(true);
       setShowStream(true);
@@ -340,11 +335,8 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
       
       <MixtureBeaker 
         position={[-3, 1.75, -0.5]} 
-        isSelected={selectedTool === 'mixture'}
-        onSelect={() => {
-          setSelectedTool('mixture');
-          handleFiltration();
-        }}
+        isSelected={false}
+        onSelect={handleFiltration}
         isEmpty={mixtureEmpty}
         isPouring={isPouring}
       />
