@@ -47,16 +47,61 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
         </mesh>
       )}
       
-      {/* Salt crystals - highly visible on black background */}
+      {/* Salt crystals - highly visible white crystals with multiple layers */}
       {saltCrystals && (
-        <mesh position={[0, 0.055, 0]}>
-          <cylinderGeometry args={[0.35, 0.35, 0.015]} />
-          <meshStandardMaterial 
-            color="#ffffff" 
-            emissive="#ffffff"
-            emissiveIntensity={0.3}
-          />
-        </mesh>
+        <group>
+          {/* Main crystal layer */}
+          <mesh position={[0, 0.055, 0]}>
+            <cylinderGeometry args={[0.35, 0.35, 0.02]} />
+            <meshStandardMaterial 
+              color="#ffffff" 
+              emissive="#ffffff"
+              emissiveIntensity={0.6}
+              roughness={0.1}
+              metalness={0.1}
+            />
+          </mesh>
+          
+          {/* Secondary crystal layer for depth */}
+          <mesh position={[0, 0.058, 0]}>
+            <cylinderGeometry args={[0.32, 0.32, 0.015]} />
+            <meshStandardMaterial 
+              color="#f8f9fa" 
+              emissive="#f8f9fa"
+              emissiveIntensity={0.4}
+              roughness={0.2}
+            />
+          </mesh>
+          
+          {/* Crystal texture details */}
+          {Array.from({ length: 12 }, (_, i) => (
+            <mesh 
+              key={i}
+              position={[
+                Math.cos(i * Math.PI / 6) * 0.25,
+                0.06,
+                Math.sin(i * Math.PI / 6) * 0.25
+              ]}
+            >
+              <boxGeometry args={[0.03, 0.01, 0.03]} />
+              <meshStandardMaterial 
+                color="#ffffff"
+                emissive="#ffffff"
+                emissiveIntensity={0.5}
+              />
+            </mesh>
+          ))}
+          
+          {/* Bright center highlight */}
+          <mesh position={[0, 0.062, 0]}>
+            <cylinderGeometry args={[0.15, 0.15, 0.008]} />
+            <meshStandardMaterial 
+              color="#ffffff" 
+              emissive="#ffffff"
+              emissiveIntensity={0.8}
+            />
+          </mesh>
+        </group>
       )}
     </group>
   );
