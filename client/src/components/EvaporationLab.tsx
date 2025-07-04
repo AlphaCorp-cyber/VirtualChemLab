@@ -47,58 +47,97 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
         </mesh>
       )}
       
-      {/* Salt crystals - highly visible white crystals with multiple layers */}
+      {/* Salt crystals - highly visible sparkly white crystals with multiple layers */}
       {saltCrystals && (
         <group>
-          {/* Main crystal layer */}
+          {/* Bright reflective base layer - very visible */}
           <mesh position={[0, 0.055, 0]}>
-            <cylinderGeometry args={[0.35, 0.35, 0.02]} />
+            <cylinderGeometry args={[0.35, 0.35, 0.025]} />
             <meshStandardMaterial 
               color="#ffffff" 
               emissive="#ffffff"
-              emissiveIntensity={0.6}
-              roughness={0.1}
-              metalness={0.1}
+              emissiveIntensity={1.0}
+              roughness={0.0}
+              metalness={0.8}
             />
           </mesh>
           
-          {/* Secondary crystal layer for depth */}
-          <mesh position={[0, 0.058, 0]}>
-            <cylinderGeometry args={[0.32, 0.32, 0.015]} />
+          {/* Sparkly crystal layer */}
+          <mesh position={[0, 0.06, 0]}>
+            <cylinderGeometry args={[0.32, 0.32, 0.02]} />
             <meshStandardMaterial 
-              color="#f8f9fa" 
-              emissive="#f8f9fa"
-              emissiveIntensity={0.4}
-              roughness={0.2}
+              color="#f0f8ff" 
+              emissive="#f0f8ff"
+              emissiveIntensity={0.8}
+              roughness={0.1}
+              metalness={0.5}
             />
           </mesh>
           
-          {/* Crystal texture details */}
-          {Array.from({ length: 12 }, (_, i) => (
+          {/* Individual crystal formations - more visible */}
+          {Array.from({ length: 16 }, (_, i) => (
             <mesh 
               key={i}
               position={[
-                Math.cos(i * Math.PI / 6) * 0.25,
-                0.06,
-                Math.sin(i * Math.PI / 6) * 0.25
+                Math.cos(i * Math.PI / 8) * (0.15 + Math.random() * 0.15),
+                0.065 + Math.random() * 0.01,
+                Math.sin(i * Math.PI / 8) * (0.15 + Math.random() * 0.15)
               ]}
+              rotation={[Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI]}
             >
-              <boxGeometry args={[0.03, 0.01, 0.03]} />
+              <boxGeometry args={[0.04, 0.015, 0.04]} />
               <meshStandardMaterial 
                 color="#ffffff"
                 emissive="#ffffff"
-                emissiveIntensity={0.5}
+                emissiveIntensity={0.9}
+                roughness={0.0}
+                metalness={0.7}
               />
             </mesh>
           ))}
           
-          {/* Bright center highlight */}
-          <mesh position={[0, 0.062, 0]}>
-            <cylinderGeometry args={[0.15, 0.15, 0.008]} />
+          {/* Large center crystal highlight */}
+          <mesh position={[0, 0.07, 0]}>
+            <cylinderGeometry args={[0.12, 0.12, 0.015]} />
             <meshStandardMaterial 
               color="#ffffff" 
               emissive="#ffffff"
-              emissiveIntensity={0.8}
+              emissiveIntensity={1.2}
+              roughness={0.0}
+              metalness={1.0}
+            />
+          </mesh>
+          
+          {/* Bright edge crystals for extra visibility */}
+          {Array.from({ length: 8 }, (_, i) => (
+            <mesh 
+              key={`edge-${i}`}
+              position={[
+                Math.cos(i * Math.PI / 4) * 0.3,
+                0.068,
+                Math.sin(i * Math.PI / 4) * 0.3
+              ]}
+            >
+              <coneGeometry args={[0.02, 0.025, 6]} />
+              <meshStandardMaterial 
+                color="#ffffff"
+                emissive="#ffffff"
+                emissiveIntensity={1.0}
+                roughness={0.0}
+                metalness={0.9}
+              />
+            </mesh>
+          ))}
+          
+          {/* Glowing outline for maximum visibility */}
+          <mesh position={[0, 0.055, 0]}>
+            <cylinderGeometry args={[0.36, 0.36, 0.001]} />
+            <meshStandardMaterial 
+              color="#ffffff" 
+              emissive="#ffffff"
+              emissiveIntensity={1.5}
+              transparent
+              opacity={0.8}
             />
           </mesh>
         </group>
@@ -318,6 +357,28 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
 
   return (
     <group>
+      {/* Enhanced lighting for crystal visibility */}
+      <ambientLight intensity={0.8} color="#ffffff" />
+      <directionalLight
+        position={[2, 5, 2]}
+        intensity={1.5}
+        color="#ffffff"
+        castShadow
+      />
+      
+      {/* Bright spotlight for salt crystals when visible */}
+      {saltCrystals && (
+        <spotLight
+          position={[0, 3, -1]}
+          angle={Math.PI / 6}
+          penumbra={0.2}
+          intensity={2.0}
+          color="#ffffff"
+          target-position={[0, 2.0, -1]}
+          castShadow
+        />
+      )}
+
       {/* Equipment positioned on the existing white lab table */}
       <TripodStand position={[0, 1.55, -1]} />
       
