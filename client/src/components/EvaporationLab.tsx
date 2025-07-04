@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { LabelText, InstructionText, Text3D } from './Text3D';
@@ -65,14 +65,14 @@ function BunsenBurner({ position, isLit, onToggle }: {
 
   return (
     <group position={position}>
-      {/* Burner base */}
+      {/* Burner base - made taller to sit on table */}
       <mesh>
-        <cylinderGeometry args={[0.15, 0.15, 0.3]} />
+        <cylinderGeometry args={[0.15, 0.15, 0.4]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
       
       {/* Burner top */}
-      <mesh position={[0, 0.2, 0]}>
+      <mesh position={[0, 0.25, 0]}>
         <cylinderGeometry args={[0.1, 0.1, 0.05]} />
         <meshStandardMaterial color="#34495e" />
       </mesh>
@@ -81,7 +81,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
       {isLit && (
         <mesh 
           ref={flameRef}
-          position={[0, 0.4, 0]}
+          position={[0, 0.5, 0]}
           onClick={onToggle}
           userData={{ interactable: true }}
         >
@@ -137,24 +137,86 @@ function TripodStand({ position }: {
   );
 }
 
+function SmokeParticles({ position, isActive }: {
+  position: [number, number, number];
+  isActive: boolean;
+}) {
+  const smokeRef = useRef<THREE.Group>(null);
+  const particlesRef = useRef<THREE.Mesh[]>([]);
+
+  useFrame(() => {
+    if (smokeRef.current && isActive) {
+      particlesRef.current.forEach((particle, index) => {
+        if (particle) {
+          particle.position.y += 0.02;
+          particle.position.x += Math.sin(Date.now() * 0.001 + index) * 0.005;
+          particle.position.z += Math.cos(Date.now() * 0.001 + index) * 0.005;
+          particle.scale.setScalar(0.05 + Math.sin(Date.now() * 0.002 + index) * 0.02);
+          
+          // Reset particle if it goes too high
+          if (particle.position.y > 1) {
+            particle.position.y = 0;
+            particle.position.x = (Math.random() - 0.5) * 0.2;
+            particle.position.z = (Math.random() - 0.5) * 0.2;
+          }
+        }
+      });
+    }
+  });
+
+  if (!isActive) return null;
+
+  return (
+    <group ref={smokeRef} position={position}>
+      {Array.from({ length: 8 }, (_, i) => (
+        <mesh
+          key={i}
+          ref={el => {
+            if (el) particlesRef.current[i] = el;
+          }}
+          position={[
+            (Math.random() - 0.5) * 0.2,
+            Math.random() * 0.5,
+            (Math.random() - 0.5) * 0.2
+          ]}
+        >
+          <sphereGeometry args={[0.03, 8, 8]} />
+          <meshStandardMaterial 
+            color="#f0f0f0" 
+            transparent 
+            opacity={0.3}
+          />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
 export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
   const [selectedTool, setSelectedTool] = useState<string>('');
   const [experimentStage, setExperimentStage] = useState<'setup' | 'heating' | 'evaporating' | 'complete'>('setup');
   const [isLit, setIsLit] = useState(false);
   const [liquidLevel, setLiquidLevel] = useState(1);
   const [saltCrystals, setSaltCrystals] = useState(false);
+  const [countdown, setCountdown] = useState(10);
+  const [showSmoke, setShowSmoke] = useState(false);
 
   const handleHeating = () => {
     if (selectedTool === 'dish' && isLit && experimentStage === 'setup') {
       setExperimentStage('heating');
+      setShowSmoke(true);
+      setCountdown(10);
       
-      // Start evaporation process
+      // Start evaporation process with countdown
       const evaporationInterval = setInterval(() => {
-        setLiquidLevel(prev => {
-          const newLevel = prev - 0.1;
-          if (newLevel <= 0) {
+        setCountdown(prev => {
+          const newCount = prev - 1;
+          if (newCount <= 0) {
+            // Complete evaporation
             setSaltCrystals(true);
             setExperimentStage('complete');
+            setShowSmoke(false);
+            setLiquidLevel(0);
             clearInterval(evaporationInterval);
             
             if (onExperimentComplete) {
@@ -166,7 +228,10 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
             }
             return 0;
           }
-          return newLevel;
+          
+          // Gradually reduce liquid level
+          setLiquidLevel(newCount / 10);
+          return newCount;
         });
       }, 1000);
     }
@@ -178,6 +243,8 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
     setLiquidLevel(1);
     setSaltCrystals(false);
     setSelectedTool('');
+    setCountdown(10);
+    setShowSmoke(false);
   };
 
   return (
@@ -197,10 +264,42 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       />
       
       <BunsenBurner 
-        position={[0, 1.05, -1]} 
+        position={[0, 1.26, -1]} 
         isLit={isLit}
         onToggle={() => setIsLit(!isLit)}
       />
+      
+      {/* Smoke effects during heating */}
+      <SmokeParticles 
+        position={[0, 2.1, -1]} 
+        isActive={showSmoke}
+      />
+      
+      {/* Countdown timer display */}
+      {experimentStage === 'heating' && (
+        <group>
+          <mesh position={[1.5, 2.5, -1]}>
+            <planeGeometry args={[1.0, 0.4]} />
+            <meshStandardMaterial color="#34495e" />
+          </mesh>
+          <mesh position={[1.5, 2.5, -0.99]}>
+            <planeGeometry args={[0.9, 0.3]} />
+            <meshStandardMaterial color="#ffffff" />
+          </mesh>
+          <Text3D 
+            position={[1.5, 2.6, -0.98]} 
+            text="EVAPORATING" 
+            fontSize={0.06} 
+            color="#e67e22" 
+          />
+          <Text3D 
+            position={[1.5, 2.4, -0.98]} 
+            text={`${countdown}s remaining`} 
+            fontSize={0.08} 
+            color="#2c3e50" 
+          />
+        </group>
+      )}
 
       {/* Equipment Labels */}
       <mesh position={[0, 0.7, -1]}>
@@ -242,6 +341,38 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       <Text3D position={[3.5, 1.8, -0.98]} text="4. Salt crystals remain behind" fontSize={0.08} color="#2c3e50" />
       <Text3D position={[3.5, 1.4, -0.98]} text="5. Separation complete!" fontSize={0.08} color="#2c3e50" />
 
+      {/* Completion status */}
+      {experimentStage === 'complete' && (
+        <group>
+          <mesh position={[1.5, 1.2, -1]}>
+            <planeGeometry args={[1.8, 0.6]} />
+            <meshStandardMaterial color="#27ae60" />
+          </mesh>
+          <mesh position={[1.5, 1.2, -0.99]}>
+            <planeGeometry args={[1.7, 0.5]} />
+            <meshStandardMaterial color="#ffffff" />
+          </mesh>
+          <Text3D 
+            position={[1.5, 1.4, -0.98]} 
+            text="COMPLETE!" 
+            fontSize={0.08} 
+            color="#27ae60" 
+          />
+          <Text3D 
+            position={[1.5, 1.2, -0.98]} 
+            text="Salt crystals" 
+            fontSize={0.06} 
+            color="#2c3e50" 
+          />
+          <Text3D 
+            position={[1.5, 1.0, -0.98]} 
+            text="recovered!" 
+            fontSize={0.06} 
+            color="#2c3e50" 
+          />
+        </group>
+      )}
+
       {/* Heat indicator */}
       {isLit && (
         <>
@@ -278,16 +409,24 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       </mesh>
 
       {/* Reset button */}
-      {experimentStage === 'complete' && (
-        <mesh 
-          position={[5, 1.8, 0]} 
-          onClick={resetExperiment}
-          userData={{ interactable: true }}
-        >
-          <boxGeometry args={[1, 0.3, 0.1]} />
-          <meshStandardMaterial color="#e74c3c" />
-        </mesh>
-      )}
+      <mesh 
+        position={[1.5, 0.6, -1]}
+        onClick={resetExperiment}
+        userData={{ interactable: true }}
+      >
+        <planeGeometry args={[1.0, 0.3]} />
+        <meshStandardMaterial color="#e74c3c" />
+      </mesh>
+      <mesh position={[1.5, 0.6, -0.99]}>
+        <planeGeometry args={[0.9, 0.25]} />
+        <meshStandardMaterial color="#ffffff" />
+      </mesh>
+      <Text3D 
+        position={[1.5, 0.6, -0.98]} 
+        text="RESET" 
+        fontSize={0.08} 
+        color="#e74c3c" 
+      />
 
       {/* Step indicators with arrows */}
       {experimentStage === 'setup' && !isLit && (
