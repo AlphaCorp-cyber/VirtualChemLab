@@ -210,7 +210,7 @@ function LiquidStream({ startPos, endPos, isVisible }: {
 export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
   const [selectedTool, setSelectedTool] = useState<string>('');
   const [experimentStage, setExperimentStage] = useState<'setup' | 'settling' | 'decanting' | 'complete'>('setup');
-  const [sourceLiquidLevel, setSourceLiquidLevel] = useState(0.4);
+  const [sourceLiquidLevel, setSourceLiquidLevel] = useState(0.5);
   const [sourceSedimentLevel, setSedimentLevel] = useState(0);
   const [receivingLiquidLevel, setReceivingLiquidLevel] = useState(0);
   const [isPouring, setIsPouring] = useState(false);
@@ -226,6 +226,9 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       const settlingInterval = setInterval(() => {
         currentSediment += 0.02;
         setSedimentLevel(currentSediment);
+        
+        // Keep liquid level constant during settling - sediment forms at bottom
+        // The liquid level should remain the same, just positioned above the sediment
         
         // Gradually change wine color from deep red to clearer as sediment settles
         const settlingProgress = currentSediment / 0.15;
@@ -269,8 +272,8 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       // Animate the decanting process - slower and more realistic
       const decantingInterval = setInterval(() => {
         setSourceLiquidLevel(prev => {
-          const newLevel = prev - 0.03; // Slower pouring
-          if (newLevel <= 0.05) { // Leave some liquid with sediment
+          const newLevel = prev - 0.025; // Slower pouring
+          if (newLevel <= 0.1) { // Leave some liquid with sediment
             setIsPouring(false);
             setShowStream(false);
             setExperimentStage('complete');
@@ -283,19 +286,19 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
                 "is used to separate clear liquids from settled solids."
               );
             }
-            return 0.05; // Keep small amount with sediment
+            return 0.1; // Keep some liquid with sediment
           }
           return newLevel;
         });
 
-        setReceivingLiquidLevel(prev => prev + 0.03);
+        setReceivingLiquidLevel(prev => prev + 0.025);
       }, 400); // Slower pouring animation
     }
   };
 
   const resetExperiment = () => {
     setExperimentStage('setup');
-    setSourceLiquidLevel(0.4);
+    setSourceLiquidLevel(0.5);
     setSedimentLevel(0);
     setReceivingLiquidLevel(0);
     setIsPouring(false);
