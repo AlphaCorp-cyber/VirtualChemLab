@@ -671,23 +671,23 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       )}
 
       {/* Equipment Labels - Above equipment */}
-      <mesh position={[-2.5, 1.2, -1]}>
-        <planeGeometry args={[1.3, 0.2]} />
+      <mesh position={[-3.5, 1.62, -0.38]}>
+        <planeGeometry args={[1.0, 0.2]} />
         <meshStandardMaterial color="#3498db" />
       </mesh>
-      <Text3D position={[-2.5, 1.2, -0.98]} text="Water Beaker" fontSize={0.06} color="#ffffff" />
+      <Text3D position={[-3.5, 1.62, -0.38]} text="Solution Beaker" fontSize={0.06} color="#ffffff" />
 
-      <mesh position={[0, 1.2, -1]}>
-        <planeGeometry args={[1.5, 0.2]} />
+      <mesh position={[1, 1.6, -0.39]}>
+        <planeGeometry args={[1.0, 0.2]} />
         <meshStandardMaterial color="#e74c3c" />
       </mesh>
-      <Text3D position={[0, 1.2, -0.98]} text="Bunsen Burner" fontSize={0.06} color="#ffffff" />
+      <Text3D position={[1, 1.62, -0.38]} text="Bunsen Burner knob" fontSize={0.06} color="#ffffff" />
 
-      <mesh position={[0, 2.4, -1]}>
-        <planeGeometry args={[1.8, 0.2]} />
+      <mesh position={[-1, 1.6, -0.39]}>
+        <planeGeometry args={[1.0, 0.2]} />
         <meshStandardMaterial color="#f39c12" />
       </mesh>
-      <Text3D position={[0, 2.4, -0.98]} text="Evaporating Dish" fontSize={0.06} color="#ffffff" />
+      <Text3D position={[-1, 1.62, -0.38]} text="Tripod stand + Evaporating Dish" fontSize={0.06} color="#ffffff" />
 
       <mesh position={[0, 2.8, -1]}>
         <planeGeometry args={[1.5, 0.2]} />
