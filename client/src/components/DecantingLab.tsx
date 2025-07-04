@@ -227,9 +227,11 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         currentSediment += 0.02;
         setSedimentLevel(currentSediment);
         
-        // Keep liquid level constant during settling - liquid stays the same volume
-        // Only the sediment forms at the bottom, liquid remains on top
-        // No need to adjust liquid level - it should stay at 0.5 throughout settling
+        // Adjust liquid level so total (sediment + liquid) = 0.5
+        // As sediment forms at bottom, liquid level reduces but stays on top
+        const totalOriginalVolume = 0.5;
+        const adjustedLiquidLevel = totalOriginalVolume - currentSediment;
+        setSourceLiquidLevel(adjustedLiquidLevel);
         
         // Gradually change wine color from deep red to clearer as sediment settles
         const settlingProgress = currentSediment / 0.15;
@@ -238,10 +240,11 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         
         if (currentSediment >= 0.15) {
           clearInterval(settlingInterval);
-          // Ensure final color is properly set before moving to decanting stage
+          // Ensure final state: sediment (0.15) + liquid (0.35) = 0.5 total
           setTimeout(() => {
             setWineColor('#DC143C'); // Final clearer wine color - more visible
-            // Keep original liquid level - sediment forms at bottom, liquid stays on top
+            setSedimentLevel(0.15); // Final sediment level
+            setSourceLiquidLevel(0.35); // Final liquid level (0.5 - 0.15 = 0.35)
             setExperimentStage('decanting');
           }, 100);
         }
