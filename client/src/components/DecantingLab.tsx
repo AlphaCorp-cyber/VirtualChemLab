@@ -88,9 +88,9 @@ function DecantingBeaker({ position, isSelected, onSelect, liquidLevel, sediment
           <meshStandardMaterial 
             color={wineColor} 
             transparent 
-            opacity={experimentStage === 'setup' ? 0.9 : 0.7}
+            opacity={0.7}
             emissive={wineColor}
-            emissiveIntensity={experimentStage === 'setup' ? 0.1 : 0.05}
+            emissiveIntensity={0.05}
             roughness={0.1}
             metalness={0.05}
           />
