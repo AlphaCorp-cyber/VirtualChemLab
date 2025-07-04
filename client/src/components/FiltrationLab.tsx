@@ -233,12 +233,28 @@ function PouringStream({ startPos, endPos, isVisible }: {
 
   useFrame((state) => {
     if (streamRef.current && isVisible) {
-      // Create flowing water effect
+      // Create flowing water effect with realistic arc into funnel
       const time = state.clock.elapsedTime;
       streamRef.current.children.forEach((droplet, index) => {
         const mesh = droplet as THREE.Mesh;
-        mesh.position.y = startPos[1] - (time * 3 + index * 0.3) % 1.5;
-        mesh.visible = mesh.position.y > endPos[1];
+        const progress = (time * 3 + index * 0.3) % 2.0;
+        
+        if (progress < 1.0) {
+          // Calculate parabolic arc from beaker to funnel opening
+          const t = progress;
+          const startX = startPos[0];
+          const startY = startPos[1];
+          const endX = endPos[0];
+          const endY = endPos[1];
+          
+          // Parabolic trajectory with gravity effect
+          mesh.position.x = startX + (endX - startX) * t;
+          mesh.position.y = startY + (endY - startY) * t - 0.3 * t * t; // gravity curve
+          mesh.position.z = startPos[2];
+          mesh.visible = true;
+        } else {
+          mesh.visible = false;
+        }
       });
     }
   });
@@ -248,13 +264,15 @@ function PouringStream({ startPos, endPos, isVisible }: {
   return (
     <group ref={streamRef}>
       {/* Multiple droplets to create stream effect */}
-      {[0, 1, 2, 3, 4].map((i) => (
-        <mesh key={i} position={[(startPos[0] + endPos[0]) / 2, startPos[1] - i * 0.2, startPos[2]]}>
-          <sphereGeometry args={[0.02, 8, 8]} />
+      {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+        <mesh key={i} position={startPos}>
+          <sphereGeometry args={[0.025, 8, 8]} />
           <meshStandardMaterial 
-            color="#00BFFF" 
+            color="#A0522D" 
             transparent 
-            opacity={0.8}
+            opacity={0.9}
+            emissive="#8B4513"
+            emissiveIntensity={0.1}
           />
         </mesh>
       ))}
@@ -326,10 +344,10 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
         solidResidue={hasResidue}
       />
       
-      {/* Pouring stream animation - from beaker lip to funnel */}
+      {/* Pouring stream animation - from beaker lip to funnel opening */}
       <PouringStream 
         startPos={[-0.6, 2.5, -0.5]}
-        endPos={[-1, 2.1, -0.5]}
+        endPos={[-1, 2.5, -0.5]}
         isVisible={showStream}
       />
       
