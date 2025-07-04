@@ -273,7 +273,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       const decantingInterval = setInterval(() => {
         setSourceLiquidLevel(prev => {
           const newLevel = prev - 0.025; // Slower pouring
-          if (newLevel <= 0.1) { // Leave some liquid with sediment
+          if (newLevel <= 0) { // Pour out all liquid, leave only sediment
             setIsPouring(false);
             setShowStream(false);
             setExperimentStage('complete');
@@ -282,11 +282,11 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
             if (onExperimentComplete) {
               onExperimentComplete(
                 "Decanting completed successfully! The clear wine has been carefully poured off, " +
-                "leaving the dark sediment behind in the original beaker. This separation technique " +
+                "leaving only the dark sediment behind in the original beaker. This separation technique " +
                 "is used to separate clear liquids from settled solids."
               );
             }
-            return 0.1; // Keep some liquid with sediment
+            return 0; // Remove all liquid, leave only sediment
           }
           return newLevel;
         });
