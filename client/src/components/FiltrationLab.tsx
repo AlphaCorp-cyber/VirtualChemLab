@@ -104,15 +104,23 @@ function MixtureBeaker({ position, isSelected, onSelect, isEmpty, isPouring }: {
 
   useFrame((state) => {
     if (beakerRef.current && isPouring) {
-      // Float and tilt the beaker towards the funnel setup
-      const time = state.clock.elapsedTime * 2;
-      beakerRef.current.rotation.z = Math.sin(time) * 0.2 + 0.4;
-      beakerRef.current.position.y = position[1] + 0.3 + Math.sin(time * 1.5) * 0.1;
-      beakerRef.current.position.x = position[0] + Math.sin(time * 0.8) * 0.2 + 0.5;
-      beakerRef.current.position.z = position[2] + Math.sin(time * 1.2) * 0.1;
+      // Move beaker directly above funnel and tilt for realistic pouring
+      const funnelX = -1; // Funnel position X
+      const funnelY = 2.2; // Funnel position Y
+      const funnelZ = -0.5; // Funnel position Z
+      
+      // Position beaker above and slightly to the side of funnel
+      beakerRef.current.position.x = funnelX + 0.3; // Slightly offset for pouring angle
+      beakerRef.current.position.y = funnelY + 0.4; // Above the funnel
+      beakerRef.current.position.z = funnelZ;
+      
+      // Tilt beaker towards funnel for realistic pouring angle
+      beakerRef.current.rotation.z = 0.5; // 30-degree tilt for pouring
+      beakerRef.current.rotation.x = -0.2; // Slight forward tilt
     } else if (beakerRef.current) {
       // Return to normal position
       beakerRef.current.rotation.z = 0;
+      beakerRef.current.rotation.x = 0;
       beakerRef.current.position.y = position[1];
       beakerRef.current.position.x = position[0];
       beakerRef.current.position.z = position[2];
@@ -323,10 +331,10 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
         solidResidue={hasResidue}
       />
       
-      {/* Pouring stream animation */}
+      {/* Pouring stream animation - from beaker lip to funnel */}
       <PouringStream 
-        startPos={[-2.5, 2.2, -0.5]}
-        endPos={[-1, 1.9, -0.5]}
+        startPos={[-0.6, 2.5, -0.5]}
+        endPos={[-1, 2.1, -0.5]}
         isVisible={showStream}
       />
       
