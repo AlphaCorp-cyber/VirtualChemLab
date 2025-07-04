@@ -16,6 +16,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
 }) {
   return (
     <group position={position}>
+      {/* Outer dish */}
       <mesh
         onClick={onSelect}
         userData={{ interactable: true }}
@@ -26,10 +27,16 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
         />
       </mesh>
       
+      {/* Inner black surface for better crystal visibility */}
+      <mesh position={[0, 0.045, 0]}>
+        <cylinderGeometry args={[0.38, 0.38, 0.01]} />
+        <meshStandardMaterial color="#1a1a1a" />
+      </mesh>
+      
       {/* Salt solution */}
       {liquidLevel > 0 && (
         <mesh position={[0, 0.05, 0]}>
-          <cylinderGeometry args={[0.38, 0.38, 0.02]} />
+          <cylinderGeometry args={[0.36, 0.36, 0.02]} />
           <meshStandardMaterial 
             color="#87ceeb" 
             transparent 
@@ -38,14 +45,14 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
         </mesh>
       )}
       
-      {/* Salt crystals - made more visible */}
+      {/* Salt crystals - highly visible on black background */}
       {saltCrystals && (
-        <mesh position={[0, 0.05, 0]}>
-          <cylinderGeometry args={[0.35, 0.35, 0.01]} />
+        <mesh position={[0, 0.055, 0]}>
+          <cylinderGeometry args={[0.35, 0.35, 0.015]} />
           <meshStandardMaterial 
             color="#ffffff" 
             emissive="#ffffff"
-            emissiveIntensity={0.2}
+            emissiveIntensity={0.3}
           />
         </mesh>
       )}
@@ -100,21 +107,21 @@ function BunsenBurner({ position, isLit, onToggle }: {
         </mesh>
       )}
       
-      {/* Control knob - made larger and more accessible */}
+      {/* Control knob - black by default, red when lit */}
       <mesh 
         position={[0.25, 0.1, 0]}
         onClick={onToggle}
         userData={{ interactable: true }}
       >
         <cylinderGeometry args={[0.05, 0.05, 0.15]} />
-        <meshStandardMaterial color={isLit ? "#e74c3c" : "#95a5a6"} />
+        <meshStandardMaterial color={isLit ? "#e74c3c" : "#2c3e50"} />
       </mesh>
       
       {/* Click indicator for knob */}
       <mesh position={[0.25, 0.1, 0]}>
         <cylinderGeometry args={[0.06, 0.06, 0.16]} />
         <meshStandardMaterial 
-          color={isLit ? "#e74c3c" : "#95a5a6"} 
+          color={isLit ? "#e74c3c" : "#2c3e50"} 
           transparent 
           opacity={0.3}
         />
