@@ -33,28 +33,28 @@ function DecantingBeaker({ position, isSelected, onSelect, liquidLevel, sediment
       >
         <cylinderGeometry args={[0.3, 0.3, 0.8]} />
         <meshStandardMaterial 
-          color={isSelected ? "#3498db" : "#ecf0f1"} 
+          color="#ecf0f1" 
           transparent 
           opacity={0.8}
         />
       </mesh>
 
-      {/* Sediment layer (sand) */}
+      {/* Sediment layer (dark red wine sediment) */}
       {sedimentLevel > 0 && (
         <mesh position={[0, -0.3, 0]}>
           <cylinderGeometry args={[0.28, 0.28, sedimentLevel]} />
-          <meshStandardMaterial color="#d4af37" />
+          <meshStandardMaterial color="#8B0000" />
         </mesh>
       )}
 
-      {/* Liquid layer (water) */}
+      {/* Liquid layer (wine) */}
       {liquidLevel > 0 && (
         <mesh position={[0, -0.3 + sedimentLevel + liquidLevel / 2, 0]}>
           <cylinderGeometry args={[0.28, 0.28, liquidLevel]} />
           <meshStandardMaterial 
-            color="#87ceeb" 
+            color="#722F37" 
             transparent 
-            opacity={0.7}
+            opacity={0.9}
           />
         </mesh>
       )}
@@ -87,7 +87,7 @@ function ReceivingBeaker({ position, isSelected, onSelect, liquidLevel }: {
         <mesh position={[0, -0.3 + liquidLevel / 2, 0]}>
           <cylinderGeometry args={[0.28, 0.28, liquidLevel]} />
           <meshStandardMaterial 
-            color="#87ceeb" 
+            color="#CD5C5C" 
             transparent 
             opacity={0.7}
           />
@@ -122,7 +122,7 @@ function LiquidStream({ startPos, endPos, isVisible }: {
     <mesh ref={streamRef} position={midPoint}>
       <cylinderGeometry args={[0.02, 0.02, 1.5]} />
       <meshStandardMaterial 
-        color="#87ceeb" 
+        color="#CD5C5C" 
         transparent 
         opacity={0.8}
       />
@@ -134,24 +134,31 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
   const [selectedTool, setSelectedTool] = useState<string>('');
   const [experimentStage, setExperimentStage] = useState<'setup' | 'settling' | 'decanting' | 'complete'>('setup');
   const [sourceLiquidLevel, setSourceLiquidLevel] = useState(0.4);
-  const [sourceSedimentLevel, setSedimentLevel] = useState(0.15);
+  const [sourceSedimentLevel, setSedimentLevel] = useState(0);
   const [receivingLiquidLevel, setReceivingLiquidLevel] = useState(0);
   const [isPouring, setIsPouring] = useState(false);
   const [showStream, setShowStream] = useState(false);
 
   const handleSettling = () => {
-    if (selectedTool === 'source' && experimentStage === 'setup') {
+    if (experimentStage === 'setup') {
       setExperimentStage('settling');
 
-      // Allow some time for settling
-      setTimeout(() => {
-        setExperimentStage('decanting');
-      }, 2000);
+      // Animate sediment settling
+      let currentSediment = 0;
+      const settlingInterval = setInterval(() => {
+        currentSediment += 0.03;
+        setSedimentLevel(currentSediment);
+        
+        if (currentSediment >= 0.15) {
+          clearInterval(settlingInterval);
+          setExperimentStage('decanting');
+        }
+      }, 200);
     }
   };
 
   const handleDecanting = () => {
-    if (selectedTool === 'source' && experimentStage === 'decanting') {
+    if (experimentStage === 'decanting') {
       setIsPouring(true);
       setShowStream(true);
 
@@ -185,7 +192,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
   const resetExperiment = () => {
     setExperimentStage('setup');
     setSourceLiquidLevel(0.4);
-    setSedimentLevel(0.15);
+    setSedimentLevel(0);
     setReceivingLiquidLevel(0);
     setIsPouring(false);
     setShowStream(false);
@@ -199,7 +206,6 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         position={[-2.5, 1.55, -1]} 
         isSelected={selectedTool === 'source'}
         onSelect={() => {
-          setSelectedTool('source');
           if (experimentStage === 'setup') {
             handleSettling();
           } else if (experimentStage === 'decanting') {
