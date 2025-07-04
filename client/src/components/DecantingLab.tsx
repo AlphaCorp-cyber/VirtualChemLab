@@ -90,11 +90,11 @@ function DecantingBeaker({ position, isSelected, onSelect, liquidLevel, sediment
           <meshStandardMaterial 
             color={wineColor} 
             transparent 
-            opacity={0.85}
+            opacity={0.9}
             emissive={wineColor}
-            emissiveIntensity={0.15}
-            roughness={0.1}
-            metalness={0.05}
+            emissiveIntensity={0.2}
+            roughness={0.05}
+            metalness={0.02}
           />
         </mesh>
       )}
@@ -233,7 +233,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         // As sediment forms at bottom, liquid level reduces but stays on top
         const totalOriginalVolume = 0.5;
         const adjustedLiquidLevel = totalOriginalVolume - currentSediment;
-        setSourceLiquidLevel(Math.max(0.2, adjustedLiquidLevel)); // Ensure minimum visible liquid
+        setSourceLiquidLevel(adjustedLiquidLevel); // Keep proper volume balance
         
         // Gradually change wine color from deep red to clearer as sediment settles
         const settlingProgress = currentSediment / 0.15;
@@ -245,8 +245,8 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
           // Ensure final state: sediment (0.15) + liquid (0.35) = 0.5 total
           setTimeout(() => {
             setWineColor('#E74C3C'); // Brighter, more visible wine color
-            setSedimentLevel(0.15); // Final sediment level
-            setSourceLiquidLevel(0.35); // Proper liquid level (0.5 - 0.15 = 0.35)
+            setSedimentLevel(0.15); // Final sediment level - clearly visible dark layer
+            setSourceLiquidLevel(0.35); // Final liquid level - clearly visible on top
             setExperimentStage('decanting');
           }, 100);
         }
