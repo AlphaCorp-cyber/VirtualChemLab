@@ -181,17 +181,17 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
 
   return (
     <group>
-      {/* Lab bench */}
-      <mesh position={[0, -1, 0]}>
-        <boxGeometry args={[12, 0.2, 6]} />
+      {/* Lab bench - positioned at table height */}
+      <mesh position={[0, 1.5, 0]}>
+        <boxGeometry args={[12, 0.1, 6]} />
         <meshStandardMaterial color="#8b4513" />
       </mesh>
 
-      {/* Equipment */}
-      <TripodStand position={[0, -0.5, 0]} />
+      {/* Equipment positioned on the table */}
+      <TripodStand position={[0, 1.8, 0]} />
       
       <EvaporatingDish 
-        position={[0, 0.05, 0]} 
+        position={[0, 2.35, 0]} 
         isSelected={selectedTool === 'dish'}
         onSelect={() => {
           setSelectedTool('dish');
@@ -202,49 +202,102 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       />
       
       <BunsenBurner 
-        position={[0, -0.9, 0]} 
+        position={[0, 1.4, 0]} 
         isLit={isLit}
         onToggle={() => setIsLit(!isLit)}
       />
 
-      {/* Instructions */}
-      <mesh position={[3, 1, 0]}>
-        <planeGeometry args={[3, 1.5]} />
+      {/* Equipment Labels */}
+      <mesh position={[0, 1.1, 0]}>
+        <planeGeometry args={[1.5, 0.2]} />
+        <meshStandardMaterial color="#2c3e50" />
+      </mesh>
+      <mesh position={[0, 1.1, 0.01]}>
+        <planeGeometry args={[1.4, 0.15]} />
+        <meshStandardMaterial color="#ffffff" />
+      </mesh>
+
+      <mesh position={[0, 2.8, 0]}>
+        <planeGeometry args={[1.8, 0.2]} />
+        <meshStandardMaterial color="#2c3e50" />
+      </mesh>
+      <mesh position={[0, 2.8, 0.01]}>
+        <planeGeometry args={[1.7, 0.15]} />
+        <meshStandardMaterial color="#ffffff" />
+      </mesh>
+
+      <mesh position={[0, 3.2, 0]}>
+        <planeGeometry args={[1.5, 0.2]} />
+        <meshStandardMaterial color="#2c3e50" />
+      </mesh>
+      <mesh position={[0, 3.2, 0.01]}>
+        <planeGeometry args={[1.4, 0.15]} />
+        <meshStandardMaterial color="#ffffff" />
+      </mesh>
+
+      {/* Instructions Panel */}
+      <mesh position={[3.5, 2.5, 0]}>
+        <planeGeometry args={[4, 2.5]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
       
-      <mesh position={[3, 1, 0.01]}>
-        <planeGeometry args={[2.8, 1.3]} />
+      <mesh position={[3.5, 2.5, 0.01]}>
+        <planeGeometry args={[3.8, 2.3]} />
         <meshStandardMaterial color="#ffffff" />
+      </mesh>
+
+      {/* Instruction text areas */}
+      <mesh position={[3.5, 3.5, 0.02]}>
+        <planeGeometry args={[3.5, 0.3]} />
+        <meshStandardMaterial color="#e67e22" />
+      </mesh>
+
+      <mesh position={[3.5, 3.0, 0.02]}>
+        <planeGeometry args={[3.5, 0.25]} />
+        <meshStandardMaterial color="#34495e" />
+      </mesh>
+
+      <mesh position={[3.5, 2.6, 0.02]}>
+        <planeGeometry args={[3.5, 0.25]} />
+        <meshStandardMaterial color="#34495e" />
+      </mesh>
+
+      <mesh position={[3.5, 2.2, 0.02]}>
+        <planeGeometry args={[3.5, 0.25]} />
+        <meshStandardMaterial color="#34495e" />
+      </mesh>
+
+      <mesh position={[3.5, 1.8, 0.02]}>
+        <planeGeometry args={[3.5, 0.25]} />
+        <meshStandardMaterial color="#34495e" />
+      </mesh>
+
+      <mesh position={[3.5, 1.4, 0.02]}>
+        <planeGeometry args={[3.5, 0.25]} />
+        <meshStandardMaterial color="#34495e" />
       </mesh>
 
       {/* Heat indicator */}
       {isLit && (
-        <mesh position={[0, 1, 0]}>
-          <planeGeometry args={[2, 0.3]} />
-          <meshStandardMaterial 
-            color="#e74c3c" 
-            emissive="#e74c3c"
-            emissiveIntensity={0.3}
-          />
-        </mesh>
+        <>
+          <mesh position={[0, 3.8, 0]}>
+            <planeGeometry args={[2.5, 0.3]} />
+            <meshStandardMaterial 
+              color="#e74c3c" 
+              emissive="#e74c3c"
+              emissiveIntensity={0.3}
+            />
+          </mesh>
+          <mesh position={[0, 3.8, 0.01]}>
+            <planeGeometry args={[2.3, 0.25]} />
+            <meshStandardMaterial color="#ffffff" />
+          </mesh>
+        </>
       )}
 
-      {/* Reset button */}
-      {experimentStage === 'complete' && (
-        <mesh 
-          position={[0, -0.5, 2]} 
-          onClick={resetExperiment}
-          userData={{ interactable: true }}
-        >
-          <boxGeometry args={[1, 0.3, 0.1]} />
-          <meshStandardMaterial color="#e74c3c" />
-        </mesh>
-      )}
-
-      {/* Stage indicator */}
-      <mesh position={[0, 2, 0]}>
-        <planeGeometry args={[4, 0.5]} />
+      {/* Process Steps Indicator */}
+      <mesh position={[0, 4.5, 0]}>
+        <planeGeometry args={[8, 0.4]} />
         <meshStandardMaterial 
           color={
             experimentStage === 'setup' ? "#3498db" :
@@ -253,6 +306,38 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
           } 
         />
       </mesh>
+
+      <mesh position={[0, 4.5, 0.01]}>
+        <planeGeometry args={[7.5, 0.3]} />
+        <meshStandardMaterial color="#ffffff" />
+      </mesh>
+
+      {/* Reset button */}
+      {experimentStage === 'complete' && (
+        <mesh 
+          position={[5, 1.8, 0]} 
+          onClick={resetExperiment}
+          userData={{ interactable: true }}
+        >
+          <boxGeometry args={[1, 0.3, 0.1]} />
+          <meshStandardMaterial color="#e74c3c" />
+        </mesh>
+      )}
+
+      {/* Step indicators with arrows */}
+      {experimentStage === 'setup' && !isLit && (
+        <mesh position={[0.5, 1.7, 0]} rotation={[0, 0, -Math.PI/4]}>
+          <coneGeometry args={[0.1, 0.3, 4]} />
+          <meshStandardMaterial color="#e74c3c" />
+        </mesh>
+      )}
+
+      {experimentStage === 'setup' && isLit && (
+        <mesh position={[0.5, 2.6, 0]} rotation={[0, 0, -Math.PI/4]}>
+          <coneGeometry args={[0.1, 0.3, 4]} />
+          <meshStandardMaterial color="#f39c12" />
+        </mesh>
+      )}
     </group>
   );
 }

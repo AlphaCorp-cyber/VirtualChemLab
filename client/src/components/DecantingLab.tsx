@@ -193,15 +193,15 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
 
   return (
     <group>
-      {/* Lab bench */}
-      <mesh position={[0, -1, 0]}>
-        <boxGeometry args={[12, 0.2, 6]} />
+      {/* Lab bench - positioned at table height */}
+      <mesh position={[0, 1.5, 0]}>
+        <boxGeometry args={[12, 0.1, 6]} />
         <meshStandardMaterial color="#8b4513" />
       </mesh>
 
-      {/* Equipment */}
+      {/* Equipment positioned on the table */}
       <DecantingBeaker 
-        position={[-2, -0.1, 0]} 
+        position={[-2.5, 1.9, 0]} 
         isSelected={selectedTool === 'source'}
         onSelect={() => {
           setSelectedTool('source');
@@ -217,7 +217,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       />
       
       <ReceivingBeaker 
-        position={[2, -0.1, 0]} 
+        position={[2.5, 1.9, 0]} 
         isSelected={selectedTool === 'receiving'}
         onSelect={() => setSelectedTool('receiving')}
         liquidLevel={receivingLiquidLevel}
@@ -225,25 +225,70 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
 
       {/* Liquid stream animation */}
       <LiquidStream 
-        startPos={[-1.7, 0.3, 0]}
-        endPos={[1.7, 0.3, 0]}
+        startPos={[-2, 2.3, 0]}
+        endPos={[2, 2.3, 0]}
         isVisible={showStream}
       />
 
-      {/* Instructions */}
-      <mesh position={[0, 1.5, 0]}>
-        <planeGeometry args={[4, 1]} />
+      {/* Equipment Labels */}
+      <mesh position={[-2.5, 1.2, 0]}>
+        <planeGeometry args={[1.8, 0.25]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
+      <mesh position={[-2.5, 1.2, 0.01]}>
+        <planeGeometry args={[1.7, 0.2]} />
+        <meshStandardMaterial color="#ffffff" />
+      </mesh>
       
-      <mesh position={[0, 1.5, 0.01]}>
-        <planeGeometry args={[3.8, 0.8]} />
+      <mesh position={[2.5, 1.2, 0]}>
+        <planeGeometry args={[1.8, 0.25]} />
+        <meshStandardMaterial color="#2c3e50" />
+      </mesh>
+      <mesh position={[2.5, 1.2, 0.01]}>
+        <planeGeometry args={[1.7, 0.2]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
 
+      {/* Instructions Panel */}
+      <mesh position={[0, 3, 0]}>
+        <planeGeometry args={[5, 2]} />
+        <meshStandardMaterial color="#2c3e50" />
+      </mesh>
+      
+      <mesh position={[0, 3, 0.01]}>
+        <planeGeometry args={[4.8, 1.8]} />
+        <meshStandardMaterial color="#ffffff" />
+      </mesh>
+
+      {/* Instruction text areas */}
+      <mesh position={[0, 3.7, 0.02]}>
+        <planeGeometry args={[4.5, 0.3]} />
+        <meshStandardMaterial color="#9b59b6" />
+      </mesh>
+
+      <mesh position={[0, 3.3, 0.02]}>
+        <planeGeometry args={[4.5, 0.25]} />
+        <meshStandardMaterial color="#34495e" />
+      </mesh>
+
+      <mesh position={[0, 2.9, 0.02]}>
+        <planeGeometry args={[4.5, 0.25]} />
+        <meshStandardMaterial color="#34495e" />
+      </mesh>
+
+      <mesh position={[0, 2.5, 0.02]}>
+        <planeGeometry args={[4.5, 0.25]} />
+        <meshStandardMaterial color="#34495e" />
+      </mesh>
+
+      <mesh position={[0, 2.1, 0.02]}>
+        <planeGeometry args={[4.5, 0.25]} />
+        <meshStandardMaterial color="#34495e" />
+      </mesh>
+
       {/* Process indicator */}
-      <mesh position={[0, 2.5, 0]}>
-        <planeGeometry args={[5, 0.4]} />
+      <mesh position={[0, 4.5, 0]}>
+        <planeGeometry args={[8, 0.4]} />
         <meshStandardMaterial 
           color={
             experimentStage === 'setup' ? "#3498db" :
@@ -253,10 +298,15 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         />
       </mesh>
 
+      <mesh position={[0, 4.5, 0.01]}>
+        <planeGeometry args={[7.5, 0.3]} />
+        <meshStandardMaterial color="#ffffff" />
+      </mesh>
+
       {/* Reset button */}
       {experimentStage === 'complete' && (
         <mesh 
-          position={[0, -0.5, 2]} 
+          position={[4.5, 1.8, 0]} 
           onClick={resetExperiment}
           userData={{ interactable: true }}
         >
@@ -265,16 +315,37 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         </mesh>
       )}
 
-      {/* Labels */}
-      <mesh position={[-2, -1.2, 0]}>
-        <planeGeometry args={[1.5, 0.3]} />
-        <meshStandardMaterial color="#34495e" />
-      </mesh>
-      
-      <mesh position={[2, -1.2, 0]}>
-        <planeGeometry args={[1.5, 0.3]} />
-        <meshStandardMaterial color="#34495e" />
-      </mesh>
+      {/* Step indicators with arrows */}
+      {experimentStage === 'setup' && (
+        <mesh position={[-2, 2.5, 0]} rotation={[0, 0, -Math.PI/4]}>
+          <coneGeometry args={[0.1, 0.3, 4]} />
+          <meshStandardMaterial color="#3498db" />
+        </mesh>
+      )}
+
+      {experimentStage === 'settling' && (
+        <>
+          <mesh position={[-2, 2.5, 0]}>
+            <sphereGeometry args={[0.1, 8, 8]} />
+            <meshStandardMaterial color="#f39c12" />
+          </mesh>
+          <mesh position={[-1.8, 2.5, 0]}>
+            <sphereGeometry args={[0.08, 8, 8]} />
+            <meshStandardMaterial color="#f39c12" />
+          </mesh>
+          <mesh position={[-1.6, 2.5, 0]}>
+            <sphereGeometry args={[0.06, 8, 8]} />
+            <meshStandardMaterial color="#f39c12" />
+          </mesh>
+        </>
+      )}
+
+      {experimentStage === 'decanting' && (
+        <mesh position={[-1.5, 2.6, 0]} rotation={[0, 0, -Math.PI/6]}>
+          <coneGeometry args={[0.1, 0.3, 4]} />
+          <meshStandardMaterial color="#e67e22" />
+        </mesh>
+      )}
     </group>
   );
 }

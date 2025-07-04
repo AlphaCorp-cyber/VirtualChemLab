@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { LabelText, InstructionText, Text3D } from './Text3D';
 
 interface FiltrationLabProps {
   onExperimentComplete?: (result: string) => void;
@@ -189,28 +190,28 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
 
   return (
     <group>
-      {/* Lab bench */}
-      <mesh position={[0, -1, 0]}>
-        <boxGeometry args={[12, 0.2, 6]} />
+      {/* Lab bench - positioned at table height */}
+      <mesh position={[0, 1.5, 0]}>
+        <boxGeometry args={[12, 0.1, 6]} />
         <meshStandardMaterial color="#8b4513" />
       </mesh>
 
-      {/* Equipment */}
+      {/* Equipment positioned on the table */}
       <Funnel 
-        position={[-2, 0, 0]} 
+        position={[-1, 2.3, 0]} 
         isSelected={selectedTool === 'funnel'}
         onSelect={() => setSelectedTool('funnel')}
       />
       
       <FilterPaper 
-        position={[-2, -0.1, 0]} 
+        position={[-1, 2.1, 0]} 
         isSelected={selectedTool === 'filter'}
         onSelect={() => setSelectedTool('filter')}
         hasResidue={hasResidue}
       />
       
       <MixtureBeaker 
-        position={[-4, -0.5, 0]} 
+        position={[-3, 1.9, 0]} 
         isSelected={selectedTool === 'mixture'}
         onSelect={() => {
           setSelectedTool('mixture');
@@ -220,27 +221,81 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
       />
       
       <FiltrateBeaker 
-        position={[-2, -1.2, 0]} 
+        position={[-1, 1.3, 0]} 
         isSelected={selectedTool === 'filtrate'}
         onSelect={() => setSelectedTool('filtrate')}
         filtrateLevel={filtrateLevel}
       />
 
-      {/* Instructions */}
-      <mesh position={[2, 1, 0]}>
-        <planeGeometry args={[3, 1.5]} />
+      {/* Equipment Labels */}
+      <mesh position={[-3, 1.2, 0]}>
+        <planeGeometry args={[1.2, 0.2]} />
+        <meshStandardMaterial color="#2c3e50" />
+      </mesh>
+      <LabelText position={[-3, 1.2, 0.02]} text="Sand + Water Mixture" color="#ffffff" />
+
+      <mesh position={[-1, 2.8, 0]}>
+        <planeGeometry args={[1.2, 0.2]} />
+        <meshStandardMaterial color="#2c3e50" />
+      </mesh>
+      <LabelText position={[-1, 2.8, 0.02]} text="Funnel + Filter Paper" color="#ffffff" />
+
+      <mesh position={[-1, 0.8, 0]}>
+        <planeGeometry args={[1.2, 0.2]} />
+        <meshStandardMaterial color="#2c3e50" />
+      </mesh>
+      <LabelText position={[-1, 0.8, 0.02]} text="Clear Filtrate" color="#ffffff" />
+
+      {/* Instructions Panel */}
+      <mesh position={[2.5, 2.5, 0]}>
+        <planeGeometry args={[3.5, 2]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
       
-      <mesh position={[2, 1, 0.01]}>
-        <planeGeometry args={[2.8, 1.3]} />
+      <mesh position={[2.5, 2.5, 0.01]}>
+        <planeGeometry args={[3.3, 1.8]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
+
+      {/* Instruction text areas */}
+      <mesh position={[2.5, 3.2, 0.02]}>
+        <planeGeometry args={[3, 0.3]} />
+        <meshStandardMaterial color="#3498db" />
+      </mesh>
+      <Text3D position={[2.5, 3.2, 0.03]} text="FILTRATION EXPERIMENT" fontSize={0.08} color="#ffffff" />
+
+      <InstructionText position={[1, 2.8, 0.03]} text="1. Click sand-water mixture to start" />
+      <InstructionText position={[1, 2.5, 0.03]} text="2. Watch liquid pass through filter" />
+      <InstructionText position={[1, 2.2, 0.03]} text="3. Sand remains on filter paper" />
+      <InstructionText position={[1, 1.9, 0.03]} text="4. Clear water collects below" />
+      <InstructionText position={[1, 1.6, 0.03]} text="5. Separation complete!" />
+
+      {/* Process Steps Indicator */}
+      <mesh position={[0, 3.5, 0]}>
+        <planeGeometry args={[8, 0.4]} />
+        <meshStandardMaterial 
+          color={
+            experimentStage === 'setup' ? "#3498db" :
+            experimentStage === 'filtering' ? "#f39c12" : "#27ae60"
+          } 
+        />
+      </mesh>
+
+      <Text3D 
+        position={[0, 3.5, 0.01]} 
+        text={
+          experimentStage === 'setup' ? "READY TO START - Click the mixture beaker" :
+          experimentStage === 'filtering' ? "FILTERING IN PROGRESS..." : 
+          "FILTRATION COMPLETE!"
+        } 
+        fontSize={0.1} 
+        color="#ffffff" 
+      />
 
       {/* Reset button */}
       {experimentStage === 'complete' && (
         <mesh 
-          position={[0, -0.5, 2]} 
+          position={[4, 1.8, 0]} 
           onClick={resetExperiment}
           userData={{ interactable: true }}
         >
@@ -249,16 +304,13 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
         </mesh>
       )}
 
-      {/* Stage indicator */}
-      <mesh position={[0, 2, 0]}>
-        <planeGeometry args={[4, 0.5]} />
-        <meshStandardMaterial 
-          color={
-            experimentStage === 'setup' ? "#3498db" :
-            experimentStage === 'filtering' ? "#f39c12" : "#27ae60"
-          } 
-        />
-      </mesh>
+      {/* Arrow pointing to mixture beaker */}
+      {experimentStage === 'setup' && (
+        <mesh position={[-2.5, 2.3, 0]} rotation={[0, 0, -Math.PI/4]}>
+          <coneGeometry args={[0.1, 0.3, 4]} />
+          <meshStandardMaterial color="#e74c3c" />
+        </mesh>
+      )}
     </group>
   );
 }
