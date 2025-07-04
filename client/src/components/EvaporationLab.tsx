@@ -23,7 +23,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
       >
         <cylinderGeometry args={[0.4, 0.4, 0.1]} />
         <meshStandardMaterial 
-          color={isSelected ? "#3498db" : "#34495e"} 
+          color={isSelected ? "#3498db" : "#000000"} 
         />
       </mesh>
       
