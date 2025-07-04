@@ -82,8 +82,8 @@ function Funnel({ position, isSelected, onSelect, hasFilterPaper, solidResidue }
       
       {/* Solid residue on filter paper - brownish sand color */}
       {solidResidue && hasFilterPaper && (
-        <mesh position={[0, -0.05, 0]}>
-          <cylinderGeometry args={[0.15, 0.15, 0.05, 16]} />
+        <mesh position={[0, -0.02, 0]}>
+          <cylinderGeometry args={[0.15, 0.15, 0.12, 16]} />
           <meshStandardMaterial color="#D2691E" />
         </mesh>
       )}
