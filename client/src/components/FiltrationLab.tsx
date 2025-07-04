@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -16,15 +17,9 @@ function Funnel({ position, isSelected, onSelect, hasFilterPaper, solidResidue }
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
 
-  useFrame(() => {
-    if (meshRef.current && isSelected) {
-      meshRef.current.rotation.z += 0.01;
-    }
-  });
-
   return (
     <group position={position}>
-      {/* Glass funnel - transparent with slight blue tint like in diagram */}
+      {/* Glass funnel - clear with slight transparency like in diagram */}
       <mesh
         ref={meshRef}
         onClick={onSelect}
@@ -32,39 +27,46 @@ function Funnel({ position, isSelected, onSelect, hasFilterPaper, solidResidue }
       >
         <coneGeometry args={[0.3, 0.6, 32]} />
         <meshStandardMaterial 
-          color={isSelected ? "#87ceeb" : "#e6f3ff"} 
+          color="#ffffff" 
           transparent 
-          opacity={0.3}
+          opacity={0.2}
           metalness={0.1}
           roughness={0.1}
         />
       </mesh>
       
-      {/* Funnel rim - darker glass edge */}
-      <mesh position={[0, 0.3, 0]}>
-        <torusGeometry args={[0.3, 0.015, 16, 32]} />
+      {/* Funnel outline - black line like in diagram */}
+      <mesh position={[0, 0, 0]}>
+        <coneGeometry args={[0.305, 0.605, 32]} />
         <meshStandardMaterial 
-          color="#4682b4" 
+          color="#000000" 
           transparent
           opacity={0.8}
-          metalness={0.3}
-          roughness={0.2}
+          side={THREE.BackSide}
         />
       </mesh>
       
-      {/* Funnel stem - glass tube */}
+      {/* Funnel stem - glass tube with black outline */}
       <mesh position={[0, -0.5, 0]}>
         <cylinderGeometry args={[0.03, 0.03, 0.4, 16]} />
         <meshStandardMaterial 
-          color="#e6f3ff" 
+          color="#ffffff" 
           transparent
-          opacity={0.4}
-          metalness={0.1}
-          roughness={0.1}
+          opacity={0.2}
         />
       </mesh>
       
-      {/* Filter paper inside funnel */}
+      <mesh position={[0, -0.5, 0]}>
+        <cylinderGeometry args={[0.035, 0.035, 0.405, 16]} />
+        <meshStandardMaterial 
+          color="#000000" 
+          transparent
+          opacity={0.8}
+          side={THREE.BackSide}
+        />
+      </mesh>
+      
+      {/* Filter paper inside funnel - white like in diagram */}
       {hasFilterPaper && (
         <mesh position={[0, 0.1, 0]}>
           <coneGeometry args={[0.25, 0.4, 32]} />
@@ -77,54 +79,82 @@ function Funnel({ position, isSelected, onSelect, hasFilterPaper, solidResidue }
         </mesh>
       )}
       
-      {/* Solid residue on filter paper */}
+      {/* Solid residue on filter paper - brownish sand color */}
       {solidResidue && hasFilterPaper && (
         <mesh position={[0, 0.15, 0]}>
           <cylinderGeometry args={[0.15, 0.15, 0.05, 16]} />
-          <meshStandardMaterial color="#d4af37" />
+          <meshStandardMaterial color="#D2691E" />
         </mesh>
       )}
     </group>
   );
 }
 
-
-
-function MixtureBeaker({ position, isSelected, onSelect, isEmpty }: {
+function MixtureBeaker({ position, isSelected, onSelect, isEmpty, isPouring }: {
   position: [number, number, number];
   isSelected: boolean;
   onSelect: () => void;
   isEmpty: boolean;
+  isPouring: boolean;
 }) {
+  const beakerRef = useRef<THREE.Group>(null);
+  const waterRef = useRef<THREE.Mesh>(null);
+  const sandRef = useRef<THREE.Mesh>(null);
+
+  useFrame((state) => {
+    if (beakerRef.current && isPouring) {
+      // Tilt the beaker when pouring
+      beakerRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 2) * 0.3 + 0.5;
+      beakerRef.current.position.y = position[1] + 0.2 + Math.sin(state.clock.elapsedTime * 1.5) * 0.1;
+    } else if (beakerRef.current) {
+      // Return to normal position
+      beakerRef.current.rotation.z = 0;
+      beakerRef.current.position.y = position[1];
+    }
+  });
+
   return (
-    <group position={position}>
+    <group ref={beakerRef} position={position}>
+      {/* Glass beaker - clear with black outline like diagram */}
       <mesh
         onClick={onSelect}
         userData={{ interactable: true }}
       >
         <cylinderGeometry args={[0.3, 0.3, 0.6]} />
         <meshStandardMaterial 
-          color={isSelected ? "#3498db" : "#ecf0f1"} 
+          color="#ffffff" 
           transparent 
-          opacity={0.8}
+          opacity={0.2}
         />
       </mesh>
-      {/* Sand-water mixture */}
+      
+      {/* Beaker outline */}
+      <mesh>
+        <cylinderGeometry args={[0.305, 0.305, 0.605]} />
+        <meshStandardMaterial 
+          color="#000000" 
+          transparent
+          opacity={0.8}
+          side={THREE.BackSide}
+        />
+      </mesh>
+      
+      {/* Blue water and brownish sand mixture */}
       {!isEmpty && (
         <>
-          {/* Water layer */}
-          <mesh position={[0, 0.1, 0]}>
+          {/* Blue water layer - bright blue like in diagram */}
+          <mesh ref={waterRef} position={[0, 0.1, 0]}>
             <cylinderGeometry args={[0.28, 0.28, 0.3]} />
             <meshStandardMaterial 
-              color="#87ceeb" 
+              color="#00BFFF" 
               transparent 
-              opacity={0.7}
+              opacity={0.8}
             />
           </mesh>
-          {/* Sand particles */}
-          <mesh position={[0, -0.1, 0]}>
+          {/* Brownish sand particles at bottom */}
+          <mesh ref={sandRef} position={[0, -0.1, 0]}>
             <cylinderGeometry args={[0.28, 0.28, 0.1]} />
-            <meshStandardMaterial color="#d4af37" />
+            <meshStandardMaterial color="#D2691E" />
           </mesh>
         </>
       )}
@@ -140,53 +170,81 @@ function FiltrateBeaker({ position, isSelected, onSelect, filtrateLevel }: {
 }) {
   const filtrateRef = useRef<THREE.Mesh>(null);
 
-  // Animation for filtrate collection
-  useFrame((state) => {
-    if (filtrateRef.current && filtrateLevel > 0) {
-      const time = state.clock.elapsedTime;
-      // Subtle ripple effect
-      filtrateRef.current.position.y = -0.3 + filtrateLevel * 0.25 + Math.sin(time * 3) * 0.005;
-    }
-  });
-
   return (
     <group position={position}>
-      {/* Glass beaker - transparent like in diagram */}
+      {/* Glass beaker - clear with black outline like diagram */}
       <mesh
         onClick={onSelect}
         userData={{ interactable: true }}
       >
         <cylinderGeometry args={[0.3, 0.3, 0.6, 32]} />
         <meshStandardMaterial 
-          color={isSelected ? "#87ceeb" : "#ffffff"} 
+          color="#ffffff" 
           transparent 
-          opacity={0.3}
-          metalness={0.1}
-          roughness={0.1}
+          opacity={0.2}
         />
       </mesh>
       
-      {/* Beaker rim */}
-      <mesh position={[0, 0.3, 0]}>
-        <torusGeometry args={[0.3, 0.015, 16, 32]} />
+      {/* Beaker outline */}
+      <mesh>
+        <cylinderGeometry args={[0.305, 0.305, 0.605, 32]} />
         <meshStandardMaterial 
-          color="#4682b4" 
+          color="#000000" 
           transparent
           opacity={0.8}
+          side={THREE.BackSide}
         />
       </mesh>
       
-      {/* Clear cyan filtrate - matches diagram color */}
+      {/* Clear blue filtrate - matches diagram color */}
       {filtrateLevel > 0 && (
         <mesh ref={filtrateRef} position={[0, -0.3 + filtrateLevel * 0.25, 0]}>
           <cylinderGeometry args={[0.28, 0.28, filtrateLevel * 0.5, 32]} />
           <meshStandardMaterial 
-            color="#00bcd4" 
+            color="#00BFFF" 
             transparent 
             opacity={0.8}
           />
         </mesh>
       )}
+    </group>
+  );
+}
+
+function PouringStream({ startPos, endPos, isVisible }: {
+  startPos: [number, number, number];
+  endPos: [number, number, number];
+  isVisible: boolean;
+}) {
+  const streamRef = useRef<THREE.Group>(null);
+
+  useFrame((state) => {
+    if (streamRef.current && isVisible) {
+      // Create flowing water effect
+      const time = state.clock.elapsedTime;
+      streamRef.current.children.forEach((droplet, index) => {
+        const mesh = droplet as THREE.Mesh;
+        mesh.position.y = startPos[1] - (time * 3 + index * 0.3) % 1.5;
+        mesh.visible = mesh.position.y > endPos[1];
+      });
+    }
+  });
+
+  if (!isVisible) return null;
+
+  return (
+    <group ref={streamRef}>
+      {/* Multiple droplets to create stream effect */}
+      {[0, 1, 2, 3, 4].map((i) => (
+        <mesh key={i} position={[(startPos[0] + endPos[0]) / 2, startPos[1] - i * 0.2, startPos[2]]}>
+          <sphereGeometry args={[0.02, 8, 8]} />
+          <meshStandardMaterial 
+            color="#00BFFF" 
+            transparent 
+            opacity={0.8}
+          />
+        </mesh>
+      ))}
     </group>
   );
 }
@@ -198,45 +256,31 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
   const [hasResidue, setHasResidue] = useState(false);
   const [mixtureEmpty, setMixtureEmpty] = useState(false);
   const [hasFilterPaper, setHasFilterPaper] = useState(true);
-  const [filteringProgress, setFilteringProgress] = useState(0);
-
-  // Animation for filtering droplets
-  const dropletsRef = useRef<THREE.Group>(null);
-
-  useFrame((state) => {
-    if (experimentStage === 'filtering' && dropletsRef.current) {
-      const time = state.clock.elapsedTime;
-      dropletsRef.current.children.forEach((droplet, index) => {
-        droplet.position.y = -0.2 - (time * 2 + index * 0.5) % 1;
-        droplet.visible = filteringProgress > 0.1;
-      });
-    }
-  });
+  const [isPouring, setIsPouring] = useState(false);
+  const [showStream, setShowStream] = useState(false);
 
   const handleFiltration = () => {
     if (selectedTool === 'mixture' && experimentStage === 'setup') {
       setExperimentStage('filtering');
-      setFilteringProgress(0);
+      setIsPouring(true);
+      setShowStream(true);
       
-      // Animate the filtration process with more realistic timing
+      // Animate the filtration process
       const filtrationInterval = setInterval(() => {
-        setFilteringProgress(prev => {
-          const newProgress = prev + 0.05;
-          return Math.min(newProgress, 1);
-        });
-        
         setFiltrateLevel(prev => {
-          const newLevel = prev + 0.1;
+          const newLevel = prev + 0.08;
           if (newLevel >= 1) {
             setHasResidue(true);
             setMixtureEmpty(true);
+            setIsPouring(false);
+            setShowStream(false);
             setExperimentStage('complete');
             clearInterval(filtrationInterval);
             
             if (onExperimentComplete) {
               onExperimentComplete(
-                "Filtration completed successfully! The sand has been separated from the water. " +
-                "The clear water (filtrate) has passed through the filter paper, while the sand " +
+                "Filtration completed successfully! The brown sand has been separated from the blue water. " +
+                "The clear blue water (filtrate) has passed through the filter paper, while the brown sand " +
                 "remains on the filter paper as residue."
               );
             }
@@ -244,7 +288,7 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
           }
           return newLevel;
         });
-      }, 300);
+      }, 400);
     }
   };
 
@@ -254,7 +298,8 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
     setHasResidue(false);
     setMixtureEmpty(false);
     setSelectedTool('');
-    setFilteringProgress(0);
+    setIsPouring(false);
+    setShowStream(false);
   };
 
   return (
@@ -268,21 +313,12 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
         solidResidue={hasResidue}
       />
       
-      {/* Filtering droplets animation */}
-      {experimentStage === 'filtering' && (
-        <group ref={dropletsRef} position={[-1, 1.9, -0.5]}>
-          {[0, 1, 2].map((i) => (
-            <mesh key={i} position={[0, -0.2 - i * 0.2, 0]}>
-              <sphereGeometry args={[0.02, 8, 8]} />
-              <meshStandardMaterial 
-                color="#00bcd4" 
-                transparent 
-                opacity={0.8}
-              />
-            </mesh>
-          ))}
-        </group>
-      )}
+      {/* Pouring stream animation */}
+      <PouringStream 
+        startPos={[-2.5, 2.2, -0.5]}
+        endPos={[-1, 1.9, -0.5]}
+        isVisible={showStream}
+      />
       
       <MixtureBeaker 
         position={[-3, 1.75, -0.5]} 
@@ -292,6 +328,7 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
           handleFiltration();
         }}
         isEmpty={mixtureEmpty}
+        isPouring={isPouring}
       />
       
       <FiltrateBeaker 
@@ -303,13 +340,13 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
 
       {/* Equipment Labels */}
       <mesh position={[-3, 1.4, -0.5]}>
-        <planeGeometry args={[1.6, 0.2]} />
+        <planeGeometry args={[1.8, 0.2]} />
         <meshStandardMaterial color="#3498db" />
       </mesh>
       <Text3D position={[-3, 1.4, -0.48]} text="Sand + Water" fontSize={0.06} color="#ffffff" />
 
       <mesh position={[-1, 2.8, -0.5]}>
-        <planeGeometry args={[1.6, 0.2]} />
+        <planeGeometry args={[1.8, 0.2]} />
         <meshStandardMaterial color="#e67e22" />
       </mesh>
       <Text3D position={[-1, 2.8, -0.48]} text="Glass Funnel" fontSize={0.06} color="#ffffff" />
@@ -318,9 +355,9 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
         <planeGeometry args={[1.6, 0.2]} />
         <meshStandardMaterial color="#27ae60" />
       </mesh>
-      <Text3D position={[-1, 1.4, -0.48]} text="Clean Water" fontSize={0.06} color="#ffffff" />
+      <Text3D position={[-1, 1.4, -0.48]} text="Filtrate" fontSize={0.06} color="#ffffff" />
 
-      {/* Instructions Panel - With Text */}
+      {/* Instructions Panel */}
       <mesh position={[2.5, 2.5, -1]}>
         <planeGeometry args={[3.5, 2]} />
         <meshStandardMaterial color="#2c3e50" />
@@ -331,16 +368,14 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
         <meshStandardMaterial color="#ffffff" />
       </mesh>
 
-      {/* Title */}
-      <Text3D position={[2.5, 3.2, -0.98]} text="FILTRATION LAB" fontSize={0.12} color="#3498db" />
+      <Text3D position={[2.5, 3.2, -0.98]} text="FILTRATION PROCESS" fontSize={0.1} color="#3498db" />
       
-      {/* Instructions */}
-      <Text3D position={[2.5, 2.8, -0.98]} text="1. Click the mixture beaker to start" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[2.5, 2.5, -0.98]} text="2. Watch filtration in progress" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[2.5, 2.2, -0.98]} text="3. Sand stays on filter paper" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[2.5, 1.9, -0.98]} text="4. Clear water passes through" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[2.5, 2.8, -0.98]} text="1. Click mixture beaker once to start" fontSize={0.07} color="#2c3e50" />
+      <Text3D position={[2.5, 2.5, -0.98]} text="2. Watch beaker pour into funnel" fontSize={0.07} color="#2c3e50" />
+      <Text3D position={[2.5, 2.2, -0.98]} text="3. Brown sand stays on filter paper" fontSize={0.07} color="#2c3e50" />
+      <Text3D position={[2.5, 1.9, -0.98]} text="4. Blue water passes through" fontSize={0.07} color="#2c3e50" />
 
-      {/* Process Steps Indicator - Simplified */}
+      {/* Process Status */}
       <mesh position={[0, 3.5, -1]}>
         <planeGeometry args={[8, 0.4]} />
         <meshStandardMaterial 
@@ -350,20 +385,33 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
           } 
         />
       </mesh>
+      
+      <Text3D 
+        position={[0, 3.5, -0.98]} 
+        text={
+          experimentStage === 'setup' ? "CLICK MIXTURE BEAKER TO START" :
+          experimentStage === 'filtering' ? "FILTRATION IN PROGRESS..." : "FILTRATION COMPLETE!"
+        }
+        fontSize={0.08} 
+        color="#ffffff" 
+      />
 
       {/* Reset button */}
       {experimentStage === 'complete' && (
-        <mesh 
-          position={[4, 1.8, -1]} 
-          onClick={resetExperiment}
-          userData={{ interactable: true }}
-        >
-          <boxGeometry args={[1, 0.3, 0.1]} />
-          <meshStandardMaterial color="#e74c3c" />
-        </mesh>
+        <>
+          <mesh 
+            position={[4, 1.8, -1]} 
+            onClick={resetExperiment}
+            userData={{ interactable: true }}
+          >
+            <boxGeometry args={[1, 0.3, 0.1]} />
+            <meshStandardMaterial color="#e74c3c" />
+          </mesh>
+          <Text3D position={[4, 1.8, -0.98]} text="RESET" fontSize={0.06} color="#ffffff" />
+        </>
       )}
 
-      {/* Arrow pointing to mixture beaker */}
+      {/* Arrow pointing to mixture beaker during setup */}
       {experimentStage === 'setup' && (
         <mesh position={[-2.5, 2.2, -0.5]} rotation={[0, 0, -Math.PI/4]}>
           <coneGeometry args={[0.1, 0.3, 4]} />
