@@ -22,8 +22,8 @@ function DecantingBeaker({ position, isSelected, onSelect, liquidLevel, sediment
     if (beakerRef.current && isPouring) {
       // Realistic pouring angle - tilt beaker towards receiving beaker
       beakerRef.current.rotation.z = -0.4; // 23 degree tilt
-      beakerRef.current.position.x = position[0] + 0.8; // Move towards receiving beaker
-      beakerRef.current.position.y = position[1] + 0.2; // Slight lift
+      beakerRef.current.position.x = position[0] + 2.2; // Move much closer to receiving beaker
+      beakerRef.current.position.y = position[1] + 0.3; // Lift higher for better pouring angle
     } else if (beakerRef.current && !isPouring) {
       beakerRef.current.rotation.z = 0;
       beakerRef.current.position.x = position[0];
