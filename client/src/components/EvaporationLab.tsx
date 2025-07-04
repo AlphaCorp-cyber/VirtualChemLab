@@ -174,23 +174,65 @@ function BunsenBurner({ position, isLit, onToggle }: {
         <meshStandardMaterial color="#34495e" />
       </mesh>
       
-      {/* Flame */}
+      {/* Flame - Much more visible */}
       {isLit && (
-        <mesh 
-          ref={flameRef}
-          position={[0, 0.35, 0]}
-          onClick={onToggle}
-          userData={{ interactable: true }}
-        >
-          <coneGeometry args={[0.08, 0.3, 8]} />
-          <meshStandardMaterial 
-            color="#ff6b35" 
-            transparent 
-            opacity={0.8}
-            emissive="#ff6b35"
-            emissiveIntensity={0.5}
+        <group position={[0, 0.35, 0]}>
+          {/* Outer flame - bright orange */}
+          <mesh 
+            ref={flameRef}
+            onClick={onToggle}
+            userData={{ interactable: true }}
+          >
+            <coneGeometry args={[0.12, 0.45, 8]} />
+            <meshStandardMaterial 
+              color="#ff4500" 
+              transparent 
+              opacity={0.9}
+              emissive="#ff4500"
+              emissiveIntensity={1.5}
+            />
+          </mesh>
+          
+          {/* Inner flame - bright blue core */}
+          <mesh position={[0, 0.05, 0]}>
+            <coneGeometry args={[0.06, 0.25, 8]} />
+            <meshStandardMaterial 
+              color="#0099ff" 
+              transparent 
+              opacity={0.8}
+              emissive="#0099ff"
+              emissiveIntensity={1.2}
+            />
+          </mesh>
+          
+          {/* Flame glow effect */}
+          <mesh position={[0, 0, 0]}>
+            <coneGeometry args={[0.15, 0.5, 8]} />
+            <meshStandardMaterial 
+              color="#ffaa00" 
+              transparent 
+              opacity={0.3}
+              emissive="#ffaa00"
+              emissiveIntensity={0.8}
+            />
+          </mesh>
+          
+          {/* Enhanced flame lighting */}
+          <pointLight 
+            position={[0, 0.1, 0]} 
+            intensity={2.5} 
+            color="#ff6600"
+            distance={3}
+            decay={1}
           />
-        </mesh>
+          <pointLight 
+            position={[0, 0.2, 0]} 
+            intensity={1.5} 
+            color="#0099ff"
+            distance={2}
+            decay={1}
+          />
+        </group>
       )}
       
       {/* Control knob - black by default, red when lit */}
@@ -357,7 +399,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
 
   return (
     <group>
-      {/* Enhanced lighting for crystal visibility */}
+      {/* Enhanced lighting for crystal visibility and flame */}
       <ambientLight intensity={0.8} color="#ffffff" />
       <directionalLight
         position={[2, 5, 2]}
@@ -365,6 +407,27 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
         color="#ffffff"
         castShadow
       />
+      
+      {/* Additional lighting for flame visibility */}
+      {isLit && (
+        <>
+          <pointLight 
+            position={[0, 3, -1]} 
+            intensity={1.0} 
+            color="#ff6600"
+            distance={4}
+            decay={1}
+          />
+          <spotLight
+            position={[1, 3, 0]}
+            angle={Math.PI / 4}
+            penumbra={0.3}
+            intensity={0.8}
+            color="#ff6600"
+            target-position={[0, 1.8, -1]}
+          />
+        </>
+      )}
       
       {/* Bright spotlight for salt crystals when visible */}
       {saltCrystals && (
@@ -539,23 +602,23 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
         <meshStandardMaterial color="#ffffff" />
       </mesh>
 
-      {/* Reset button */}
+      {/* Reset button - positioned on table surface */}
       <mesh 
-        position={[1.5, 0.6, -1]}
+        position={[2.5, 1.9, -1]}
         onClick={resetExperiment}
         userData={{ interactable: true }}
       >
-        <planeGeometry args={[1.0, 0.3]} />
+        <boxGeometry args={[0.8, 0.2, 0.1]} />
         <meshStandardMaterial color="#e74c3c" />
       </mesh>
-      <mesh position={[1.5, 0.6, -0.99]}>
-        <planeGeometry args={[0.9, 0.25]} />
+      <mesh position={[2.5, 1.9, -0.98]}>
+        <boxGeometry args={[0.75, 0.15, 0.05]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
       <Text3D 
-        position={[1.5, 0.6, -0.98]} 
+        position={[2.5, 1.9, -0.97]} 
         text="RESET" 
-        fontSize={0.08} 
+        fontSize={0.06} 
         color="#e74c3c" 
       />
 
