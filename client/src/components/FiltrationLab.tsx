@@ -221,27 +221,44 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
         filtrateLevel={filtrateLevel}
       />
 
-      {/* Equipment Labels - Simple colored indicators */}
+      {/* Equipment Labels */}
       <mesh position={[-3, 0.8, -1]}>
-        <planeGeometry args={[1.2, 0.2]} />
+        <planeGeometry args={[1.6, 0.2]} />
         <meshStandardMaterial color="#3498db" />
       </mesh>
+      <Text3D position={[-3, 0.8, -0.98]} text="Sand + Water" fontSize={0.06} color="#ffffff" />
 
       <mesh position={[-1, 2.4, -1]}>
-        <planeGeometry args={[1.2, 0.2]} />
+        <planeGeometry args={[1.6, 0.2]} />
         <meshStandardMaterial color="#e67e22" />
       </mesh>
+      <Text3D position={[-1, 2.4, -0.98]} text="Filter Setup" fontSize={0.06} color="#ffffff" />
 
       <mesh position={[-1, 0.4, -1]}>
-        <planeGeometry args={[1.2, 0.2]} />
+        <planeGeometry args={[1.6, 0.2]} />
         <meshStandardMaterial color="#27ae60" />
       </mesh>
+      <Text3D position={[-1, 0.4, -0.98]} text="Clean Water" fontSize={0.06} color="#ffffff" />
 
-      {/* Instructions Panel - Simplified */}
+      {/* Instructions Panel - With Text */}
       <mesh position={[2.5, 2.5, -1]}>
         <planeGeometry args={[3.5, 2]} />
-        <meshStandardMaterial color="#3498db" />
+        <meshStandardMaterial color="#2c3e50" />
       </mesh>
+      
+      <mesh position={[2.5, 2.5, -0.99]}>
+        <planeGeometry args={[3.3, 1.8]} />
+        <meshStandardMaterial color="#ffffff" />
+      </mesh>
+
+      {/* Title */}
+      <Text3D position={[2.5, 3.2, -0.98]} text="FILTRATION LAB" fontSize={0.12} color="#3498db" />
+      
+      {/* Instructions */}
+      <Text3D position={[2.5, 2.8, -0.98]} text="1. Click the mixture beaker to start" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[2.5, 2.5, -0.98]} text="2. Watch filtration in progress" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[2.5, 2.2, -0.98]} text="3. Sand stays on filter paper" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[2.5, 1.9, -0.98]} text="4. Clear water passes through" fontSize={0.08} color="#2c3e50" />
 
       {/* Process Steps Indicator - Simplified */}
       <mesh position={[0, 3.5, -1]}>

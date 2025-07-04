@@ -205,63 +205,42 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       {/* Equipment Labels */}
       <mesh position={[0, 0.7, -1]}>
         <planeGeometry args={[1.5, 0.2]} />
-        <meshStandardMaterial color="#2c3e50" />
+        <meshStandardMaterial color="#e74c3c" />
       </mesh>
-      <LabelText position={[0, 0.7, -0.98]} text="Bunsen Burner" color="#ffffff" />
+      <Text3D position={[0, 0.7, -0.98]} text="Bunsen Burner" fontSize={0.06} color="#ffffff" />
 
       <mesh position={[0, 2.4, -1]}>
         <planeGeometry args={[1.8, 0.2]} />
-        <meshStandardMaterial color="#2c3e50" />
+        <meshStandardMaterial color="#f39c12" />
       </mesh>
-      <LabelText position={[0, 2.4, -0.98]} text="Evaporating Dish" color="#ffffff" />
+      <Text3D position={[0, 2.4, -0.98]} text="Evaporating Dish" fontSize={0.06} color="#ffffff" />
 
       <mesh position={[0, 2.8, -1]}>
         <planeGeometry args={[1.5, 0.2]} />
-        <meshStandardMaterial color="#2c3e50" />
+        <meshStandardMaterial color="#95a5a6" />
       </mesh>
-      <LabelText position={[0, 2.8, -0.98]} text="Tripod Stand" color="#ffffff" />
+      <Text3D position={[0, 2.8, -0.98]} text="Tripod Stand" fontSize={0.06} color="#ffffff" />
 
       {/* Instructions Panel */}
-      <mesh position={[3.5, 2.5, 0]}>
+      <mesh position={[3.5, 2.5, -1]}>
         <planeGeometry args={[4, 2.5]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
       
-      <mesh position={[3.5, 2.5, 0.01]}>
+      <mesh position={[3.5, 2.5, -0.99]}>
         <planeGeometry args={[3.8, 2.3]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
 
-      {/* Instruction text areas */}
-      <mesh position={[3.5, 3.5, 0.02]}>
-        <planeGeometry args={[3.5, 0.3]} />
-        <meshStandardMaterial color="#e67e22" />
-      </mesh>
-
-      <mesh position={[3.5, 3.0, 0.02]}>
-        <planeGeometry args={[3.5, 0.25]} />
-        <meshStandardMaterial color="#34495e" />
-      </mesh>
-
-      <mesh position={[3.5, 2.6, 0.02]}>
-        <planeGeometry args={[3.5, 0.25]} />
-        <meshStandardMaterial color="#34495e" />
-      </mesh>
-
-      <mesh position={[3.5, 2.2, 0.02]}>
-        <planeGeometry args={[3.5, 0.25]} />
-        <meshStandardMaterial color="#34495e" />
-      </mesh>
-
-      <mesh position={[3.5, 1.8, 0.02]}>
-        <planeGeometry args={[3.5, 0.25]} />
-        <meshStandardMaterial color="#34495e" />
-      </mesh>
-
-      <mesh position={[3.5, 1.4, 0.02]}>
-        <planeGeometry args={[3.5, 0.25]} />
-        <meshStandardMaterial color="#34495e" />
-      </mesh>
+      {/* Title */}
+      <Text3D position={[3.5, 3.5, -0.98]} text="EVAPORATION LAB" fontSize={0.12} color="#e67e22" />
+      
+      {/* Instructions */}
+      <Text3D position={[3.5, 3.0, -0.98]} text="1. Click Bunsen burner to light" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[3.5, 2.6, -0.98]} text="2. Click evaporating dish to start" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[3.5, 2.2, -0.98]} text="3. Watch water evaporate away" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[3.5, 1.8, -0.98]} text="4. Salt crystals remain behind" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[3.5, 1.4, -0.98]} text="5. Separation complete!" fontSize={0.08} color="#2c3e50" />
 
       {/* Heat indicator */}
       {isLit && (

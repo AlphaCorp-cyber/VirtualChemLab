@@ -228,52 +228,35 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       {/* Equipment Labels */}
       <mesh position={[-2.5, 0.8, -1]}>
         <planeGeometry args={[1.8, 0.25]} />
-        <meshStandardMaterial color="#2c3e50" />
+        <meshStandardMaterial color="#3498db" />
       </mesh>
-      <LabelText position={[-2.5, 0.8, -0.98]} text="Source Beaker" color="#ffffff" />
+      <Text3D position={[-2.5, 0.8, -0.98]} text="Source Beaker" fontSize={0.06} color="#ffffff" />
       
       <mesh position={[2.5, 0.8, -1]}>
         <planeGeometry args={[1.8, 0.25]} />
-        <meshStandardMaterial color="#2c3e50" />
+        <meshStandardMaterial color="#27ae60" />
       </mesh>
-      <LabelText position={[2.5, 0.8, -0.98]} text="Receiving Beaker" color="#ffffff" />
+      <Text3D position={[2.5, 0.8, -0.98]} text="Receiving Beaker" fontSize={0.06} color="#ffffff" />
 
       {/* Instructions Panel */}
-      <mesh position={[0, 3, 0]}>
+      <mesh position={[0, 3, -1]}>
         <planeGeometry args={[5, 2]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
       
-      <mesh position={[0, 3, 0.01]}>
+      <mesh position={[0, 3, -0.99]}>
         <planeGeometry args={[4.8, 1.8]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
 
-      {/* Instruction text areas */}
-      <mesh position={[0, 3.7, 0.02]}>
-        <planeGeometry args={[4.5, 0.3]} />
-        <meshStandardMaterial color="#9b59b6" />
-      </mesh>
-
-      <mesh position={[0, 3.3, 0.02]}>
-        <planeGeometry args={[4.5, 0.25]} />
-        <meshStandardMaterial color="#34495e" />
-      </mesh>
-
-      <mesh position={[0, 2.9, 0.02]}>
-        <planeGeometry args={[4.5, 0.25]} />
-        <meshStandardMaterial color="#34495e" />
-      </mesh>
-
-      <mesh position={[0, 2.5, 0.02]}>
-        <planeGeometry args={[4.5, 0.25]} />
-        <meshStandardMaterial color="#34495e" />
-      </mesh>
-
-      <mesh position={[0, 2.1, 0.02]}>
-        <planeGeometry args={[4.5, 0.25]} />
-        <meshStandardMaterial color="#34495e" />
-      </mesh>
+      {/* Title */}
+      <Text3D position={[0, 3.7, -0.98]} text="DECANTING LAB" fontSize={0.12} color="#9b59b6" />
+      
+      {/* Instructions */}
+      <Text3D position={[0, 3.3, -0.98]} text="1. Click source beaker to start settling" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[0, 2.9, -0.98]} text="2. Wait for sediment to settle" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[0, 2.5, -0.98]} text="3. Click again to pour carefully" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[0, 2.1, -0.98]} text="4. Clear liquid separates from sand" fontSize={0.08} color="#2c3e50" />
 
       {/* Process indicator */}
       <mesh position={[0, 4.5, 0]}>
