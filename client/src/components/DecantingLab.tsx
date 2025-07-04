@@ -88,9 +88,9 @@ function DecantingBeaker({ position, isSelected, onSelect, liquidLevel, sediment
           <meshStandardMaterial 
             color={wineColor} 
             transparent 
-            opacity={0.7}
+            opacity={0.8}
             emissive={wineColor}
-            emissiveIntensity={0.05}
+            emissiveIntensity={0.1}
             roughness={0.1}
             metalness={0.05}
           />
@@ -231,7 +231,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         // As sediment forms at bottom, liquid level reduces but stays on top
         const totalOriginalVolume = 0.5;
         const adjustedLiquidLevel = totalOriginalVolume - currentSediment;
-        setSourceLiquidLevel(adjustedLiquidLevel);
+        setSourceLiquidLevel(Math.max(0.1, adjustedLiquidLevel)); // Ensure minimum visible liquid
         
         // Gradually change wine color from deep red to clearer as sediment settles
         const settlingProgress = currentSediment / 0.15;
