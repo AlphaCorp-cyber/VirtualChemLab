@@ -178,12 +178,28 @@ function LiquidStream({ startPos, endPos, isVisible }: {
 
   useFrame((state) => {
     if (streamRef.current && isVisible) {
-      // Create flowing wine effect
+      // Create flowing wine effect with realistic arc trajectory
       const time = state.clock.elapsedTime;
       streamRef.current.children.forEach((droplet, index) => {
         const mesh = droplet as THREE.Mesh;
-        mesh.position.y = startPos[1] - (time * 2 + index * 0.2) % 1.0;
-        mesh.visible = mesh.position.y > endPos[1];
+        const progress = (time * 3 + index * 0.3) % 2.0;
+        
+        if (progress < 1.0) {
+          // Calculate parabolic arc from source to receiving beaker
+          const t = progress;
+          const startX = startPos[0];
+          const startY = startPos[1];
+          const endX = endPos[0];
+          const endY = endPos[1];
+          
+          // Parabolic trajectory with gravity effect
+          mesh.position.x = startX + (endX - startX) * t;
+          mesh.position.y = startY + (endY - startY) * t - 0.5 * t * t; // gravity curve
+          mesh.position.z = startPos[2];
+          mesh.visible = true;
+        } else {
+          mesh.visible = false;
+        }
       });
     }
   });
@@ -192,16 +208,16 @@ function LiquidStream({ startPos, endPos, isVisible }: {
 
   return (
     <group ref={streamRef}>
-      {/* Multiple droplets to create realistic wine stream */}
-      {[0, 1, 2, 3, 4, 5].map((i) => (
-        <mesh key={i} position={[startPos[0] + 0.5, startPos[1] - i * 0.15, startPos[2]]}>
-          <sphereGeometry args={[0.025, 8, 8]} />
+      {/* Multiple droplets to create realistic wine stream with proper trajectory */}
+      {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+        <mesh key={i} position={startPos}>
+          <sphereGeometry args={[0.03, 8, 8]} />
           <meshStandardMaterial 
             color="#DC143C" 
             transparent 
             opacity={0.9}
             emissive="#8B0000"
-            emissiveIntensity={0.1}
+            emissiveIntensity={0.15}
           />
         </mesh>
       ))}
@@ -349,8 +365,8 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
 
       {/* Liquid stream animation */}
       <LiquidStream 
-        startPos={[-1.5, 2.2, -1]}
-        endPos={[0.2, 1.9, -1]}
+        startPos={[-0.3, 2.5, -1]}
+        endPos={[0.5, 2.3, -1]}
         isVisible={showStream}
       />
 
