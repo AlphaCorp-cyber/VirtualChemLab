@@ -86,7 +86,10 @@ export default function Lab() {
         'flame-tests': 'Flame Tests',
         'gas-tests': 'Gas Tests',
         'displacement-reactions': 'Displacement Reactions',
-        'paper-chromatography': 'Paper Chromatography'
+        'paper-chromatography': 'Paper Chromatography',
+        'filtration': 'Filtration',
+        'evaporation': 'Evaporation',
+        'decanting': 'Decanting'
       };
 
       const experimentName = experimentMap[experimentId];

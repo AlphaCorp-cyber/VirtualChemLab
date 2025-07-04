@@ -68,6 +68,36 @@ const experiments: Experiment[] = [
     available: true
   },
   {
+    id: "filtration",
+    title: "Filtration (Separation)",
+    description: "Master the fundamental separation technique of filtration to separate insoluble solids from liquids.",
+    duration: "10-15 minutes",
+    difficulty: "Beginner",
+    category: "Separation Techniques",
+    features: ["Filter Paper", "Funnel", "Sand-Water Mixture", "Residue Collection"],
+    available: true
+  },
+  {
+    id: "evaporation",
+    title: "Evaporation to Dryness",
+    description: "Recover dissolved solids from solutions by complete evaporation using controlled heating.",
+    duration: "15-20 minutes",
+    difficulty: "Beginner",
+    category: "Separation Techniques",
+    features: ["Evaporating Dish", "Bunsen Burner", "Salt Crystals", "Heat Control"],
+    available: true
+  },
+  {
+    id: "decanting",
+    title: "Decanting",
+    description: "Learn to separate liquids from settled solids using careful pouring techniques.",
+    duration: "8-12 minutes",
+    difficulty: "Beginner",
+    category: "Separation Techniques",
+    features: ["Settling Time", "Careful Pouring", "Sediment Layer", "Clear Liquid"],
+    available: true
+  },
+  {
     id: "titration",
     title: "Acid-Base Titration",
     description: "Perform precise titrations using virtual burettes and indicators to determine unknown concentrations.",

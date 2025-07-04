@@ -99,6 +99,35 @@ export function LabUI({ experimentId }: LabUIProps) {
                 Paper Chromatography
               </Button>
             </div>
+            <div className="flex gap-2 mt-2">
+              <Button
+                variant={currentExperiment === "Filtration" ? "default" : "outline"}
+                size="sm"
+                onClick={() => switchExperiment("Filtration")}
+                className="flex items-center gap-2"
+              >
+                <FlaskConical className="w-4 h-4" />
+                Filtration
+              </Button>
+              <Button
+                variant={currentExperiment === "Evaporation" ? "default" : "outline"}
+                size="sm"
+                onClick={() => switchExperiment("Evaporation")}
+                className="flex items-center gap-2"
+              >
+                <Flame className="w-4 h-4" />
+                Evaporation
+              </Button>
+              <Button
+                variant={currentExperiment === "Decanting" ? "default" : "outline"}
+                size="sm"
+                onClick={() => switchExperiment("Decanting")}
+                className="flex items-center gap-2"
+              >
+                <FlaskConical className="w-4 h-4" />
+                Decanting
+              </Button>
+            </div>
           </CardContent>
         </Card>
         )}

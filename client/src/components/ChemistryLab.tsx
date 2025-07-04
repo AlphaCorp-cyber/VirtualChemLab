@@ -6,6 +6,9 @@ import { FlameTestLab } from "./FlameTestLab";
 import { GasTestLab } from "./GasTestLab";
 import DisplacementLab from './DisplacementLab';
 import PaperChromatographyLab from './PaperChromatographyLab';
+import { FiltrationLab } from './FiltrationLab';
+import { EvaporationLab } from './EvaporationLab';
+import { DecantingLab } from './DecantingLab';
 import { PHTestStrip } from './PHTestStrip';
 import { VRControls } from './VRControls';
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
@@ -216,6 +219,15 @@ export function ChemistryLab({ mobileControls }: ChemistryLabProps = {}) {
       )}
       {currentExperiment === "Paper Chromatography" && (
         <PaperChromatographyLab onExperimentComplete={handleExperimentComplete} />
+      )}
+      {currentExperiment === "Filtration" && (
+        <FiltrationLab onExperimentComplete={handleExperimentComplete} />
+      )}
+      {currentExperiment === "Evaporation" && (
+        <EvaporationLab onExperimentComplete={handleExperimentComplete} />
+      )}
+      {currentExperiment === "Decanting" && (
+        <DecantingLab onExperimentComplete={handleExperimentComplete} />
       )}
       
       {/* Height adjustment indicator and orientation helper for VR */}
