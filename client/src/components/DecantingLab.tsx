@@ -235,10 +235,18 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         const newColor = interpolateColor('#8B0000', '#DC143C', settlingProgress);
         setWineColor(newColor);
         
+        // Force a re-render to ensure color updates are visible
+        if (settlingProgress >= 1) {
+          setWineColor('#DC143C');
+        }
+        
         if (currentSediment >= 0.15) {
           clearInterval(settlingInterval);
-          setExperimentStage('decanting');
-          setWineColor('#DC143C'); // Final clear wine color
+          // Ensure final color is properly set before moving to decanting stage
+          setTimeout(() => {
+            setWineColor('#DC143C'); // Final clear wine color
+            setExperimentStage('decanting');
+          }, 100);
         }
       }, 300); // Slower, more realistic settling
     }
@@ -246,6 +254,9 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
 
   // Helper function to interpolate between colors
   const interpolateColor = (color1: string, color2: string, factor: number) => {
+    // Clamp factor between 0 and 1
+    const clampedFactor = Math.max(0, Math.min(1, factor));
+    
     const c1 = parseInt(color1.substring(1), 16);
     const c2 = parseInt(color2.substring(1), 16);
     
@@ -257,9 +268,9 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
     const g2 = (c2 >> 8) & 0xff;
     const b2 = c2 & 0xff;
     
-    const r = Math.round(r1 + (r2 - r1) * factor);
-    const g = Math.round(g1 + (g2 - g1) * factor);
-    const b = Math.round(b1 + (b2 - b1) * factor);
+    const r = Math.round(r1 + (r2 - r1) * clampedFactor);
+    const g = Math.round(g1 + (g2 - g1) * clampedFactor);
+    const b = Math.round(b1 + (b2 - b1) * clampedFactor);
     
     return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
   };
