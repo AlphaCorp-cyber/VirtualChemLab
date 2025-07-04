@@ -28,12 +28,31 @@ function Funnel({ position, isSelected, onSelect }: {
         userData={{ interactable: true }}
       >
         <coneGeometry args={[0.3, 0.6, 8]} />
-        <meshStandardMaterial color={isSelected ? "#3498db" : "#ecf0f1"} />
+        <meshStandardMaterial 
+          color={isSelected ? "#3498db" : "#ffffff"} 
+          transparent 
+          opacity={0.9}
+          metalness={0.1}
+          roughness={0.1}
+        />
       </mesh>
       {/* Funnel stem */}
       <mesh position={[0, -0.5, 0]}>
         <cylinderGeometry args={[0.05, 0.05, 0.4]} />
-        <meshStandardMaterial color="#bdc3c7" />
+        <meshStandardMaterial 
+          color="#95a5a6" 
+          metalness={0.3}
+          roughness={0.2}
+        />
+      </mesh>
+      {/* Funnel rim for better visibility */}
+      <mesh position={[0, 0.3, 0]}>
+        <torusGeometry args={[0.3, 0.02, 8, 16]} />
+        <meshStandardMaterial 
+          color="#7f8c8d" 
+          metalness={0.5}
+          roughness={0.3}
+        />
       </mesh>
     </group>
   );
@@ -192,20 +211,20 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
     <group>
       {/* Equipment positioned on the existing white lab table */}
       <Funnel 
-        position={[-1, 2.1, -1]} 
+        position={[-1, 2.2, -0.5]} 
         isSelected={selectedTool === 'funnel'}
         onSelect={() => setSelectedTool('funnel')}
       />
       
       <FilterPaper 
-        position={[-1, 1.9, -1]} 
+        position={[-1, 2.0, -0.5]} 
         isSelected={selectedTool === 'filter'}
         onSelect={() => setSelectedTool('filter')}
         hasResidue={hasResidue}
       />
       
       <MixtureBeaker 
-        position={[-3, 1.75, -1]} 
+        position={[-3, 1.75, -0.5]} 
         isSelected={selectedTool === 'mixture'}
         onSelect={() => {
           setSelectedTool('mixture');
@@ -215,30 +234,30 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
       />
       
       <FiltrateBeaker 
-        position={[-1, 1.75, -1]} 
+        position={[-1, 1.75, -0.5]} 
         isSelected={selectedTool === 'filtrate'}
         onSelect={() => setSelectedTool('filtrate')}
         filtrateLevel={filtrateLevel}
       />
 
       {/* Equipment Labels */}
-      <mesh position={[-3, 1.4, -1]}>
+      <mesh position={[-3, 1.4, -0.5]}>
         <planeGeometry args={[1.6, 0.2]} />
         <meshStandardMaterial color="#3498db" />
       </mesh>
-      <Text3D position={[-3, 1.4, -0.98]} text="Sand + Water" fontSize={0.06} color="#ffffff" />
+      <Text3D position={[-3, 1.4, -0.48]} text="Sand + Water" fontSize={0.06} color="#ffffff" />
 
-      <mesh position={[-1, 2.6, -1]}>
+      <mesh position={[-1, 2.7, -0.5]}>
         <planeGeometry args={[1.6, 0.2]} />
         <meshStandardMaterial color="#e67e22" />
       </mesh>
-      <Text3D position={[-1, 2.6, -0.98]} text="Filter Setup" fontSize={0.06} color="#ffffff" />
+      <Text3D position={[-1, 2.7, -0.48]} text="Filter Setup" fontSize={0.06} color="#ffffff" />
 
-      <mesh position={[-1, 1.4, -1]}>
+      <mesh position={[-1, 1.4, -0.5]}>
         <planeGeometry args={[1.6, 0.2]} />
         <meshStandardMaterial color="#27ae60" />
       </mesh>
-      <Text3D position={[-1, 1.4, -0.98]} text="Clean Water" fontSize={0.06} color="#ffffff" />
+      <Text3D position={[-1, 1.4, -0.48]} text="Clean Water" fontSize={0.06} color="#ffffff" />
 
       {/* Instructions Panel - With Text */}
       <mesh position={[2.5, 2.5, -1]}>
@@ -285,7 +304,7 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
 
       {/* Arrow pointing to mixture beaker */}
       {experimentStage === 'setup' && (
-        <mesh position={[-2.5, 2.2, -1]} rotation={[0, 0, -Math.PI/4]}>
+        <mesh position={[-2.5, 2.2, -0.5]} rotation={[0, 0, -Math.PI/4]}>
           <coneGeometry args={[0.1, 0.3, 4]} />
           <meshStandardMaterial color="#e74c3c" />
         </mesh>
