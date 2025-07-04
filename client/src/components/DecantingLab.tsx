@@ -88,9 +88,9 @@ function DecantingBeaker({ position, isSelected, onSelect, liquidLevel, sediment
           <meshStandardMaterial 
             color={wineColor} 
             transparent 
-            opacity={0.75}
+            opacity={experimentStage === 'setup' ? 0.9 : 0.7}
             emissive={wineColor}
-            emissiveIntensity={0.05}
+            emissiveIntensity={experimentStage === 'setup' ? 0.1 : 0.05}
             roughness={0.1}
             metalness={0.05}
           />
@@ -215,7 +215,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
   const [receivingLiquidLevel, setReceivingLiquidLevel] = useState(0);
   const [isPouring, setIsPouring] = useState(false);
   const [showStream, setShowStream] = useState(false);
-  const [wineColor, setWineColor] = useState('#8B0000'); // Start with deep red wine color
+  const [wineColor, setWineColor] = useState('#722F37'); // Start with deep dark wine color
 
   const handleSettling = () => {
     if (experimentStage === 'setup') {
@@ -232,19 +232,19 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         
         // Gradually change wine color from deep red to clearer as sediment settles
         const settlingProgress = currentSediment / 0.15;
-        const newColor = interpolateColor('#8B0000', '#DC143C', settlingProgress);
+        const newColor = interpolateColor('#722F37', '#B22222', settlingProgress);
         setWineColor(newColor);
         
         // Force a re-render to ensure color updates are visible
         if (settlingProgress >= 1) {
-          setWineColor('#DC143C');
+          setWineColor('#B22222');
         }
         
         if (currentSediment >= 0.15) {
           clearInterval(settlingInterval);
           // Ensure final color is properly set before moving to decanting stage
           setTimeout(() => {
-            setWineColor('#DC143C'); // Final clear wine color
+            setWineColor('#B22222'); // Final clearer wine color
             setExperimentStage('decanting');
           }, 100);
         }
@@ -315,7 +315,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
     setIsPouring(false);
     setShowStream(false);
     setSelectedTool('');
-    setWineColor('#8B0000'); // Reset to initial deep red wine color
+    setWineColor('#722F37'); // Reset to initial deep dark wine color
   };
 
   return (
