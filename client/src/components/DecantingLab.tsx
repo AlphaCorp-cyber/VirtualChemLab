@@ -38,7 +38,7 @@ function DecantingBeaker({ position, isSelected, onSelect, liquidLevel, sediment
           opacity={0.8}
         />
       </mesh>
-      
+
       {/* Sediment layer (sand) */}
       {sedimentLevel > 0 && (
         <mesh position={[0, -0.3, 0]}>
@@ -46,7 +46,7 @@ function DecantingBeaker({ position, isSelected, onSelect, liquidLevel, sediment
           <meshStandardMaterial color="#d4af37" />
         </mesh>
       )}
-      
+
       {/* Liquid layer (water) */}
       {liquidLevel > 0 && (
         <mesh position={[0, -0.3 + sedimentLevel + liquidLevel / 2, 0]}>
@@ -81,7 +81,7 @@ function ReceivingBeaker({ position, isSelected, onSelect, liquidLevel }: {
           opacity={0.8}
         />
       </mesh>
-      
+
       {/* Decanted liquid */}
       {liquidLevel > 0 && (
         <mesh position={[0, -0.3 + liquidLevel / 2, 0]}>
@@ -142,7 +142,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
   const handleSettling = () => {
     if (selectedTool === 'source' && experimentStage === 'setup') {
       setExperimentStage('settling');
-      
+
       // Allow some time for settling
       setTimeout(() => {
         setExperimentStage('decanting');
@@ -154,7 +154,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
     if (selectedTool === 'source' && experimentStage === 'decanting') {
       setIsPouring(true);
       setShowStream(true);
-      
+
       // Animate the decanting process
       const decantingInterval = setInterval(() => {
         setSourceLiquidLevel(prev => {
@@ -164,7 +164,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
             setShowStream(false);
             setExperimentStage('complete');
             clearInterval(decantingInterval);
-            
+
             if (onExperimentComplete) {
               onExperimentComplete(
                 "Decanting completed successfully! The clear liquid has been carefully poured off, " +
@@ -176,7 +176,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
           }
           return newLevel;
         });
-        
+
         setReceivingLiquidLevel(prev => prev + 0.05);
       }, 300);
     }
@@ -210,7 +210,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         sedimentLevel={sourceSedimentLevel}
         isPouring={isPouring}
       />
-      
+
       <ReceivingBeaker 
         position={[2.5, 1.55, -1]} 
         isSelected={selectedTool === 'receiving'}
@@ -231,7 +231,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         <meshStandardMaterial color="#3498db" />
       </mesh>
       <Text3D position={[-2.5, 0.8, -0.98]} text="Source Beaker" fontSize={0.06} color="#ffffff" />
-      
+
       <mesh position={[2.5, 0.8, -1]}>
         <planeGeometry args={[1.8, 0.25]} />
         <meshStandardMaterial color="#27ae60" />
@@ -243,7 +243,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         <planeGeometry args={[5, 2]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
-      
+
       <mesh position={[0, 3, -0.99]}>
         <planeGeometry args={[4.8, 1.8]} />
         <meshStandardMaterial color="#ffffff" />
@@ -251,7 +251,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
 
       {/* Title */}
       <Text3D position={[0, 3.7, -0.98]} text="DECANTING LAB" fontSize={0.12} color="#9b59b6" />
-      
+
       {/* Instructions */}
       <Text3D position={[0, 3.3, -0.98]} text="1. Click source beaker to start settling" fontSize={0.08} color="#2c3e50" />
       <Text3D position={[0, 2.9, -0.98]} text="2. Wait for sediment to settle" fontSize={0.08} color="#2c3e50" />
@@ -274,6 +274,16 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         <planeGeometry args={[7.5, 0.3]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
+      <Text3D 
+        position={[0, 4.5, 0.01]} 
+        text={
+          experimentStage === 'setup' ? "CLICK WINE BEAKER TO START SETTLING" :
+          experimentStage === 'settling' ? "SEDIMENT IS SETTLING..." :
+          experimentStage === 'decanting' ? "POURING WINE CAREFULLY..." : "DECANTING COMPLETE!"
+        }
+        fontSize={0.08} 
+        color="#2c3e50" 
+      />
 
       {/* Reset button */}
       {experimentStage === 'complete' && (
