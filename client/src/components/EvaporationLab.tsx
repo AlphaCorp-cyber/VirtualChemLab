@@ -150,59 +150,39 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
 }) {
   return (
     <group position={position}>
-      {/* Glass evaporating dish - realistic bowl shape */}
+      {/* Glass evaporating dish - clear and simple bowl shape */}
       <mesh
         onClick={onSelect}
         userData={{ interactable: true }}
       >
         <sphereGeometry args={[0.4, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
         <meshStandardMaterial 
-          color="#722F37"
+          color="#ffffff"
           transparent
-          opacity={0.3}
+          opacity={0.2}
           roughness={0.1}
           metalness={0.0}
-          transmission={0.9}
-          thickness={0.01}
         />
       </mesh>
       
-      {/* Glass rim - follows dish curve naturally */}
-      <mesh position={[0, -0.02, 0]}>
-        <torusGeometry args={[0.4, 0.012, 16, 64]} />
-        <meshPhysicalMaterial 
-          color="#ffffff"
-          transparent
-          opacity={0.6}
-          roughness={0.02}
-          metalness={0.0}
-          transmission={0.9}
-          thickness={0.008}
-          ior={1.52}
-          clearcoat={1.0}
-          clearcoatRoughness={0.01}
-        />
-      </mesh>
-      
-      {/* Rim highlight for better visibility */}
-      <mesh position={[0, -0.015, 0]}>
-        <torusGeometry args={[0.405, 0.005, 12, 32]} />
+      {/* Simple black outline for clarity */}
+      <mesh position={[0, 0, 0]}>
+        <sphereGeometry args={[0.405, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
         <meshStandardMaterial 
-          color="#ffffff"
+          color="#000000"
           transparent
           opacity={0.8}
-          emissive="#ffffff"
-          emissiveIntensity={0.3}
+          side={THREE.BackSide}
         />
       </mesh>
       
-      {/* Inner bottom surface for contrast */}
+      {/* Inner bottom surface - white for contrast */}
       <mesh position={[0, -0.35, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[0.35, 32]} />
         <meshStandardMaterial 
-          color={saltCrystals ? "#f8f8f8" : "#ffffff"}
+          color="#ffffff"
           transparent
-          opacity={0.8}
+          opacity={0.9}
           roughness={0.2}
         />
       </mesh>
@@ -221,99 +201,38 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
         </mesh>
       )}
       
-      {/* Salt crystals - highly visible sparkly white crystals with multiple layers */}
+      {/* Salt crystals - simple and clear white residue */}
       {saltCrystals && (
         <group>
-          {/* Bright reflective base layer - very visible */}
-          <mesh position={[0, 0.055, 0]}>
-            <cylinderGeometry args={[0.35, 0.35, 0.025]} />
+          {/* Main salt layer - bright white and clearly visible */}
+          <mesh position={[0, -0.34, 0]}>
+            <cylinderGeometry args={[0.32, 0.32, 0.02]} />
             <meshStandardMaterial 
               color="#ffffff" 
               emissive="#ffffff"
-              emissiveIntensity={1.0}
-              roughness={0.0}
-              metalness={0.8}
-            />
-          </mesh>
-          
-          {/* Sparkly crystal layer */}
-          <mesh position={[0, 0.06, 0]}>
-            <cylinderGeometry args={[0.32, 0.32, 0.02]} />
-            <meshStandardMaterial 
-              color="#f0f8ff" 
-              emissive="#f0f8ff"
               emissiveIntensity={0.8}
               roughness={0.1}
-              metalness={0.5}
             />
           </mesh>
           
-          {/* Individual crystal formations - more visible */}
-          {Array.from({ length: 16 }, (_, i) => (
+          {/* Simple crystal texture */}
+          {Array.from({ length: 8 }, (_, i) => (
             <mesh 
               key={i}
               position={[
-                Math.cos(i * Math.PI / 8) * (0.15 + Math.random() * 0.15),
-                0.065 + Math.random() * 0.01,
-                Math.sin(i * Math.PI / 8) * (0.15 + Math.random() * 0.15)
+                Math.cos(i * Math.PI / 4) * 0.2,
+                -0.32,
+                Math.sin(i * Math.PI / 4) * 0.2
               ]}
-              rotation={[Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI]}
             >
-              <boxGeometry args={[0.04, 0.015, 0.04]} />
+              <boxGeometry args={[0.03, 0.01, 0.03]} />
               <meshStandardMaterial 
                 color="#ffffff"
                 emissive="#ffffff"
-                emissiveIntensity={0.9}
-                roughness={0.0}
-                metalness={0.7}
+                emissiveIntensity={0.6}
               />
             </mesh>
           ))}
-          
-          {/* Large center crystal highlight */}
-          <mesh position={[0, 0.07, 0]}>
-            <cylinderGeometry args={[0.12, 0.12, 0.015]} />
-            <meshStandardMaterial 
-              color="#ffffff" 
-              emissive="#ffffff"
-              emissiveIntensity={1.2}
-              roughness={0.0}
-              metalness={1.0}
-            />
-          </mesh>
-          
-          {/* Bright edge crystals for extra visibility */}
-          {Array.from({ length: 8 }, (_, i) => (
-            <mesh 
-              key={`edge-${i}`}
-              position={[
-                Math.cos(i * Math.PI / 4) * 0.3,
-                0.068,
-                Math.sin(i * Math.PI / 4) * 0.3
-              ]}
-            >
-              <coneGeometry args={[0.02, 0.025, 6]} />
-              <meshStandardMaterial 
-                color="#ffffff"
-                emissive="#ffffff"
-                emissiveIntensity={1.0}
-                roughness={0.0}
-                metalness={0.9}
-              />
-            </mesh>
-          ))}
-          
-          {/* Glowing outline for maximum visibility */}
-          <mesh position={[0, 0.055, 0]}>
-            <cylinderGeometry args={[0.36, 0.36, 0.001]} />
-            <meshStandardMaterial 
-              color="#ffffff" 
-              emissive="#ffffff"
-              emissiveIntensity={1.5}
-              transparent
-              opacity={0.8}
-            />
-          </mesh>
         </group>
       )}
     </group>
