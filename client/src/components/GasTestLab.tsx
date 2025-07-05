@@ -46,7 +46,7 @@ function LitSplint({ position, isSelected, onSelect }: {
         color={isSelected ? "#ff6b35" : "#666"}
         anchorX="center"
         anchorY="middle"
-      >
+       font="/fonts/inter-regular.ttf">
         Lit Splint
       </Text>
     </group>
@@ -90,7 +90,7 @@ function GlowingSplint({ position, isSelected, onSelect }: {
         color={isSelected ? "#ff6b35" : "#666"}
         anchorX="center"
         anchorY="middle"
-      >
+       font="/fonts/inter-regular.ttf">
         Glowing Splint
       </Text>
     </group>
@@ -129,7 +129,7 @@ function LitmusPaper({ position, isSelected, onSelect, color }: {
         color={isSelected ? "#ff6b35" : "#666"}
         anchorX="center"
         anchorY="middle"
-      >
+       font="/fonts/inter-regular.ttf">
         {color === "red" ? "Red Litmus" : "Blue Litmus"}
       </Text>
     </group>
@@ -176,7 +176,7 @@ function Limewater({ position, isSelected, onSelect }: {
         color={isSelected ? "#ff6b35" : "#666"}
         anchorX="center"
         anchorY="middle"
-      >
+       font="/fonts/inter-regular.ttf">
         Limewater
       </Text>
     </group>
@@ -249,7 +249,7 @@ function GasTestTube({ gas, onTest }: {
         color={isSelected ? "#ff6b35" : "#2c3e50"}
         anchorX="center"
         anchorY="middle"
-      >
+       font="/fonts/inter-regular.ttf">
         {gas.gasName}
       </Text>
 
@@ -259,7 +259,7 @@ function GasTestTube({ gas, onTest }: {
         color={isSelected ? "#ff6b35" : "#34495e"}
         anchorX="center"
         anchorY="middle"
-      >
+       font="/fonts/inter-regular.ttf">
         {gas.formula}
       </Text>
 
@@ -269,7 +269,7 @@ function GasTestTube({ gas, onTest }: {
         color="#7f8c8d"
         anchorX="center"
         anchorY="middle"
-      >
+       font="/fonts/inter-regular.ttf">
         Sample {gas.id.replace('gas-', '').toUpperCase()}
       </Text>
 
@@ -280,7 +280,7 @@ function GasTestTube({ gas, onTest }: {
           color="#ff6b35"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           Click to test!
         </Text>
       )}
@@ -376,7 +376,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
           color="#7f8c8d"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           (Select tool then test gas)
         </Text>
       </group>
@@ -388,7 +388,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
         color="#2c3e50"
         anchorX="center"
         anchorY="middle"
-      >
+       font="/fonts/inter-regular.ttf">
         Lit Splint
       </Text>
 
@@ -398,7 +398,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
         color="#2c3e50"
         anchorX="center"
         anchorY="middle"
-      >
+       font="/fonts/inter-regular.ttf">
         Glowing Splint
       </Text>
 
@@ -408,7 +408,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
         color="#2c3e50"
         anchorX="center"
         anchorY="middle"
-      >
+       font="/fonts/inter-regular.ttf">
         Red Litmus
       </Text>
 
@@ -418,7 +418,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
         color="#2c3e50"
         anchorX="center"
         anchorY="middle"
-      >
+       font="/fonts/inter-regular.ttf">
         Blue Litmus
       </Text>
 
@@ -428,7 +428,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
         color="#2c3e50"
         anchorX="center"
         anchorY="middle"
-      >
+       font="/fonts/inter-regular.ttf">
         Limewater
       </Text>
 
@@ -439,7 +439,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
         color="#333"
         anchorX="center"
         anchorY="middle"
-      >
+       font="/fonts/inter-regular.ttf">
         Gas Tests - Select a test tool, then click on a gas
       </Text>
 
@@ -450,7 +450,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
           color="#ff6b35"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           Selected: {selectedTestTool.replace('-', ' ')}
         </Text>
       )}
@@ -463,7 +463,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
             color={lastGasTestResult.correct ? "#00b894" : "#ff4757"}
             anchorX="center"
             anchorY="middle"
-          >
+           font="/fonts/inter-regular.ttf">
             Result: {lastGasTestResult.result}
           </Text>
           <Text
@@ -472,7 +472,7 @@ export function GasTestLab({ onExperimentComplete }: GasTestLabProps) {
             color="#666"
             anchorX="center"
             anchorY="middle"
-          >
+           font="/fonts/inter-regular.ttf">
             {lastGasTestResult.correct ? "✓ Correct!" : "✗ Try again"}
           </Text>
         </group>

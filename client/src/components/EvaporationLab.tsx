@@ -618,18 +618,16 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
             <planeGeometry args={[0.9, 0.3]} />
             <meshStandardMaterial color="#ffffff" />
           </mesh>
-          <Text3D 
-            position={[1.5, 3.3, -0.98]} 
+          <Text3D position={[1.5, 3.3, -0.98]} 
             text="EVAPORATING" 
             fontSize={0.06} 
             color="#e67e22" 
-          />
-          <Text3D 
-            position={[1.5, 3.1, -0.98]} 
+         />
+          <Text3D position={[1.5, 3.1, -0.98]} 
             text={`${countdown}s remaining`} 
             fontSize={0.08} 
             color="#2c3e50" 
-          />
+         />
         </group>
       )}
 
@@ -640,19 +638,19 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
         <planeGeometry args={[1.0, 0.2]} />
         <meshStandardMaterial color="#e74c3c" />
       </mesh>
-      <Text3D position={[1, 1.62, -0.38]} text="Bunsen Burner knob" fontSize={0.06} color="#ffffff" />
+      <Text3D position={[1, 1.62, -0.38]} text="Bunsen Burner knob" fontSize={0.06} color="#ffffff"/>
 
       <mesh position={[-1, 1.6, -0.39]}>
         <planeGeometry args={[1.0, 0.2]} />
         <meshStandardMaterial color="#3498db" />
       </mesh>
-      <Text3D position={[-1, 1.62, -0.38]} text="Solution Beaker" fontSize={0.06} color="#ffffff" />
+      <Text3D position={[-1, 1.62, -0.38]} text="Solution Beaker" fontSize={0.06} color="#ffffff"/>
 
       <mesh position={[0, 2.8, -1]}>
         <planeGeometry args={[1.5, 0.2]} />
         <meshStandardMaterial color="#95a5a6" />
       </mesh>
-      <Text3D position={[0, 2.8, -0.98]} text="Tripod Stand" fontSize={0.06} color="#ffffff" />
+      <Text3D position={[0, 2.8, -0.98]} text="Tripod Stand" fontSize={0.06} color="#ffffff"/>
 
       {/* Instructions Panel */}
       <mesh position={[3.5, 2.5, -1]}>
@@ -666,14 +664,14 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       </mesh>
 
       {/* Title */}
-      <Text3D position={[3.5, 3.5, -0.98]} text="EVAPORATION LAB" fontSize={0.12} color="#e67e22" />
+      <Text3D position={[3.5, 3.5, -0.98]} text="EVAPORATION LAB" fontSize={0.12} color="#e67e22"/>
 
       {/* Instructions */}
-      <Text3D position={[3.5, 3.0, -0.98]} text="1. Click water beaker to pour" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[3.5, 2.6, -0.98]} text="2. Click Bunsen burner to light" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[3.5, 2.2, -0.98]} text="3. Evaporation starts automatically" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[3.5, 1.8, -0.98]} text="4. Watch water evaporate away" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[3.5, 1.4, -0.98]} text="5. Salt crystals remain behind" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[3.5, 3.0, -0.98]} text="1. Click water beaker to pour" fontSize={0.08} color="#2c3e50"/>
+      <Text3D position={[3.5, 2.6, -0.98]} text="2. Click Bunsen burner to light" fontSize={0.08} color="#2c3e50"/>
+      <Text3D position={[3.5, 2.2, -0.98]} text="3. Evaporation starts automatically" fontSize={0.08} color="#2c3e50"/>
+      <Text3D position={[3.5, 1.8, -0.98]} text="4. Watch water evaporate away" fontSize={0.08} color="#2c3e50"/>
+      <Text3D position={[3.5, 1.4, -0.98]} text="5. Salt crystals remain behind" fontSize={0.08} color="#2c3e50"/>
 
       {/* Completion status - Above equipment */}
       {experimentStage === 'complete' && (
@@ -686,24 +684,21 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
             <planeGeometry args={[1.7, 0.5]} />
             <meshStandardMaterial color="#ffffff" />
           </mesh>
-          <Text3D 
-            position={[1.5, 3.4, -0.98]} 
+          <Text3D position={[1.5, 3.4, -0.98]} 
             text="COMPLETE!" 
             fontSize={0.08} 
             color="#27ae60" 
-          />
-          <Text3D 
-            position={[1.5, 3.2, -0.98]} 
+         />
+          <Text3D position={[1.5, 3.2, -0.98]} 
             text="Salt crystals" 
             fontSize={0.06} 
             color="#2c3e50" 
-          />
-          <Text3D 
-            position={[1.5, 3.0, -0.98]} 
+         />
+          <Text3D position={[1.5, 3.0, -0.98]} 
             text="recovered!" 
             fontSize={0.06} 
             color="#2c3e50" 
-          />
+         />
         </group>
       )}
 
@@ -744,8 +739,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
         <meshStandardMaterial color="#ffffff" />
       </mesh>
 
-      <Text3D 
-        position={[0, 4.5, 0.01]} 
+      <Text3D position={[0, 4.5, 0.01]} 
         text={
           experimentStage === 'setup' ? "CLICK WATER BEAKER TO POUR SALT SOLUTION" :
           experimentStage === 'pour-water' ? "POURING SALT SOLUTION..." :
@@ -755,7 +749,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
         }
         fontSize={0.08} 
         color="#2c3e50" 
-      />
+     />
 
       {/* Reset button - positioned on table surface */}
       <mesh 
@@ -767,12 +761,11 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
         <meshStandardMaterial color="#e74c3c" />
       </mesh>
 
-      <Text3D 
-        position={[2.5, 1.9, -0.95]} 
+      <Text3D position={[2.5, 1.9, -0.95]} 
         text="RESET" 
         fontSize={0.08} 
         color="#ffffff" 
-      />
+     />
 
       {/* Step indicators with arrows */}
       {experimentStage === 'setup' && (

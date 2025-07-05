@@ -158,7 +158,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
               color="#2c3e50"
               anchorX="left"
               anchorY="middle"
-            >
+             font="/fonts/inter-regular.ttf">
               {i}
             </Text>
           </group>
@@ -179,7 +179,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#2c3e50"
           anchorX="left"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           cm
         </Text>
       </group>
@@ -230,7 +230,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#27ae60"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           Current: {selectedInk.toUpperCase()} ink
         </Text>
 
@@ -264,7 +264,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
             color="#2c3e50"
             anchorX="center"
             anchorY="middle"
-          >
+           font="/fonts/inter-regular.ttf">
             Black
           </Text>
         </group>
@@ -299,7 +299,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
             color="#2c3e50"
             anchorX="center"
             anchorY="middle"
-          >
+           font="/fonts/inter-regular.ttf">
             Blue
           </Text>
         </group>
@@ -334,7 +334,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
             color="#2c3e50"
             anchorX="center"
             anchorY="middle"
-          >
+           font="/fonts/inter-regular.ttf">
             Red
           </Text>
         </group>
@@ -348,7 +348,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           Chromatography Controls
         </Text>
 
@@ -370,7 +370,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#ffffff"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           {inkApplied ? "Ink Applied" : "Apply Ink"}
         </Text>
 
@@ -392,7 +392,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#ffffff"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           {experimentStarted ? "Running..." : "Start"}
         </Text>
 
@@ -412,7 +412,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#ffffff"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           Reset
         </Text>
       </group>
@@ -425,7 +425,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           Filter Paper
         </Text>
         <Text
@@ -434,7 +434,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#7f8c8d"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           (Stationary Phase)
         </Text>
       </group>
@@ -446,7 +446,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           Solvent
         </Text>
         <Text
@@ -455,7 +455,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#7f8c8d"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           (Mobile Phase)
         </Text>
       </group>
@@ -467,7 +467,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           Baseline
         </Text>
       </group>
@@ -485,7 +485,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           Paper Chromatography
         </Text>
 
@@ -495,7 +495,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#7f8c8d"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           1. Select ink type
         </Text>
 
@@ -505,7 +505,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#7f8c8d"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           2. Apply ink to baseline
         </Text>
 
@@ -515,7 +515,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#7f8c8d"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           3. Start chromatography
         </Text>
 
@@ -525,7 +525,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#7f8c8d"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           4. Observe pigment separation
         </Text>
 
@@ -535,7 +535,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           color="#7f8c8d"
           anchorX="center"
           anchorY="middle"
-        >
+         font="/fonts/inter-regular.ttf">
           5. Measure distances using markings
         </Text>
       </group>
@@ -554,7 +554,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
             color="#2c3e50"
             anchorX="center"
             anchorY="middle"
-          >
+           font="/fonts/inter-regular.ttf">
             Chromatogram Results
           </Text>
 
@@ -564,7 +564,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
             color="#7f8c8d"
             anchorX="center"
             anchorY="middle"
-          >
+           font="/fonts/inter-regular.ttf">
             Separated Pigments in {selectedInk} ink:
           </Text>
 
@@ -576,7 +576,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
                 color={pigment.color}
                 anchorX="left"
                 anchorY="middle"
-              >
+               font="/fonts/inter-regular.ttf">
                 • {pigment.name}
               </Text>
               <Text
@@ -585,7 +585,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
                 color="#7f8c8d"
                 anchorX="left"
                 anchorY="middle"
-              >
+               font="/fonts/inter-regular.ttf">
                 Distance: {(pigment.height * pigmentSeparation * 10).toFixed(1)} cm
               </Text>
             </group>
@@ -598,7 +598,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
             color="#e74c3c"
             anchorX="center"
             anchorY="middle"
-          >
+           font="/fonts/inter-regular.ttf">
             Solvent Front: {(solventHeight * 10).toFixed(1)} cm
           </Text>
 
@@ -608,7 +608,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
             color="#7f8c8d"
             anchorX="center"
             anchorY="middle"
-          >
+           font="/fonts/inter-regular.ttf">
             Calculate Rf = Distance traveled by pigment ÷ Distance traveled by solvent
           </Text>
 
@@ -618,7 +618,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
             color="#7f8c8d"
             anchorX="center"
             anchorY="middle"
-          >
+           font="/fonts/inter-regular.ttf">
             Different pigments travel at different rates
           </Text>
         </group>
@@ -633,7 +633,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
             color="#2c3e50"
             anchorX="center"
             anchorY="middle"
-          >
+           font="/fonts/inter-regular.ttf">
             Solvent Front
           </Text>
         </group>

@@ -375,13 +375,13 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         <planeGeometry args={[1.3, 0.25]} />
         <meshStandardMaterial color="#3498db" />
       </mesh>
-      <Text3D position={[-3.5, 2.0, 1]} text="Source Beaker" fontSize={0.1} color="#ffffff" />
+      <Text3D position={[-3.5, 2.0, 1]} text="Source Beaker" fontSize={0.1} color="#ffffff"/>
 
       <mesh position={[1.3, 2.0, 1]}>
         <planeGeometry args={[1.3, 0.25]} />
         <meshStandardMaterial color="#27ae60" />
       </mesh>
-      <Text3D position={[1.3, 2.0, 1]} text="Receiving Beaker" fontSize={0.1} color="#ffffff" />
+      <Text3D position={[1.3, 2.0, 1]} text="Receiving Beaker" fontSize={0.1} color="#ffffff"/>
 
       {/* Instructions Panel */}
       <mesh position={[0, 3, -1]}>
@@ -395,13 +395,13 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       </mesh>
 
       {/* Title */}
-      <Text3D position={[0, 3.7, -0.98]} text="DECANTING LAB" fontSize={0.12} color="#9b59b6" />
+      <Text3D position={[0, 3.7, -0.98]} text="DECANTING LAB" fontSize={0.12} color="#9b59b6"/>
 
       {/* Instructions */}
-      <Text3D position={[0, 3.5, -0.98]} text="1. Click wine beaker to start settling" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[0, 3.3, -0.98]} text="2. Watch sediment settle to bottom" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[0, 3.1, -0.98]} text="3. Click again to pour wine carefully" fontSize={0.08} color="#2c3e50" />
-      <Text3D position={[0, 2.9, -0.98]} text="4. Clear wine separates from sediment" fontSize={0.08} color="#2c3e50" />
+      <Text3D position={[0, 3.5, -0.98]} text="1. Click wine beaker to start settling" fontSize={0.08} color="#2c3e50"/>
+      <Text3D position={[0, 3.3, -0.98]} text="2. Watch sediment settle to bottom" fontSize={0.08} color="#2c3e50"/>
+      <Text3D position={[0, 3.1, -0.98]} text="3. Click again to pour wine carefully" fontSize={0.08} color="#2c3e50"/>
+      <Text3D position={[0, 2.9, -0.98]} text="4. Clear wine separates from sediment" fontSize={0.08} color="#2c3e50"/>
 
       {/* Process indicator */}
       <mesh position={[0, 4.5, 0]}>
@@ -419,8 +419,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         <planeGeometry args={[7.5, 0.3]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
-      <Text3D 
-        position={[0, 4.5, 0.01]} 
+      <Text3D position={[0, 4.5, 0.01]} 
         text={
           experimentStage === 'setup' ? "CLICK WINE BEAKER TO START SETTLING" :
           experimentStage === 'settling' ? "SEDIMENT IS SETTLING..." :
@@ -428,7 +427,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
         }
         fontSize={0.08} 
         color="#2c3e50" 
-      />
+     />
 
       {/* Reset button */}
       {experimentStage === 'complete' && (
@@ -441,7 +440,7 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
             <boxGeometry args={[1, 0.3, 0.1]} />
             <meshStandardMaterial color="#e74c3c" />
           </mesh>
-          <Text3D position={[3, 1.8, -0.98]} text="RESET" fontSize={0.06} color="#ffffff" />
+          <Text3D position={[3, 1.8, -0.98]} text="RESET" fontSize={0.06} color="#ffffff"/>
         </>
       )}
 

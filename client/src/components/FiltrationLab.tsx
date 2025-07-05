@@ -377,13 +377,13 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
         <planeGeometry args={[1.8, 0.2]} />
         <meshStandardMaterial color="#e67e22" />
       </mesh>
-      <Text3D position={[-1, 2.8, -0.48]} text="Glass Funnel" fontSize={0.06} color="#ffffff" />
+      <Text3D position={[-1, 2.8, -0.48]} text="Glass Funnel" fontSize={0.06} color="#ffffff"/>
 
       <mesh position={[-1, 1.4, -0.5]}>
         <planeGeometry args={[1.6, 0.2]} />
         <meshStandardMaterial color="#27ae60" />
       </mesh>
-      <Text3D position={[-1, 1.4, -0.48]} text="Filtrate" fontSize={0.06} color="#ffffff" />
+      <Text3D position={[-1, 1.4, -0.48]} text="Filtrate" fontSize={0.06} color="#ffffff"/>
 
       {/* Instructions Panel */}
       <mesh position={[2.5, 2.5, -1]}>
@@ -396,12 +396,12 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
         <meshStandardMaterial color="#ffffff" />
       </mesh>
 
-      <Text3D position={[2.5, 3.2, -0.98]} text="FILTRATION PROCESS" fontSize={0.1} color="#3498db" />
+      <Text3D position={[2.5, 3.2, -0.98]} text="FILTRATION PROCESS" fontSize={0.1} color="#3498db"/>
       
-      <Text3D position={[2.5, 2.8, -0.98]} text="1. Click mixture beaker once to start" fontSize={0.07} color="#2c3e50" />
-      <Text3D position={[2.5, 2.5, -0.98]} text="2. Watch beaker pour into funnel" fontSize={0.07} color="#2c3e50" />
-      <Text3D position={[2.5, 2.2, -0.98]} text="3. Brown sand stays on filter paper" fontSize={0.07} color="#2c3e50" />
-      <Text3D position={[2.5, 1.9, -0.98]} text="4. Blue water passes through" fontSize={0.07} color="#2c3e50" />
+      <Text3D position={[2.5, 2.8, -0.98]} text="1. Click mixture beaker once to start" fontSize={0.07} color="#2c3e50"/>
+      <Text3D position={[2.5, 2.5, -0.98]} text="2. Watch beaker pour into funnel" fontSize={0.07} color="#2c3e50"/>
+      <Text3D position={[2.5, 2.2, -0.98]} text="3. Brown sand stays on filter paper" fontSize={0.07} color="#2c3e50"/>
+      <Text3D position={[2.5, 1.9, -0.98]} text="4. Blue water passes through" fontSize={0.07} color="#2c3e50"/>
 
       {/* Process Status */}
       <mesh position={[0, 3.5, -1]}>
@@ -414,15 +414,14 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
         />
       </mesh>
       
-      <Text3D 
-        position={[0, 3.5, -0.98]} 
+      <Text3D position={[0, 3.5, -0.98]} 
         text={
           experimentStage === 'setup' ? "CLICK MIXTURE BEAKER TO START" :
           experimentStage === 'filtering' ? "FILTRATION IN PROGRESS..." : "FILTRATION COMPLETE!"
         }
         fontSize={0.08} 
         color="#ffffff" 
-      />
+     />
 
       {/* Reset button */}
       {experimentStage === 'complete' && (
@@ -435,7 +434,7 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
             <boxGeometry args={[1, 0.3, 0.1]} />
             <meshStandardMaterial color="#e74c3c" />
           </mesh>
-          <Text3D position={[4, 1.8, -0.98]} text="RESET" fontSize={0.06} color="#ffffff" />
+          <Text3D position={[4, 1.8, -0.98]} text="RESET" fontSize={0.06} color="#ffffff"/>
         </>
       )}
 

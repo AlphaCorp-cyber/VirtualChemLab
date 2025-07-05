@@ -117,6 +117,7 @@ Changelog:
 - July 02, 2025. Completed final migration from Replit Agent to Replit environment - verified all packages installed, server running properly, and project launching without errors. Fixed TypeScript errors in GasTestLab component and repositioned gas sample tube labels from bottom to top for better visibility
 - July 02, 2025. Fixed mouse and tablet controls by restoring proper raycast interaction system - added userData to PHTestStrip and beaker components, implemented proper touch/mouse event handlers for object interaction, verified all lab components are interactive with mouse clicks and touch taps
 - July 04, 2025. Added 3 new separation technique experiments - Filtration (sand-water separation with funnel and filter paper), Evaporation to Dryness (salt recovery with evaporating dish and Bunsen burner), and Decanting (liquid-sediment separation with careful pouring). All experiments feature interactive 3D equipment, realistic animations, and educational feedback suitable for ZIMSEC practical contexts.
+- July 05, 2025. Made VR Chemistry Lab completely offline-friendly for text rendering - downloaded local Inter font files (woff2, ttf formats), created local font CSS with proper font-face declarations, updated Text3D components to use local fonts instead of online fetching, imported local fonts in main CSS for offline availability. All labels, procedures, and text elements now work without internet connection.
 ```
 
 ## User Preferences
