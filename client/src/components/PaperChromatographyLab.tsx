@@ -248,6 +248,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
             onClick={() => setSelectedInk('black')}
             onPointerDown={() => setSelectedInk('black')}
             castShadow
+            userData={{ ink: 'black' }}
           >
             <cylinderGeometry args={[0.05, 0.05, 0.1, 8]} />
             <meshStandardMaterial 
@@ -366,6 +367,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           onClick={applyInk}
           onPointerDown={applyInk}
           castShadow
+          userData={{ action: 'apply-ink' }}
         >
           <boxGeometry args={[0.3, 0.08, 0.05]} />
           <meshStandardMaterial 
@@ -388,6 +390,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
           onClick={startChromatography}
           onPointerDown={startChromatography}
           castShadow
+          userData={{ action: 'start-chromatography' }}
         >
           <boxGeometry args={[0.3, 0.08, 0.05]} />
           <meshStandardMaterial 
