@@ -15,7 +15,7 @@ import { useChemistryLab } from "../lib/stores/useChemistryLab";
 import { useKeyboardControls } from "@react-three/drei";
 import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
-
+ 
 interface ChemistryLabProps {
   mobileControls?: {
     forward: boolean;

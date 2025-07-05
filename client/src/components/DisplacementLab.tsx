@@ -362,7 +362,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           color="#7f8c8d"
           anchorX="center"
           anchorY="middle"
-        >
+        > 
           FeSO4
         </Text>
       </group>

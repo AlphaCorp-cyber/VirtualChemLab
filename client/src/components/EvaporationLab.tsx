@@ -233,7 +233,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
                   color="#ffffff"
                   emissive="#ffffff"
                   emissiveIntensity={1.7}
-                />
+                /> 
               </mesh>
             );
           })}
