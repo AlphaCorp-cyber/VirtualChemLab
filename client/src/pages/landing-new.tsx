@@ -410,13 +410,7 @@ export default function Landing() {
               >
                 Choose Your Experiment
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-black text-lg px-8 py-4 rounded-full"
-              >
-                Watch Demo
-              </Button>
+             
             </motion.div>
           </div>
         </section>
@@ -604,13 +598,7 @@ export default function Landing() {
               >
                 Start First Experiment
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-black text-lg px-12 py-6 rounded-full"
-              >
-                Request Demo
-              </Button>
+             
             </motion.div>
           </div>
         </motion.section>
