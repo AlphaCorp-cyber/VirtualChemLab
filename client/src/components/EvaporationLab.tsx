@@ -21,7 +21,7 @@ function WaterBeaker({ position, isSelected, onSelect, isEmpty, isPouring }: {
       // Tilt beaker towards evaporating dish for realistic pouring
       beakerRef.current.rotation.z = -0.6;
       beakerRef.current.position.x = position[0] + 0.8;
-      beakerRef.current.position.y = position[1] + 0.4;
+      beakerRef.current.position.y = position[1] + 0.8; // Higher above the dish
     } else if (beakerRef.current && !isPouring) {
       beakerRef.current.rotation.z = 0;
       beakerRef.current.position.x = position[0];
@@ -576,7 +576,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       />
 
       <WaterStream 
-        startPos={[-0.4, 2.4, -1]}
+        startPos={[-0.4, 2.7, -1]}
         endPos={[0, 2.65, -1]}
         isVisible={showWaterStream}
       />
