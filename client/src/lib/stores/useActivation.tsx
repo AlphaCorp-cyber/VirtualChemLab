@@ -25,11 +25,16 @@ const generateRandomKey = (): string => {
   return result;
 };
 
-// Generate valid activation keys - in production, this should be fetched from a secure backend
-const VALID_ACTIVATION_KEYS = [
-  'A1B2C3D4E5F6G7H8',
-  '9Z8Y7X6W5V4U3T2S',
-];
+// Generate random activation keys on each app start
+const generateValidationKeys = () => {
+  const keys = [];
+  for (let i = 0; i < 5; i++) { // Generate 5 random keys
+    keys.push(generateRandomKey());
+  }
+  return keys;
+};
+
+const VALID_ACTIVATION_KEYS = generateValidationKeys();
 
 export const useActivation = create<ActivationState>()(
   persist(
@@ -101,7 +106,13 @@ export const useActivation = create<ActivationState>()(
         set({ error });
       },
 
-      generateRandomKey: generateRandomKey
+      generateRandomKey: generateRandomKey,
+
+      // Debug function to get current valid keys (for admin use)
+      getCurrentValidKeys: () => {
+        console.log('Current valid activation keys:', VALID_ACTIVATION_KEYS);
+        return VALID_ACTIVATION_KEYS;
+      }
     }),
     {
       name: 'chemistry-lab-activation',
