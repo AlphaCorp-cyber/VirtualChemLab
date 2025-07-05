@@ -27,7 +27,6 @@ export function Text3D({
       textAlign={textAlign}
       anchorX="center"
       anchorY="middle"
-      font="/fonts/inter-regular.ttf"
     >
       {text}
     </Text>
@@ -49,7 +48,6 @@ export function InstructionText({
       textAlign="left"
       anchorX="left"
       anchorY="middle"
-      font="/fonts/inter-regular.ttf"
     >
       {text}
     </Text>
@@ -71,7 +69,6 @@ export function LabelText({
       textAlign="center"
       anchorX="center"
       anchorY="middle"
-      font="/fonts/inter-regular.ttf"
     >
       {text}
     </Text>
