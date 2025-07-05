@@ -167,15 +167,20 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
         />
       </mesh>
       
-      {/* Glass rim for better visibility */}
+      {/* Glass rim - subtle and realistic */}
       <mesh position={[0, 0, 0]}>
-        <torusGeometry args={[0.4, 0.015, 8, 32]} />
-        <meshStandardMaterial 
-          color="#722F37"
+        <torusGeometry args={[0.4, 0.008, 16, 64]} />
+        <meshPhysicalMaterial 
+          color="#ffffff"
           transparent
-          opacity={0.3}
-          roughness={0.1}
+          opacity={0.4}
+          roughness={0.05}
           metalness={0.0}
+          transmission={0.8}
+          thickness={0.002}
+          ior={1.52}
+          clearcoat={0.8}
+          clearcoatRoughness={0.05}
         />
       </mesh>
       
