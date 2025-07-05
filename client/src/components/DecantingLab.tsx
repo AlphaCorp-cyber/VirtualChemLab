@@ -504,6 +504,8 @@ const DecantingLab: React.FC<DecantingLabProps> = ({ onExperimentComplete }) => 
   );
 }
 
+export { DecantingLab };
+
 export function DecantingLab_Story() {
   return <DecantingLab />;
 }
