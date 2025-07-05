@@ -6,6 +6,46 @@ import PaperChromatographyLab from './PaperChromatographyLab';
 import { LabEnvironment } from './LabEnvironment';
 import { useChemistryLab } from '../lib/stores/useChemistryLab';
 
+// Error boundary component
+class DemoErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean; error?: Error }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('Demo error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="demo-error p-4 bg-red-100 border border-red-400 rounded">
+          <h3 className="font-semibold text-red-800">Demo Error</h3>
+          <p className="text-red-600">
+            There was an error loading the demo. Please refresh the page and try again.
+          </p>
+          <details className="mt-2">
+            <summary className="text-sm text-red-500 cursor-pointer">Error Details</summary>
+            <pre className="text-xs text-red-500 mt-1 overflow-auto">
+              {this.state.error?.toString()}
+            </pre>
+          </details>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 interface DemoRecorderProps {
   onComplete?: (videoBlob: Blob) => void;
 }
@@ -47,13 +87,22 @@ export const DemoRecorder: React.FC<DemoRecorderProps> = ({ onComplete }) => {
       setRecordingStep(0);
       recordedChunks.current = [];
 
+      // Check if screen recording is supported
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+        alert('Screen recording is not supported in this browser. The demo will run without recording.');
+        setIsRecording(true);
+        return;
+      }
+
       const stream = await navigator.mediaDevices.getDisplayMedia({
         video: { mediaSource: 'screen' as any },
         audio: false
       });
 
       const recorder = new MediaRecorder(stream, {
-        mimeType: 'video/webm;codecs=vp9'
+        mimeType: MediaRecorder.isTypeSupported('video/webm;codecs=vp9') 
+          ? 'video/webm;codecs=vp9' 
+          : 'video/webm'
       });
 
       recorder.ondataavailable = (event) => {
@@ -80,6 +129,8 @@ export const DemoRecorder: React.FC<DemoRecorderProps> = ({ onComplete }) => {
       setIsRecording(true);
     } catch (error) {
       console.error('Error starting recording:', error);
+      alert('Recording failed, but demo will continue. Error: ' + error.message);
+      setIsRecording(true);
     }
   };
 
@@ -164,36 +215,38 @@ export const DemoRecorder: React.FC<DemoRecorderProps> = ({ onComplete }) => {
       )}
 
       <div className="demo-canvas-container" style={{ width: '100%', height: '600px' }}>
-        <Canvas ref={canvasRef} shadows>
-          <PerspectiveCamera makeDefault position={[0, 2, 4]} />
-          <OrbitControls 
-            enablePan={true}
-            enableZoom={true}
-            enableRotate={true}
-            autoRotate={isRecording}
-            autoRotateSpeed={0.5}
-          />
-          
-          <ambientLight intensity={0.4} />
-          <directionalLight
-            position={[5, 5, 5]}
-            intensity={0.8}
-            castShadow
-            shadow-mapSize={[1024, 1024]}
-          />
-          
-          <LabEnvironment />
-          
-          <group position={[0, 0, 0]}>
-            <PaperChromatographyLab 
-              onExperimentComplete={(result) => {
-                console.log('Demo experiment completed:', result);
-              }}
+        <DemoErrorBoundary>
+          <Canvas ref={canvasRef} shadows>
+            <PerspectiveCamera makeDefault position={[0, 2, 4]} />
+            <OrbitControls 
+              enablePan={true}
+              enableZoom={true}
+              enableRotate={true}
+              autoRotate={isRecording}
+              autoRotateSpeed={0.5}
             />
-          </group>
-          
-          <Environment preset="laboratory" />
-        </Canvas>
+            
+            <ambientLight intensity={0.4} />
+            <directionalLight
+              position={[5, 5, 5]}
+              intensity={0.8}
+              castShadow
+              shadow-mapSize={[1024, 1024]}
+            />
+            
+            <LabEnvironment />
+            
+            <group position={[0, 0, 0]}>
+              <PaperChromatographyLab 
+                onExperimentComplete={(result) => {
+                  console.log('Demo experiment completed:', result);
+                }}
+              />
+            </group>
+            
+            <Environment preset="laboratory" />
+          </Canvas>
+        </DemoErrorBoundary>
       </div>
 
       <div className="demo-info mt-4 p-4 bg-gray-50 rounded">
