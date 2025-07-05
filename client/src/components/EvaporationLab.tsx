@@ -158,7 +158,17 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
         <meshStandardMaterial 
           color="#ffffff"
           transparent
-          opacity={0.05}
+          opacity={0.15}
+          roughness={0.1}
+          metalness={0.0}
+        />
+      </mesh>
+
+      {/* Solid bottom to prevent see-through */}
+      <mesh position={[0, -0.35, 0]}>
+        <cylinderGeometry args={[0.38, 0.38, 0.02]} />
+        <meshStandardMaterial 
+          color="#f8f8f8"
           roughness={0.1}
           metalness={0.0}
         />
