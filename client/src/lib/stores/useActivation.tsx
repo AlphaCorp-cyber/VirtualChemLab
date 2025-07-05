@@ -25,16 +25,28 @@ const generateRandomKey = (): string => {
   return result;
 };
 
-// Generate random activation keys on each app start
-const generateValidationKeys = () => {
-  const keys = [];
-  for (let i = 0; i < 5; i++) { // Generate 5 random keys
-    keys.push(generateRandomKey());
-  }
-  return keys;
+// Server-side validation simulation (in production, this should be a real API call)
+const validateActivationKey = async (key: string): Promise<boolean> => {
+  // Simulate server API call
+  await new Promise(resolve => setTimeout(resolve, 800));
+  
+  // In production, this would be a secure server endpoint
+  // For now, we'll use a simple hash-based validation that's harder to reverse-engineer
+  const normalizedKey = key.toUpperCase().trim();
+  
+  // Simple checksum validation (still not fully secure but better than client-side keys)
+  if (normalizedKey.length !== 16) return false;
+  
+  // Check if key follows our pattern (you would implement proper server validation)
+  const checksum = normalizedKey.split('').reduce((acc, char, index) => {
+    return (acc + char.charCodeAt(0) * (index + 1)) % 1000;
+  }, 0);
+  
+  // These would be server-generated valid checksums
+  const validChecksums = [442, 567, 123, 789, 234]; // Example checksums
+  
+  return validChecksums.includes(checksum);
 };
-
-const VALID_ACTIVATION_KEYS = generateValidationKeys();
 
 export const useActivation = create<ActivationState>()(
   persist(
@@ -46,24 +58,28 @@ export const useActivation = create<ActivationState>()(
       activateLab: async (key: string) => {
         set({ error: null });
 
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        try {
+          // Validate activation key via server simulation
+          const isValid = await validateActivationKey(key);
 
-        // Validate activation key
-        const normalizedKey = key.toUpperCase().trim();
-        const isValid = VALID_ACTIVATION_KEYS.includes(normalizedKey);
-
-        if (isValid) {
+          if (isValid) {
+            set({
+              isActivated: true,
+              activationTimestamp: Date.now(),
+              error: null
+            });
+            console.log('Lab access activated successfully for 30 days');
+            return true;
+          } else {
+            set({
+              error: 'Invalid activation key. Please check your 16-character key and try again.',
+              isActivated: false
+            });
+            return false;
+          }
+        } catch (error) {
           set({
-            isActivated: true,
-            activationTimestamp: Date.now(),
-            error: null
-          });
-          console.log('Lab access activated successfully for 30 days');
-          return true;
-        } else {
-          set({
-            error: 'Invalid activation key. Please check your 16-character key and try again.',
+            error: 'Network error. Please check your connection and try again.',
             isActivated: false
           });
           return false;
@@ -106,13 +122,7 @@ export const useActivation = create<ActivationState>()(
         set({ error });
       },
 
-      generateRandomKey: generateRandomKey,
-
-      // Debug function to get current valid keys (for admin use)
-      getCurrentValidKeys: () => {
-        console.log('Current valid activation keys:', VALID_ACTIVATION_KEYS);
-        return VALID_ACTIVATION_KEYS;
-      }
+      generateRandomKey: generateRandomKey
     }),
     {
       name: 'chemistry-lab-activation',
