@@ -576,14 +576,14 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
 
       <WaterStream 
         startPos={[-1.7, 2.4, -1]}
-        endPos={[0, 2.05, -1]}
+        endPos={[0, 2.52, -1]}
         isVisible={showWaterStream}
       />
       
       <TripodStand position={[0, 1.55, -1]} />
       
       <EvaporatingDish 
-        position={[0, 2.05, -1]} 
+        position={[0, 2.52, -1]} 
         isSelected={false}
         onSelect={() => {}}
         liquidLevel={liquidLevel}
@@ -599,7 +599,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       
       {/* Smoke effects during heating */}
       <SmokeParticles 
-        position={[0, 2.1, -1]} 
+        position={[0, 2.6, -1]} 
         isActive={showSmoke}
       />
       
