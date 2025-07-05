@@ -25,27 +25,26 @@ const generateRandomKey = (): string => {
   return result;
 };
 
-// Server-side validation simulation (in production, this should be a real API call)
+// Local activation keys - random 16-character codes
+const VALID_ACTIVATION_KEYS = [
+  'K9P3N7M2Q8R5T1W6',
+  'X4Z9A1S5D7F3G8H2',
+  'B6N8M4V9C3X1Z7Q5',
+  'J2L4K6P8Y9U3I5O7',
+  'E1R9T3Y6U2I8O4P0',
+  'W7Q5A9S1D6F2G8H4',
+  'Z3X7C5V1B9N2M6K8',
+  'L0J4H7G3F5D9S2A6',
+  'T8Y4U6I1O3P7Q9W5',
+  'M1N5B7V3C9X2Z4K6'
+];
+
 const validateActivationKey = async (key: string): Promise<boolean> => {
-  // Simulate server API call
+  // Simulate API call delay
   await new Promise(resolve => setTimeout(resolve, 800));
   
-  // In production, this would be a secure server endpoint
-  // For now, we'll use a simple hash-based validation that's harder to reverse-engineer
   const normalizedKey = key.toUpperCase().trim();
-  
-  // Simple checksum validation (still not fully secure but better than client-side keys)
-  if (normalizedKey.length !== 16) return false;
-  
-  // Check if key follows our pattern (you would implement proper server validation)
-  const checksum = normalizedKey.split('').reduce((acc, char, index) => {
-    return (acc + char.charCodeAt(0) * (index + 1)) % 1000;
-  }, 0);
-  
-  // These would be server-generated valid checksums
-  const validChecksums = [442, 567, 123, 789, 234]; // Example checksums
-  
-  return validChecksums.includes(checksum);
+  return VALID_ACTIVATION_KEYS.includes(normalizedKey);
 };
 
 export const useActivation = create<ActivationState>()(
