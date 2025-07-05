@@ -193,7 +193,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
       {saltCrystals && (
         <group>
           {/* Main salt layer - curved sphere section matching dish */}
-          <mesh position={[0, -0.34, 0]}>
+          <mesh position={[0, 2.44, 0]}>
             <sphereGeometry args={[0.35, 32, 16, 0, Math.PI * 2, Math.PI / 2, Math.PI / 3]} />
             <meshStandardMaterial 
               color="#ffffff" 
@@ -204,12 +204,12 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
           </mesh>
 
           {/* Additional salt accumulation in center (thicker) */}
-          <mesh position={[0, -0.32, 0]}>
+          <mesh position={[0, 2.24, 0]}>
             <sphereGeometry args={[0.25, 32, 16, 0, Math.PI * 2, Math.PI / 2, Math.PI / 4]} />
             <meshStandardMaterial 
               color="#ffffff" 
               emissive="#ffffff"
-              emissiveIntensity={0.9}
+              emissiveIntensity={1.9}
               roughness={0.05}
             />
           </mesh>
@@ -232,7 +232,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
                 <meshStandardMaterial 
                   color="#ffffff"
                   emissive="#ffffff"
-                  emissiveIntensity={0.7}
+                  emissiveIntensity={1.7}
                 />
               </mesh>
             );
