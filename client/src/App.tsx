@@ -3,7 +3,6 @@ import Landing from "./pages/landing-new";
 import TestScrolling from "./pages/test-scrolling";
 import Lab from "./pages/lab";
 import NotFound from "./pages/not-found";
-import "@fontsource/inter";
 
 function App() {
   return (
