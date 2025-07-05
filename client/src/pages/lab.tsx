@@ -6,8 +6,10 @@ import { useParams } from "react-router-dom";
 import { ChemistryLab } from "../components/ChemistryLab";
 import { LabUI } from "../components/LabUI";
 import { MobileControls } from "../components/MobileControls";
+import { ActivationKeyModal } from "../components/ActivationKeyModal";
 import { useAudio } from "../lib/stores/useAudio";
 import { useChemistryLab } from "../lib/stores/useChemistryLab";
+import { useActivation } from "../lib/stores/useActivation";
 
 // Create XR store for VR support with better settings
 const xrStore = createXRStore();
@@ -28,9 +30,11 @@ export default function Lab() {
   const { experimentId } = useParams();
   const { initializeAudio } = useAudio();
   const { initializeLab, switchExperiment } = useChemistryLab();
+  const { isActivated, error, activateLab, checkActivationStatus, setError } = useActivation();
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [showActivationModal, setShowActivationModal] = useState(false);
 
   // Mobile camera control state
   const [mobileControls, setMobileControls] = useState({
@@ -45,6 +49,13 @@ export default function Lab() {
   useEffect(() => {
     // Add lab-specific CSS class to body for fixed layout
     document.body.classList.add('lab-page');
+
+    // Check activation status
+    const isLabActivated = checkActivationStatus();
+    if (!isLabActivated) {
+      setShowActivationModal(true);
+      return; // Don't initialize lab until activated
+    }
 
     initializeAudio();
     initializeLab();
@@ -145,6 +156,93 @@ export default function Lab() {
       handleMobileMove('backward');
     }
   };
+
+  const handleActivation = async (key: string) => {
+    const success = await activateLab(key);
+    if (success) {
+      setShowActivationModal(false);
+      // Initialize lab after successful activation
+      initializeAudio();
+      initializeLab();
+      
+      // Set the specific experiment based on the route parameter
+      if (experimentId) {
+        const experimentMap: Record<string, any> = {
+          'ph-testing': 'pH Testing',
+          'flame-tests': 'Flame Tests',
+          'gas-tests': 'Gas Tests',
+          'displacement-reactions': 'Displacement Reactions',
+          'paper-chromatography': 'Paper Chromatography',
+          'filtration': 'Filtration',
+          'evaporation': 'Evaporation',
+          'decanting': 'Decanting'
+        };
+
+        const experimentName = experimentMap[experimentId];
+        if (experimentName) {
+          switchExperiment(experimentName);
+        }
+      }
+    }
+  };
+
+  // If not activated, show activation modal
+  if (!isActivated || showActivationModal) {
+    return (
+      <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <div style={{
+            color: 'white',
+            textAlign: 'center',
+            padding: '2rem'
+          }}>
+            <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Virtual Chemistry Lab</h1>
+            <p style={{ fontSize: '1.1rem', opacity: 0.9 }}>Preparing your laboratory experience...</p>
+          </div>
+        </div>
+        
+        <ActivationKeyModal
+          isOpen={showActivationModal}
+          onActivate={handleActivation}
+          error={error}
+        />
+
+        {/* Back to Landing Button */}
+        <div style={{ 
+          position: 'absolute', 
+          top: '20px', 
+          left: '20px', 
+          zIndex: 1000 
+        }}>
+          <button
+            onClick={() => window.location.href = '/'}
+            style={{
+              background: '#2196F3',
+              color: 'white',
+              border: 'none',
+              padding: '8px 16px',
+              borderRadius: '6px',
+              fontSize: '14px',
+              cursor: 'pointer',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+            }}
+          >
+            ← Back to Experiments
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
