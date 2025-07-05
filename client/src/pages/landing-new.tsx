@@ -413,7 +413,7 @@ export default function Landing() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white bg-black text-white hover:bg-white hover:text-black text-lg px-8 py-4 rounded-full"
+                className="border-white text-white hover:bg-white hover:text-black text-lg px-8 py-4 rounded-full"
               >
                 Watch Demo
               </Button>
@@ -600,11 +600,17 @@ export default function Landing() {
               <Button
                 size="lg"
                 className="bg-white text-black hover:bg-gray-200 text-lg px-12 py-6 rounded-full"
-                onClick={() => document.getElementById('experiments')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => handleExperimentSelect('ph-testing')}
               >
                 Start First Experiment
               </Button>
-             
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-white text-white hover:bg-white hover:text-black text-lg px-12 py-6 rounded-full"
+              >
+                Request Demo
+              </Button>
             </motion.div>
           </div>
         </motion.section>
