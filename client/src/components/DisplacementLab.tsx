@@ -161,7 +161,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           Test Tube
         </Text>
         <Text
@@ -170,7 +170,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           color="#7f8c8d"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           (Reaction Vessel with Iron Nail(More Reactive Metal))
         </Text>
       </group>
@@ -187,7 +187,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           Metal Samples
         </Text>
         <Text
@@ -196,7 +196,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           color="#7f8c8d"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           (Select reactive metal)
         </Text>
       </group>
@@ -208,7 +208,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           Iron
         </Text>
       </group>
@@ -220,7 +220,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           Zinc
         </Text>
       </group>
@@ -232,7 +232,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           Magnesium
         </Text>
       </group>
@@ -311,7 +311,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           Salt Solutions
         </Text>
         <Text
@@ -320,7 +320,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           color="#7f8c8d"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           (Metal ion sources)
         </Text>
       </group>
@@ -332,7 +332,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           color="#0066cc"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           Copper Sulfate
         </Text>
         <Text
@@ -341,7 +341,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           color="#7f8c8d"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           CuSO4
         </Text>
       </group>
@@ -353,7 +353,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           color="#228b22"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           Iron Sulfate
         </Text>
         <Text
@@ -362,7 +362,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
           color="#7f8c8d"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf"> 
+        > 
           FeSO4
         </Text>
       </group>
@@ -450,7 +450,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
         color="#ffffff"
         anchorX="center"
         anchorY="middle"
-       font="/fonts/inter-regular.ttf">
+      >
         Reset
       </Text>
 
@@ -468,7 +468,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
             color="#2c3e50"
             anchorX="center"
             anchorY="middle"
-           font="/fonts/inter-regular.ttf">
+          >
             Displacement Reaction
           </Text>
 
@@ -478,7 +478,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
             color="#7f8c8d"
             anchorX="center"
             anchorY="middle"
-           font="/fonts/inter-regular.ttf">
+          >
             Fe + CuSO₄ → FeSO₄ + Cu
           </Text>
 
@@ -488,7 +488,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
             color="#2c3e50"
             anchorX="center"
             anchorY="middle"
-           font="/fonts/inter-regular.ttf">
+          >
             Progress: {Math.round(reactionProgress * 100)}%
           </Text>
 
@@ -499,7 +499,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
               color="#b87333"
               anchorX="center"
               anchorY="middle"
-             font="/fonts/inter-regular.ttf">
+            >
               Copper depositing on iron
             </Text>
           )}
@@ -511,7 +511,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
               color="#0066cc"
               anchorX="center"
               anchorY="middle"
-             font="/fonts/inter-regular.ttf">
+            >
               Solution becoming colorless
             </Text>
           )}
@@ -523,7 +523,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
               color="#27ae60"
               anchorX="center"
               anchorY="middle"
-             font="/fonts/inter-regular.ttf">
+            >
               Reaction Complete!
             </Text>
           )}

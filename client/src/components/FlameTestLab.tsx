@@ -135,7 +135,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
         color="black"
         anchorX="center"
         anchorY="middle"
-        font="/fonts/inter-regular.ttf" >
+        >
         Bunsen Burner
       </Text>
       
@@ -145,7 +145,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
         color={isLit ? "#27ae60" : "#e74c3c"}
         anchorX="center"
         anchorY="middle"
-        font="/fonts/inter-regular.ttf" >
+        >
         {isLit ? "LIT" : "OFF"}
       </Text>
     </group>
@@ -209,7 +209,7 @@ function WireLoop({ position, isSelected, onSelect, onRelease }: {
         color="black"
         anchorX="center"
         anchorY="middle"
-       font="/fonts/inter-regular.ttf">
+      >
         Nichrome Wire
       </Text>
       
@@ -220,7 +220,7 @@ function WireLoop({ position, isSelected, onSelect, onRelease }: {
           color="#27ae60"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           SELECTED
         </Text>
       )}
@@ -296,7 +296,7 @@ function MetalSaltSample({ salt, isSelected, onSelect, onFlameTest, wireLoopSele
             color={salt.flameColor}
             anchorX="left"
             anchorY="middle"
-           font="/fonts/inter-regular.ttf">
+          >
             {salt.flameColorName}
           </Text>
         </group>
@@ -330,7 +330,7 @@ function MetalSaltSample({ salt, isSelected, onSelect, onFlameTest, wireLoopSele
         color="black"
         anchorX="center"
         anchorY="middle"
-       font="/fonts/inter-regular.ttf">
+      >
         {salt.name}
       </Text>
       
@@ -340,7 +340,7 @@ function MetalSaltSample({ salt, isSelected, onSelect, onFlameTest, wireLoopSele
         color="#2c3e50"
         anchorX="center"
         anchorY="middle"
-       font="/fonts/inter-regular.ttf">
+      >
         {salt.formula}
       </Text>
       
@@ -350,7 +350,7 @@ function MetalSaltSample({ salt, isSelected, onSelect, onFlameTest, wireLoopSele
         color="#7f8c8d"
         anchorX="center"
         anchorY="middle"
-       font="/fonts/inter-regular.ttf">
+      >
         Ion: {salt.ion}
       </Text>
       
@@ -361,7 +361,7 @@ function MetalSaltSample({ salt, isSelected, onSelect, onFlameTest, wireLoopSele
           color="#27ae60"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           SELECTED
         </Text>
       )}
@@ -434,7 +434,7 @@ export function FlameTestLab() {
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           Flame Test Instructions
         </Text>
         
@@ -444,7 +444,7 @@ export function FlameTestLab() {
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           1. Click to light Bunsen burner
         </Text>
         
@@ -454,7 +454,7 @@ export function FlameTestLab() {
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           2. Select wire loop
         </Text>
         
@@ -464,7 +464,7 @@ export function FlameTestLab() {
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           3. Click on salt sample to test
         </Text>
         
@@ -474,7 +474,7 @@ export function FlameTestLab() {
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           4. Observe characteristic flame color
         </Text>
         
@@ -484,7 +484,7 @@ export function FlameTestLab() {
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           5. Identify the metal ion present
         </Text>
       </group>
@@ -502,7 +502,7 @@ export function FlameTestLab() {
           color="black"
           anchorX="center"
           anchorY="middle"
-         font="/fonts/inter-regular.ttf">
+        >
           Flame Color Reference
         </Text>
         
@@ -527,7 +527,7 @@ export function FlameTestLab() {
               fontSize={0.025}
               color="black"
               anchorX="center"
-             font="/fonts/inter-regular.ttf">
+            >
               {sample.name}
             </Text>
             <Text
@@ -535,7 +535,7 @@ export function FlameTestLab() {
               fontSize={0.02}
               color="black"
               anchorX="center"
-             font="/fonts/inter-regular.ttf">
+            >
               {sample.ion}
             </Text>
           </group>
