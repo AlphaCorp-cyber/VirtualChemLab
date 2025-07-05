@@ -7,18 +7,9 @@ export default function DemoPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Simulate loading and check for required dependencies
+    // Simulate loading
     const timer = setTimeout(() => {
-      try {
-        // Check if required components are available
-        if (typeof DemoRecorder === 'undefined') {
-          throw new Error('DemoRecorder component is not available');
-        }
-        setIsLoading(false);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error occurred');
-        setIsLoading(false);
-      }
+      setIsLoading(false);
     }, 1000);
 
     return () => clearTimeout(timer);

@@ -651,6 +651,11 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
       )}
     </group>
   );
-};
+}
 
+export { PaperChromatographyLab };
 export default PaperChromatographyLab;
+
+export function PaperChromatographyLab_Story() {
+  return <PaperChromatographyLab />;
+}

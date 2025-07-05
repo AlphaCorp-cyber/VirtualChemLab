@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Environment } from '@react-three/drei';
-import PaperChromatographyLab from './PaperChromatographyLab';
+import { PaperChromatographyLab } from './PaperChromatographyLab';
 import { LabEnvironment } from './LabEnvironment';
 import { useChemistryLab } from '../lib/stores/useChemistryLab';
 
