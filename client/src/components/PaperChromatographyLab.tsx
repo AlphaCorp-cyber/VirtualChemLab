@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { Text } from '@react-three/drei';
 import * as THREE from 'three';
 import { useChemistryLab } from '../lib/stores/useChemistryLab';
+import { useAudio } from '../lib/stores/useAudio';
 
 interface PaperChromatographyLabProps {
   onExperimentComplete?: (result: string) => void;
