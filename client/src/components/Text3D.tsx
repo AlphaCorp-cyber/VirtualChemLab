@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from '@react-three/drei';
+import { useFont } from '@react-three/drei';
 
 interface Text3DProps {
   position: [number, number, number];
@@ -27,6 +28,7 @@ export function Text3D({
       textAlign={textAlign}
       anchorX="center"
       anchorY="middle"
+      font="/fonts/inter-regular.ttf"
     >
       {text}
     </Text>
@@ -48,6 +50,7 @@ export function InstructionText({
       textAlign="left"
       anchorX="left"
       anchorY="middle"
+      font="/fonts/inter-regular.ttf"
     >
       {text}
     </Text>
@@ -69,6 +72,7 @@ export function LabelText({
       textAlign="center"
       anchorX="center"
       anchorY="middle"
+      font="/fonts/inter-regular.ttf"
     >
       {text}
     </Text>
