@@ -155,7 +155,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
         onClick={onSelect}
         userData={{ interactable: true }}
       >
-        <sphereGeometry args={[0.4, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
+        <sphereGeometry args={[0.4, 32, 16, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2]} />
         <meshStandardMaterial 
           color="#ffffff"
           transparent
@@ -167,7 +167,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
       
       {/* Simple black outline for clarity */}
       <mesh position={[0, 0, 0]}>
-        <sphereGeometry args={[0.405, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
+        <sphereGeometry args={[0.405, 32, 16, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2]} />
         <meshStandardMaterial 
           color="#000000"
           transparent
