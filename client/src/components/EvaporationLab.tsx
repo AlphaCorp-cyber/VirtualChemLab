@@ -631,11 +631,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       )}
 
       {/* Equipment Labels - Above equipment */}
-      <mesh position={[-3.5, 1.62, -0.38]}>
-        <planeGeometry args={[1.0, 0.2]} />
-        <meshStandardMaterial color="#3498db" />
-      </mesh>
-      <Text3D position={[-3.5, 1.62, -0.38]} text="Solution Beaker" fontSize={0.06} color="#ffffff" />
+    
 
       <mesh position={[1, 1.6, -0.39]}>
         <planeGeometry args={[1.0, 0.2]} />
@@ -645,9 +641,9 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
 
       <mesh position={[-1, 1.6, -0.39]}>
         <planeGeometry args={[1.0, 0.2]} />
-        <meshStandardMaterial color="#f39c12" />
+        <meshStandardMaterial color="#3498db" />
       </mesh>
-      <Text3D position={[-1, 1.62, -0.38]} text="Tripod stand + Evaporating Dish" fontSize={0.06} color="#ffffff" />
+      <Text3D position={[-1, 1.62, -0.38]} text="Solution Beaker" fontSize={0.06} color="#ffffff" />
 
       <mesh position={[0, 2.8, -1]}>
         <planeGeometry args={[1.5, 0.2]} />
