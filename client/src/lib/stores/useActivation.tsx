@@ -12,15 +12,32 @@ interface ActivationState {
   resetActivation: () => void;
   checkActivationStatus: () => boolean;
   setError: (error: string | null) => void;
+  generateRandomKey: () => string;
 }
 
-// Valid activation keys - in production, this should be fetched from a secure backend
+// Function to generate random 16-character alphanumeric key
+const generateRandomKey = (): string => {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  for (let i = 0; i < 16; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+};
+
+// Generate valid activation keys - in production, this should be fetched from a secure backend
 const VALID_ACTIVATION_KEYS = [
   'CHEM2024LAB',
   'SCIENCE2024',
   'LABACCESS24',
   'CHEMISTRY2024',
-  'VRCHEM2024'
+  'VRCHEM2024',
+  // Generate some random keys for testing
+  generateRandomKey(),
+  generateRandomKey(),
+  generateRandomKey(),
+  'A1B2C3D4E5F6G7H8', // Example 16-char key
+  '9Z8Y7X6W5V4U3T2S', // Example 16-char key
 ];
 
 export const useActivation = create<ActivationState>()(
@@ -46,11 +63,11 @@ export const useActivation = create<ActivationState>()(
             activationTimestamp: Date.now(),
             error: null
           });
-          console.log('Lab access activated successfully');
+          console.log('Lab access activated successfully for 30 days');
           return true;
         } else {
           set({
-            error: 'Invalid activation key. Please check your key and try again.',
+            error: 'Invalid activation key. Please check your 16-character key and try again.',
             isActivated: false
           });
           return false;
@@ -69,10 +86,10 @@ export const useActivation = create<ActivationState>()(
       checkActivationStatus: () => {
         const { isActivated, activationTimestamp } = get();
         
-        // Check if activation is still valid (24 hours)
+        // Check if activation is still valid (30 days)
         if (isActivated && activationTimestamp) {
-          const twentyFourHours = 24 * 60 * 60 * 1000;
-          const isExpired = Date.now() - activationTimestamp > twentyFourHours;
+          const thirtyDays = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
+          const isExpired = Date.now() - activationTimestamp > thirtyDays;
           
           if (isExpired) {
             set({
@@ -80,6 +97,7 @@ export const useActivation = create<ActivationState>()(
               activationTimestamp: null,
               error: null
             });
+            console.log('Activation expired after 30 days');
             return false;
           }
           return true;
@@ -90,7 +108,9 @@ export const useActivation = create<ActivationState>()(
 
       setError: (error: string | null) => {
         set({ error });
-      }
+      },
+
+      generateRandomKey: generateRandomKey
     }),
     {
       name: 'chemistry-lab-activation',

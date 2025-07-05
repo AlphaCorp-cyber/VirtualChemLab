@@ -44,7 +44,7 @@ export function ActivationKeyModal({ isOpen, onActivate, onClose, error }: Activ
             Lab Activation Required
           </DialogTitle>
           <DialogDescription>
-            Enter your activation key to access the Virtual Chemistry Lab for the first time.
+            Enter your 16-character activation key to access the Virtual Chemistry Lab for the first time.
           </DialogDescription>
         </DialogHeader>
         
@@ -56,13 +56,14 @@ export function ActivationKeyModal({ isOpen, onActivate, onClose, error }: Activ
             <Input
               id="activation-key"
               type="text"
-              placeholder="Enter your activation key"
+              placeholder="Enter 16-character key (e.g., A1B2C3D4E5F6G7H8)"
               value={activationKey}
               onChange={(e) => setActivationKey(e.target.value)}
               onKeyPress={handleKeyPress}
               className="text-center tracking-widest font-mono"
               disabled={isSubmitting}
               autoFocus
+              maxLength={16}
             />
           </div>
 
@@ -85,7 +86,7 @@ export function ActivationKeyModal({ isOpen, onActivate, onClose, error }: Activ
         </form>
 
         <div className="text-xs text-muted-foreground text-center">
-          This activation is required only once per browser session.
+          This activation is valid for 30 days. Keys are 16 characters (letters and numbers).
         </div>
       </DialogContent>
     </Dialog>
