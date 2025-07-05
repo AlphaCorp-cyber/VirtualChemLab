@@ -765,7 +765,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       </mesh>
 
       <Text3D 
-        position={[2.5, 1.95, -0.38]} 
+        position={[2.5, 1.9, -0.95]} 
         text="RESET" 
         fontSize={0.08} 
         color="#ffffff" 
