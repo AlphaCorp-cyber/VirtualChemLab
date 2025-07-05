@@ -175,19 +175,6 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
         />
       </mesh>
 
-      {/* Inner bottom surface - white for contrast - only visible after evaporation */}
-      {saltCrystals && (
-        <mesh position={[0, -0.35, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <circleGeometry args={[0.35, 32]} />
-          <meshStandardMaterial 
-            color="#ffffff"
-            transparent
-            opacity={0.9}
-            roughness={0.2}
-          />
-        </mesh>
-      )}
-
       {/* Salt solution - bluish water with animated level */}
       {liquidLevel > 0 && hasSaltSolution && (
         <mesh position={[0, -0.35 + (liquidLevel * 0.15), 0]}>
