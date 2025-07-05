@@ -811,7 +811,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       {experimentStage === 'pour-water' && (
         <mesh position={[-1, 2.6, 0]} rotation={[0, 0, -Math.PI/6]}>
           <coneGeometry args={[0.1, 0.3, 4]} />
-          <meshStandardMaterialcolor="#9b59b6" />
+          <meshStandardMaterial color="#9b59b6" />
         </mesh>
       )}
     </group>
