@@ -120,6 +120,13 @@ interface ChemistryLabState {
   // VR table height actions
   setVrTableHeight: (height: number) => void;
   setVrHeightLocked: (locked: boolean) => void;
+
+  // Individual experiment progress tracking
+  updateDisplacementProgress: () => void;
+  updatePaperChromatographyProgress: () => void;
+  updateFiltrationProgress: () => void;
+  updateEvaporationProgress: () => void;
+  updateDecantingProgress: () => void;
 }
 
 const initialBeakers: Beaker[] = [
@@ -522,6 +529,7 @@ export const useChemistryLab = create<ChemistryLabState>()(
     },
 
     switchExperiment: (experiment: ExperimentType) => {
+      // Reset all experiment states
       set({ 
         currentExperiment: experiment,
         completedTests: 0,
@@ -536,7 +544,7 @@ export const useChemistryLab = create<ChemistryLabState>()(
         bunsenBurnerOn: false,
         wireLoopSelected: false
       });
-      console.log(`Switched to experiment: ${experiment}`);
+      console.log(`Switched to experiment: ${experiment} - progress reset`);
     },
 
     setVrTableHeight: (height: number) => {
@@ -545,6 +553,66 @@ export const useChemistryLab = create<ChemistryLabState>()(
 
     setVrHeightLocked: (locked: boolean) => {
       set({ vrHeightLocked: locked });
+    },
+
+    updateDisplacementProgress: () => {
+      const { completedTests, totalTests } = get();
+      const newCompletedTests = completedTests + 1;
+      const newProgress = (newCompletedTests / totalTests) * 100;
+      
+      set({
+        completedTests: newCompletedTests,
+        progress: newProgress
+      });
+      console.log("Displacement reaction completed - progress updated");
+    },
+
+    updatePaperChromatographyProgress: () => {
+      const { completedTests, totalTests } = get();
+      const newCompletedTests = completedTests + 1;
+      const newProgress = (newCompletedTests / totalTests) * 100;
+      
+      set({
+        completedTests: newCompletedTests,
+        progress: newProgress
+      });
+      console.log("Paper chromatography completed - progress updated");
+    },
+
+    updateFiltrationProgress: () => {
+      const { completedTests, totalTests } = get();
+      const newCompletedTests = completedTests + 1;
+      const newProgress = (newCompletedTests / totalTests) * 100;
+      
+      set({
+        completedTests: newCompletedTests,
+        progress: newProgress
+      });
+      console.log("Filtration completed - progress updated");
+    },
+
+    updateEvaporationProgress: () => {
+      const { completedTests, totalTests } = get();
+      const newCompletedTests = completedTests + 1;
+      const newProgress = (newCompletedTests / totalTests) * 100;
+      
+      set({
+        completedTests: newCompletedTests,
+        progress: newProgress
+      });
+      console.log("Evaporation completed - progress updated");
+    },
+
+    updateDecantingProgress: () => {
+      const { completedTests, totalTests } = get();
+      const newCompletedTests = completedTests + 1;
+      const newProgress = (newCompletedTests / totalTests) * 100;
+      
+      set({
+        completedTests: newCompletedTests,
+        progress: newProgress
+      });
+      console.log("Decanting completed - progress updated");
     }
   }))
 );

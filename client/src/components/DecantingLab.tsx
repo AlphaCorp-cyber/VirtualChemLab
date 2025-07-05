@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { LabelText, InstructionText, Text3D } from './Text3D';
+import { useChemistryLab } from '../lib/stores/useChemistryLab';
 
 interface DecantingLabProps {
   onExperimentComplete?: (result: string) => void;
@@ -183,7 +184,7 @@ function LiquidStream({ startPos, endPos, isVisible }: {
       streamRef.current.children.forEach((droplet, index) => {
         const mesh = droplet as THREE.Mesh;
         const progress = (time * 3 + index * 0.3) % 2.0;
-        
+
         if (progress < 1.0) {
           // Calculate parabolic arc from source to receiving beaker
           const t = progress;
@@ -191,7 +192,7 @@ function LiquidStream({ startPos, endPos, isVisible }: {
           const startY = startPos[1];
           const endX = endPos[0];
           const endY = endPos[1];
-          
+
           // Parabolic trajectory with gravity effect
           mesh.position.x = startX + (endX - startX) * t;
           mesh.position.y = startY + (endY - startY) * t - 0.5 * t * t; // gravity curve
@@ -225,7 +226,7 @@ function LiquidStream({ startPos, endPos, isVisible }: {
   );
 }
 
-export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
+const DecantingLab: React.FC<DecantingLabProps> = ({ onExperimentComplete }) => {
   const [selectedTool, setSelectedTool] = useState<string>('');
   const [experimentStage, setExperimentStage] = useState<'setup' | 'settling' | 'decanting' | 'complete'>('setup');
   const [sourceLiquidLevel, setSourceLiquidLevel] = useState(0.5);
@@ -234,6 +235,12 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
   const [isPouring, setIsPouring] = useState(false);
   const [showStream, setShowStream] = useState(false);
   const [wineColor, setWineColor] = useState('#722F37'); // Start with deep dark wine color
+  const [decantingStarted, setDecantingStarted] = useState(false);
+  const [decantingProgress, setDecantingProgress] = useState(0);
+  const [sedimentSeparated, setSedimentSeparated] = useState(false);
+  const [hasCompleted, setHasCompleted] = useState(false);
+
+  const { updateDecantingProgress } = useChemistryLab();
 
   const handleSettling = () => {
     if (experimentStage === 'setup') {
@@ -244,19 +251,19 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       const settlingInterval = setInterval(() => {
         currentSediment += 0.02;
         setSedimentLevel(currentSediment);
-        
+
         // Adjust liquid level so total (sediment + liquid) = 0.5
         // As sediment forms at bottom, liquid level reduces but stays on top
         const totalOriginalVolume = 0.5;
         const minLiquidLevel = 0.1;
         const adjustedLiquidLevel = Math.max(totalOriginalVolume - currentSediment, minLiquidLevel);
         setSourceLiquidLevel(adjustedLiquidLevel);// Keep proper volume balance
-        
+
         // Gradually change wine color from deep red to clearer as sediment settles
         const settlingProgress = currentSediment / 0.15;
         const newColor = interpolateColor('#722F37', '#DC143C', settlingProgress); // Lighter, clearer wine color
         setWineColor(newColor);
-        
+
         if (currentSediment >= 0.15) {
           clearInterval(settlingInterval);
           // Ensure final state: sediment (0.15) + liquid (0.35) = 0.5 total
@@ -275,22 +282,22 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
   const interpolateColor = (color1: string, color2: string, factor: number) => {
     // Clamp factor between 0 and 1
     const clampedFactor = Math.max(0, Math.min(1, factor));
-    
+
     const c1 = parseInt(color1.substring(1), 16);
     const c2 = parseInt(color2.substring(1), 16);
-    
+
     const r1 = (c1 >> 16) & 0xff;
     const g1 = (c1 >> 8) & 0xff;
     const b1 = c1 & 0xff;
-    
+
     const r2 = (c2 >> 16) & 0xff;
     const g2 = (c2 >> 8) & 0xff;
     const b2 = c2 & 0xff;
-    
+
     const r = Math.round(r1 + (r2 - r1) * clampedFactor);
     const g = Math.round(g1 + (g2 - g1) * clampedFactor);
     const b = Math.round(b1 + (b2 - b1) * clampedFactor);
-    
+
     return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
   };
 
@@ -336,6 +343,24 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
     setSelectedTool('');
     setWineColor('#722F37'); // Reset to initial deep dark wine color
   };
+
+  useFrame((state, delta) => {
+    if (decantingStarted && decantingProgress < 1) {
+      const newProgress = Math.min(decantingProgress + delta * 0.25, 1);
+      setDecantingProgress(newProgress);
+
+      if (newProgress > 0.8 && !sedimentSeparated) {
+        setSedimentSeparated(true);
+        if (!hasCompleted) {
+          setHasCompleted(true);
+          updateDecantingProgress();
+          if (onExperimentComplete) {
+            onExperimentComplete("Clear liquid separated by decanting");
+          }
+        }
+      }
+    }
+  });
 
   return (
     <group>
@@ -477,4 +502,8 @@ export function DecantingLab({ onExperimentComplete }: DecantingLabProps) {
       )}
     </group>
   );
+}
+
+export function DecantingLab_Story() {
+  return <DecantingLab />;
 }

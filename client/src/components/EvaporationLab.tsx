@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { LabelText, InstructionText, Text3D } from './Text3D';
+import { useChemistryLab } from '../lib/stores/useChemistryLab';
 
 interface EvaporationLabProps {
   onExperimentComplete?: (result: string) => void;
@@ -221,7 +222,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
             const x = Math.cos(angle) * radius;
             const z = Math.sin(angle) * radius;
             const y = -0.35 + Math.sqrt(Math.max(0, 0.35 * 0.35 - x * x - z * z)) * 0.3;
-            
+
             return (
               <mesh 
                 key={i}
@@ -450,6 +451,9 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
   const [isPouring, setIsPouring] = useState(false);
   const [showWaterStream, setShowWaterStream] = useState(false);
   const [hasSaltSolution, setHasSaltSolution] = useState(false);
+  const [hasCompleted, setHasCompleted] = useState(false);
+
+  const { updateEvaporationProgress } = useChemistryLab();
 
   const handleWaterPour = () => {
     if (experimentStage === 'setup') {
@@ -523,6 +527,28 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
     setShowWaterStream(false);
     setHasSaltSolution(false);
   };
+
+  useFrame((state, delta) => {
+    if (isLit && liquidLevel > 0 && experimentStage === 'heating') {
+      const newProgress = Math.min(liquidLevel, 1);
+      setLiquidLevel(prev => {
+        const newLevel = Math.max(0, prev - delta * 0.125); // Reduced evaporation rate
+        if (newLevel <= 0 && !saltCrystals) {
+          setSaltCrystals(true);
+          setShowSmoke(false);
+          setExperimentStage('complete');
+          if (!hasCompleted) {
+              setHasCompleted(true);
+              updateEvaporationProgress();
+              if (onExperimentComplete) {
+                  onExperimentComplete("Salt crystals formed through evaporation");
+              }
+          }
+        }
+        return newLevel;
+      });
+    }
+  });
 
   return (
     <group>
@@ -632,7 +658,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       )}
 
       {/* Equipment Labels - Above equipment */}
-    
+
 
       <mesh position={[1, 1.6, -0.39]}>
         <planeGeometry args={[1.0, 0.2]} />
@@ -785,7 +811,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       {experimentStage === 'pour-water' && (
         <mesh position={[-1, 2.6, 0]} rotation={[0, 0, -Math.PI/6]}>
           <coneGeometry args={[0.1, 0.3, 4]} />
-          <meshStandardMaterial color="#9b59b6" />
+          <meshStandardMaterialcolor="#9b59b6" />
         </mesh>
       )}
     </group>

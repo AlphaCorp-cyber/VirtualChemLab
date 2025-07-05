@@ -1,8 +1,8 @@
-
 import React, { useState, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { LabelText, InstructionText, Text3D } from './Text3D';
+import { useChemistryLab } from '../lib/stores/useChemistryLab';
 
 interface FiltrationLabProps {
   onExperimentComplete?: (result: string) => void;
@@ -35,7 +35,7 @@ function Funnel({ position, isSelected, onSelect, hasFilterPaper, solidResidue }
           roughness={0.1}
         />
       </mesh>
-      
+
       {/* Funnel outline - black line like in diagram */}
       <mesh position={[0, 0, 0]} rotation={[Math.PI, 0, 0]}>
         <coneGeometry args={[0.305, 0.605, 32]} />
@@ -46,7 +46,7 @@ function Funnel({ position, isSelected, onSelect, hasFilterPaper, solidResidue }
           side={THREE.BackSide}
         />
       </mesh>
-      
+
       {/* Funnel stem - glass tube with black outline */}
       <mesh position={[0, -0.5, 0]}>
         <cylinderGeometry args={[0.03, 0.03, 0.4, 16]} />
@@ -56,7 +56,7 @@ function Funnel({ position, isSelected, onSelect, hasFilterPaper, solidResidue }
           opacity={0.2}
         />
       </mesh>
-      
+
       <mesh position={[0, -0.5, 0]}>
         <cylinderGeometry args={[0.035, 0.035, 0.405, 16]} />
         <meshStandardMaterial 
@@ -66,7 +66,7 @@ function Funnel({ position, isSelected, onSelect, hasFilterPaper, solidResidue }
           side={THREE.BackSide}
         />
       </mesh>
-      
+
       {/* Filter paper inside funnel - white like in diagram */}
       {hasFilterPaper && (
         <mesh position={[0, -0.1, 0]} rotation={[Math.PI, 0, 0]}>
@@ -79,7 +79,7 @@ function Funnel({ position, isSelected, onSelect, hasFilterPaper, solidResidue }
           />
         </mesh>
       )}
-      
+
       {/* Solid residue on filter paper - brownish sand color */}
       {solidResidue && hasFilterPaper && (
         <mesh position={[0, -0.02, 0]}>
@@ -108,12 +108,12 @@ function MixtureBeaker({ position, isSelected, onSelect, isEmpty, isPouring }: {
       const funnelX = -1; // Funnel position X
       const funnelY = 2.2; // Funnel position Y
       const funnelZ = -0.5; // Funnel position Z
-      
+
       // Position beaker above and slightly to the side of funnel
       beakerRef.current.position.x = funnelX + 0.3; // Slightly offset for pouring angle
       beakerRef.current.position.y = funnelY + 0.4; // Above the funnel
       beakerRef.current.position.z = funnelZ;
-      
+
       // Tilt beaker towards funnel for realistic pouring angle
       beakerRef.current.rotation.z = 0.5; // 30-degree tilt for pouring
       beakerRef.current.rotation.x = -0.2; // Slight forward tilt
@@ -141,7 +141,7 @@ function MixtureBeaker({ position, isSelected, onSelect, isEmpty, isPouring }: {
           opacity={0.2}
         />
       </mesh>
-      
+
       {/* Beaker outline */}
       <mesh>
         <cylinderGeometry args={[0.305, 0.305, 0.605]} />
@@ -152,7 +152,7 @@ function MixtureBeaker({ position, isSelected, onSelect, isEmpty, isPouring }: {
           side={THREE.BackSide}
         />
       </mesh>
-      
+
       {/* Brown muddy sand-water mixture */}
       {!isEmpty && (
         <>
@@ -161,7 +161,7 @@ function MixtureBeaker({ position, isSelected, onSelect, isEmpty, isPouring }: {
             <cylinderGeometry args={[0.28, 0.28, 0.5]} />
             <meshStandardMaterial 
               color="#A0522D" 
-              
+
               opacity={1.0}
               emissive="#8B4513"
               emissiveIntensity={1.3}
@@ -195,7 +195,7 @@ function FiltrateBeaker({ position, isSelected, onSelect, filtrateLevel }: {
           opacity={0.2}
         />
       </mesh>
-      
+
       {/* Beaker outline */}
       <mesh>
         <cylinderGeometry args={[0.305, 0.305, 0.605, 32]} />
@@ -206,7 +206,7 @@ function FiltrateBeaker({ position, isSelected, onSelect, filtrateLevel }: {
           side={THREE.BackSide}
         />
       </mesh>
-      
+
       {/* Clear blue filtrate - matches diagram color */}
       {filtrateLevel > 0 && (
         <mesh ref={filtrateRef} position={[0, -0.3 + filtrateLevel * 0.25, 0]}>
@@ -238,7 +238,7 @@ function PouringStream({ startPos, endPos, isVisible }: {
       streamRef.current.children.forEach((droplet, index) => {
         const mesh = droplet as THREE.Mesh;
         const progress = (time * 3 + index * 0.3) % 2.0;
-        
+
         if (progress < 1.0) {
           // Calculate parabolic arc from beaker to funnel opening
           const t = progress;
@@ -246,7 +246,7 @@ function PouringStream({ startPos, endPos, isVisible }: {
           const startY = startPos[1];
           const endX = endPos[0];
           const endY = endPos[1];
-          
+
           // Parabolic trajectory with gravity effect
           mesh.position.x = startX + (endX - startX) * t;
           mesh.position.y = startY + (endY - startY) * t - 0.3 * t * t; // gravity curve
@@ -289,13 +289,16 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
   const [hasFilterPaper, setHasFilterPaper] = useState(true);
   const [isPouring, setIsPouring] = useState(false);
   const [showStream, setShowStream] = useState(false);
+  const [hasCompleted, setHasCompleted] = useState(false);
+
+  const { updateFiltrationProgress } = useChemistryLab();
 
   const handleFiltration = () => {
     if (experimentStage === 'setup') {
       setExperimentStage('filtering');
       setIsPouring(true);
       setShowStream(true);
-      
+
       // Animate the filtration process
       const filtrationInterval = setInterval(() => {
         setFiltrateLevel(prev => {
@@ -307,7 +310,7 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
             setShowStream(false);
             setExperimentStage('complete');
             clearInterval(filtrationInterval);
-            
+
             if (onExperimentComplete) {
               onExperimentComplete(
                 "Filtration completed successfully! The brown sand has been separated from the blue water. " +
@@ -333,6 +336,33 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
     setShowStream(false);
   };
 
+  useFrame((state, delta) => {
+    if (experimentStage === 'filtering') {
+      const newLevel = Math.min(filtrateLevel + delta * 0.08, 1);
+      setFiltrateLevel(newLevel);
+
+      if (newLevel >= 1 && !hasResidue) {
+        setHasResidue(true);
+        setMixtureEmpty(true);
+        setIsPouring(false);
+        setShowStream(false);
+        setExperimentStage('complete');
+
+        if (!hasCompleted) {
+          setHasCompleted(true);
+          updateFiltrationProgress();
+          if (onExperimentComplete) {
+            onExperimentComplete(
+              "Filtration completed successfully! The brown sand has been separated from the blue water. " +
+              "The clear blue water (filtrate) has passed through the filter paper, while the brown sand " +
+              "remains on the filter paper as residue."
+            );
+          }
+        }
+      }
+    }
+  });
+
   return (
     <group>
       {/* Filtration setup - positioned like in the diagram */}
@@ -343,14 +373,14 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
         hasFilterPaper={hasFilterPaper}
         solidResidue={hasResidue}
       />
-      
+
       {/* Pouring stream animation - from beaker lip to funnel opening */}
       <PouringStream 
         startPos={[-0.6, 2.5, -0.5]}
         endPos={[-1, 2.5, -0.5]}
         isVisible={showStream}
       />
-      
+
       <MixtureBeaker 
         position={[-3, 1.75, -0.5]} 
         isSelected={false}
@@ -358,7 +388,7 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
         isEmpty={mixtureEmpty}
         isPouring={isPouring}
       />
-      
+
       <FiltrateBeaker 
         position={[-1, 1.75, -0.5]} 
         isSelected={selectedTool === 'filtrate'}
@@ -390,14 +420,14 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
         <planeGeometry args={[3.5, 2]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
-      
+
       <mesh position={[2.5, 2.5, -0.99]}>
         <planeGeometry args={[3.3, 1.8]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
 
       <Text3D position={[2.5, 3.2, -0.98]} text="FILTRATION PROCESS" fontSize={0.1} color="#3498db"/>
-      
+
       <Text3D position={[2.5, 2.8, -0.98]} text="1. Click mixture beaker once to start" fontSize={0.07} color="#2c3e50"/>
       <Text3D position={[2.5, 2.5, -0.98]} text="2. Watch beaker pour into funnel" fontSize={0.07} color="#2c3e50"/>
       <Text3D position={[2.5, 2.2, -0.98]} text="3. Brown sand stays on filter paper" fontSize={0.07} color="#2c3e50"/>
@@ -413,7 +443,7 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
           } 
         />
       </mesh>
-      
+
       <Text3D position={[0, 3.5, -0.98]} 
         text={
           experimentStage === 'setup' ? "CLICK MIXTURE BEAKER TO START" :
@@ -448,4 +478,3 @@ export function FiltrationLab({ onExperimentComplete }: FiltrationLabProps) {
     </group>
   );
 }
- 

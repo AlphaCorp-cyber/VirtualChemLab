@@ -1,8 +1,8 @@
-
-import React, { useRef, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Text } from '@react-three/drei';
 import * as THREE from 'three';
+import { useChemistryLab } from '../lib/stores/useChemistryLab';
 
 interface DisplacementLabProps {
   onExperimentComplete?: (result: string) => void;
@@ -13,7 +13,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
   const [reactionProgress, setReactionProgress] = useState(0);
   const [selectedMetal, setSelectedMetal] = useState<'iron' | 'zinc' | 'magnesium'>('iron');
   const [selectedSolution, setSelectedSolution] = useState<'copper' | 'iron'>('copper');
-  
+
   const testTubeRef = useRef<THREE.Group>(null);
   const solutionRef = useRef<THREE.Mesh>(null);
   const metalRef = useRef<THREE.Mesh>(null);
@@ -21,7 +21,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
   useFrame((state, delta) => {
     if (reactionStarted && reactionProgress < 1) {
       setReactionProgress(prev => Math.min(prev + delta * 0.3, 1));
-      
+
       // Animate solution color change
       if (solutionRef.current) {
         const material = solutionRef.current.material as THREE.MeshStandardMaterial;
@@ -58,13 +58,13 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
   const resetExperiment = () => {
     setReactionStarted(false);
     setReactionProgress(0);
-    
+
     if (solutionRef.current) {
       const material = solutionRef.current.material as THREE.MeshStandardMaterial;
       material.color.setHex(selectedSolution === 'copper' ? 0x0080ff : 0x228b22);
       material.opacity = 0.7;
     }
-    
+
     if (metalRef.current) {
       const material = metalRef.current.material as THREE.MeshStandardMaterial;
       material.color.setHex(0x666666);
@@ -176,7 +176,7 @@ const DisplacementLab: React.FC<DisplacementLabProps> = ({ onExperimentComplete 
       </group>
 
       <group position={[0, 1.2, 0]}>
-        
+
       </group>
 
       {/* Metal Selection Labels */}

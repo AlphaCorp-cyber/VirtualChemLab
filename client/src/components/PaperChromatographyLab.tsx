@@ -1,17 +1,21 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Text } from '@react-three/drei';
 import * as THREE from 'three';
-import { useAudio } from '../lib/stores/useAudio';
+import { useChemistryLab } from '../lib/stores/useChemistryLab';
 
 interface PaperChromatographyLabProps {
   onExperimentComplete?: (result: string) => void;
 }
 
 const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExperimentComplete }) => {
-  const { playHit, playSuccess } = useAudio();
   const [experimentStarted, setExperimentStarted] = useState(false);
   const [solventHeight, setSolventHeight] = useState(0);
+  const [separationProgress, setSeparationProgress] = useState(0);
+  const [hasCompleted, setHasCompleted] = useState(false);
+
+  const { updatePaperChromatographyProgress } = useChemistryLab();
+  const { playHit, playSuccess } = useAudio();
   const [pigmentSeparation, setPigmentSeparation] = useState(0);
   const [inkApplied, setInkApplied] = useState(false);
   const [selectedInk, setSelectedInk] = useState<'black' | 'blue' | 'red'>('black');
@@ -72,8 +76,10 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
         });
       }
 
-      if (solventHeight >= 1.4 && pigmentSeparation >= 0.9) {
+      if (solventHeight >= 1.4 && pigmentSeparation >= 0.9 && !hasCompleted) {
         playSuccess(); // Play success sound when experiment completes
+        setHasCompleted(true);
+        updatePaperChromatographyProgress();
         onExperimentComplete?.(`Chromatography complete! ${selectedInk} ink separated into ${pigmentData[selectedInk].length} pigments.`);
       }
     }
@@ -97,6 +103,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
     setSolventHeight(0);
     setPigmentSeparation(0);
     setInkApplied(false);
+    setHasCompleted(false);
 
     if (solventRef.current) {
       solventRef.current.scale.y = 0.1;
@@ -221,7 +228,7 @@ const PaperChromatographyLab: React.FC<PaperChromatographyLabProps> = ({ onExper
 
       {/* Ink Selection Area */}
       <group position={[-2, 1.59, 0]}>
-       
+
 
         {/* Current selection indicator */}
         <Text
