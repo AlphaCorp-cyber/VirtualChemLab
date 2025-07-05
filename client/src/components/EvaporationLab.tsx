@@ -157,10 +157,10 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
       >
         <sphereGeometry args={[0.4, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
         <meshStandardMaterial 
-          color="#ffffff"
+          color="#722F37"
           transparent
-          opacity={0.15}
-          roughness={0.0}
+          opacity={0.3}
+          roughness={0.1}
           metalness={0.0}
           transmission={0.9}
           thickness={0.01}
@@ -171,7 +171,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
       <mesh position={[0, 0, 0]}>
         <torusGeometry args={[0.4, 0.015, 8, 32]} />
         <meshStandardMaterial 
-          color="#ffffff"
+          color="#722F37"
           transparent
           opacity={0.3}
           roughness={0.1}
@@ -832,7 +832,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       </mesh>
      
       <Text3D 
-        position={[2.3, 2.15, 0]} 
+        position={[2.5, 1.95, -0.38]} 
         text="RESET" 
         fontSize={0.08} 
         color="#ffffff" 
