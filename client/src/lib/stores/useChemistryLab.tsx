@@ -559,7 +559,7 @@ export const useChemistryLab = create<ChemistryLabState>()(
       const { completedTests, totalTests } = get();
       const newCompletedTests = completedTests + 1;
       const newProgress = (newCompletedTests / totalTests) * 100;
-      
+
       set({
         completedTests: newCompletedTests,
         progress: newProgress
@@ -571,7 +571,7 @@ export const useChemistryLab = create<ChemistryLabState>()(
       const { completedTests, totalTests } = get();
       const newCompletedTests = completedTests + 1;
       const newProgress = (newCompletedTests / totalTests) * 100;
-      
+
       set({
         completedTests: newCompletedTests,
         progress: newProgress
@@ -583,7 +583,7 @@ export const useChemistryLab = create<ChemistryLabState>()(
       const { completedTests, totalTests } = get();
       const newCompletedTests = completedTests + 1;
       const newProgress = (newCompletedTests / totalTests) * 100;
-      
+
       set({
         completedTests: newCompletedTests,
         progress: newProgress
@@ -595,7 +595,7 @@ export const useChemistryLab = create<ChemistryLabState>()(
       const { completedTests, totalTests } = get();
       const newCompletedTests = completedTests + 1;
       const newProgress = (newCompletedTests / totalTests) * 100;
-      
+
       set({
         completedTests: newCompletedTests,
         progress: newProgress
@@ -607,7 +607,7 @@ export const useChemistryLab = create<ChemistryLabState>()(
       const { completedTests, totalTests } = get();
       const newCompletedTests = completedTests + 1;
       const newProgress = (newCompletedTests / totalTests) * 100;
-      
+
       set({
         completedTests: newCompletedTests,
         progress: newProgress
