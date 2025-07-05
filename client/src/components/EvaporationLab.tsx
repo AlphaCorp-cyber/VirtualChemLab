@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -106,7 +105,7 @@ function WaterStream({ startPos, endPos, isVisible }: {
       streamRef.current.children.forEach((droplet, index) => {
         const mesh = droplet as THREE.Mesh;
         const progress = (time * 2 + index * 0.2) % 1.5;
-        
+
         if (progress < 1.0) {
           const t = progress;
           mesh.position.x = startPos[0] + (endPos[0] - startPos[0]) * t;
@@ -164,7 +163,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
           metalness={0.0}
         />
       </mesh>
-      
+
       {/* Simple black outline for clarity */}
       <mesh position={[0, 0, 0]}>
         <sphereGeometry args={[0.405, 32, 16, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2]} />
@@ -175,7 +174,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
           side={THREE.BackSide}
         />
       </mesh>
-      
+
       {/* Inner bottom surface - white for contrast */}
       <mesh position={[0, -0.35, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[0.35, 32]} />
@@ -186,7 +185,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
           roughness={0.2}
         />
       </mesh>
-      
+
       {/* Salt solution - bluish water with animated level */}
       {liquidLevel > 0 && hasSaltSolution && (
         <mesh position={[0, -0.35 + (liquidLevel * 0.15), 0]}>
@@ -200,7 +199,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
           />
         </mesh>
       )}
-      
+
       {/* Salt crystals - simple and clear white residue */}
       {saltCrystals && (
         <group>
@@ -214,7 +213,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
               roughness={0.1}
             />
           </mesh>
-          
+
           {/* Simple crystal texture */}
           {Array.from({ length: 8 }, (_, i) => (
             <mesh 
@@ -260,13 +259,13 @@ function BunsenBurner({ position, isLit, onToggle }: {
         <cylinderGeometry args={[0.15, 0.15, 0.2]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
-      
+
       {/* Burner top */}
       <mesh position={[0, 0.125, 0]}>
         <cylinderGeometry args={[0.1, 0.1, 0.05]} />
         <meshStandardMaterial color="#34495e" />
       </mesh>
-      
+
       {/* Flame - Much more visible */}
       {isLit && (
         <group position={[0, 0.35, 0]}>
@@ -285,7 +284,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
               emissiveIntensity={1.5}
             />
           </mesh>
-          
+
           {/* Inner flame - bright blue core */}
           <mesh position={[0, 0.05, 0]}>
             <coneGeometry args={[0.06, 0.25, 8]} />
@@ -297,7 +296,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
               emissiveIntensity={1.2}
             />
           </mesh>
-          
+
           {/* Flame glow effect */}
           <mesh position={[0, 0, 0]}>
             <coneGeometry args={[0.15, 0.5, 8]} />
@@ -309,7 +308,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
               emissiveIntensity={0.8}
             />
           </mesh>
-          
+
           {/* Enhanced flame lighting */}
           <pointLight 
             position={[0, 0.1, 0]} 
@@ -327,7 +326,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
           />
         </group>
       )}
-      
+
       {/* Control knob - black by default, red when lit */}
       <mesh 
         position={[0.25, 0.1, 0]}
@@ -337,7 +336,7 @@ function BunsenBurner({ position, isLit, onToggle }: {
         <cylinderGeometry args={[0.05, 0.05, 0.15]} />
         <meshStandardMaterial color={isLit ? "#e74c3c" : "#2c3e50"} />
       </mesh>
-      
+
       {/* Click indicator for knob */}
       <mesh position={[0.25, 0.1, 0]}>
         <cylinderGeometry args={[0.06, 0.06, 0.16]} />
@@ -369,7 +368,7 @@ function TripodStand({ position }: {
         <cylinderGeometry args={[0.01, 0.01, 0.6]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
-      
+
       {/* Wire gauze */}
       <mesh position={[0, 0.5, 0]}>
         <cylinderGeometry args={[0.25, 0.25, 0.01]} />
@@ -394,7 +393,7 @@ function SmokeParticles({ position, isActive }: {
           particle.position.x += Math.sin(Date.now() * 0.001 + index) * 0.005;
           particle.position.z += Math.cos(Date.now() * 0.001 + index) * 0.005;
           particle.scale.setScalar(0.05 + Math.sin(Date.now() * 0.002 + index) * 0.02);
-          
+
           // Reset particle if it goes too high
           if (particle.position.y > 1) {
             particle.position.y = 0;
@@ -468,13 +467,13 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
   const handleBurnerToggle = () => {
     const newLitState = !isLit;
     setIsLit(newLitState);
-    
+
     // If burner is lit and we have salt solution, start evaporation automatically
     if (newLitState && hasSaltSolution && experimentStage === 'light-burner') {
       setExperimentStage('heating');
       setShowSmoke(true);
       setCountdown(8);
-      
+
       // Start evaporation process with smooth countdown and liquid level animation
       const evaporationInterval = setInterval(() => {
         setCountdown(prev => {
@@ -486,7 +485,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
             setShowSmoke(false);
             setLiquidLevel(0);
             clearInterval(evaporationInterval);
-            
+
             if (onExperimentComplete) {
               onExperimentComplete(
                 "Evaporation to dryness completed successfully! The salt water has completely evaporated, " +
@@ -496,7 +495,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
             }
             return 0;
           }
-          
+
           // Smoothly reduce liquid level proportionally
           const newLiquidLevel = newCount / 8;
           setLiquidLevel(newLiquidLevel);
@@ -530,7 +529,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
         color="#ffffff"
         castShadow
       />
-      
+
       {/* Additional lighting for flame visibility */}
       {isLit && (
         <>
@@ -551,7 +550,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
           />
         </>
       )}
-      
+
       {/* Bright spotlight for salt crystals when visible */}
       {saltCrystals && (
         <spotLight
@@ -567,7 +566,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
 
       {/* Equipment positioned on the existing white lab table */}
       <WaterBeaker 
-        position={[-2.5, 1.9, -1]} 
+        position={[-1.2, 1.9, -1]} 
         isSelected={experimentStage === 'setup'}
         onSelect={handleWaterPour}
         isEmpty={waterBeakerEmpty}
@@ -575,13 +574,13 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
       />
 
       <WaterStream 
-        startPos={[-1.7, 3.0, -1]}
-        endPos={[0, 2.02, -1]}
+        startPos={[-0.4, 2.4, -1]}
+        endPos={[0, 2.05, -1]}
         isVisible={showWaterStream}
       />
-      
+
       <TripodStand position={[0, 1.55, -1]} />
-      
+
       <EvaporatingDish 
         position={[0, 2.52, -1]} 
         isSelected={false}
@@ -590,19 +589,19 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
         saltCrystals={saltCrystals}
         hasSaltSolution={hasSaltSolution}
       />
-      
+
       <BunsenBurner 
         position={[0, 1.46, -1]} 
         isLit={isLit}
         onToggle={handleBurnerToggle}
       />
-      
+
       {/* Smoke effects during heating */}
       <SmokeParticles 
         position={[0, 2.6, -1]} 
         isActive={showSmoke}
       />
-      
+
       {/* Countdown timer display - Above equipment */}
       {experimentStage === 'heating' && (
         <group>
@@ -659,7 +658,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
         <planeGeometry args={[4, 2.5]} />
         <meshStandardMaterial color="#2c3e50" />
       </mesh>
-      
+
       <mesh position={[3.5, 2.5, -0.99]}>
         <planeGeometry args={[3.8, 2.3]} />
         <meshStandardMaterial color="#ffffff" />
@@ -667,7 +666,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
 
       {/* Title */}
       <Text3D position={[3.5, 3.5, -0.98]} text="EVAPORATION LAB" fontSize={0.12} color="#e67e22" />
-      
+
       {/* Instructions */}
       <Text3D position={[3.5, 3.0, -0.98]} text="1. Click water beaker to pour" fontSize={0.08} color="#2c3e50" />
       <Text3D position={[3.5, 2.6, -0.98]} text="2. Click Bunsen burner to light" fontSize={0.08} color="#2c3e50" />
@@ -766,7 +765,7 @@ export function EvaporationLab({ onExperimentComplete }: EvaporationLabProps) {
         <boxGeometry args={[0.8, 0.2, 0.1]} />
         <meshStandardMaterial color="#e74c3c" />
       </mesh>
-     
+
       <Text3D 
         position={[2.5, 1.95, -0.38]} 
         text="RESET" 
