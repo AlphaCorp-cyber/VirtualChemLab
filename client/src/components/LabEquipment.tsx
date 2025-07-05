@@ -212,7 +212,6 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
             color="#2c3e50"
             anchorX="left"
             anchorY="middle"
-        font="/fonts/inter-regular.ttf"
             rotation={[0, 0, 0]}
           >
             {volume}
@@ -235,7 +234,6 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         color="#2c3e50"
         anchorX="left"
         anchorY="middle"
-        font="/fonts/inter-regular.ttf"
       >
         ml
       </Text>
@@ -247,7 +245,6 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         color="#34495e"
         anchorX="left"
         anchorY="middle"
-        font="/fonts/inter-regular.ttf"
       >
         ≈50ml
       </Text>
@@ -307,8 +304,6 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         color="black"
         anchorX="center"
         anchorY="middle"
-        font="/fonts/inter-regular.ttf"
-        font="/fonts/inter-regular.ttf"
       >
         pH: {hasIndicator ? phValue.toFixed(1) : '?'}
       </Text>
@@ -320,7 +315,6 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         color="#2c3e50"
         anchorX="center"
         anchorY="middle"
-        font="/fonts/inter-regular.ttf"
       >
         {solutionName}
       </Text>
@@ -332,7 +326,6 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
         color={phValue < 7 ? "#e74c3c" : phValue > 7 ? "#3498db" : "#27ae60"}
         anchorX="center"
         anchorY="middle"
-        font="/fonts/inter-regular.ttf"
        
       >
         {phValue < 7 ? "ACIDIC" : phValue > 7 ? "BASIC" : "NEUTRAL"}
@@ -346,7 +339,6 @@ function Beaker({ position, liquidColor, phValue, id, solutionName }: {
           color="#00aa00"
           anchorX="center"
           anchorY="middle"
-        font="/fonts/inter-regular.ttf"
         >
           + pH Indicator
         </Text>
@@ -980,7 +972,6 @@ export function LabEquipment() {
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-        font="/fonts/inter-regular.ttf"
         >
           Experiment 1: Common Lab Substances
         </Text>
@@ -993,7 +984,6 @@ export function LabEquipment() {
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-        font="/fonts/inter-regular.ttf"
         >
           Experiment 2: Acid/Base Strength
         </Text>
@@ -1006,7 +996,6 @@ export function LabEquipment() {
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-        font="/fonts/inter-regular.ttf"
           rotation={[0, Math.PI/2, 0]}
         >
           Experiment 4: Salt Solutions
@@ -1148,7 +1137,6 @@ export function LabEquipment() {
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-        font="/fonts/inter-regular.ttf"
         >
           pH Testing Instructions
         </Text>
@@ -1158,7 +1146,6 @@ export function LabEquipment() {
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-        font="/fonts/inter-regular.ttf"
         >
           1. Click pH indicator bottle
         </Text>
@@ -1168,7 +1155,6 @@ export function LabEquipment() {
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-        font="/fonts/inter-regular.ttf"
         >
           2. Click beaker to pour
         </Text>
@@ -1178,7 +1164,6 @@ export function LabEquipment() {
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-        font="/fonts/inter-regular.ttf"
         >
           3. Observe color change
         </Text>
@@ -1188,7 +1173,6 @@ export function LabEquipment() {
           color="#2c3e50"
           anchorX="center"
           anchorY="middle"
-        font="/fonts/inter-regular.ttf"
         >
           4. Compare with pH scale
         </Text>
