@@ -159,7 +159,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
         <meshStandardMaterial 
           color="#ffffff"
           transparent
-          opacity={0.2}
+          opacity={0.05}
           roughness={0.1}
           metalness={0.0}
         />
@@ -171,7 +171,7 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
         <meshStandardMaterial 
           color="#000000"
           transparent
-          opacity={0.8}
+          opacity={0.3}
           side={THREE.BackSide}
         />
       </mesh>
@@ -189,14 +189,14 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
       
       {/* Salt solution - bluish water with animated level */}
       {liquidLevel > 0 && hasSaltSolution && (
-        <mesh position={[0, 0.045 + (liquidLevel * 0.02), 0]}>
-          <cylinderGeometry args={[0.36 * liquidLevel, 0.36 * liquidLevel, liquidLevel * 0.04]} />
+        <mesh position={[0, -0.35 + (liquidLevel * 0.15), 0]}>
+          <cylinderGeometry args={[0.38 * Math.sqrt(liquidLevel), 0.38 * Math.sqrt(liquidLevel), liquidLevel * 0.3]} />
           <meshStandardMaterial 
             color="#4A90E2" 
             transparent 
-            opacity={0.8}
+            opacity={0.9}
             emissive="#1E3A8A"
-            emissiveIntensity={0.1}
+            emissiveIntensity={0.15}
           />
         </mesh>
       )}
