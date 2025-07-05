@@ -202,12 +202,12 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
         </mesh>
       )}
 
-      {/* Salt crystals - simple and clear white residue */}
+      {/* Salt crystals - curved to match dish shape */}
       {saltCrystals && (
         <group>
-          {/* Main salt layer - bright white and clearly visible */}
+          {/* Main salt layer - curved sphere section matching dish */}
           <mesh position={[0, -0.34, 0]}>
-            <cylinderGeometry args={[0.32, 0.32, 0.02]} />
+            <sphereGeometry args={[0.35, 32, 16, 0, Math.PI * 2, Math.PI / 2, Math.PI / 3]} />
             <meshStandardMaterial 
               color="#ffffff" 
               emissive="#ffffff"
@@ -216,24 +216,40 @@ function EvaporatingDish({ position, isSelected, onSelect, liquidLevel, saltCrys
             />
           </mesh>
 
-          {/* Simple crystal texture */}
-          {Array.from({ length: 8 }, (_, i) => (
-            <mesh 
-              key={i}
-              position={[
-                Math.cos(i * Math.PI / 4) * 0.2,
-                -0.32,
-                Math.sin(i * Math.PI / 4) * 0.2
-              ]}
-            >
-              <boxGeometry args={[0.03, 0.01, 0.03]} />
-              <meshStandardMaterial 
-                color="#ffffff"
-                emissive="#ffffff"
-                emissiveIntensity={0.6}
-              />
-            </mesh>
-          ))}
+          {/* Additional salt accumulation in center (thicker) */}
+          <mesh position={[0, -0.32, 0]}>
+            <sphereGeometry args={[0.25, 32, 16, 0, Math.PI * 2, Math.PI / 2, Math.PI / 4]} />
+            <meshStandardMaterial 
+              color="#ffffff" 
+              emissive="#ffffff"
+              emissiveIntensity={0.9}
+              roughness={0.05}
+            />
+          </mesh>
+
+          {/* Crystal texture following the curved surface */}
+          {Array.from({ length: 12 }, (_, i) => {
+            const angle = (i * Math.PI * 2) / 12;
+            const radius = 0.15 + Math.random() * 0.15;
+            const x = Math.cos(angle) * radius;
+            const z = Math.sin(angle) * radius;
+            const y = -0.35 + Math.sqrt(Math.max(0, 0.35 * 0.35 - x * x - z * z)) * 0.3;
+            
+            return (
+              <mesh 
+                key={i}
+                position={[x, y, z]}
+                rotation={[Math.random() * 0.3, Math.random() * Math.PI * 2, Math.random() * 0.3]}
+              >
+                <boxGeometry args={[0.02, 0.005, 0.02]} />
+                <meshStandardMaterial 
+                  color="#ffffff"
+                  emissive="#ffffff"
+                  emissiveIntensity={0.7}
+                />
+              </mesh>
+            );
+          })}
         </group>
       )}
     </group>
