@@ -27,23 +27,8 @@ const generateRandomKey = (): string => {
 
 // Generate valid activation keys - in production, this should be fetched from a secure backend
 const VALID_ACTIVATION_KEYS = [
-  // Universal 16-character codes
-  'CHEM2024LABVR001',
-  'SCIENCE2024VR001', 
-  'LABACCESS2024VR1',
-  'CHEMISTRY2024V1',
-  'VRCHEM2024LAB01',
   'A1B2C3D4E5F6G7H8',
   '9Z8Y7X6W5V4U3T2S',
-  'UNIVERSAL123456',
-  'MASTER1234567890',
-  'ADMIN12345678901',
-  // Generate some random keys for testing
-  generateRandomKey(),
-  generateRandomKey(),
-  generateRandomKey(),
-  generateRandomKey(),
-  generateRandomKey(),
 ];
 
 export const useActivation = create<ActivationState>()(
